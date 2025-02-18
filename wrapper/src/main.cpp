@@ -11,6 +11,35 @@
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
+
+typedef struct entityData {
+    float x;
+    float y;
+    int ID;
+};
+
+// Create a list of entityData
+std::vector<entityData> entityList = {
+    {100.0, 200.0, 1},
+    {150.0, 250.0, 2},
+    {200.0, 300.0, 3},
+};
+
+// A map of sprites with IDs
+std::unordered_map<int, SDL_Texture*> spriteMap;
+
+// Function to load a sprite
+SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path) {
+    auto surface = IMG_Load(path.string().c_str());
+    if (!surface) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", path.string().c_str());
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_DestroySurface(surface);
+    return texture;
+}
+
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -93,6 +122,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, svg_surface);
     // SDL_DestroySurface(svg_surface);
     
+
+    //Load spritemap
+    spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
+    spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
+    spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
+
+    for(const auto& [id, texture] : spriteMap) {
+        if (!texture) {
+            return SDL_Fail();
+        }
+    }
+
     // load the PNG
     auto png_surface = IMG_Load((basePathSOS / "SOS/sprites/playerBig.png").string().c_str());
     if (!png_surface) {
@@ -205,9 +246,21 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         .h = static_cast<float>(app->imageDest.h)
     };
 
-    // Renderer uses the painter's algorithm to make the text appear above the image, we must render the image first.
-    SDL_RenderTexture(app->renderer, app->imageTex, NULL, &imageDestFRect);
-    SDL_RenderTexture(app->renderer, app->messageTex, NULL, &app->messageDest);
+    
+    for(const auto& entity : entityList) {
+        SDL_Texture* texture = spriteMap[entity.ID];
+        if (!texture) {
+            return SDL_APP_FAILURE;
+        }
+        SDL_FRect destRect{
+            .x = entity.x,
+            .y = entity.y,
+            .w = 127,
+            .h = 127
+        };
+        SDL_RenderTexture(app->renderer, texture, NULL, &destRect);
+    }
+
 
     SDL_RenderPresent(app->renderer);
 
