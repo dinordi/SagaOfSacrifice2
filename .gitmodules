@@ -10,3 +10,6 @@
 [submodule "wrapper/SDL_image"]
 	path = wrapper/SDL_image
 	url = https://github.com/libsdl-org/SDL_image
+[submodule "FPGA"]
+	path = FPGA
+	url = https://github.com/dinordi/SOS_FPGA.git
