@@ -5,15 +5,23 @@ The Saga Of Sacrifice wrapper is used mainly in development to test and run the 
 
 ## Setup
 
-`git clone --recurse-submodules https://github.com/dinordi/SagaOfSacrifice2.git`
+```shell
+git clone --recurse-submodules https://github.com/dinordi/SagaOfSacrifice2.git
+```
 
 To build the wrapper application:
 
-`cd wrapper/build`
+```shell
+cd wrapper/build
+```
 
-`cmake ..`
+```shell
+cmake ..
+```
 
-`make`
+```shell
+make
+```
 
 
 
