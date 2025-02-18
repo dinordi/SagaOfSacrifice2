@@ -8,13 +8,14 @@
 #include <string_view>
 #include <filesystem>
 
-constexpr uint32_t windowStartWidth = 400;
-constexpr uint32_t windowStartHeight = 400;
+constexpr uint32_t windowStartWidth = 1920;
+constexpr uint32_t windowStartHeight = 1080;
 
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* messageTex, *imageTex;
+    SDL_Rect imageDest;
     SDL_FRect messageDest;
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
@@ -59,6 +60,15 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_Fail();
     }
      const std::filesystem::path basePath = basePathPtr;
+
+    //  std::filesystem::path basePath = SDL_GetBasePath();
+    std::string basePathStr = basePath.string();
+    std::size_t pos = basePathStr.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        basePathStr = basePathStr.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePathSOS = std::filesystem::path(basePathStr);
+
 #endif
 
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
@@ -79,16 +89,32 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_DestroySurface(surfaceMessage);
 
     // load the SVG
-    auto svg_surface = IMG_Load((basePath / "gs_tiger.svg").string().c_str());
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, svg_surface);
-    SDL_DestroySurface(svg_surface);
+    // auto svg_surface = IMG_Load((basePathSOS / "sprites/player.png").string().c_str());
+    // SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, svg_surface);
+    // SDL_DestroySurface(svg_surface);
     
+    // load the PNG
+    auto png_surface = IMG_Load((basePathSOS / "SOS/sprites/playerBig.png").string().c_str());
+    if (!png_surface) {
+        return SDL_Fail();
+    }
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, png_surface);
+    int png_width = png_surface->w;
+    int png_height = png_surface->h;
+
+    SDL_Rect imageDest{
+        .x = 800,
+        .y = 400,
+        .w = png_width,
+        .h = png_height
+    };
+    SDL_DestroySurface(png_surface);
 
     // get the on-screen dimensions of the text. this is necessary for rendering it
     auto messageTexProps = SDL_GetTextureProperties(messageTex);
     SDL_FRect text_rect{
-            .x = 0,
-            .y = 0,
+            .x = 200,
+            .y = 200,
             .w = float(SDL_GetNumberProperty(messageTexProps, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0)),
             .h = float(SDL_GetNumberProperty(messageTexProps, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0))
     };
@@ -103,8 +129,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // load the music
-    auto musicPath = basePath / "the_entertainer.ogg";
-    auto music = Mix_LoadMUS(musicPath.string().c_str());
+
+    // Resolve the full path to the music folder
+    auto musicPath = basePathSOS / "SOS/music";
+
+    // Combine the resolved path with the music file name
+    auto menuMusic = musicPath / "menu/001.mp3";
+    SDL_Log("Music path: %s", menuMusic.string().c_str());
+    auto music = Mix_LoadMUS(menuMusic.string().c_str());
     if (not music) {
         return SDL_Fail();
     }
@@ -131,6 +163,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .renderer = renderer,
        .messageTex = messageTex,
        .imageTex = tex,
+       .imageDest = imageDest,
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
@@ -165,8 +198,15 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(app->renderer, red, green, blue, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
+    SDL_FRect imageDestFRect {
+        .x = static_cast<float>(app->imageDest.x),
+        .y = static_cast<float>(app->imageDest.y),
+        .w = static_cast<float>(app->imageDest.w),
+        .h = static_cast<float>(app->imageDest.h)
+    };
+
     // Renderer uses the painter's algorithm to make the text appear above the image, we must render the image first.
-    SDL_RenderTexture(app->renderer, app->imageTex, NULL, NULL);
+    SDL_RenderTexture(app->renderer, app->imageTex, NULL, &imageDestFRect);
     SDL_RenderTexture(app->renderer, app->messageTex, NULL, &app->messageDest);
 
     SDL_RenderPresent(app->renderer);
