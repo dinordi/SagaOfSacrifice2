@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
 # Declare the project
-project(sdl-min)
+project(SagaOfSacrifice2)
 
 if (APPLE OR EMSCRIPTEN)
     set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
@@ -26,11 +26,11 @@ set(EXECUTABLE_NAME ${PROJECT_NAME})
 
 # Create an executable or a shared library based on the platform and add our sources to it
 if (ANDROID)
-	# The SDL java code is hardcoded to load libmain.so on android, so we need to change EXECUTABLE_NAME
-	set(EXECUTABLE_NAME main)
-	add_library(${EXECUTABLE_NAME} SHARED)
+    # The SDL java code is hardcoded to load libmain.so on android, so we need to change EXECUTABLE_NAME
+    set(EXECUTABLE_NAME main)
+    add_library(${EXECUTABLE_NAME} SHARED)
 else()
-	add_executable(${EXECUTABLE_NAME})
+    add_executable(${EXECUTABLE_NAME})
 endif()
 
 # Add your sources to the target
@@ -56,7 +56,7 @@ target_compile_features(${EXECUTABLE_NAME} PUBLIC cxx_std_20)
 
 # on Web targets, we need CMake to generate a HTML webpage. 
 if(EMSCRIPTEN)
-	set(CMAKE_EXECUTABLE_SUFFIX ".html" CACHE INTERNAL "")
+    set(CMAKE_EXECUTABLE_SUFFIX ".html" CACHE INTERNAL "")
 endif()
 
 # Configure SDL by calling its CMake file.
@@ -87,9 +87,9 @@ add_subdirectory(SDL_image EXCLUDE_FROM_ALL)
 
 # Link SDL to our executable. This also makes its include directory available to us. 
 target_link_libraries(${EXECUTABLE_NAME} PUBLIC 
-	SDL3_ttf::SDL3_ttf      # remove if you are not using SDL_ttf
-	SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
-	SDL3_image::SDL3_image	# remove if you are not using SDL_image
+    SDL3_ttf::SDL3_ttf      # remove if you are not using SDL_ttf
+    SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
+    SDL3_image::SDL3_image	# remove if you are not using SDL_image
     SDL3::SDL3              # If using satelite libraries, SDL must be the last item in the list. 
 )
 
@@ -98,7 +98,30 @@ if (APPLE)
     find_library(CS_LIB CoreServices)
     target_link_libraries(${EXECUTABLE_NAME} PUBLIC ${IO_LIB} ${CS_LIB})
 endif()
+
 target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
+
+# Add include directories
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src)
+
+# Add your sources to the target
+# target_sources(${EXECUTABLE_NAME} 
+# PRIVATE 
+#     ../SOS1/src/game.cpp
+#     ../SOS1/src/Fatbat.cpp
+#     ../SOS1/src/platform.cpp
+#     ../SOS1/src/Bullet.cpp
+#     ../SOS1/src/WerewolfMan.cpp
+#     ../SOS1/src/Teleporter.cpp
+#     ../SOS1/src/Player.cpp
+#     ../SOS1/src/Samurai.cpp
+#     ../SOS1/src/Enemy.cpp
+#     ../SOS1/src/Projectile.cpp
+#     ../SOS1/src/Actor.cpp
+# )
+
+file(GLOB_RECURSE SOURCES ../SOS1/src/*.cpp)
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 # Dealing with assets
 # We have some non-code resources that our application needs in order to work. How we deal with those differs per platform.
@@ -140,9 +163,9 @@ else()
         endif()
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
-		    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_LIST_DIR}/src/${filename}" "${outname}"
-		    DEPENDS "${filename}"
-	    )
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_LIST_DIR}/src/${filename}" "${outname}"
+            DEPENDS "${filename}"
+        )
     endmacro()
     copy_helper("Inter-VariableFont.ttf")
     copy_helper("the_entertainer.ogg")
@@ -161,8 +184,8 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     XCODE_GENERATE_SCHEME TRUE
     # Identification for Xcode
     XCODE_ATTRIBUTE_BUNDLE_IDENTIFIER "com.ravbug.sdl3-sample"
-	XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.ravbug.sdl3-sample"
-	XCODE_ATTRIBUTE_CURRENTYEAR "${CURRENTYEAR}"
+    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.ravbug.sdl3-sample"
+    XCODE_ATTRIBUTE_CURRENTYEAR "${CURRENTYEAR}"
 )
 
 # on Visual Studio, set our app as the default project
@@ -174,10 +197,10 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT "
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     # tell Install about the target, otherwise fixup won't know about the transitive dependencies
     install(TARGETS ${EXECUTABLE_NAME}
-    	BUNDLE DESTINATION ./install COMPONENT Runtime
-   	    RUNTIME DESTINATION ./install/bin COMPONENT Runtime
+        BUNDLE DESTINATION ./install COMPONENT Runtime
+           RUNTIME DESTINATION ./install/bin COMPONENT Runtime
     )
-	
+    
     set(DEP_DIR "${CMAKE_BINARY_DIR}")  # where to look for dependencies when fixing up
     INSTALL(CODE 
         "include(BundleUtilities)

@@ -8,37 +8,21 @@
 #include <string_view>
 #include <filesystem>
 
+#include "game.h"
+#include "sdl_gfx.h"
+#include "sprites_sdl.h"
+#include "logger_sdl.h"
+
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
-typedef struct entityData {
-    float x;
-    float y;
-    int ID;
-};
-
-// Create a list of entityData
-std::vector<entityData> entityList = {
-    {100.0, 200.0, 1},
-    {150.0, 250.0, 2},
-    {200.0, 300.0, 3},
-};
-
-// A map of sprites with IDs
 std::unordered_map<int, SDL_Texture*> spriteMap;
 
-// Function to load a sprite
-SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path) {
-    auto surface = IMG_Load(path.string().c_str());
-    if (!surface) {
-        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", path.string().c_str());
-        return nullptr;
-    }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_DestroySurface(surface);
-    return texture;
-}
+
+
+
+
 
 struct AppContext {
     SDL_Window* window;
@@ -49,6 +33,7 @@ struct AppContext {
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
+    Game* game;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -107,8 +92,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // render the font to a surface
-    const std::string_view text = "Hello SDL!";
+    const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
+
+    initializeCharacters();
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -117,16 +104,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
 
-    // load the SVG
-    // auto svg_surface = IMG_Load((basePathSOS / "sprites/player.png").string().c_str());
-    // SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, svg_surface);
-    // SDL_DestroySurface(svg_surface);
-    
-
     //Load spritemap
-    spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
-    spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
-    spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
+    // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
+    // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
+    // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
 
     for(const auto& [id, texture] : spriteMap) {
         if (!texture) {
@@ -185,6 +166,16 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // play the music (does not loop)
     Mix_PlayMusic(music, 0);
     
+
+    GFX* gfx = new SDL_GFX();
+    gfx->initialize();
+
+    Logger* logger = new LoggerSDL();
+    logger->log("Logger started successfully!");    
+
+    //Load game
+    Game* game = new Game(gfx, logger);
+
     // print some information about the window
     SDL_ShowWindow(window);
     {
@@ -208,6 +199,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
+       .game = game
     };
     
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
@@ -246,8 +238,15 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         .h = static_cast<float>(app->imageDest.h)
     };
 
-    
-    for(const auto& entity : entityList) {
+    for(const auto& entity : app->game->gfx->getEntityList()) {
+        SDL_Log("ID: %d", entity.ID);
+    }
+    for(const auto& entity : app->game->gfx->getEntityList()) {
+        //log ID
+        if(entity.ID < 10 || entity.ID > 100) {
+            continue;
+        }
+        SDL_Log("ID: %d", entity.ID);
         SDL_Texture* texture = spriteMap[entity.ID];
         if (!texture) {
             return SDL_APP_FAILURE;
@@ -255,12 +254,15 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_FRect destRect{
             .x = entity.x,
             .y = entity.y,
-            .w = 127,
-            .h = 127
+            .w = 15,
+            .h = 15
         };
         SDL_RenderTexture(app->renderer, texture, NULL, &destRect);
     }
 
+    app->game->update();
+    //delay
+    SDL_Delay(1000/60);
 
     SDL_RenderPresent(app->renderer);
 
