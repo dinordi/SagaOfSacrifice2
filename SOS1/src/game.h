@@ -23,6 +23,7 @@
 
 #include "gfx.h"
 #include "logger.h"
+#include "sprite_data.h"
 
 class Enemy;
 class Platform;
@@ -64,7 +65,7 @@ public:
     /**
     @brief Constructs a Game object.
      */
-    Game(GFX* gfx, Logger* logger);
+    Game(GFX* gfx);
 
     /**
     @brief Destroys the Game object.
@@ -245,7 +246,8 @@ private:
     std::vector<Platform*> platforms; ///< The list of platforms in the game. 
     std::vector<Actor*> actors; ///< The list of actors in the game. 
     std::vector<PlatformRange> platformRanges; ///< The range of platforms in all levels for werewolfman enemy. 
-    uint16_t* spriteData; ///< The sprite data for the game. 
+    uint16_t* spriteData; ///< The sprite data for the game.
+    std::vector<SpriteData*> spriteList; ///< The list of sprites.
     int spriteDataCount; ///< The count of sprite data. 
     // FPGA* fpga; ///< A pointer to the FPGA object. 
     // Score* score; ///< A pointer to the Score object. 

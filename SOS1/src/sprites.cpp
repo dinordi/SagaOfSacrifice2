@@ -2,7 +2,7 @@
 
 std::map<char, int> characters;
 
-void initializeCharacters() {
+void old_initializeCharacters() {
     for (char c = 'a'; c <= 'z'; ++c) {
         characters[c] = c - 'a' + 11;
         

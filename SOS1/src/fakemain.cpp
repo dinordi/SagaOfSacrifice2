@@ -70,7 +70,7 @@ int fakemain(void)
 	// printk("init");
 	uint32_t count = 0;
 
-	initializeCharacters();
+	old_initializeCharacters();
 
 	 /* Configure GPIO pin as input */
     

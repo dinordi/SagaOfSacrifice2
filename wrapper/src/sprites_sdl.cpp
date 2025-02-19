@@ -1,13 +1,11 @@
 #include "sprites_sdl.h"
-#include "sprites.h"
 
-std::map<char, int> characters;
-std::map<int, SDL_Rect> characterRects;
-std::unordered_map<int, SDL_Texture*> spriteMap;
+std::map<char, int> sdl_characters;
+std::map<int, SDL_FRect> characterRects;
+std::unordered_map<int, Sprite> spriteMap;
 
-// Function to load a sprite
 SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path) {
-    auto surface = IMG_Load(path.string().c_str());
+    SDL_Surface* surface = IMG_Load(path.string().c_str());
     if (!surface) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", path.string().c_str());
         return nullptr;
@@ -17,12 +15,12 @@ SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& pat
     return texture;
 }
 
-void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& basePath) {
-    int spriteWidth = 16; // Example width
-    int spriteHeight = 16; // Example height
-    int columns = 16; // Number of columns in the sprite sheet
+void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& path) {
+    float spriteWidth = 127; // Example width
+    float spriteHeight = 127; // Example height
+    int columns = 3; // Number of columns in the sprite sheet
 
-    auto lettersPath = basePath / "SOS/sprites/letters.png";
+    auto lettersPath = path / "SOS/sprites/letters.png";
     SDL_Texture* lettersTexture = LoadSprite(renderer, lettersPath);
     if (!lettersTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load letters sprite: %s", lettersPath.string().c_str());
@@ -30,22 +28,29 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& b
     }
 
     for (char c = 'a'; c <= 'z'; ++c) {
-        characters[c] = c - 'a' + 11;
+        sdl_characters[c] = c - 'a' + 11;
         int index = c - 'a';
-        int x = (index % columns) * spriteWidth;
-        int y = (index / columns) * spriteHeight;
-        characterRects[characters[c]] = { x, y, spriteWidth, spriteHeight };
+        float x = (index % columns) * spriteWidth;
+        float y = (index / columns) * spriteHeight;
+        characterRects[sdl_characters[c]] = { x, y, spriteWidth, spriteHeight };
+        spriteMap[sdl_characters[c]] = { lettersTexture, { x, y, spriteWidth, spriteHeight } };
     }
-    for (char c = '0'; c <= '9'; ++c) {
-        characters[c] = c - '0' + 37;
-        int index = 26 + (c - '0');
-        int x = (index % columns) * spriteWidth;
-        int y = (index / columns) * spriteHeight;
-        characterRects[characters[c]] = { x, y, spriteWidth, spriteHeight };
-    }
-    characters[' '] = 100;
-    characterRects[characters[' ']] = { 0, 11 * spriteHeight, spriteWidth, spriteHeight };
 
-    // Store the letters texture in spriteMap
-    spriteMap[0] = lettersTexture;
+    for (char c = '0'; c <= '9'; ++c) {
+        sdl_characters[c] = c - '0' + 37;
+        int index = 26 + (c - '0');
+        float x = (index % columns) * spriteWidth;
+        float y = (index / columns) * spriteHeight;
+        characterRects[sdl_characters[c]] = { x, y, spriteWidth, spriteHeight };
+        spriteMap[sdl_characters[c]] = { lettersTexture, { x, y, spriteWidth, spriteHeight } };
+    }
+    sdl_characters[' '] = 100;
+    characterRects[sdl_characters[' ']] = { 0, 11 * spriteHeight, spriteWidth, spriteHeight };
+    spriteMap[sdl_characters[' ']] = { lettersTexture, { 0, 11 * spriteHeight, spriteWidth, spriteHeight } };
+
+    // Load additional sprites
+    spriteMap[1] = { LoadSprite(renderer, path / "SOS/sprites/playerBig.png"), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[2] = { LoadSprite(renderer, path / "SOS/sprites/player.png"), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[3] = { LoadSprite(renderer, path / "SOS/sprites/fatbat.png"), { 0, 0, spriteWidth, spriteHeight } };
+    // Add more sprites as needed
 }
