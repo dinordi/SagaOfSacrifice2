@@ -293,7 +293,7 @@ void Game::readInput()
     // buttonStatus.down  = button->pinGet(4);
     // buttonStatus.dash  = button->pinGet(5);
     // buttonStatus.shoot = button->pinGet(6);
-    // buttonStatus.start = button->pinGet(7);
+    buttonStatus.start = false;
     // printk("up: %d, down: %d, left: %d, right: %d, dash: %d, shoot: %d, start: %d\n", buttonStatus.up, buttonStatus.down, buttonStatus.left, buttonStatus.right, buttonStatus.dash, buttonStatus.shoot, buttonStatus.start);
 
     // if(buttonStatus.start)

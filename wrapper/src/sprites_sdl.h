@@ -5,6 +5,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <filesystem>
+#include <unordered_map>
 
 extern std::map<char, int> sdl_characters;
 extern std::map<int, SDL_FRect> characterRects;

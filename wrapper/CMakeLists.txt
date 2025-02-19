@@ -106,21 +106,6 @@ target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 # Add include directories
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src)
 
-# Add your sources to the target
-# target_sources(${EXECUTABLE_NAME} 
-# PRIVATE 
-#     ../SOS1/src/game.cpp
-#     ../SOS1/src/Fatbat.cpp
-#     ../SOS1/src/platform.cpp
-#     ../SOS1/src/Bullet.cpp
-#     ../SOS1/src/WerewolfMan.cpp
-#     ../SOS1/src/Teleporter.cpp
-#     ../SOS1/src/Player.cpp
-#     ../SOS1/src/Samurai.cpp
-#     ../SOS1/src/Enemy.cpp
-#     ../SOS1/src/Projectile.cpp
-#     ../SOS1/src/Actor.cpp
-# )
 
 file(GLOB_RECURSE SOURCES ../SOS1/src/*.cpp)
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
@@ -153,7 +138,6 @@ else()
         file(MAKE_DIRECTORY "${MOBILE_ASSETS_DIR}")    # we need to create the project Assets dir otherwise CMake won't copy our assets.
     endif()
 
-    
     macro(copy_helper filename)
         if (ANDROID)
             # MOBILE_ASSETS_DIR is set in the gradle file via the cmake command line and points to the Android Studio Assets folder. 
@@ -166,12 +150,37 @@ else()
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_LIST_DIR}/src/${filename}" "${outname}"
-            DEPENDS "${filename}"
+            DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/${filename}"
         )
     endmacro()
+
+    # Copy individual files
     copy_helper("Inter-VariableFont.ttf")
     copy_helper("the_entertainer.ogg")
     copy_helper("gs_tiger.svg")
+
+    # Copy entire directories
+    file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites/*")
+    foreach(sprite_file ${SPRITE_FILES})
+        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites" "${sprite_file}")
+        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/sprites/${relpath}")
+        add_custom_command(POST_BUILD
+            TARGET "${EXECUTABLE_NAME}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${sprite_file}" "${outname}"
+            DEPENDS "${sprite_file}"
+        )
+    endforeach()
+
+    file(GLOB_RECURSE MUSIC_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/music/*")
+    foreach(music_file ${MUSIC_FILES})
+        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/music" "${music_file}")
+        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/music/${relpath}")
+        add_custom_command(POST_BUILD
+            TARGET "${EXECUTABLE_NAME}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${music_file}" "${outname}"
+            DEPENDS "${music_file}"
+        )
+    endforeach()
 endif()
 
 # set some extra configs for each platform

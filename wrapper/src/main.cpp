@@ -118,7 +118,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // load the PNG
-    auto png_surface = IMG_Load((basePathSOS / "SOS/sprites/playerBig.png").string().c_str());
+    auto png_surface = IMG_Load(((basePathSOS / "SOS/sprites/playerBig.png").make_preferred()).string().c_str());
     if (!png_surface) {
         return SDL_Fail();
     }
@@ -155,10 +155,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // load the music
 
     // Resolve the full path to the music folder
-    auto musicPath = basePathSOS / "SOS/music";
+    auto musicPath = (basePathSOS / "SOS/music").make_preferred();
 
     // Combine the resolved path with the music file name
-    auto menuMusic = musicPath / "menu/001.mp3";
+    auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
     SDL_Log("Music path: %s", menuMusic.string().c_str());
     auto music = Mix_LoadMUS(menuMusic.string().c_str());
     if (not music) {
