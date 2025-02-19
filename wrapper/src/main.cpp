@@ -8,37 +8,21 @@
 #include <string_view>
 #include <filesystem>
 
+#include "game.h"
+#include "sdl_gfx.h"
+#include "sprites_sdl.h"
+#include "logger.h"
+#include "logger_sdl.h"
+
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
-typedef struct entityData {
-    float x;
-    float y;
-    int ID;
-};
 
-// Create a list of entityData
-std::vector<entityData> entityList = {
-    {100.0, 200.0, 1},
-    {150.0, 250.0, 2},
-    {200.0, 300.0, 3},
-};
 
-// A map of sprites with IDs
-std::unordered_map<int, SDL_Texture*> spriteMap;
 
-// Function to load a sprite
-SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path) {
-    auto surface = IMG_Load(path.string().c_str());
-    if (!surface) {
-        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", path.string().c_str());
-        return nullptr;
-    }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_DestroySurface(surface);
-    return texture;
-}
+
+
 
 struct AppContext {
     SDL_Window* window;
@@ -49,6 +33,7 @@ struct AppContext {
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
+    Game* game;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -100,6 +85,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 #endif
 
+    Logger::setInstance(new LoggerSDL());
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -107,8 +93,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // render the font to a surface
-    const std::string_view text = "Hello SDL!";
+    const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
+
+    initializeCharacters(renderer, basePathSOS);
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -117,25 +105,20 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
 
-    // load the SVG
-    // auto svg_surface = IMG_Load((basePathSOS / "sprites/player.png").string().c_str());
-    // SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, svg_surface);
-    // SDL_DestroySurface(svg_surface);
-    
-
     //Load spritemap
-    spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
-    spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
-    spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
+    // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
+    // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
+    // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
 
-    for(const auto& [id, texture] : spriteMap) {
-        if (!texture) {
+    for(const auto& [id, sprite] : spriteMap) {
+        SDL_Log("ID init spritemap: %d", id);
+        if (!sprite.texture) {
             return SDL_Fail();
         }
     }
 
     // load the PNG
-    auto png_surface = IMG_Load((basePathSOS / "SOS/sprites/playerBig.png").string().c_str());
+    auto png_surface = IMG_Load(((basePathSOS / "SOS/sprites/playerBig.png").make_preferred()).string().c_str());
     if (!png_surface) {
         return SDL_Fail();
     }
@@ -172,10 +155,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // load the music
 
     // Resolve the full path to the music folder
-    auto musicPath = basePathSOS / "SOS/music";
+    auto musicPath = (basePathSOS / "SOS/music").make_preferred();
 
     // Combine the resolved path with the music file name
-    auto menuMusic = musicPath / "menu/001.mp3";
+    auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
     SDL_Log("Music path: %s", menuMusic.string().c_str());
     auto music = Mix_LoadMUS(menuMusic.string().c_str());
     if (not music) {
@@ -185,6 +168,15 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // play the music (does not loop)
     Mix_PlayMusic(music, 0);
     
+
+    GFX* gfx = new SDL_GFX();
+    gfx->initialize();
+
+    Logger::getInstance()->log("Logger started successfully!");    
+
+    //Load game
+    Game* game = new Game(gfx);
+
     // print some information about the window
     SDL_ShowWindow(window);
     {
@@ -208,6 +200,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
+       .game = game
     };
     
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
@@ -246,21 +239,34 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         .h = static_cast<float>(app->imageDest.h)
     };
 
-    
-    for(const auto& entity : entityList) {
-        SDL_Texture* texture = spriteMap[entity.ID];
-        if (!texture) {
-            return SDL_APP_FAILURE;
+    // for(const auto& entity : app->game->gfx->getEntityList()) {
+    //     app->logger->log("ID: " + std::to_string(entity.ID));
+    // }
+    for(const auto& entity : app->game->gfx->getEntityList()) {
+        //log ID
+        if(entity->ID < 11 || entity->ID > 46) {
+            continue;
         }
+        
+        auto it = spriteMap.find(entity->ID);
+        if (it == spriteMap.end()) {
+            SDL_Log("ID not found in spritemap: %d", entity->ID);
+            continue;
+        }
+        SDL_Texture* texture = it->second.texture;
+        SDL_FRect srcRect = it->second.srcRect;
         SDL_FRect destRect{
-            .x = entity.x,
-            .y = entity.y,
-            .w = 127,
-            .h = 127
+            .x = static_cast<float>(entity->x),
+            .y = static_cast<float>(entity->y),
+            .w = 15,
+            .h = 15
         };
-        SDL_RenderTexture(app->renderer, texture, NULL, &destRect);
+        SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
     }
 
+    app->game->update();
+    //delay
+    SDL_Delay(1000/60);
 
     SDL_RenderPresent(app->renderer);
 
