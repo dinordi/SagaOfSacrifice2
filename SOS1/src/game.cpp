@@ -14,11 +14,13 @@
 const float dt = 1.0f / 60;
 int count = 0;
 
-Game::Game(GFX* gfx, Logger* logger) : gfx(gfx), logger(logger)
+Game::Game(GFX* gfx) : gfx(gfx)
 {
     // sys_csrand_get(randomNumbers, 1000);
+    old_initializeCharacters();
     spriteData = new uint16_t[400];
     spriteDataCount = 0;
+    spriteList = std::vector<SpriteData*>();
     player = new Player(player1Sprites,7,780,100);
     boss = new Samurai(1000, 250, 400, 400);
     boss->inUse = false;
@@ -311,6 +313,9 @@ void Game::drawString(std::string str, int startX, int y)
         spriteData[spriteDataCount++] = (characters[str[i]]);
         spriteData[spriteDataCount++] = (startX + i*15+144);
         spriteData[spriteDataCount++] = (y);
+        
+        spriteList.push_back(new SpriteData{characters[str[i]], startX + i*15, y});
+        
         // printk("adding ID: %d\n", characters[title[i]]);
     }
 }
@@ -375,6 +380,7 @@ void Game::nextLevelAnimation()
     levelFading(Curtain);
     gfx->sendSprite(spriteData, spriteDataCount);
     spriteDataCount = 0;
+    spriteList.clear();
 }
 
 void Game::levelFading(int line)
@@ -457,12 +463,14 @@ void Game::drawMainMenu()
             break;
     }
 
-    spriteData[spriteDataCount++] = (0);                     // Playersprite Cursor
+    spriteData[spriteDataCount++] = (11);                     // Playersprite Cursor
     spriteData[spriteDataCount++] = (optionX - 20);
     spriteData[spriteDataCount++] = (yval);
-    logger->log("Drawing main menu");
-    gfx->sendSprite(spriteData, spriteDataCount);
+    // spriteList.push_back(new SpriteData{11, optionX - 20, yval});
+    // logger->log("Drawing main menu");
+    gfx->sendSprite2(spriteList);
     spriteDataCount = 0;
+    spriteList.clear();
 }
 bool execute_once =false;
 void Game::drawHighscores()

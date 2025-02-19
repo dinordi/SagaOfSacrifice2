@@ -23,4 +23,4 @@ const int empty15x15[1] = {52};
 
 extern std::map<char, int> characters;
 
-void initializeCharacters();
+void old_initializeCharacters();

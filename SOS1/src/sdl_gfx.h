@@ -1,13 +1,9 @@
 #pragma once
 #include "gfx.h"
 #include <vector>
+#include "logger.h"
 
-
-typedef struct entityData {
-    float x;
-    float y;
-    int ID;
-};
+#include "sprite_data.h"
 
 
 class SDL_GFX : public GFX {
@@ -15,7 +11,8 @@ class SDL_GFX : public GFX {
         SDL_GFX();
         void initialize();
         void sendSprite(uint16_t* spriteData, int spriteDataCount);
-        std::vector<entityData> getEntityList();
+        void sendSprite2(std::vector<SpriteData*>& spriteList);
+        std::vector<SpriteData*> getEntityList();
     private:
-        std::vector<entityData> entityList;
+        std::vector<SpriteData*> entityList;
 };

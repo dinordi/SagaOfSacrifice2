@@ -11,13 +11,13 @@
 #include "game.h"
 #include "sdl_gfx.h"
 #include "sprites_sdl.h"
+#include "logger.h"
 #include "logger_sdl.h"
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
-std::unordered_map<int, SDL_Texture*> spriteMap;
 
 
 
@@ -85,6 +85,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 #endif
 
+    Logger::setInstance(new LoggerSDL());
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -95,7 +96,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
 
-    initializeCharacters();
+    initializeCharacters(renderer, basePathSOS);
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -109,8 +110,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
     // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
 
-    for(const auto& [id, texture] : spriteMap) {
-        if (!texture) {
+    for(const auto& [id, sprite] : spriteMap) {
+        SDL_Log("ID init spritemap: %d", id);
+        if (!sprite.texture) {
             return SDL_Fail();
         }
     }
@@ -170,11 +172,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     GFX* gfx = new SDL_GFX();
     gfx->initialize();
 
-    Logger* logger = new LoggerSDL();
-    logger->log("Logger started successfully!");    
+    Logger::getInstance()->log("Logger started successfully!");    
 
     //Load game
-    Game* game = new Game(gfx, logger);
+    Game* game = new Game(gfx);
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -238,26 +239,29 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         .h = static_cast<float>(app->imageDest.h)
     };
 
-    for(const auto& entity : app->game->gfx->getEntityList()) {
-        SDL_Log("ID: %d", entity.ID);
-    }
+    // for(const auto& entity : app->game->gfx->getEntityList()) {
+    //     app->logger->log("ID: " + std::to_string(entity.ID));
+    // }
     for(const auto& entity : app->game->gfx->getEntityList()) {
         //log ID
-        if(entity.ID < 10 || entity.ID > 100) {
+        if(entity->ID < 11 || entity->ID > 46) {
             continue;
         }
-        SDL_Log("ID: %d", entity.ID);
-        SDL_Texture* texture = spriteMap[entity.ID];
-        if (!texture) {
-            return SDL_APP_FAILURE;
+        
+        auto it = spriteMap.find(entity->ID);
+        if (it == spriteMap.end()) {
+            SDL_Log("ID not found in spritemap: %d", entity->ID);
+            continue;
         }
+        SDL_Texture* texture = it->second.texture;
+        SDL_FRect srcRect = it->second.srcRect;
         SDL_FRect destRect{
-            .x = entity.x,
-            .y = entity.y,
+            .x = static_cast<float>(entity->x),
+            .y = static_cast<float>(entity->y),
             .w = 15,
             .h = 15
         };
-        SDL_RenderTexture(app->renderer, texture, NULL, &destRect);
+        SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
     }
 
     app->game->update();
