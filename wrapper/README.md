@@ -28,7 +28,6 @@ Or use choco in a administrator powershell:
 choco install cmake
 ```
 
-```
 ```shell
 cmake -S .. -B ..\build\win
 ```
