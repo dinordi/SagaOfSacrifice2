@@ -16,10 +16,6 @@ void SDL_GFX::sendSprite(uint16_t* spriteData, int spriteDataCount)
         temp->ID = spriteData[i];
         temp->x = spriteData[i + 1];
         temp->y = spriteData[i + 2];
-            // Logger::getInstance()->log("ID: " + std::to_string(temp->ID));
-            // Logger::getInstance()->log("GFX-i: " + std::to_string(spriteData[i]));
-            // Logger::getInstance()->log("GFX-i+1: " + std::to_string(spriteData[i+1]));
-            // Logger::getInstance()->log("GFX-i+2: " + std::to_string(spriteData[i+2]));
         entityList.push_back(temp);
     }
 }
