@@ -21,9 +21,10 @@
 // #include <zephyr/random/random.h>
 #include "samurai.h"
 
-#include "gfx.h"
-#include "logger.h"
+#include "interfaces/gfx.h"
+#include "interfaces/logger.h"
 #include "sprite_data.h"
+#include "interfaces/input.h"
 
 class Enemy;
 class Platform;
@@ -65,7 +66,7 @@ public:
     /**
     @brief Constructs a Game object.
      */
-    Game(GFX* gfx);
+    Game(GFX* gfx, Input* input);
 
     /**
     @brief Destroys the Game object.
@@ -252,9 +253,9 @@ private:
     // FPGA* fpga; ///< A pointer to the FPGA object. 
     // Score* score; ///< A pointer to the Score object. 
     // ButtonHandler* button; ///< A pointer to the ButtonHandler object. 
-    // Audio* audio; ///< A pointer to the Audio object. 
-    Logger* logger;
-    buttonStatuses buttonStatus; ///< The status of the buttons. 
+    // Audio* audio; ///< A pointer to the Audio object.
+    Input* playerInput; ///< A pointer to the Input object.
+    // buttonStatuses buttonStatus; ///< The status of the buttons. 
     Player* player; ///< The player object. 
     Samurai* boss; ///< The boss object. 
     uint64_t frames; ///< The number of frames. 

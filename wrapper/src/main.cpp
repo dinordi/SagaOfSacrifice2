@@ -11,17 +11,55 @@
 #include "game.h"
 #include "sdl_gfx.h"
 #include "sprites_sdl.h"
-#include "logger.h"
 #include "logger_sdl.h"
+#include "sdl_input.h"
+
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
 
+#include "Fatbat.h"
+#include "Bullet.h"
+#include "WerewolfMan.h"
+#include "Platform.h"
+#include "Teleporter.h"
+#include "level.h"
+
+std::vector<Fatbat*> fatbats;
+std::vector<Platform*> level1;
+std::vector<Platform*> level2;
+std::vector<Platform*> level3;
+std::vector<Bullet*> bullets;
+std::vector<WerewolfMan*> werewolfMans;
+
+std::vector<Teleporter*> teleporters;
 
 
-
+void loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
+{
+	for(int i = 0; i < 16; i++) // 16 rows
+    {
+        for(int j = 0; j < 63; j++) // 63 columns
+        {
+            if(level[levelNum][i][j] != 0)    // If the tile is not empty
+            {
+				if(level[levelNum][i][j] == 21)
+				{
+					// Teleporter
+					teleporters.push_back(new Teleporter(j * 31, i * 31));
+					continue;
+				}
+                int tileX = j * 31; //31 is tile width/height
+                int tileY = i * 31;
+                int tileID = level[levelNum][i][j] + 99;  // Add 99 to the tileID to get the correct sprite
+                Platform* platform = new Platform(tileID, tileX, tileY, 15);    // Create a new platform
+                platforms->push_back(platform);
+            }
+        }
+    }
+}
 
 
 struct AppContext {
@@ -174,8 +212,30 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     Logger::getInstance()->log("Logger started successfully!");    
 
+    for (int i = 0; i < 40; i++) {
+    	Fatbat* fatbat = new Fatbat(360, 0);
+    	fatbats.push_back(fatbat);
+	}
+	
+	for (int i = 0; i < 20; i++) {
+    	WerewolfMan* werewolfMan = new WerewolfMan(360, 0);
+    	werewolfMans.push_back(werewolfMan);
+	}
+
+	loadPlatforms(0, &level1);
+	loadPlatforms(1, &level2);
+	loadPlatforms(2, &level3);
+
+	for(int i=0; i < 20; i++)
+	{
+		Bullet* bullet = new Bullet(bulletID,7, 400,400,true);
+		bullets.push_back(bullet);
+	}
+
+    SDLInput* input = new SDLInput();
+
     //Load game
-    Game* game = new Game(gfx);
+    Game* game = new Game(gfx, input);
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -244,11 +304,12 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     // }
     for(const auto& entity : app->game->gfx->getEntityList()) {
         //log ID
-        if(entity->ID < 11 || entity->ID > 46) {
-            continue;
+        int ID = entity->ID;
+        if(ID < 11 || ID > 37)
+        {
+            ID = 1;
         }
-        
-        auto it = spriteMap.find(entity->ID);
+        auto it = spriteMap.find(ID);
         if (it == spriteMap.end()) {
             SDL_Log("ID not found in spritemap: %d", entity->ID);
             continue;
@@ -264,8 +325,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
     }
 
+    // If 16ms has passed since the last update, update the game
+    static Uint32 lastUpdate = 0;
+    app->game->readInput();
     app->game->update();
-    //delay
+
     SDL_Delay(1000/60);
 
     SDL_RenderPresent(app->renderer);
