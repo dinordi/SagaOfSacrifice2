@@ -39,6 +39,7 @@ PRIVATE
     src/main.cpp
     src/logger_sdl.cpp
     src/sprites_sdl.cpp
+    src/sdl_gfx.cpp
     src/iosLaunchScreen.storyboard
 )
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
