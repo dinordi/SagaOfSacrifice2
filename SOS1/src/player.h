@@ -10,6 +10,7 @@
 #pragma once
 
 #include "entity.h"
+#include "input.h"
 
 /**
  * @brief Structure to hold the status of various buttons.
@@ -47,9 +48,9 @@ public:
 
     /**
      * @brief Sets the status of the buttons.
-     * @param buttonStatus The status of the buttons.
+     * @param input The input interface class.
      */
-    void setButtonStatus(buttonStatuses buttonStatus);
+    void setButtonStatus(Input* input);
 
     /**
      * @brief Creates a projectile.

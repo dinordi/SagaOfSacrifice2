@@ -31,17 +31,17 @@
 // 	const struct device *const input = DEVICE_DT_GET(CHECK);
 
 
-std::vector<Fatbat*> fatbats;
-std::vector<Platform*> level1;
-std::vector<Platform*> level2;
-std::vector<Platform*> level3;
-std::vector<Bullet*> bullets;
-std::vector<WerewolfMan*> werewolfMans;
+// std::vector<Fatbat*> fatbats;
+// std::vector<Platform*> level1;
+// std::vector<Platform*> level2;
+// std::vector<Platform*> level3;
+// std::vector<Bullet*> bullets;
+// std::vector<WerewolfMan*> werewolfMans;
 
-std::vector<Teleporter*> teleporters;
+// std::vector<Teleporter*> teleporters;
 
 
-void loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
+void f_loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
 {
 	for(int i = 0; i < 16; i++) // 16 rows
     {
@@ -89,9 +89,9 @@ int fakemain(void)
     	werewolfMans.push_back(werewolfMan);
 	}
 
-	loadPlatforms(0, &level1);
-	loadPlatforms(1, &level2);
-	loadPlatforms(2, &level3);
+	f_loadPlatforms(0, &level1);
+	f_loadPlatforms(1, &level2);
+	f_loadPlatforms(2, &level3);
 
 	for(int i=0; i < 20; i++)
 	{

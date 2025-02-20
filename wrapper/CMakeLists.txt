@@ -8,6 +8,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 # prevent installing to system directories. 
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
+if(APPLE)
+    set(CMAKE_C_COMPILER /usr/bin/clang)
+    set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+endif()
+
 # Declare the project
 project(SagaOfSacrifice2)
 
@@ -33,14 +38,18 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/*.cpp")
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+
 # Add your sources to the target
-target_sources(${EXECUTABLE_NAME} 
-PRIVATE 
-    src/main.cpp
-    src/logger_sdl.cpp
-    src/sprites_sdl.cpp
-    src/sdl_gfx.cpp
-    src/iosLaunchScreen.storyboard
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+
+target_include_directories(${EXECUTABLE_NAME} PRIVATE 
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
 )
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
@@ -108,9 +117,6 @@ target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src)
 
 
-file(GLOB_RECURSE SOURCES ../SOS1/src/*.cpp)
-target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
-
 # Dealing with assets
 # We have some non-code resources that our application needs in order to work. How we deal with those differs per platform.
 if (APPLE)
@@ -124,15 +130,11 @@ if (APPLE)
         set_property(SOURCE ${FILE} PROPERTY MACOSX_PACKAGE_LOCATION "Resources/${relpath}")
     endmacro()
     add_resource("${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg")
-    add_resource("${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg")
 elseif(EMSCRIPTEN)
     # on the web, we have to put the files inside of the webassembly
     # somewhat unintuitively, this is done via a linker argument.
     target_link_libraries(${EXECUTABLE_NAME} PRIVATE 
         "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/Inter-VariableFont.ttf@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/the_entertainer.ogg@/\""
-        "--preload-file \"${CMAKE_CURRENT_LIST_DIR}/src/gs_tiger.svg@/\""
     )
 else()
     if (ANDROID)
