@@ -18,6 +18,7 @@ NOTE: This can take a little bit
 To build the wrapper application:
 
 ```shell
+cd SagaOfSacrifice2/
 mkdir wrapper/build
 cd wrapper/build
 ```
