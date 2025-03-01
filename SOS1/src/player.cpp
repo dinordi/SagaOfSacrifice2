@@ -140,8 +140,15 @@ Projectile* Player::makeProjectile(){
     return bulletLocal;
 }
 
-void Player::setButtonStatus(buttonStatuses buttonStatus){
-    this->buttonStatus = buttonStatus;
+void Player::setButtonStatus(Input* input){
+    buttonStatus.dash = input->isDash();
+    buttonStatus.shoot = input->isAction();
+    buttonStatus.start = input->isStart();
+    buttonStatus.left = input->isLeft();
+    buttonStatus.right = input->isRight();
+    buttonStatus.up = input->isUp();
+    buttonStatus.down = input->isDown();
+
 }
 
 void Player::manageAnimation()

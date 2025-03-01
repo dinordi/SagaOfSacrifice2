@@ -11,10 +11,13 @@
 
 #include "globals.h"
 
+#define windowheight 1080
+#define windowwidth 1920
+
 const float dt = 1.0f / 60;
 int count = 0;
 
-Game::Game(GFX* gfx) : gfx(gfx)
+Game::Game(GFX* gfx, Input* input) : gfx(gfx), playerInput(input)
 {
     // sys_csrand_get(randomNumbers, 1000);
     old_initializeCharacters();
@@ -33,7 +36,7 @@ Game::Game(GFX* gfx) : gfx(gfx)
     Curtain = 0;
     fadeIn = false;
     BOB = false;
-    // addEnemy();
+    addEnemy();
     frames = 0;
     gameState = Menu;
     stateSelect = Playing;
@@ -64,6 +67,7 @@ void Game::update()
         {
             // if(audio->music_status()){audio->play_music(audio->MENU_MUSIC);}
             updateSelection();
+            // Logger::getInstance()->log("StateSelect = " + std::to_string(stateSelect));
             drawMainMenu();
             break;
         }
@@ -148,7 +152,7 @@ void Game::updateSelection()
     static int counter = 0;
     counter++;
     readInput();
-    if(buttonStatus.start && counter > 60)
+    if(playerInput->isAction() && counter > 60)
     {
         // audio->play_effect(audio->MNU_CONFIRM);
 
@@ -174,12 +178,13 @@ void Game::updateSelection()
         }
         
     }
+    // if(true)
     if(frames % 10 == 0)
     {
 
         // if(buttonStatus.up || buttonStatus.down)
             // audio->play_effect(audio->MNU_SELECT);
-        if(buttonStatus.up)
+        if(playerInput->isUp())
         {
             switch(stateSelect)
             {
@@ -198,7 +203,7 @@ void Game::updateSelection()
 
             }
         }
-        if(buttonStatus.down)
+        if(playerInput->isDown())
         {
             switch(stateSelect)
             {
@@ -222,9 +227,7 @@ void Game::updateSelection()
 
 void Game::updateGame()
 {
-    //Check for input
     readInput();
-    player->setButtonStatus(buttonStatus);
     tick();
 }
 
@@ -237,7 +240,7 @@ void Game::sendToDisplay()
 
 void Game::addEnemy()
 {
-    // addFatbat((sys_rand32_get() % 1200) + 300, (sys_rand32_get() % 400));
+     addFatbat((rand() % 1200) + 300, (rand() % 400));
     liveEnemies++;
     
 }
@@ -287,13 +290,14 @@ void Game::addWereWolf(int beginx,int endx, int y)
 }
 void Game::readInput()
 {
-    // buttonStatus.left  = button->pinGet(1);
-    // buttonStatus.right = button->pinGet(2);
-    // buttonStatus.up    = button->pinGet(3);
-    // buttonStatus.down  = button->pinGet(4);
+    playerInput->read();
+    // buttonStatus.left  = playerInput->isLeft();
+    // buttonStatus.right = playerInput->isRight();
+    // buttonStatus.up    = playerInput->isUp();
+    // buttonStatus.down  = playerInput->isDown();
     // buttonStatus.dash  = button->pinGet(5);
     // buttonStatus.shoot = button->pinGet(6);
-    buttonStatus.start = false;
+    // buttonStatus.start = playerInput->isAction();
     // printk("up: %d, down: %d, left: %d, right: %d, dash: %d, shoot: %d, start: %d\n", buttonStatus.up, buttonStatus.down, buttonStatus.left, buttonStatus.right, buttonStatus.dash, buttonStatus.shoot, buttonStatus.start);
 
     // if(buttonStatus.start)
@@ -310,9 +314,6 @@ void Game::drawString(std::string str, int startX, int y)
         {
             continue;
         }
-        spriteData[spriteDataCount++] = (characters[str[i]]);
-        spriteData[spriteDataCount++] = (startX + i*15+144);
-        spriteData[spriteDataCount++] = (y);
         
         spriteList.push_back(new SpriteData{characters[str[i]], startX + i*15, y});
         
@@ -378,7 +379,8 @@ void Game::nextLevelAnimation()
     }
     }
     levelFading(Curtain);
-    gfx->sendSprite(spriteData, spriteDataCount);
+//    gfx->sendSprite(spriteData, spriteDataCount);
+    gfx->sendSprite2(spriteList);
     spriteDataCount = 0;
     spriteList.clear();
 }
@@ -399,9 +401,7 @@ void Game::levelFading(int line)
             continue;
         if((x > (leftBorder - range)) && (x < (rightBorder + range)))
         {
-            // spriteData[spriteDataCount++] = htobe16(actor->getID());
-            // spriteData[spriteDataCount++] = htobe16(actorX + 144);
-            // spriteData[spriteDataCount++] = htobe16(actor->getY());
+            spriteList.push_back(new SpriteData{actor->getID(), actorX + 144, actor->getY()});
             //printk("ID: %d\n", actor->getID());
         }
     }
@@ -421,8 +421,6 @@ void Game::drawMainMenu()
     static int yval = 300;
     static bool draw = true;
 
-    int windowwidth = 1920;
-    int windowheight = 1080;
 
     int titleX = windowwidth / 2 - (title2.length() * 15) / 2;
     int startX = windowwidth / 2 - (start.length() * 15) / 2;
@@ -450,24 +448,21 @@ void Game::drawMainMenu()
     switch(stateSelect)  // Toggle selection
     {
         case Playing:
-            yval = 300;
+            yval = titleY + 150;
             break;
         case Drbob:
-            yval = 350;
+            yval = titleY + 200;
             break;
         case Highscores:
-            yval = 400;
+            yval = titleY + 250;
             break;
         case Credits:
-            yval = 450;
+            yval = titleY + 300;
             break;
     }
 
-    spriteData[spriteDataCount++] = (11);                     // Playersprite Cursor
-    spriteData[spriteDataCount++] = (optionX - 20);
-    spriteData[spriteDataCount++] = (yval);
-    // spriteList.push_back(new SpriteData{11, optionX - 20, yval});
-    // logger->log("Drawing main menu");
+    spriteList.push_back(new SpriteData{1, optionX - 20, yval});
+    // Logger::getInstance()->log("Drawing main menu");
     gfx->sendSprite2(spriteList);
     spriteDataCount = 0;
     spriteList.clear();
@@ -485,7 +480,7 @@ void Game::drawHighscores()
     counter++;
 
     std::string title = "   highscores";
-    // std::string highscore_1 = score->receive_Scores(0);
+    std::string highscore_1 = "42069";
     // std::string highscore_2 = score->receive_Scores(1);
     // std::string highscore_3 = score->receive_Scores(2);
     // std::string highscore_4 = score->receive_Scores(3);
@@ -497,7 +492,7 @@ void Game::drawHighscores()
 
     drawString(title, 240, 50);
 
-    // drawString(highscore_1, 240, 100);
+    drawString(highscore_1, 240, 100);
     // drawString(highscore_2, 240, 150);
     // drawString(highscore_3, 240, 200);
     // drawString(highscore_4, 240, 250);
@@ -508,10 +503,11 @@ void Game::drawHighscores()
 
 
     // fpga->sendSprite(spriteData, spriteDataCount);
+
+    gfx->sendSprite2(spriteList);
     spriteDataCount = 0;
 
-    readInput();
-    if(buttonStatus.start && counter > 60)
+    if(playerInput->isAction() && counter > 60)
     {
         gameState = Menu;
         counter = 0;
@@ -533,19 +529,24 @@ void Game::drawCredits()
     std::string name3 = "david";
     std::string name4 = "richard";
 
-    drawString(title, 250, 100);
+    int titleX = windowwidth / 2 - (title.length() * 15) / 2;
+    int startX = windowwidth / 2 - (name1.length() * 15) / 2;
 
-    drawString(name1, 250, 200);
-    drawString(name2, 250, 250);
-    drawString(name3, 250, 300);
-    drawString(name4, 250, 350);
+    int titleY = windowheight / 2 - 100;
+    int nameY = titleY + 50;
+
+    drawString(title, titleX, titleY);
+
+    drawString(name1, startX, nameY);
+    drawString(name2, startX, nameY+50);
+    drawString(name3, startX, nameY+100);
+    drawString(name4, startX, nameY+150);
 
 
-    gfx->sendSprite(spriteData, spriteDataCount);
+    // gfx->sendSprite(spriteData, spriteDataCount);
     spriteDataCount = 0;
-
-    readInput();
-    if(buttonStatus.start && counter > 60)
+    gfx->sendSprite2(spriteList);
+    if(playerInput->isAction() && counter > 60)
     {
         gameState = Menu;
         counter = 0;
@@ -568,8 +569,7 @@ void Game::GameOverFunc(){
     gfx->sendSprite(spriteData, spriteDataCount);
     spriteDataCount = 0;
 
-    readInput();
-    if(buttonStatus.start && counter > 60)
+    if(playerInput->isAction() && counter > 60)
     {
         resetToBegin();
         counter = 0;
@@ -590,7 +590,6 @@ void Game::drawLevel()
         range = actor->range; 
 
         int playerAttackOffsetX = 0, playerAttackOffsetY = 0;
-        // printk("Actor type: %d\n", actor->getType());
         if(actor->getType() == Actor::Type::PLAYER || actor->getType() == Actor::Type::ENEMY || actor->getType() == Actor::Type::BOSS)
         {
             Entity* ob = static_cast<Entity*>(actor);
@@ -610,23 +609,15 @@ void Game::drawLevel()
 
         if((x > (leftBorder - range)) && (x < (rightBorder + range)))
         {
-            // spriteData[spriteDataCount++] = htobe16(actor->getID());
-            // spriteData[spriteDataCount++] = htobe16(actorX + 144);
-            // spriteData[spriteDataCount++] = htobe16(actorY);
-    
-            //printk("ID: %d\n", actor->getID());
+            spriteList.push_back(new SpriteData{actor->getID(), actorX + 144, actorY});
         }
     }
-    // actorX = 320;
-    // range = player->range; 
-    // printk("player!");
-    // printk("ID: %d\n", player->getID());
-    // if((x > (leftBorder - range)) && (x < (rightBorder + range)))
-    // {
-    //     spriteData[spriteDataCount++] = htobe16(player->getID());
-    //     spriteData[spriteDataCount++] = htobe16(actorX + 144);
-    //     spriteData[spriteDataCount++] = htobe16(player->getY());
-    // }
+     actorX = 320;
+     range = player->range;
+     if((x > (leftBorder - range)) && (x < (rightBorder + range)))
+     {
+         spriteList.push_back(new SpriteData{player->getID(), actorX + 144, player->getY()});
+     }
 }
 
 void Game::loadPlatforms(int levelNum)
