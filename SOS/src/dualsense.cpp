@@ -34,8 +34,8 @@ int main() {
                           << (ev.value ? " pressed" : " released") << std::endl;
             }
             else if(ev.type == EV_ABS) {
-                std::cout << "Axis " << (int)ev.code
-                          << " value: " << ev.value << std::endl;
+                //std::cout << "Axis fd " << (int)ev.code
+                  //        << " value: " << ev.value << std::endl;
             }
         }
 
@@ -47,7 +47,10 @@ int main() {
             }
             // Process axis events
             else if (js_event.type == JS_EVENT_AXIS) {
-                std::cout << "Axis " << (int)js_event.number
+		if(js_event.value > -1000 && js_event.value < 1000) {
+			continue;
+		}
+                std::cout << "Axis js " << (int)js_event.number
                           << " value: " << js_event.value << std::endl;
             }
         }
