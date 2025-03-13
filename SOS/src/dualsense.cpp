@@ -4,7 +4,7 @@
 #include <linux/joystick.h>
 #include <linux/input.h>
 
-int main() {
+int readController() {
     // Open the joystick device (usually /dev/input/js0)
     int js = open("/dev/input/js0", O_RDONLY);
     if (js == -1) {
