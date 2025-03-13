@@ -1,7 +1,25 @@
-#pragma once
+// SOS/include/game.h
 
-class Game 
-{
+#ifndef GAME_H
+#define GAME_H
+
+#include <vector>
+#include "Object.h"
+#include <iostream>
+
+class Game {
+public:
     Game();
-    void tick();
+    ~Game();
+
+    void update(float deltaTime);
+    void render();
+    bool isRunning() const;
+    std::vector<Object*> getObjects() const;
+
+private:
+    bool running;
+    std::vector<Object*> objects;
 };
+
+#endif // GAME_H
