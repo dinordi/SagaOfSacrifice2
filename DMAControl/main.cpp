@@ -97,44 +97,52 @@ int main()
     unsigned int *virtual_src_addr = static_cast<unsigned int*>(mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000));
 
     std::cout << "Loading sprite into memory...\n";
-    std::vector<unsigned char> sprite = load_sprite("/home/root/SagaOfSacrifice2/SOS/assets/sprites/tiles.png");
+    std::vector<unsigned char> sprite = load_sprite("/home/root/SagaOfSacrifice2/SOS/assets/sprites/player.png");
 
-    std::cout << "Passing a single horizontal line of the sprite to the DMA...\n";
-    std::memcpy(virtual_src_addr, sprite.data(), sprite.size());
+    std::cout << "Sprite size: " << sprite.size() << " bytes.\n";
 
-    std::cout << "Source memory block data: ";
-    print_mem(virtual_src_addr, sprite.size());
+    const size_t CHUNK_SIZE = 32;
+    size_t total_size = sprite.size();
+    size_t num_chunks = 1;
+    // size_t num_chunks = (total_size + CHUNK_SIZE - 1) / CHUNK_SIZE;
 
-    std::cout << "Reset the DMA.\n";
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-    dma_mm2s_status(dma_virtual_addr);
+    std::cout << "Transferring sprite in " << num_chunks << " chunks of max " << CHUNK_SIZE << " bytes.\n";
 
-    std::cout << "Halt the DMA.\n";
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
-    dma_mm2s_status(dma_virtual_addr);
+    for(int i = 0; i < 8; i++) {
+        // std::cout << "virtual_src_addr[" << i << "] = " << std::hex << virtual_src_addr[i] << "\n";
+        virtual_src_addr[i] = 0xFF000000;
+    }
 
-    std::cout << "Enable all interrupts.\n";
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-    dma_mm2s_status(dma_virtual_addr);
+    for (size_t i = 0; i < num_chunks; i++) {
+        size_t offset = i * CHUNK_SIZE;
+        size_t bytes_to_transfer = std::min(CHUNK_SIZE, total_size - offset);
 
-    std::cout << "Writing source address of the data from MM2S in DDR...\n";
-    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000);
-    dma_mm2s_status(dma_virtual_addr);
+        // Reset and restart DMA before every chunk
+        write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+        write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+        write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
 
-    std::cout << "Run the MM2S channel.\n";
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-    dma_mm2s_status(dma_virtual_addr);
+        std::cout << "Transferring chunk " << std::dec << (unsigned int)(i + 1) << "/" << std::dec << num_chunks << ", size: " << (unsigned int)(bytes_to_transfer) << " bytes.\n";
+        std::cout << "Offset: " << std::dec << (unsigned int)offset 
+          << ", Remaining: " << std::dec << (unsigned int)(total_size - offset) << "\n";
+        // Copy chunk to mapped memory
+        // std::memcpy(virtual_src_addr, &test, bytes_to_transfer);
+        print_mem(virtual_src_addr, 32);
+        // std::memcpy(virtual_src_addr, sprite.data() + offset, bytes_to_transfer);
 
-    std::cout << "Writing MM2S transfer length of " << sprite.size() << " bytes...\n";
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, sprite.size());
-    dma_mm2s_status(dma_virtual_addr);
+        // // Set DMA source address
+        write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000);
 
-    std::cout << "Waiting for MM2S synchronization...\n";
-    dma_mm2s_sync(dma_virtual_addr);
+        // // Start DMA
+        write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+        write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, bytes_to_transfer);
 
-    dma_mm2s_status(dma_virtual_addr);
+        // // Wait for DMA completion
+        dma_mm2s_sync(dma_virtual_addr);
+        dma_mm2s_status(dma_virtual_addr);
+    }
 
-    std::cout << "\n";
+    std::cout << "DMA transfer completed.\n";
 
     return 0;
 }
