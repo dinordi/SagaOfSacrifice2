@@ -34,6 +34,6 @@ bool Game::isRunning() const {
     return running;
 }
 
-std::vector<Object*> Game::getObjects() const {
+std::vector<Object*>& Game::getObjects() {
     return objects;
 }
