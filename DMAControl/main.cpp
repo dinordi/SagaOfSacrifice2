@@ -108,12 +108,15 @@ int main()
 
     std::cout << "Transferring sprite in " << num_chunks << " chunks of max " << CHUNK_SIZE << " bytes.\n";
 
-    for(int i = 0; i < 8; i++) {
+    for(int i = 0; i < 64; i++) {
         // std::cout << "virtual_src_addr[" << i << "] = " << std::hex << virtual_src_addr[i] << "\n";
-        virtual_src_addr[i] = 0xFF000000;
+        uint32_t rgba = (sprite[i] << 24) | (sprite[i+1] << 16) | (sprite[i+2] << 8) | sprite[i+3];
+        virtual_src_addr[i%8] = rgba;
     }
 
-    for (size_t i = 0; i < num_chunks; i++) {
+    // for (size_t i = 0; i < num_chunks; i++) {
+    while (true) {
+        int i = 0;
         size_t offset = i * CHUNK_SIZE;
         size_t bytes_to_transfer = std::min(CHUNK_SIZE, total_size - offset);
 
