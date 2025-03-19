@@ -12,12 +12,7 @@ int main() {
 	PhysicsEngine physicsEngine;
 	Game game;
 	std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
-	// Add game objects to the physics engine
-	for (Object* object : game.getObjects()) {
-		physicsEngine.addObject(object);
-	}
-	std::cout << "Added game objects to the physics engine." << std::endl;
-
+	
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	auto lastRenderTime = lastTime;
 
@@ -28,7 +23,7 @@ int main() {
 		float deltaTime = elapsedTime.count();
 		lastTime = currentTime;
 
-		physicsEngine.update(deltaTime);
+		physicsEngine.update(deltaTime, game.getObjects());
 		game.update(deltaTime);
 		std::chrono::duration<float> renderElapsedTime = currentTime - lastRenderTime;
 		if (renderElapsedTime.count() > 1.0f / FPS)

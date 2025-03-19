@@ -15,7 +15,7 @@ public:
     void update(float deltaTime);
     void render();
     bool isRunning() const;
-    std::vector<Object*> getObjects() const;
+    std::vector<Object*>& getObjects();
 
 private:
     bool running;

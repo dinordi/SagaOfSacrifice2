@@ -9,13 +9,10 @@
 
 class PhysicsEngine {
 public:
-    void update(float deltaTime);
-    void addObject(Object* object);
-    void removeObject(Object* object);
+    void update(float deltaTime, std::vector<Object*>& objects);
 
 private:
-    void handleCollisions();
-    std::vector<Object*> objects;
+    void handleCollisions(std::vector<Object*>& objects);
 };
 
 #endif // PHYSICS_ENGINE_H
