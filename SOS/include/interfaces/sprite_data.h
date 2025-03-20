@@ -5,8 +5,10 @@
 
 struct SpriteData {
     int ID;
-    int x;
-    int y;
+    int width;
+    int height;
+    // int x;
+    // int y;
 };
 
 #endif // SPRITE_DATA_H

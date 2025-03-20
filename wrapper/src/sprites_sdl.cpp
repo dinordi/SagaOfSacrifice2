@@ -20,7 +20,7 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     float spriteHeight = 127; // Example height
     int columns = 3; // Number of columns in the sprite sheet
 
-    auto lettersPath = (path / "SOS/sprites/letters.png").make_preferred();
+    auto lettersPath = (path / "SOS/assets/sprites/letters.png").make_preferred();
     SDL_Texture* lettersTexture = LoadSprite(renderer, lettersPath);
     if (!lettersTexture) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load letters sprite: %s", lettersPath.string().c_str());
@@ -49,8 +49,9 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     spriteMap[sdl_characters[' ']] = { lettersTexture, { 0, 11 * spriteHeight, spriteWidth, spriteHeight } };
 
     // Load additional sprites
-    spriteMap[1] = { LoadSprite(renderer, (path / "SOS/sprites/playerBig.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[2] = { LoadSprite(renderer, (path / "SOS/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[3] = { LoadSprite(renderer, (path / "SOS/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[1] = { LoadSprite(renderer, (path / "SOS/assets/sprites/playerBig.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[2] = { LoadSprite(renderer, (path / "SOS/assets/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[3] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     // Add more sprites as needed
 }

@@ -9,7 +9,6 @@
 #include <filesystem>
 
 #include "game.h"
-#include "sdl_gfx.h"
 #include "sprites_sdl.h"
 #include "logger_sdl.h"
 #include "sdl_input.h"
@@ -17,49 +16,6 @@
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
-
-
-
-#include "Fatbat.h"
-#include "Bullet.h"
-#include "WerewolfMan.h"
-#include "Platform.h"
-#include "Teleporter.h"
-#include "level.h"
-
-std::vector<Fatbat*> fatbats;
-std::vector<Platform*> level1;
-std::vector<Platform*> level2;
-std::vector<Platform*> level3;
-std::vector<Bullet*> bullets;
-std::vector<WerewolfMan*> werewolfMans;
-
-std::vector<Teleporter*> teleporters;
-
-
-void loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
-{
-	for(int i = 0; i < 16; i++) // 16 rows
-    {
-        for(int j = 0; j < 63; j++) // 63 columns
-        {
-            if(level[levelNum][i][j] != 0)    // If the tile is not empty
-            {
-				if(level[levelNum][i][j] == 21)
-				{
-					// Teleporter
-					teleporters.push_back(new Teleporter(j * 31, i * 31));
-					continue;
-				}
-                int tileX = j * 31; //31 is tile width/height
-                int tileY = i * 31;
-                int tileID = level[levelNum][i][j] + 99;  // Add 99 to the tileID to get the correct sprite
-                Platform* platform = new Platform(tileID, tileX, tileY, 15);    // Create a new platform
-                platforms->push_back(platform);
-            }
-        }
-    }
-}
 
 
 struct AppContext {
@@ -143,7 +99,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
 
-    //Load spritemap
+    // Load spritemap
     // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
     // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
     // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
@@ -156,7 +112,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // load the PNG
-    auto png_surface = IMG_Load(((basePathSOS / "SOS/sprites/playerBig.png").make_preferred()).string().c_str());
+    auto png_surface = IMG_Load(((basePathSOS / "SOS/assets/sprites/playerBig.png").make_preferred()).string().c_str());
     if (!png_surface) {
         return SDL_Fail();
     }
@@ -193,7 +149,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // load the music
 
     // Resolve the full path to the music folder
-    auto musicPath = (basePathSOS / "SOS/music").make_preferred();
+    auto musicPath = (basePathSOS / "SOS/assets/music").make_preferred();
 
     // Combine the resolved path with the music file name
     auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
@@ -207,35 +163,12 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     Mix_PlayMusic(music, 0);
     
 
-    GFX* gfx = new SDL_GFX();
-    gfx->initialize();
-
     Logger::getInstance()->log("Logger started successfully!");    
-
-    for (int i = 0; i < 40; i++) {
-    	Fatbat* fatbat = new Fatbat(360, 0);
-    	fatbats.push_back(fatbat);
-	}
-	
-	for (int i = 0; i < 20; i++) {
-    	WerewolfMan* werewolfMan = new WerewolfMan(360, 0);
-    	werewolfMans.push_back(werewolfMan);
-	}
-
-	loadPlatforms(0, &level1);
-	loadPlatforms(1, &level2);
-	loadPlatforms(2, &level3);
-
-	for(int i=0; i < 20; i++)
-	{
-		Bullet* bullet = new Bullet(bulletID,7, 400,400,true);
-		bullets.push_back(bullet);
-	}
 
     SDLInput* input = new SDLInput();
 
     //Load game
-    Game* game = new Game(gfx, input);
+    Game* game = new Game();
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -302,36 +235,45 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     // for(const auto& entity : app->game->gfx->getEntityList()) {
     //     app->logger->log("ID: " + std::to_string(entity.ID));
     // }
-    for(const auto& entity : app->game->gfx->getEntityList()) {
+    for(const auto& entity : app->game->getObjects()) {
         //log ID
-        int ID = entity->ID;
-        if(ID < 11 || ID > 37)
-        {
-            ID = 1;
-        }
+        SpriteData* sprite = entity->getSpriteData();
+        int ID = sprite->ID;
+        // if(ID < 11 || ID > 37)
+        // {
+        //     ID = 1;
+        // }
         auto it = spriteMap.find(ID);
         if (it == spriteMap.end()) {
-            SDL_Log("ID not found in spritemap: %d", entity->ID);
+            SDL_Log("ID not found in spritemap: %d", sprite->ID);
             continue;
         }
+
+        // log ID
+        // SDL_Log("Width: %d, Height: %d", sprite->width, sprite->height);
+
         SDL_Texture* texture = it->second.texture;
         SDL_FRect srcRect = it->second.srcRect;
         SDL_FRect destRect{
-            .x = static_cast<float>(entity->x),
-            .y = static_cast<float>(entity->y),
-            .w = 15,
-            .h = 15
+            .x = static_cast<float>(entity->position.x),
+            .y = static_cast<float>(entity->position.y),
+            .w = static_cast<float>(sprite->width),
+            .h = static_cast<float>(sprite->height)
         };
         SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
     }
 
     // If 16ms has passed since the last update, update the game
-    static Uint32 lastUpdate = 0;
-    app->game->readInput();
-    app->game->update();
+    static Uint64 lastUpdate = 0;
 
-    SDL_Delay(1000/60);
-
+    Uint64 currentTime = SDL_GetTicks();
+    Uint64 deltaTime = currentTime - lastUpdate;
+    app->game->update(deltaTime);
+    lastUpdate = currentTime;
+    
+    if(deltaTime > 1000.0f / 60.0f) {
+        app->game->render();
+    }
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;
