@@ -7,12 +7,15 @@
 #include "Object.h"
 #include <iostream>
 
+#include "objects/player.h"
+#include "objects/platform.h"
+
 class Game {
 public:
     Game();
     ~Game();
 
-    void update(float deltaTime);
+    void update(uint64_t deltaTime);
     void render();
     bool isRunning() const;
     std::vector<Object*>& getObjects();

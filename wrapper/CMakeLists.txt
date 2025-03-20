@@ -38,7 +38,13 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
-file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/*.cpp")
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
+list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
+
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 # Add your sources to the target
@@ -46,8 +52,8 @@ file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 target_include_directories(${EXECUTABLE_NAME} PRIVATE 
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
 )
@@ -114,7 +120,7 @@ endif()
 target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 
 # Add include directories
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src)
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS/src)
 
 
 # Dealing with assets
@@ -163,10 +169,10 @@ else()
     copy_helper("gs_tiger.svg")
 
     # Copy entire directories
-    file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites/*")
+    file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites/*")
     foreach(sprite_file ${SPRITE_FILES})
-        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites" "${sprite_file}")
-        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/sprites/${relpath}")
+        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites" "${sprite_file}")
+        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/sprites/${relpath}")
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${sprite_file}" "${outname}"
@@ -174,10 +180,10 @@ else()
         )
     endforeach()
 
-    file(GLOB_RECURSE MUSIC_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/music/*")
+    file(GLOB_RECURSE MUSIC_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/music/*")
     foreach(music_file ${MUSIC_FILES})
-        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/music" "${music_file}")
-        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/music/${relpath}")
+        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/music" "${music_file}")
+        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/music/${relpath}")
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${music_file}" "${outname}"
