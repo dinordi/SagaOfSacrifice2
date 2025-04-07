@@ -6,3 +6,8 @@ void Renderer::init()
 {
 
 }
+
+void Renderer::render(std::vector<Object*> objects)
+{
+
+}

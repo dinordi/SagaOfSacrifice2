@@ -10,6 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
+include_directories(${PROJECT_SOURCE_DIR}/include/petalinux)
+include_directories(${PROJECT_SOURCE_DIR}/include/objects)
+include_directories(${PROJECT_SOURCE_DIR}/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Echo the include directories

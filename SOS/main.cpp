@@ -6,6 +6,8 @@
 #include <chrono>
 #include <thread>
 
+#include "petalinux/input_pl.h"
+
 #include "Renderer.h"
 
 float FPS = 60.0f;
@@ -27,6 +29,8 @@ int main() {
 	auto lastTime = get_ticks();
 	auto lastRenderTime = lastTime;
 
+	EvdevController controller;
+
 	std::cout << "Entering gameloop..." << std::endl;
 	while (game.isRunning()) {
 		auto currentTime = get_ticks();
@@ -39,6 +43,10 @@ int main() {
 		if (renderElapsedTime > 1000.0f / FPS)
 		{
 			renderer.render(game.getObjects());
+			controller.update();
+			if (controller.isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
+                std::cout << "X (BTN_SOUTH) pressed!\n";
+            }
 		}
 		
 	}
