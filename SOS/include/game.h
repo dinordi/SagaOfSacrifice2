@@ -4,7 +4,7 @@
 #define GAME_H
 
 #include <vector>
-#include "Object.h"
+#include "object.h"
 #include <iostream>
 
 #include "objects/player.h"

@@ -1,14 +1,13 @@
-#ifndef SPRITE_DATA_H
-#define SPRITE_DATA_H
+// filepath: /Users/dinordi/Documents/GitHub/SagaOfSacrifice2/SOS/include/sprite_data.h
+#pragma once
 
-#include <cstdint>
-
-struct SpriteData {
+class SpriteData {
+public:
     int ID;
     int width;
     int height;
-    // int x;
-    // int y;
-};
 
-#endif // SPRITE_DATA_H
+    // Constructor
+    SpriteData(int ID, int width, int height)
+        : ID(ID), width(width), height(height) {}
+};

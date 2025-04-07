@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Object.h"
+#include "objects/entity.h"
 #include "interfaces/sprite_data.h"
 #include "objects/platform.h"
 
-class Player : public Object {
+class Player : public Entity {
+
 public:
-    Player(int ID, int x, int y);
+    Player( Vec2 pos, SpriteData* spData );
     bool collisionWith(Object* other) override;
     void update(uint64_t deltaTime) override;
 };
