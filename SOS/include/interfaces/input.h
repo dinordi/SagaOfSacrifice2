@@ -1,31 +1,21 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#define DEFINE_GETTER_SETTER(type, member) \
+private:                                   \
+    type member;                           \
+public:                                    \
+    type& get##member() { return member; } \
+    void set##member(type& value) { member = value; }
+
+
 class Input {
 public:
     virtual ~Input() = default;
     virtual void read() = 0;
 
-    bool isUp() const { return up; }
-    bool isDown() const { return down; }
-    bool isLeft() const { return left; }
-    bool isRight() const { return right; }
-    bool isAction() const { return action; }
-    bool isJump() const { return jump; }
-    bool isDash() const { return dash; }
-    bool isReset() const { return reset; }
-    bool isStart() const { return start; }
-
 protected:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool action = false;
-    bool jump = false;
-    bool dash = false;
-    bool reset = false;
-    bool start = false;
+    DEFINE_GETTER_SETTER(bool, position);
 };
 
 #endif // INPUT_H
