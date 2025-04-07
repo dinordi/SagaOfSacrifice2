@@ -2,17 +2,9 @@
 #include <iostream>
 
 
-Player::Player(int ID, int x, int y) : Object(ID, x, y) {
+Player::Player( Vec2 pos, SpriteData* spData) : Entity(pos, spData) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << ID << " at position (" << x << ", " << y << ")" << std::endl;
-    this->position.x = x;
-    this->position.y = y;
-
-    SpriteData* sprite = new SpriteData();
-    sprite->ID = ID;
-    sprite->width = 128; // Example width
-    sprite->height = 128; // Example height
-    this->setSpriteData(sprite);
+    std::cout << "Player created with ID: " << spriteData->ID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
 }
 
 bool Player::collisionWith(Object* other) {
@@ -20,16 +12,21 @@ bool Player::collisionWith(Object* other) {
     Platform* platform = dynamic_cast<Platform*>(other);
     if (platform) {
         // Check for collision with platform
-        float playerBottom = this->position.y + this->getSpriteData()->height;
+        float playerBottom = this->position.y + this->spriteData->height;
         float platformTop = platform->position.y;
-        float playerRight = this->position.x + this->getSpriteData()->width;
+        float playerRight = this->position.x + this->spriteData->width;
         float platformLeft = platform->position.x;
         float playerLeft = this->position.x;
-        float platformRight = platform->position.x + platform->getSpriteData()->width;
+        float platformRight = platform->position.x + platform->spriteData->width;
 
         if (playerBottom > platformTop && this->position.y < platformTop &&
             playerRight > platformLeft && playerLeft < platformRight) {
             // Collision detected
+            // std::cout << "Collision with platform detected!" << std::endl;
+            // Adjust player position to be on top of the platform
+            // this->position.y = platformTop - this->getSpriteData()->height; // Place player on top of the platform
+            // this->velocity.y = 0; // Reset vertical velocity
+            // this->isOnGround = true; // Set player state to on ground
             return true;
         }
     }

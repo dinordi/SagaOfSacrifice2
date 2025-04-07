@@ -4,7 +4,7 @@
 #define PHYSICS_ENGINE_H
 
 #include "game.h"
-#include "Object.h"
+#include "object.h"
 #include <algorithm>
 
 class PhysicsEngine {

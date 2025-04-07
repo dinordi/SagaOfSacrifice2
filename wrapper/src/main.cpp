@@ -237,15 +237,14 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     // }
     for(const auto& entity : app->game->getObjects()) {
         //log ID
-        SpriteData* sprite = entity->getSpriteData();
-        int ID = sprite->ID;
+        int ID = entity->spriteData->ID;
         // if(ID < 11 || ID > 37)
         // {
         //     ID = 1;
         // }
         auto it = spriteMap.find(ID);
         if (it == spriteMap.end()) {
-            SDL_Log("ID not found in spritemap: %d", sprite->ID);
+            SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
             continue;
         }
 
@@ -257,8 +256,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_FRect destRect{
             .x = static_cast<float>(entity->position.x),
             .y = static_cast<float>(entity->position.y),
-            .w = static_cast<float>(sprite->width),
-            .h = static_cast<float>(sprite->height)
+            .w = static_cast<float>(entity->spriteData->width),
+            .h = static_cast<float>(entity->spriteData->height)
         };
         SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
     }

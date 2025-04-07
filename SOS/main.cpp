@@ -38,7 +38,7 @@ int main() {
 		uint32_t renderElapsedTime = currentTime - lastRenderTime;
 		if (renderElapsedTime > 1000.0f / FPS)
 		{
-			game.render();
+			renderer.render(game.getObjects());
 		}
 		
 	}

@@ -1,7 +1,9 @@
-#include "Object.h"
+#include "object.h"
 #include "interfaces/sprite_data.h"
+#include "platform.h"
 
-Object::Object(int ID, int x, int y)
+Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
+    : position(pos), type(type), spriteData(spData)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;
@@ -11,7 +13,6 @@ Object::Object(int ID, int x, int y)
 
 }
 
-void Object::setSpriteData(SpriteData* sprite)
-{
-    this->spriteData = sprite;
+void Object::handlePlatformCollision(Platform* platform) {
+    // virtual Method 
 }
