@@ -7,12 +7,13 @@
 #include "object.h"
 #include <iostream>
 
+#include "interfaces/playerInput.h"
 #include "objects/player.h"
 #include "objects/platform.h"
 
 class Game {
 public:
-    Game();
+    Game(PlayerInput* input);
     ~Game();
 
     void update(uint64_t deltaTime);
@@ -23,6 +24,7 @@ public:
 private:
     bool running;
     std::vector<Object*> objects;
+    PlayerInput* input;
 };
 
 #endif // GAME_H

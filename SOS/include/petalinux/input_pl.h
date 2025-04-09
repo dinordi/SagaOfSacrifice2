@@ -10,7 +10,7 @@
 #include <system_error>
 #include <cstring>
 #include <cmath> // Voor std::abs
-#include "input.h"
+#include "playerInput.h"
 #include <dirent.h>
 
 // Klasse om een controller via evdev uit te lezen
