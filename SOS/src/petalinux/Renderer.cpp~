@@ -115,7 +115,8 @@ BRAMDATA Renderer::readBRAM()
 void Renderer::dmaTransfer()
 {
     BRAMDATA brData = readBRAM(); // The second horizontal line (y=2)
-    
+	std::cout << "Read bram done." << std::endl;
+	return;
     size_t sprite_width = 64;
     size_t bytes_per_pixel = 4;
     size_t line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
