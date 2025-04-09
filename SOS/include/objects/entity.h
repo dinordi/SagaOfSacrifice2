@@ -9,5 +9,5 @@ public:
     // void handlePlatformCollision(Platform* platform) override;
 
 private:
-    bool isOnGround = false;
+    DEFINE_GETTER_SETTER(bool, isOnGround);
 };

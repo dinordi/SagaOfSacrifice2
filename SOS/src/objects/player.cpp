@@ -5,6 +5,7 @@
 Player::Player( Vec2 pos, SpriteData* spData) : Entity(pos, spData) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << spriteData->ID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
+    setisOnGround(false);
 }
 
 // bool Player::collisionWith(Object* other) {
@@ -51,14 +52,37 @@ void Player::update(uint64_t deltaTime) {
     static uint64_t timeseconds = 0.0f;
     timeseconds += deltaTime;
     if (timeseconds >= 1000.0f) {
-        std::cout << "Player velocity.y: " << this->velocity.y << std::endl;
+        // std::cout << "Player velocity.y: " << this->velocity.y << std::endl;
         timeseconds = 0.0f;
     }
-    // For example, move the player based on input
-    float deltaTimeInSeconds = static_cast<float>(deltaTime) / 1000.0f;
-    this->velocity.y += GRAVITY * deltaTimeInSeconds; // Apply gravity
-    this->velocity.x = 0; // Reset horizontal velocity
-
+    if(getisOnGround() == false)
+    {
+        // For example, move the player based on input
+        float deltaTimeInSeconds = static_cast<float>(deltaTime) / 1000.0f;
+        this->velocity.y += GRAVITY * deltaTimeInSeconds; // Apply gravity
+    }
+    if(this->velocity.y > MAX_VELOCITY)
+    {
+        this->velocity.y = MAX_VELOCITY; // Cap the velocity
+    }
     this->position.x += this->velocity.x * deltaTime;
     this->position.y += this->velocity.y * deltaTime;
+    
+    this->velocity.x = 0; // Reset horizontal velocity
+    setisOnGround(false); // Reset ground state
+
+}
+
+void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
+    // Handle player input here
+    if (input->get_jump()) {
+        // Apply jump force
+        this->velocity.y -= 2.0f; // Example jump force
+    }
+    if (input->get_left()) {
+        this->velocity.x -= 1.0f; // Move left
+    }
+    if (input->get_right()) {
+        this->velocity.x += 1.0f; // Move right
+    }
 }

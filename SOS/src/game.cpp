@@ -7,11 +7,13 @@ Game::Game(PlayerInput* input) : running(true), input(input) {
     CollisionManager* collisionManager = new CollisionManager();
     this->collisionManager = collisionManager;
     // Initialize game objects here
-    Player* player = new Player(Vec2(500,100), new SpriteData(1, 128, 128));
+    player = new Player(Vec2(500,100), new SpriteData(1, 128, 128));
     objects.push_back(player);
 
-    Platform* floor = new Platform(4, 500, 900);
+    Platform* floor = new Platform(4, 500, 850, new SpriteData(4, 128, 128));
+    Platform* floor2 = new Platform(4, 700, 850, new SpriteData(4, 15, 15));
     objects.push_back(floor);
+    objects.push_back(floor2);
 
 }
 
@@ -29,12 +31,16 @@ void Game::update(uint64_t deltaTime) {
         timeseconds = 0.0f;
     }
     input->readInput();
+    player->handleInput(input, deltaTime);
     // Update player input here
     // For example, check if the jump button is pressed
-    if (input->get_jump()) {
-        // Handle jump action
-        Player* player = static_cast<Player*>(objects[0]);
-        player->velocity.y -= 5.0f; // Apply jump force
+    // if (input->get_jump()) {
+    //     // Handle jump action
+    //     Player* player = static_cast<Player*>(objects[0]);
+    //     player->velocity.y -= 2.0f; // Apply jump force
+    // }
+    for(auto object : objects) {
+        object->update(deltaTime);
     }
 
     collisionManager->detectCollisions(objects);

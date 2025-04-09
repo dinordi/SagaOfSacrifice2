@@ -27,6 +27,7 @@ private:
     std::vector<Object*> objects;
     PlayerInput* input;
     CollisionManager* collisionManager;
+    Player* player;
 };
 
 #endif // GAME_H

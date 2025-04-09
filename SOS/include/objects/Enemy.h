@@ -1,16 +1,18 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "object.h"
+#include "objects/entity.h"
 
-class Enemy : public Object {
+class Enemy : public Entity {
 public:
+    Enemy(Vec2 pos, SpriteData* spData);
+
     int health;
 
     void accept(CollisionVisitor& visitor) override;
-    void takeDamage(int amount);
-    void reverseDirection();
-    void applyPhysicsResponse(const Vec2& resolutionVector);
+    // void takeDamage(int amount);
+    // void reverseDirection();
+    // void applyPhysicsResponse(const Vec2& resolutionVector);
 };
 
 #endif // ENEMY_H
