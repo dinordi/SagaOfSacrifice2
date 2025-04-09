@@ -10,6 +10,7 @@
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
 #include "objects/platform.h"
+#include "collision/CollisionManager.h"
 
 class Game {
 public:
@@ -25,6 +26,7 @@ private:
     bool running;
     std::vector<Object*> objects;
     PlayerInput* input;
+    CollisionManager* collisionManager;
 };
 
 #endif // GAME_H

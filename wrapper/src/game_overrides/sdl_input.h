@@ -8,7 +8,7 @@
 class SDLInput : public PlayerInput {
 public:
     SDLInput(SDL_Gamepad* gamepad);
-    void read() override;
+    void readInput() override;
 private:
     SDL_Gamepad* dualsense;
 };

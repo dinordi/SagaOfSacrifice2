@@ -3,12 +3,16 @@
 #include "game.h"
 
 Game::Game(PlayerInput* input) : running(true), input(input) {
+    
+    CollisionManager* collisionManager = new CollisionManager();
+    this->collisionManager = collisionManager;
     // Initialize game objects here
     Player* player = new Player(Vec2(500,100), new SpriteData(1, 128, 128));
     objects.push_back(player);
 
     Platform* floor = new Platform(4, 500, 900);
     objects.push_back(floor);
+
 }
 
 Game::~Game() {
@@ -33,22 +37,7 @@ void Game::update(uint64_t deltaTime) {
         player->velocity.y -= 5.0f; // Apply jump force
     }
 
-    // Update game logic here
-    for (Object* object : objects) {
-        object->update(deltaTime);
-        // Check for collisions with other objects
-        for (Object* other : objects) {
-            // if (object != other && object->collisionWith(other)) {
-            //     // Handle collision
-            //     // std::cout << "Collision detected!" << std::endl;
-            //     if(object->type == ObjectType::ENTITY && other->type == ObjectType::PLATFORM) {
-            //         // Handle platform collision with player
-            //         Platform* platform = static_cast<Platform*>(other);
-            //         object->handlePlatformCollision(platform);
-            //     }
-            // }
-        }
-    }
+    collisionManager->detectCollisions(objects);
 }
 
 void Game::render() {

@@ -7,7 +7,7 @@ SDLInput::SDLInput(SDL_Gamepad* gamepad) : dualsense(gamepad)
     set_last_jump(false);
 }
 
-void SDLInput::read() {
+void SDLInput::readInput() {
 
     SDL_PumpEvents();
     bool jump_pressed = false;

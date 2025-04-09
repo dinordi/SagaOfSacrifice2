@@ -1,6 +1,5 @@
 // SOS/main.cpp
 
-#include "engine.h"
 #include "game.h"
 #include <iostream>
 #include <chrono>
@@ -20,7 +19,6 @@ uint32_t get_ticks() {
 
 
 int main() {
-	PhysicsEngine physicsEngine;
 	Renderer renderer;
 	PlayerInput* controller = new EvdevController();
 	Game game(controller);
@@ -37,8 +35,7 @@ int main() {
 		auto currentTime = get_ticks();
 		uint32_t deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
-
-		physicsEngine.update(deltaTime, game.getObjects());
+		
 		game.update(deltaTime);
 		uint32_t renderElapsedTime = currentTime - lastRenderTime;
 		if (renderElapsedTime > 1000.0f / FPS)
