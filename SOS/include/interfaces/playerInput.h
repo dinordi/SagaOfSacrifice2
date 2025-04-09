@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#define DEFINE_GETTER_SETTER(type, member) \
+#define PLAYER_VAR(type, member) \
 private:                                   \
     type member;                           \
     type last_##member;                    \
@@ -18,7 +18,7 @@ public:
     virtual void readInput() = 0;
 
 protected:
-    DEFINE_GETTER_SETTER(bool, jump);
+    PLAYER_VAR(bool, jump);
 };
 
 #endif // INPUT_H

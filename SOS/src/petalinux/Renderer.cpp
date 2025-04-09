@@ -27,14 +27,14 @@ Renderer::Renderer() : stop_thread(false)
         throw std::runtime_error("Failed to open /dev/mem");
     }
 
-    dma_virtual_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x40000000));
+    dma_virtual_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x40400000));
     if (dma_virtual_addr == MAP_FAILED) {
         perror("Failed to mmap DMA virtual address");
         close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to mmap DMA virtual address");
     }
-    virtual_src_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x40000000));
+    virtual_src_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000));
     if (virtual_src_addr == MAP_FAILED) {
         perror("Failed to mmap source address");
         munmap(dma_virtual_addr, 4096);
@@ -43,7 +43,7 @@ Renderer::Renderer() : stop_thread(false)
         throw std::runtime_error("Failed to mmap source address");
     }
     // Load the sprite data
-    sprite = load_sprite("/home/root/SagaOfSacrifice2/SOS/assets/sprites/player.png");
+    sprite = load_sprite("/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png");
     total_size = sprite.size();
     num_chunks = (total_size + CHUNK_SIZE - 1) / CHUNK_SIZE; // Calculate the number of chunks needed
     printf("Sprite size: %zu bytes, Number of chunks: %zu\n", total_size, num_chunks);
@@ -51,6 +51,16 @@ Renderer::Renderer() : stop_thread(false)
     for(int i = 0; i < 64; i++) {
         uint32_t rgba = (sprite[i] << 24) | (sprite[i+1] << 16) | (sprite[i+2] << 8) | sprite[i+3];
         virtual_src_addr[i%8] = rgba;
+    }
+
+
+    //BRAM
+    // Map het fysieke BRAM-adres naar gebruikersruimte
+    bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
+    if (bram_ptr == MAP_FAILED) {
+        perror("mmap mislukt");
+        close(ddr_memory);
+        throw std::runtime_error("Failed to mmap BRAM");
     }
 
 }
@@ -84,6 +94,54 @@ void Renderer::render(std::vector<Object*> objects)
     
 }
 
+BRAMDATA Renderer::readBRAM()
+{
+    volatile unsigned int *bram = (unsigned int *) bram_ptr;
+
+    // Y - 11 bits
+    int y = bram[0] & 0x7FF; // Read the first 11 bits for Y coordinate
+    int ID = (bram[0] >> 11) & 0x7F; // Read the next 11 bits for ID
+
+    BRAMDATA bramData;
+    bramData.y = y;
+    bramData.id = ID;
+
+    return bramData;
+}
+
+void Renderer::dmaTransfer()
+{
+    BRAMDATA brData = readBRAM(); // The second horizontal line (y=2)
+
+    size_t sprite_width = 64;
+    size_t bytes_per_pixel = 4;
+    size_t line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
+    size_t offset = brData.y * line_offset; // Calculate the offset for the second line
+    size_t bytes_to_transfer = line_offset; // Transfer the entire line
+
+    // Ensure the offset and bytes_to_transfer are within the sprite's total size
+    if (offset + bytes_to_transfer > total_size) {
+        fprintf(stderr, "Error: Line exceeds sprite bounds.\n");
+        return;
+    }
+
+    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+
+    // Set DMA source address to the calculated offset
+    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000 + offset);
+
+    // Start DMA transfer for the line
+    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, bytes_to_transfer);
+
+    // Wait for DMA completion
+    dma_mm2s_sync(dma_virtual_addr);
+    dma_mm2s_status(dma_virtual_addr);
+
+}
+
 void Renderer::handleIRQ()
 {
     uint32_t irq_count;
@@ -93,6 +151,9 @@ void Renderer::handleIRQ()
     }
 
     printf("Interrupt received! IRQ count: %u\n", irq_count);
+    //Start DMA transfer
+    dmaTransfer();
+
 
     // Clear the interrupt flag by writing to the UIO device
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {

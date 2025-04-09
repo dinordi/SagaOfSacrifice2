@@ -1,11 +1,11 @@
 #ifndef COLLISION_INFO_H
 #define COLLISION_INFO_H
 
-#include "Vector2D.h"
+#include "Vec2.h"
 
 struct CollisionInfo {
-    Vector2D penetrationVector;
-    Vector2D contactPoint;
+    Vec2 penetrationVector;
+    Vec2 contactPoint;
 };
 
 #endif // COLLISION_INFO_H
