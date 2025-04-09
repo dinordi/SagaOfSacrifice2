@@ -36,6 +36,14 @@
         }
     }
 
+    void EvdevController::readInput()
+    {
+        update();
+        if (isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
+            std::cout << "X (BTN_SOUTH) pressed!\n";
+        }
+    }
+
     void EvdevController::findAndOpenDevice()
     {
         const char* inputDir = "/dev/input";

@@ -13,6 +13,6 @@ Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
 
 }
 
-void Object::handlePlatformCollision(Platform* platform) {
+// void Object::handlePlatformCollision(Platform* platform) {
     // virtual Method 
-}
+// }

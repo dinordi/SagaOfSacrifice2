@@ -4,11 +4,15 @@ Platform::Platform(int ID, int x, int y) : Object(Vec2(x, y), ObjectType::PLATFO
     // Initialize platform-specific attributes here
 }
 
-bool Platform::collisionWith(Object* other) {
-    // Implement collision detection logic here
-    return false; // Placeholder
-}
+// bool Platform::collisionWith(Object* other) {
+//     // Implement collision detection logic here
+//     return false; // Placeholder
+// }
 
 void Platform::update(uint64_t deltaTime) {
 
+}
+
+void Platform::accept(CollisionVisitor& visitor) {
+    visitor.visit(this);
 }

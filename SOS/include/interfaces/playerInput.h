@@ -15,7 +15,7 @@ public:                                    \
 class PlayerInput {
 public:
     virtual ~PlayerInput() = default;
-    virtual void read() = 0;
+    virtual void readInput() = 0;
 
 protected:
     DEFINE_GETTER_SETTER(bool, jump);

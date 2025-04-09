@@ -14,12 +14,13 @@
 #include <dirent.h>
 
 // Klasse om een controller via evdev uit te lezen
-class EvdevController 
+class EvdevController : public PlayerInput
 {
 public:
     EvdevController(const std::string& targetName = "DualSense");
     ~EvdevController();
 
+    void readInput() override;
     void update();
     bool isValid() const;
     std::string getDevicePath() const;

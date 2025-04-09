@@ -7,39 +7,42 @@ Player::Player( Vec2 pos, SpriteData* spData) : Entity(pos, spData) {
     std::cout << "Player created with ID: " << spriteData->ID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
 }
 
-bool Player::collisionWith(Object* other) {
-    // Implement collision detection logic here
-    Platform* platform = dynamic_cast<Platform*>(other);
-    if (platform) {
+// bool Player::collisionWith(Object* other) {
+//     // Implement collision detection logic here
+//     Platform* platform = dynamic_cast<Platform*>(other);
+//     if (platform) {
 
-        Vec2 start = this->position;
-        Vec2 end = this->position + this->velocity;
+//         Vec2 start = this->position;
+//         Vec2 end = this->position + this->velocity;
 
-        // Check for collision with platform
-        // float playerBottom = this->position.y + this->spriteData->height;
-        float platformTop = platform->position.y;
-        // float playerRight = this->position.x + this->spriteData->width;
-        float platformLeft = platform->position.x;
-        // float playerLeft = this->position.x;
-        float platformRight = platform->position.x + platform->spriteData->width;
-        float platformBottom = platform->position.y + platform->spriteData->height;
+//         // Check for collision with platform
+//         // float playerBottom = this->position.y + this->spriteData->height;
+//         float platformTop = platform->position.y;
+//         // float playerRight = this->position.x + this->spriteData->width;
+//         float platformLeft = platform->position.x;
+//         // float playerLeft = this->position.x;
+//         float platformRight = platform->position.x + platform->spriteData->width;
+//         float platformBottom = platform->position.y + platform->spriteData->height;
 
-        if (end.x + this->spriteData->width > platformLeft &&
-            end.x < platformRight &&
-            end.y + this->spriteData->height > platformTop && 
-            end.y < platformBottom) {
-            // Collision detected
-            // std::cout << "Collision with platform detected!" << std::endl;
-            // Adjust player position to be on top of the platform
-            // this->position.y = platformTop - this->getSpriteData()->height; // Place player on top of the platform
-            // this->velocity.y = 0; // Reset vertical velocity
-            // this->isOnGround = true; // Set player state to on ground
-            return true;
-        }
-    }
-    return false;
+//         if (end.x + this->spriteData->width > platformLeft &&
+//             end.x < platformRight &&
+//             end.y + this->spriteData->height > platformTop && 
+//             end.y < platformBottom) {
+//             // Collision detected
+//             // std::cout << "Collision with platform detected!" << std::endl;
+//             // Adjust player position to be on top of the platform
+//             // this->position.y = platformTop - this->getSpriteData()->height; // Place player on top of the platform
+//             // this->velocity.y = 0; // Reset vertical velocity
+//             // this->isOnGround = true; // Set player state to on ground
+//             return true;
+//         }
+//     }
+//     return false;
+// }
+
+void Player::accept(CollisionVisitor& visitor) {
+    visitor.visit(this);
 }
-
 
 void Player::update(uint64_t deltaTime) {
     // Update player-specific logic here

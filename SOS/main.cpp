@@ -22,14 +22,15 @@ uint32_t get_ticks() {
 int main() {
 	PhysicsEngine physicsEngine;
 	Renderer renderer;
-	Game game;
+	PlayerInput* controller = new EvdevController();
+	Game game(controller);
 	std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
 	renderer.init();
 	
 	auto lastTime = get_ticks();
 	auto lastRenderTime = lastTime;
 
-	EvdevController controller;
+
 
 	std::cout << "Entering gameloop..." << std::endl;
 	while (game.isRunning()) {
@@ -43,10 +44,7 @@ int main() {
 		if (renderElapsedTime > 1000.0f / FPS)
 		{
 			renderer.render(game.getObjects());
-			controller.update();
-			if (controller.isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
-                std::cout << "X (BTN_SOUTH) pressed!\n";
-            }
+			// controller->readInput();
 		}
 		
 	}
