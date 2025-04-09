@@ -14,17 +14,17 @@ unsigned int read_dma(unsigned int *virtual_addr, int offset)
 void dma_mm2s_status(unsigned int *virtual_addr)
 {
     unsigned int status = read_dma(virtual_addr, MM2S_STATUS_REGISTER);
-    std::cout << "Memory-mapped to stream status (0x" << std::hex << status << "@0x" << MM2S_STATUS_REGISTER << "):";
+    // std::cout << "Memory-mapped to stream status (0x" << std::hex << status << "@0x" << MM2S_STATUS_REGISTER << "):";
     if (status & STATUS_HALTED) {
-        std::cout << " Halted.\n";
+        // std::cout << " Halted.\n";
     } else {
-        std::cout << " Running.\n";
+        // std::cout << " Running.\n";
     }
     if (status & STATUS_IDLE) {
-        std::cout << " Idle.\n";
+        // std::cout << " Idle.\n";
     }
     if (status & STATUS_IOC_IRQ) {
-        std::cout << " IOC interrupt occurred.\n";
+        // std::cout << " IOC interrupt occurred.\n";
     }
 }
 
@@ -43,12 +43,12 @@ void print_mem(void *virtual_address, int byte_count)
 {
     char *data_ptr = static_cast<char*>(virtual_address);
     for(int i = 0; i < byte_count; i++) {
-        printf("%02X", data_ptr[i]);
+        // printf("%02X", data_ptr[i]);
         if(i % 4 == 3) {
-            printf(" ");
+            // printf(" ");
         }
     }
-    printf("\n");
+    // printf("\n");
 }
 
 std::vector<unsigned char> load_sprite(const std::string &file_path)
