@@ -22,7 +22,7 @@ constexpr uint32_t windowStartHeight = 1080;
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Texture* messageTex, *imageTex;
+    SDL_Texture* messageTex, *imageTex, *backgroundTex;
     SDL_Rect imageDest;
     SDL_FRect messageDest;
     SDL_AudioDeviceID audioDevice;
@@ -181,7 +181,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     std::cout << "Found " << count << " joystick(s)." << std::endl;
-    // Logger::getInstance()->log("Found " + std::to_string(count) + " joystick(s).");
+
     // 2. Iterate through instance IDs and check if they are gamepads
     for (int i = 0; i < count; ++i) {
         SDL_JoystickID current_id = joystick_ids[i];
@@ -229,13 +229,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
          // Logger::getInstance()->log("No recognized gamepad found.");
     }
 
-    if(!gamepad)
-    {
-        Logger::getInstance()->log("Gamepad not found");
-        SDL_Quit();
-    }
-    Logger::getInstance()->log("Gamepad connected: " + std::string(SDL_GetGamepadName(gamepad)));
-
 
     PlayerInput* input = new SDLInput(gamepad);
 
@@ -255,12 +248,28 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         }
     }
 
+    // Load the background image
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background.png").make_preferred();
+    SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
+    if (!backgroundSurface) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
+    SDL_Texture* backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundSurface);
+    SDL_DestroySurface(backgroundSurface); // Free the surface after creating the texture
+    if (!backgroundTex) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
     // set up the application data
     *appstate = new AppContext{
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
        .imageTex = tex,
+       .backgroundTex = backgroundTex,
        .imageDest = imageDest,
        .messageDest = text_rect,
        .audioDevice = audioDevice,
@@ -288,40 +297,20 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-    // draw a color
-    auto time = SDL_GetTicks() / 1000.f;
-    auto red = (std::sin(time) + 1) / 2.0 * 255;
-    auto green = (std::sin(time / 2) + 1) / 2.0 * 255;
-    auto blue = (std::sin(time) * 2 + 1) / 2.0 * 255;
     
-    SDL_SetRenderDrawColor(app->renderer, red, green, blue, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
-    SDL_FRect imageDestFRect {
-        .x = static_cast<float>(app->imageDest.x),
-        .y = static_cast<float>(app->imageDest.y),
-        .w = static_cast<float>(app->imageDest.w),
-        .h = static_cast<float>(app->imageDest.h)
-    };
+    SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
-    // for(const auto& entity : app->game->gfx->getEntityList()) {
-    //     app->logger->log("ID: " + std::to_string(entity.ID));
-    // }
     for(const auto& entity : app->game->getObjects()) {
         //log ID
         int ID = entity->spriteData->ID;
-        // if(ID < 11 || ID > 37)
-        // {
-        //     ID = 1;
-        // }
         auto it = spriteMap.find(ID);
         if (it == spriteMap.end()) {
             SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
             continue;
         }
-
-        // log ID
-        // SDL_Log("Width: %d, Height: %d", sprite->width, sprite->height);
 
         SDL_Texture* texture = it->second.texture;
         SDL_FRect srcRect = it->second.srcRect;
