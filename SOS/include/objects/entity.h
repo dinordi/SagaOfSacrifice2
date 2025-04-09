@@ -6,7 +6,7 @@ class Entity : public Object
 {
 public:
     Entity( Vec2 pos, SpriteData* spData);
-    void handlePlatformCollision(Platform* platform) override;
+    // void handlePlatformCollision(Platform* platform) override;
 
 private:
     bool isOnGround = false;

@@ -24,7 +24,7 @@ void Game::update(uint64_t deltaTime) {
         // std::cout << "Hello World" << std::endl;
         timeseconds = 0.0f;
     }
-    input->read();
+    input->readInput();
     // Update player input here
     // For example, check if the jump button is pressed
     if (input->get_jump()) {
@@ -38,15 +38,15 @@ void Game::update(uint64_t deltaTime) {
         object->update(deltaTime);
         // Check for collisions with other objects
         for (Object* other : objects) {
-            if (object != other && object->collisionWith(other)) {
-                // Handle collision
-                // std::cout << "Collision detected!" << std::endl;
-                if(object->type == ObjectType::ENTITY && other->type == ObjectType::PLATFORM) {
-                    // Handle platform collision with player
-                    Platform* platform = static_cast<Platform*>(other);
-                    object->handlePlatformCollision(platform);
-                }
-            }
+            // if (object != other && object->collisionWith(other)) {
+            //     // Handle collision
+            //     // std::cout << "Collision detected!" << std::endl;
+            //     if(object->type == ObjectType::ENTITY && other->type == ObjectType::PLATFORM) {
+            //         // Handle platform collision with player
+            //         Platform* platform = static_cast<Platform*>(other);
+            //         object->handlePlatformCollision(platform);
+            //     }
+            // }
         }
     }
 }
