@@ -19,6 +19,9 @@ public:
 
 protected:
     PLAYER_VAR(bool, jump);
+    PLAYER_VAR(bool, left);
+    PLAYER_VAR(bool, right);
+    PLAYER_VAR(bool, attack);
 };
 
 #endif // INPUT_H

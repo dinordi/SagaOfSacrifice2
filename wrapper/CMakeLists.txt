@@ -41,6 +41,7 @@ endif()
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
@@ -54,6 +55,7 @@ target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 target_include_directories(${EXECUTABLE_NAME} PRIVATE 
     ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
     ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
 )

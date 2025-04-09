@@ -3,7 +3,7 @@
 
 #include "CollisionVisitor.h"
 #include "CollisionInfo.h"
-#include "Object.h"
+#include "object.h"
 
 class CollisionHandler : public CollisionVisitor {
 private:

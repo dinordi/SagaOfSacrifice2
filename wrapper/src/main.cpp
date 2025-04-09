@@ -339,6 +339,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     Uint64 currentTime = SDL_GetTicks();
     Uint64 deltaTime = currentTime - lastUpdate;
+    if(deltaTime > 16)
+    {
+        deltaTime = 16;
+    }
     app->game->update(deltaTime);
     lastUpdate = currentTime;
     

@@ -13,18 +13,21 @@ private:                                   \
     type member;                           \
 public:                                    \
     type& get##member() { return member; } \
-    void set##member(type& value) { member = value; }
+    void set##member(const type& value) { member = value; }
 
 
 class Platform;
 
-constexpr float GRAVITY = 9.0f;
+constexpr float GRAVITY = 9.8f;
+constexpr float MAX_VELOCITY = 20.0f;
 
 enum class ObjectType {
     ENTITY,
     PLATFORM,
     ITEM,
-    BULLET
+    BULLET,
+    ENEMY,
+    PLAYER
 };
 
 class Object {

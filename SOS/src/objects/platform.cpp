@@ -1,6 +1,6 @@
 #include "objects/platform.h"
 
-Platform::Platform(int ID, int x, int y) : Object(Vec2(x, y), ObjectType::PLATFORM, new SpriteData(ID, 800, 127)) {
+Platform::Platform(int ID, int x, int y, SpriteData* spData) : Object(Vec2(x, y), ObjectType::PLATFORM, spData) {
     // Initialize platform-specific attributes here
 }
 
