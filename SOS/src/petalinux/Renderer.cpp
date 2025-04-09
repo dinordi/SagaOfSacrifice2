@@ -99,12 +99,21 @@ BRAMDATA Renderer::readBRAM()
     void *bram_ptr2 = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
     if (bram_ptr == MAP_FAILED) {
         perror("mmap mislukt");
-	close(ddr_memory);
+	    close(ddr_memory);
+        throw std::runtime_error("Failed to mmap BRAM");
     }
     volatile unsigned int *bram = (unsigned int *) bram_ptr2;
+    if (bram == nullptr) {
+        perror("Failed to map BRAM");
+        throw std::runtime_error("Failed to map BRAM");
+    }
     // Y - 11 bits
     unsigned int ID = bram[0] & 0x7FF; // Read the first 11 bits for Y coordinate
     unsigned int y = (bram[0] >> 11) & 0x7FF; // Read the next 11 bits for ID
+    
+    // Unmap the BRAM pointer
+    munmap(bram_ptr2, BRAM_SIZE);
+
     BRAMDATA bramData;
     bramData.y = y;
     bramData.id = ID;
