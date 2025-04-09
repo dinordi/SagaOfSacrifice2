@@ -41,7 +41,7 @@ private:
     unsigned int *dma_virtual_addr;
     unsigned int *virtual_src_addr;
     std::vector<unsigned char> sprite;
-    const size_t CHUNK_SIZE = 256;
+    const size_t CHUNK_SIZE = 32;
     size_t total_size;
     size_t num_chunks;
 
