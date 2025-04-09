@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_init.h>
+#include <SDL3/SDL_gamepad.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_image/SDL_image.h>
@@ -37,7 +38,7 @@ SDL_AppResult SDL_Fail(){
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // init the library, here we make a window so we only need the Video capabilities.
-    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)){
+    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)){
         return SDL_Fail();
     }
     
@@ -80,6 +81,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 #endif
 
     Logger::setInstance(new LoggerSDL());
+
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -165,10 +167,80 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     Logger::getInstance()->log("Logger started successfully!");    
 
-    SDLInput* input = new SDLInput();
+    SDL_Gamepad* gamepad = nullptr;
+    SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
+
+    // 1. Get the list of joystick instance IDs
+    int count = 0;
+    SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
+
+    if (joystick_ids == nullptr) {
+        std::cerr << "Could not get joysticks! SDL Error: " << SDL_GetError() << std::endl;
+        // Logger::getInstance()->log("Could not get joysticks! SDL Error: " + std::string(SDL_GetError()));
+        count = 0; // Ensure count is 0 if allocation failed
+    }
+
+    std::cout << "Found " << count << " joystick(s)." << std::endl;
+    // Logger::getInstance()->log("Found " + std::to_string(count) + " joystick(s).");
+    // 2. Iterate through instance IDs and check if they are gamepads
+    for (int i = 0; i < count; ++i) {
+        SDL_JoystickID current_id = joystick_ids[i];
+        const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
+        std::cout << "Checking device ID " << current_id << ": " << (name ? name : "Unknown Name") << std::endl;
+
+        if (SDL_HasGamepad()) {
+            std::cout << "  -> Device ID " << current_id << " is a recognized gamepad." << std::endl;
+            // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is a recognized gamepad.");
+
+            // Found a gamepad, let's target this one
+            targetInstanceID = current_id;
+            break; // Stop searching, we'll open the first one found
+        } else {
+             std::cout << "  -> Device ID " << current_id << " is NOT a recognized gamepad." << std::endl;
+             // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is NOT a recognized gamepad.");
+        }
+    }
+
+    // 3. Free the array returned by SDL_GetJoysticks
+    // IMPORTANT: Do this *after* you are finished with the joystick_ids array
+    // (e.g., after finding the targetInstanceID you want to open).
+    SDL_free(joystick_ids);
+    joystick_ids = nullptr; // Good practice to null the pointer after freeing
+
+
+    // 4. If we found a suitable Instance ID, try to open it
+    if (targetInstanceID != 0) { // Check against the invalid ID 0
+        gamepad = SDL_OpenGamepad(targetInstanceID);
+        if (!gamepad) {
+            std::cerr << "Could not open gamepad with ID " << targetInstanceID << "! SDL Error: " << SDL_GetError() << std::endl;
+            // Logger::getInstance()->log("Could not open gamepad with ID " + std::to_string(targetInstanceID) + ". SDL Error: " + std::string(SDL_GetError()));
+        } else {
+            // Get the name from the opened gamepad handle (preferred method)
+            const char* gamepadName = SDL_GetGamepadName(gamepad);
+            std::cout << "Gamepad connected: " << (gamepadName ? gamepadName : "Unknown Name") << " (ID: " << targetInstanceID << ")" << std::endl;
+            // Logger::getInstance()->log("Gamepad connected: " + std::string(gamepadName ? gamepadName : "Unknown Name") + " (ID: " + std::to_string(targetInstanceID) + ")");
+
+            // The instance ID is also stored in the gamepad struct if needed:
+            // SDL_InstanceID id_from_struct = SDL_GetGamepadInstanceID(gamepad);
+            // std::cout << "Instance ID from struct: " << id_from_struct << std::endl;
+        }
+    } else {
+         std::cout << "No recognized gamepad found." << std::endl;
+         // Logger::getInstance()->log("No recognized gamepad found.");
+    }
+
+    if(!gamepad)
+    {
+        Logger::getInstance()->log("Gamepad not found");
+        SDL_Quit();
+    }
+    Logger::getInstance()->log("Gamepad connected: " + std::string(SDL_GetGamepadName(gamepad)));
+
+
+    PlayerInput* input = new SDLInput(gamepad);
 
     //Load game
-    Game* game = new Game();
+    Game* game = new Game(input);
 
     // print some information about the window
     SDL_ShowWindow(window);

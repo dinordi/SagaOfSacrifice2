@@ -8,6 +8,9 @@ class Player : public Entity {
 
 public:
     Player( Vec2 pos, SpriteData* spData );
-    bool collisionWith(Object* other) override;
     void update(uint64_t deltaTime) override;
+    void accept(CollisionVisitor& visitor) override;
+    void takeDamage(int amount);
+    void collectItem();
+    void applyPhysicsResponse(const Vec2& resolutionVector);
 };

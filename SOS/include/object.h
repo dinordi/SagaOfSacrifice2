@@ -6,6 +6,7 @@
 
 #include <Vec2.h>
 #include "sprite_data.h"
+#include "collision/CollisionVisitor.h"
 
 #define DEFINE_GETTER_SETTER(type, member) \
 private:                                   \
@@ -17,7 +18,7 @@ public:                                    \
 
 class Platform;
 
-constexpr float GRAVITY = 1.0f;
+constexpr float GRAVITY = 9.0f;
 
 enum class ObjectType {
     ENTITY,
@@ -35,8 +36,7 @@ public:
     Object( Vec2 pos, ObjectType type, SpriteData* spData);
 
     virtual void update(uint64_t deltaTime) = 0;
-    virtual bool collisionWith(Object* other) = 0;
-    virtual void handlePlatformCollision(Platform* platform);
+    virtual void accept(CollisionVisitor& visitor) = 0;
 private:
     // DEFINE_GETTER_SETTER(Vec2, position);
 };

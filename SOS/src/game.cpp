@@ -2,7 +2,7 @@
 
 #include "game.h"
 
-Game::Game() : running(true) {
+Game::Game(PlayerInput* input) : running(true), input(input) {
     // Initialize game objects here
     Player* player = new Player(Vec2(500,100), new SpriteData(1, 128, 128));
     objects.push_back(player);
@@ -23,6 +23,14 @@ void Game::update(uint64_t deltaTime) {
     if (timeseconds >= 1000.0f) {
         // std::cout << "Hello World" << std::endl;
         timeseconds = 0.0f;
+    }
+    input->read();
+    // Update player input here
+    // For example, check if the jump button is pressed
+    if (input->get_jump()) {
+        // Handle jump action
+        Player* player = static_cast<Player*>(objects[0]);
+        player->velocity.y -= 5.0f; // Apply jump force
     }
 
     // Update game logic here
