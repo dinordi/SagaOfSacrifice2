@@ -17,7 +17,7 @@ Renderer::Renderer() : stop_thread(false)
     }
 
     // Create a thread to handle interrupts
-    std::thread irq_thread(&Renderer::irqHandlerThread, this);
+    irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 
     // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
     ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
