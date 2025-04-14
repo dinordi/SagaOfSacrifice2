@@ -189,10 +189,10 @@ void Renderer::handleIRQ()
         perror("Failed to clear interrupt");
     }
 
-    if((irq_count % 24000) == 0)
-    {
-        std::cout << irq_count << std::endl;
-    }
+    // if((irq_count % 24000) == 0)
+    // {
+    //     std::cout << irq_count << std::endl;
+    // }
     //printf("Interrupt received! IRQ count: %u\n", irq_count);
     //Start DMA transfer
     dmaTransfer();
