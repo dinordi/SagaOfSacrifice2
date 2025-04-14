@@ -1,5 +1,8 @@
 #include "petalinux/Renderer.h"
 
+// Define MM2S_DMA_BASE_ADDR with the appropriate value
+#define MM2S_DMA_BASE_ADDR 0x40400000 // Replace with the correct base address for your hardware
+
 Renderer::Renderer() : stop_thread(false), 
                            uio_fd(-1),
                            ddr_memory(-1),
@@ -23,9 +26,7 @@ Renderer::Renderer() : stop_thread(false),
         throw std::runtime_error("Failed to clear pending interrupt");
     }
 
-    // Create a thread to handle interrupts
-    irq_thread = std::thread(&Renderer::irqHandlerThread, this);
-
+    
     // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
     ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
     if (ddr_memory < 0) {
@@ -33,7 +34,7 @@ Renderer::Renderer() : stop_thread(false),
         close(uio_fd);
         throw std::runtime_error("Failed to open /dev/mem");
     }
-
+    
     // Map DMA control registers
     dma_virtual_addr = (unsigned int*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, MM2S_DMA_BASE_ADDR);
     if (dma_virtual_addr == MAP_FAILED) {
@@ -42,10 +43,10 @@ Renderer::Renderer() : stop_thread(false),
         close(uio_fd);
         throw std::runtime_error("Failed to map DMA registers");
     }
-
+    
     uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
     const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png";  // Pad naar je PNG bestand
-
+    
     SpriteLoader spriteLoader;
     uint32_t *sprite_data = nullptr;
     int width = 0, height = 0;
@@ -73,6 +74,9 @@ Renderer::Renderer() : stop_thread(false),
     
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
+    
+    // Create a thread to handle interrupts
+    irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
 Renderer::~Renderer()
