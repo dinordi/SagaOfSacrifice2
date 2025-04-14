@@ -161,12 +161,15 @@ void Renderer::dmaTransfer()
 
     // Start DMA transfer for the line
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+    std::cout << "RUNDMA done" << std::endl;
     write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, bytes_to_transfer);
+    std::cout << "Bytes to transfer" << std::endl;
 
     // Wait for DMA completion
     dma_mm2s_sync(dma_virtual_addr);
+    std::cout << "Sync" << std::endl;
     dma_mm2s_status(dma_virtual_addr);
-    std::cout << "DMA Synced" << std::endl;
+    std::cout << "DMA Status" << std::endl;
 }
 
 void Renderer::handleIRQ()
