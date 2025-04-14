@@ -165,11 +165,11 @@ void Renderer::dmaTransfer()
     // Just set source address and length
    
     // Set source address directly
-    uint32_t src_addr = 0x014B2000 + (brData.y * sprite_width * bytes_per_pixel);
+    uint32_t src_addr = 0x014B2000;
     write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
    
     // Start transfer immediately by setting length
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, sprite_width * bytes_per_pixel);
+    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 1600);
  
     // No waiting for completion - assume DMA hardware completes the transfer
     // The next interrupt will either find the DMA idle or in error state
