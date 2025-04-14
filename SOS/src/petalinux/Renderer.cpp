@@ -89,6 +89,7 @@ Renderer::Renderer() : stop_thread(false),
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
     
+    std::cout << "Initializing DMA..." << std::endl;
     // Initialize DMA controller once
     // Reset DMA
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
