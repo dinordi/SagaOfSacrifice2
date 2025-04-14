@@ -4,6 +4,7 @@
 #include <poll.h>
 #include "object.h"
 #include "petalinux/fpga/dma.h"
+#include "petalinux/fpga/spriteloader.h"
 
 
 #define BRAM_BASE_ADDR 0x40000000  // Fysiek adres van BRAM
