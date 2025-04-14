@@ -156,14 +156,14 @@ void Renderer::dmaTransfer()
  
     // Check initial DMA status before reset
     uint32_t initial_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    std::cout << "Initial DMA Status: 0x" << std::hex << initial_status << std::dec
-             << " (Halted: " << ((initial_status & 0x1) ? "Yes" : "No")
-             << ", Idle: " << ((initial_status & 0x2) ? "Yes" : "No")
-             << ", Error: " << ((initial_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
+    // std::cout << "Initial DMA Status: 0x" << std::hex << initial_status << std::dec
+    //          << " (Halted: " << ((initial_status & 0x1) ? "Yes" : "No")
+    //          << ", Idle: " << ((initial_status & 0x2) ? "Yes" : "No")
+    //          << ", Error: " << ((initial_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
    
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
     uint32_t post_reset_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    std::cout << "Post-reset DMA Status: 0x" << std::hex << post_reset_status << std::dec << std::endl;
+    // std::cout << "Post-reset DMA Status: 0x" << std::hex << post_reset_status << std::dec << std::endl;
    
     if (post_reset_status & 0x70) {  // Check error bits (bits 4-6)
         std::cerr << "ERROR: DMA still in error state after reset" << std::endl;
@@ -172,27 +172,27 @@ void Renderer::dmaTransfer()
    
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
     uint32_t irq_status = read_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER);
-    std::cout << "IRQ Enabled Status: 0x" << std::hex << irq_status << std::dec << std::endl;
+    // std::cout << "IRQ Enabled Status: 0x" << std::hex << irq_status << std::dec << std::endl;
    
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
     uint32_t run_status = read_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER);
-    std::cout << "DMA Run Status: 0x" << std::hex << run_status << std::dec << std::endl;
+    // std::cout << "DMA Run Status: 0x" << std::hex << run_status << std::dec << std::endl;
  
     // Set DMA source address to the calculated offset
     uint32_t src_addr = 0x014B2000 + offset;
     write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
     uint32_t read_src_addr = read_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER);
-    std::cout << "DMA Source Address: 0x" << std::hex << read_src_addr << std::dec << std::endl;
+    // std::cout << "DMA Source Address: 0x" << std::hex << read_src_addr << std::dec << std::endl;
  
     // Start DMA transfer for the line
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-    std::cout << "RUNDMA done" << std::endl;
+    // std::cout << "RUNDMA done" << std::endl;
    
     write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, bytes_to_transfer);
-    std::cout << "Transfer Length Set: " << bytes_to_transfer << " bytes" << std::endl;
+    // std::cout << "Transfer Length Set: " << bytes_to_transfer << " bytes" << std::endl;
  
     // Wait for DMA completion with iteration limit
-    std::cout << "Waiting for DMA completion..." << std::endl;
+    // std::cout << "Waiting for DMA completion..." << std::endl;
     const int MAX_ITERATIONS = 100000; // Higher number since we're not adding delays
     int iterations = 0;
     bool success = false;
@@ -201,12 +201,12 @@ void Renderer::dmaTransfer()
         uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
         if (status & 0x2) {  // Idle bit set
             success = true;
-            std::cout << "DMA transfer completed successfully after " << iterations << " iterations" << std::endl;
+            // std::cout << "DMA transfer completed successfully after " << iterations << " iterations" << std::endl;
             break;
         }
        
         if (status & 0x70) {  // Error bits
-            std::cerr << "ERROR: DMA error detected: 0x" << std::hex << status << std::dec << std::endl;
+            // std::cerr << "ERROR: DMA error detected: 0x" << std::hex << status << std::dec << std::endl;
             break;
         }
        
@@ -215,15 +215,15 @@ void Renderer::dmaTransfer()
     }
    
     if (!success) {
-        std::cerr << "ERROR: DMA transfer timed out after " << MAX_ITERATIONS << " iterations" << std::endl;
+        // std::cerr << "ERROR: DMA transfer timed out after " << MAX_ITERATIONS << " iterations" << std::endl;
     }
    
     // Final status check
     uint32_t final_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    std::cout << "Final DMA Status: 0x" << std::hex << final_status << std::dec
-             << " (Halted: " << ((final_status & 0x1) ? "Yes" : "No")
-             << ", Idle: " << ((final_status & 0x2) ? "Yes" : "No")
-             << ", Error: " << ((final_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
+    // std::cout << "Final DMA Status: 0x" << std::hex << final_status << std::dec
+    //          << " (Halted: " << ((final_status & 0x1) ? "Yes" : "No")
+    //          << ", Idle: " << ((final_status & 0x2) ? "Yes" : "No")
+    //          << ", Error: " << ((final_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
 }
 
 void Renderer::handleIRQ()
