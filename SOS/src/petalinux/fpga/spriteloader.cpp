@@ -1,5 +1,5 @@
 #include "petalinux/fpga/spriteloader.h"
-
+#include <iostream>
 
 
 
@@ -61,6 +61,7 @@ int SpriteLoader::load_png(const char *filename, uint32_t **sprite_data_out, int
     fclose(fp);
 
     *sprite_size_out = (*width_out) * (*height_out) * sizeof(uint32_t);
+    std::cout << "Sprite size: " << *sprite_size_out << " bytes" << std::endl;
     return 0;
 }
 
@@ -69,7 +70,9 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     int mem_fd;
     uint32_t *mapped_mem;
     size_t mapped_size;
-
+    bool should_free_data = false;
+    uint32_t *data_to_use = sprite_data;
+    
     if (!sprite_data) {
         // Als er geen sprite_data is meegegeven, laad het dan vanuit het bestand
         uint32_t *loaded_sprite_data = nullptr;
@@ -78,8 +81,9 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
         if (load_png(filename, &loaded_sprite_data, &width, &height, &loaded_sprite_size) != 0) {
             return 1;
         }
-        sprite_data = loaded_sprite_data;
+        data_to_use = loaded_sprite_data;
         sprite_size = loaded_sprite_size;
+        should_free_data = true;  // Flag om aan te geven dat we dit geheugen moeten vrijgeven
     }
 
     mapped_size = round_up_to_page_size(sprite_size);  // Rond af naar de dichtstbijzijnde page size
@@ -88,11 +92,16 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     mem_fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (mem_fd < 0) {
         perror("Fout bij openen /dev/mem");
+        if (should_free_data) {
+            free_sprite_data(data_to_use);
+        }
         return 1;
     }
 
     // Itereer door alle pagina's die we moeten mappen
     size_t offset = 0;
+    int result = 0;  // Success by default
+    
     while (offset < sprite_size) {
         size_t remaining_size = sprite_size - offset;
         size_t page_size_to_map = (remaining_size < PAGE_SIZE) ? remaining_size : PAGE_SIZE;
@@ -101,12 +110,12 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
         mapped_mem = (uint32_t *)mmap(NULL, page_size_to_map, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, *phys_addr);
         if (mapped_mem == MAP_FAILED) {
             perror("Fout bij mmap");
-            close(mem_fd);
-            return 1;
+            result = 1;
+            break;
         }
 
         // Kopieer de sprite data naar de gemapte geheugenpagina
-        memcpy(mapped_mem, sprite_data + offset, page_size_to_map);
+        memcpy(mapped_mem, data_to_use + offset / sizeof(uint32_t), page_size_to_map);
 
         // Verhoog de offset en fysiek adres voor de volgende pagina
         offset += page_size_to_map;
@@ -117,7 +126,13 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     }
 
     close(mem_fd);
-    return 0;
+    
+    // Maak het geheugen vrij als we het zelf hebben gealloceerd
+    if (should_free_data) {
+        free_sprite_data(data_to_use);
+    }
+    
+    return result;
 }
 
 // Verwijder de sprite data
