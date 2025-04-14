@@ -1,6 +1,13 @@
 #include "petalinux/Renderer.h"
 
-Renderer::Renderer() : stop_thread(false)
+Renderer::Renderer() : stop_thread(false), 
+                           uio_fd(-1),
+                           ddr_memory(-1),
+                           dma_virtual_addr(NULL),
+                           virtual_src_addr(NULL),
+                           total_size(0),
+                           num_chunks(0),
+                           bram_ptr(NULL)
 {
     // Open the UIO device
     uio_fd = open("/dev/uio0", O_RDWR);
@@ -27,6 +34,15 @@ Renderer::Renderer() : stop_thread(false)
         throw std::runtime_error("Failed to open /dev/mem");
     }
 
+    // Map DMA control registers
+    dma_virtual_addr = (unsigned int*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, MM2S_DMA_BASE_ADDR);
+    if (dma_virtual_addr == MAP_FAILED) {
+        perror("Failed to map DMA registers");
+        close(ddr_memory);
+        close(uio_fd);
+        throw std::runtime_error("Failed to map DMA registers");
+    }
+
     uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
     const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png";  // Pad naar je PNG bestand
 
@@ -42,6 +58,9 @@ Renderer::Renderer() : stop_thread(false)
         close(uio_fd);
         throw std::runtime_error("Failed to load PNG file");
     }
+    
+    // Store the total size for later use
+    total_size = sprite_size;
     
     // Daarna mappen we het naar het geheugen
     if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
