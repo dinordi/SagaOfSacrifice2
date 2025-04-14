@@ -155,7 +155,7 @@ void Renderer::dmaTransfer()
     }
  
     // Check initial DMA status before reset
-    uint32_t initial_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
+    // uint32_t initial_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
     // std::cout << "Initial DMA Status: 0x" << std::hex << initial_status << std::dec
     //          << " (Halted: " << ((initial_status & 0x1) ? "Yes" : "No")
     //          << ", Idle: " << ((initial_status & 0x2) ? "Yes" : "No")
@@ -219,7 +219,7 @@ void Renderer::dmaTransfer()
     }
    
     // Final status check
-    uint32_t final_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
+    // uint32_t final_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
     // std::cout << "Final DMA Status: 0x" << std::hex << final_status << std::dec
     //          << " (Halted: " << ((final_status & 0x1) ? "Yes" : "No")
     //          << ", Idle: " << ((final_status & 0x2) ? "Yes" : "No")
