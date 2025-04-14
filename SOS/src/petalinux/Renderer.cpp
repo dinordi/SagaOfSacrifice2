@@ -45,7 +45,7 @@ Renderer::Renderer() : stop_thread(false),
     }
     
     uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
-    const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png";  // Pad naar je PNG bestand
+    const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/Solid_blue.png";  // Pad naar je PNG bestand
     
     SpriteLoader spriteLoader;
     uint32_t *sprite_data = nullptr;
@@ -238,9 +238,13 @@ void Renderer::handleIRQ()
         perror("Failed to clear interrupt");
     }
 
+    if((irq_count % 24000) == 0)
+    {
+        std::cout << "IRQ count: " << irq_count << std::endl;
+    }
     //printf("Interrupt received! IRQ count: %u\n", irq_count);
     //Start DMA transfer
-    dmaTransfer();
+    // dmaTransfer();
 
 
 }
