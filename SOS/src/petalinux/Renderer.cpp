@@ -171,6 +171,8 @@ void Renderer::dmaTransfer()
     // Start transfer immediately by setting length
     write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 1600);
  
+    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+
     // No waiting for completion - assume DMA hardware completes the transfer
     // The next interrupt will either find the DMA idle or in error state
     // and handle it appropriately
