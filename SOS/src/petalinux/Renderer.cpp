@@ -110,6 +110,7 @@ Renderer::Renderer() : stop_thread(false),
     base_address = 0x014B2000;
 
     // Create a thread to handle interrupts
+    std::cout << "Starting thread." << std::endl;
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
