@@ -233,16 +233,16 @@ void Renderer::handleIRQ()
         perror("read");
         return;
     }
+    // Clear the interrupt flag by writing to the UIO device
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear interrupt");
+    }
 
     //printf("Interrupt received! IRQ count: %u\n", irq_count);
     //Start DMA transfer
     dmaTransfer();
 
 
-    // Clear the interrupt flag by writing to the UIO device
-    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
-        perror("Failed to clear interrupt");
-    }
 }
 
 void Renderer::irqHandlerThread()
