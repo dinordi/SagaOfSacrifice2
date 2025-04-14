@@ -138,7 +138,7 @@ BRAMDATA Renderer::readBRAM()
 void Renderer::dmaTransfer()
 {
     BRAMDATA brData = readBRAM();
-    std::cout << "Read BRAM: Y=" << brData.y << ", ID=" << brData.id << std::endl;
+    // std::cout << "Read BRAM: Y=" << brData.y << ", ID=" << brData.id << std::endl;
    
     size_t sprite_width = 400;
     size_t bytes_per_pixel = 4;
