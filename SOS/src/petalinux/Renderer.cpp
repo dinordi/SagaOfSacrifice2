@@ -240,11 +240,11 @@ void Renderer::handleIRQ()
 
     if((irq_count % 24000) == 0)
     {
-        std::cout << "IRQ count: " << irq_count << std::endl;
+        std::cout << irq_count << std::endl;
     }
     //printf("Interrupt received! IRQ count: %u\n", irq_count);
     //Start DMA transfer
-    // dmaTransfer();
+    dmaTransfer();
 
 
 }
