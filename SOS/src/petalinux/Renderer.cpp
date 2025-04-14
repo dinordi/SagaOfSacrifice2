@@ -82,6 +82,13 @@ Renderer::Renderer() : stop_thread(false),
     offset = brData.y * line_offset; // Calculate the offset for the second line
     bytes_to_transfer = line_offset; // Transfer the entire line
 
+    void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
+    if (bram_ptr == MAP_FAILED) {
+        perror("mmap mislukt");
+	    close(ddr_memory);
+        throw std::runtime_error("Failed to mmap BRAM");
+    }
+
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
@@ -117,12 +124,7 @@ void Renderer::render(std::vector<Object*> objects)
 
 BRAMDATA Renderer::readBRAM()
 {
-    void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
-    if (bram_ptr == MAP_FAILED) {
-        perror("mmap mislukt");
-	    close(ddr_memory);
-        throw std::runtime_error("Failed to mmap BRAM");
-    }
+    
     volatile unsigned int *bram = (unsigned int *) bram_ptr;
     if (bram == nullptr) {
         perror("Failed to map BRAM");
@@ -133,7 +135,7 @@ BRAMDATA Renderer::readBRAM()
     unsigned int y = (bram[0] >> 11) & 0x7FF; // Read the next 11 bits for ID
     
     // Unmap the BRAM pointer
-    munmap(bram_ptr, BRAM_SIZE);
+    // munmap(bram_ptr, BRAM_SIZE);
 
     BRAMDATA bramData;
     bramData.y = y;
@@ -144,8 +146,8 @@ BRAMDATA Renderer::readBRAM()
 
 void Renderer::dmaTransfer()
 {
-    // BRAMDATA brData = readBRAM();
-    BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
+    BRAMDATA brData = readBRAM();
+    // BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
    
     // Only check DMA status if there was a previous error, skip during normal operation
     static bool had_previous_error = false;
