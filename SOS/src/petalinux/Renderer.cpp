@@ -96,6 +96,12 @@ Renderer::Renderer() : stop_thread(false),
     // Wait for reset to complete
     while (!(read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER) & 0x2)) {
         // Brief wait for reset to complete
+        int initial_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
+        std::cout << "Initial DMA Status: 0x" << std::hex << initial_status << std::dec
+             << " (Halted: " << ((initial_status & 0x1) ? "Yes" : "No")
+             << ", Idle: " << ((initial_status & 0x2) ? "Yes" : "No")
+             << ", Error: " << ((initial_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
+   
     }
     
     // Enable interrupts
