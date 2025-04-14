@@ -124,7 +124,6 @@ void Renderer::render(std::vector<Object*> objects)
 
 BRAMDATA Renderer::readBRAM()
 {
-    
     volatile unsigned int *bram = (unsigned int *) bram_ptr;
     if (bram == nullptr) {
         perror("Failed to map BRAM");
@@ -150,29 +149,27 @@ void Renderer::dmaTransfer()
     BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
    
     // Only check DMA status if there was a previous error, skip during normal operation
-    // static bool had_previous_error = false;
-    // if (had_previous_error) {
-    //     uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    //     if (status & 0x70) {  // Error bits
-    //         // Only reset on error
-    //         write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-    //         write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
-    //         had_previous_error = false;
-    //     }
-    // }
+    static bool had_previous_error = false;
+    if (had_previous_error) {
+        uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
+        if (status & 0x70) {  // Error bits
+            // Only reset on error
+            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
+            had_previous_error = false;
+        }
+    }
    
     // No need to reset or initialize for every transfer
     // Just set source address and length
    
     // Set source address directly
-    uint32_t src_addr = 0x014B2000;
+    uint32_t src_addr = 0x014B2000 + (brData.y * sprite_width * bytes_per_pixel);
     write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
    
     // Start transfer immediately by setting length
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 1600);
+    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, sprite_width * bytes_per_pixel);
  
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-
     // No waiting for completion - assume DMA hardware completes the transfer
     // The next interrupt will either find the DMA idle or in error state
     // and handle it appropriately
