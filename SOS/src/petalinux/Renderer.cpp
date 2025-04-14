@@ -82,12 +82,12 @@ Renderer::Renderer() : stop_thread(false),
     offset = brData.y * line_offset; // Calculate the offset for the second line
     bytes_to_transfer = line_offset; // Transfer the entire line
 
-    void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
-    if (bram_ptr == MAP_FAILED) {
-        perror("mmap mislukt");
-	    close(ddr_memory);
-        throw std::runtime_error("Failed to mmap BRAM");
-    }
+    // void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
+    // if (bram_ptr == MAP_FAILED) {
+    //     perror("mmap mislukt");
+	//     close(ddr_memory);
+    //     throw std::runtime_error("Failed to mmap BRAM");
+    // }
 
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
@@ -146,20 +146,20 @@ BRAMDATA Renderer::readBRAM()
 
 void Renderer::dmaTransfer()
 {
-    BRAMDATA brData = readBRAM();
-    // BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
+    // BRAMDATA brData = readBRAM();
+    BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
    
     // Only check DMA status if there was a previous error, skip during normal operation
-    static bool had_previous_error = false;
-    if (had_previous_error) {
-        uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-        if (status & 0x70) {  // Error bits
-            // Only reset on error
-            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
-            had_previous_error = false;
-        }
-    }
+    // static bool had_previous_error = false;
+    // if (had_previous_error) {
+    //     uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
+    //     if (status & 0x70) {  // Error bits
+    //         // Only reset on error
+    //         write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+    //         write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
+    //         had_previous_error = false;
+    //     }
+    // }
    
     // No need to reset or initialize for every transfer
     // Just set source address and length
