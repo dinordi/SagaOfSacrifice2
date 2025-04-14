@@ -27,42 +27,33 @@ Renderer::Renderer() : stop_thread(false)
         throw std::runtime_error("Failed to open /dev/mem");
     }
 
-    dma_virtual_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x40400000));
-    if (dma_virtual_addr == MAP_FAILED) {
-        perror("Failed to mmap DMA virtual address");
+    uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
+    const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png";  // Pad naar je PNG bestand
+
+    SpriteLoader spriteLoader;
+    uint32_t *sprite_data = nullptr;
+    int width = 0, height = 0;
+    size_t sprite_size = 0;
+    
+    // Eerst laden we het PNG bestand
+    if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
+        perror("Failed to load PNG file");
         close(ddr_memory);
         close(uio_fd);
-        throw std::runtime_error("Failed to mmap DMA virtual address");
+        throw std::runtime_error("Failed to load PNG file");
     }
-    virtual_src_addr = static_cast<unsigned int*>(mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000));
-    if (virtual_src_addr == MAP_FAILED) {
-        perror("Failed to mmap source address");
-        munmap(dma_virtual_addr, 4096);
+    
+    // Daarna mappen we het naar het geheugen
+    if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
+        spriteLoader.free_sprite_data(sprite_data);
+        perror("Failed to map sprite to memory");
         close(ddr_memory);
         close(uio_fd);
-        throw std::runtime_error("Failed to mmap source address");
+        throw std::runtime_error("Failed to map sprite to memory");
     }
-    // Load the sprite data
-    sprite = load_sprite("/home/root/SagaOfSacrifice2/SOS/assets/sprites/tung.png");
-    total_size = sprite.size();
-    num_chunks = (total_size + CHUNK_SIZE - 1) / CHUNK_SIZE; // Calculate the number of chunks needed
-    printf("Sprite size: %zu bytes, Number of chunks: %zu\n", total_size, num_chunks);
-    // Copy the sprite data to the virtual source address
-    for(int i = 0; i < 64; i++) {
-        uint32_t rgba = (sprite[i] << 24) | (sprite[i+1] << 16) | (sprite[i+2] << 8) | sprite[i+3];
-        virtual_src_addr[i%8] = rgba;
-    }
-
-
-    //BRAM
-    // Map het fysieke BRAM-adres naar gebruikersruimte
-    bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
-    if (bram_ptr == MAP_FAILED) {
-        perror("mmap mislukt");
-        close(ddr_memory);
-        throw std::runtime_error("Failed to mmap BRAM");
-    }
-
+    
+    // Na het mappen kunnen we de sprite data vrijgeven
+    spriteLoader.free_sprite_data(sprite_data);
 }
 
 Renderer::~Renderer()
@@ -96,13 +87,13 @@ void Renderer::render(std::vector<Object*> objects)
 
 BRAMDATA Renderer::readBRAM()
 {
-    void *bram_ptr2 = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
+    void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
     if (bram_ptr == MAP_FAILED) {
         perror("mmap mislukt");
 	    close(ddr_memory);
         throw std::runtime_error("Failed to mmap BRAM");
     }
-    volatile unsigned int *bram = (unsigned int *) bram_ptr2;
+    volatile unsigned int *bram = (unsigned int *) bram_ptr;
     if (bram == nullptr) {
         perror("Failed to map BRAM");
         throw std::runtime_error("Failed to map BRAM");
@@ -112,7 +103,7 @@ BRAMDATA Renderer::readBRAM()
     unsigned int y = (bram[0] >> 11) & 0x7FF; // Read the next 11 bits for ID
     
     // Unmap the BRAM pointer
-    munmap(bram_ptr2, BRAM_SIZE);
+    munmap(bram_ptr, BRAM_SIZE);
 
     BRAMDATA bramData;
     bramData.y = y;

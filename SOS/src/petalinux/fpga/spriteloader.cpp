@@ -1,8 +1,6 @@
 #include "petalinux/fpga/spriteloader.h"
-#include <cstdlib> // For free
-#include <sys/mman.h> // For mmap and munmap
-#include <cstdio> // For perror
-#include <png.h> // For libpng functions
+
+
 
 
 // Functie om naar boven af te ronden naar de dichtstbijzijnde page size
@@ -14,7 +12,7 @@ SpriteLoader::SpriteLoader()
 {}
 
 // Functie om een PNG-bestand in te laden
-int SpriteLoader::load_png(const char *filename) {
+int SpriteLoader::load_png(const char *filename, uint32_t **sprite_data_out, int *width_out, int *height_out, size_t *sprite_size_out) {
     FILE *fp = fopen(filename, "rb");
     if (!fp) {
         perror("Fout bij openen PNG bestand");
@@ -42,19 +40,19 @@ int SpriteLoader::load_png(const char *filename) {
     png_init_io(png, fp);
     png_read_png(png, info, PNG_TRANSFORM_IDENTITY, NULL);
 
-    width = png_get_image_width(png, info);
-    height = png_get_image_height(png, info);
+    *width_out = png_get_image_width(png, info);
+    *height_out = png_get_image_height(png, info);
 
     // Alloceer geheugen voor de afbeelding
-    sprite_data = (uint32_t *)malloc(width * height * sizeof(uint32_t));
+    *sprite_data_out = (uint32_t *)malloc((*width_out) * (*height_out) * sizeof(uint32_t));
     png_bytep *rows = png_get_rows(png, info);
 
     // Kopieer de afbeelding naar een array van 32-bit integers
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (int y = 0; y < *height_out; y++) {
+        for (int x = 0; x < *width_out; x++) {
             png_byte *pixel = &(rows[y][x * 4]);
             uint32_t rgba = (pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3];
-            sprite_data[y * width + x] = rgba;
+            (*sprite_data_out)[y * (*width_out) + x] = rgba;
         }
     }
 
@@ -62,40 +60,28 @@ int SpriteLoader::load_png(const char *filename) {
     png_destroy_read_struct(&png, &info, &end_info);
     fclose(fp);
 
-    sprite_size = width * height * sizeof(uint32_t);
+    *sprite_size_out = (*width_out) * (*height_out) * sizeof(uint32_t);
     return 0;
 }
 
-uint32_t* SpriteLoader::get_sprite_data() {
-    return sprite_data;
-}
-
-size_t SpriteLoader::get_sprite_size() {
-    return sprite_size;
-}
-
-int SpriteLoader::get_width() {
-    return width;
-}
-
-int SpriteLoader::get_height() {
-    return height;
-}
-
 // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren
-int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr) {
+int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
     int mem_fd;
     uint32_t *mapped_mem;
     size_t mapped_size;
-    size_t sprite_size;
 
-    // Laad de PNG afbeelding
-    if (load_png(filename) != 0) {
-        return 1;
+    if (!sprite_data) {
+        // Als er geen sprite_data is meegegeven, laad het dan vanuit het bestand
+        uint32_t *loaded_sprite_data = nullptr;
+        int width, height;
+        size_t loaded_sprite_size;
+        if (load_png(filename, &loaded_sprite_data, &width, &height, &loaded_sprite_size) != 0) {
+            return 1;
+        }
+        sprite_data = loaded_sprite_data;
+        sprite_size = loaded_sprite_size;
     }
 
-    uint32_t *sprite_data = get_sprite_data();
-    sprite_size = get_sprite_size();
     mapped_size = round_up_to_page_size(sprite_size);  // Rond af naar de dichtstbijzijnde page size
 
     // Open /dev/mem voor directe toegang tot fysiek geheugen
@@ -135,13 +121,12 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
 }
 
 // Verwijder de sprite data
-void SpriteLoader::free_sprite_data() {
-if (sprite_data) {
-    free(sprite_data);
-    sprite_data = NULL;
-}
+void SpriteLoader::free_sprite_data(uint32_t *sprite_data) {
+    if (sprite_data) {
+        free(sprite_data);
+    }
 }
 
 SpriteLoader::~SpriteLoader() {
-    free_sprite_data();
+    // Geen automatische cleanup meer nodig omdat sprite_data geen klasseattribuut meer is
 }
