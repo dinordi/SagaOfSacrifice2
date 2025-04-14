@@ -8,6 +8,10 @@ project(SOS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Find the PNG package
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
+
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
@@ -27,3 +31,6 @@ file(GLOB_RECURSE SOURCES
 
 # Add executable
 add_executable(SOS ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
+
+# Link libraries (moved after add_executable)
+target_link_libraries(SOS ${PNG_LIBRARIES})
