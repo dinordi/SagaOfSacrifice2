@@ -20,8 +20,8 @@ uint32_t get_ticks() {
 
 int main() {
 	Renderer renderer;
-	PlayerInput* controller = new EvdevController();
-	Game game(controller);
+	// PlayerInput* controller = new EvdevController();
+	// Game game(controller);
 	std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
 	renderer.init();
 	
@@ -31,13 +31,13 @@ int main() {
 
 
 	std::cout << "Entering gameloop..." << std::endl;
-	while (game.isRunning()) {
-	// while (true) {
+	// while (game.isRunning()) {
+	while (true) {
 		auto currentTime = get_ticks();
 		uint32_t deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 		
-		game.update(deltaTime);
+		// game.update(deltaTime);
 		uint32_t renderElapsedTime = currentTime - lastRenderTime;
 		if (renderElapsedTime > 1000.0f / FPS)
 		{
