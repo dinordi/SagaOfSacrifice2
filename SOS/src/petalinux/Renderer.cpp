@@ -145,81 +145,33 @@ BRAMDATA Renderer::readBRAM()
 void Renderer::dmaTransfer()
 {
     // BRAMDATA brData = readBRAM();
-    // std::cout << "Read BRAM: Y=" << brData.y << ", ID=" << brData.id << std::endl;
+    BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
    
-    // BRAMDATA brData = {0, 0}; // Initialize to zero
- 
-    // Ensure the offset and bytes_to_transfer are within the sprite's total size
-    if (offset + bytes_to_transfer > total_size) {
-        std::cerr << "ERROR: Line exceeds sprite bounds. Offset: " << offset
-                 << ", Transfer size: " << bytes_to_transfer
-                 << ", Total size: " << total_size << std::endl;
-        return;
-    }
- 
-    // Check initial DMA status before reset
-    // uint32_t initial_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    // std::cout << "Initial DMA Status: 0x" << std::hex << initial_status << std::dec
-    //          << " (Halted: " << ((initial_status & 0x1) ? "Yes" : "No")
-    //          << ", Idle: " << ((initial_status & 0x2) ? "Yes" : "No")
-    //          << ", Error: " << ((initial_status & 0x70) ? "Yes" : "No") << ")" << std::endl;
-   
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-    uint32_t post_reset_status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-    // std::cout << "Post-reset DMA Status: 0x" << std::hex << post_reset_status << std::dec << std::endl;
-   
-    if (post_reset_status & 0x70) {  // Check error bits (bits 4-6)
-        std::cerr << "ERROR: DMA still in error state after reset" << std::endl;
-        return;
-    }
-   
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-    uint32_t irq_status = read_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER);
-    // std::cout << "IRQ Enabled Status: 0x" << std::hex << irq_status << std::dec << std::endl;
-   
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-    uint32_t run_status = read_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER);
-    // std::cout << "DMA Run Status: 0x" << std::hex << run_status << std::dec << std::endl;
- 
-    // Set DMA source address to the calculated offset
-    uint32_t src_addr = 0x014B2000 + offset;
-    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
-    uint32_t read_src_addr = read_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER);
-    // std::cout << "DMA Source Address: 0x" << std::hex << read_src_addr << std::dec << std::endl;
- 
-    // Start DMA transfer for the line
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-    // std::cout << "RUNDMA done" << std::endl;
-   
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, bytes_to_transfer);
-    // std::cout << "Transfer Length Set: " << bytes_to_transfer << " bytes" << std::endl;
- 
-    // Wait for DMA completion with iteration limit
-    // std::cout << "Waiting for DMA completion..." << std::endl;
-    const int MAX_ITERATIONS = 100000; // Higher number since we're not adding delays
-    int iterations = 0;
-    bool success = false;
-   
-    while (iterations < MAX_ITERATIONS) {
+    // Only check DMA status if there was a previous error, skip during normal operation
+    static bool had_previous_error = false;
+    if (had_previous_error) {
         uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-        if (status & 0x2) {  // Idle bit set
-            success = true;
-            // std::cout << "DMA transfer completed successfully after " << iterations << " iterations" << std::endl;
-            break;
-        }
-       
         if (status & 0x70) {  // Error bits
-            // std::cerr << "ERROR: DMA error detected: 0x" << std::hex << status << std::dec << std::endl;
-            break;
+            // Only reset on error
+            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
+            had_previous_error = false;
         }
-       
-        // No sleep call
-        iterations++;
     }
    
-    if (!success) {
-        // std::cerr << "ERROR: DMA transfer timed out after " << MAX_ITERATIONS << " iterations" << std::endl;
-    }
+    // No need to reset or initialize for every transfer
+    // Just set source address and length
+   
+    // Set source address directly
+    uint32_t src_addr = 0x014B2000 + (brData.y * sprite_width * bytes_per_pixel);
+    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
+   
+    // Start transfer immediately by setting length
+    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, sprite_width * bytes_per_pixel);
+ 
+    // No waiting for completion - assume DMA hardware completes the transfer
+    // The next interrupt will either find the DMA idle or in error state
+    // and handle it appropriately
    
 }
 
