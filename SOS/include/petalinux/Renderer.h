@@ -47,4 +47,10 @@ private:
     size_t num_chunks;
 
     void* bram_ptr;
+
+    // New optimized parameters
+    size_t sprite_width;
+    size_t bytes_per_pixel;
+    size_t line_offset;
+    uint32_t base_address;
 };
