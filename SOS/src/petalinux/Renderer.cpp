@@ -74,7 +74,7 @@ Renderer::Renderer() : stop_thread(false),
     
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
-    
+
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
@@ -139,7 +139,7 @@ void Renderer::dmaTransfer()
 {
     BRAMDATA brData = readBRAM(); // The second horizontal line (y=2)
     
-    size_t sprite_width = 64;
+    size_t sprite_width = 400;
     size_t bytes_per_pixel = 4;
     size_t line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
     size_t offset = brData.y * line_offset; // Calculate the offset for the second line
@@ -156,7 +156,8 @@ void Renderer::dmaTransfer()
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
 
     // Set DMA source address to the calculated offset
-    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000 + offset);
+    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x014B2000 + offset);
+    std::cout << "Wrote to dma" << std::endl;
 
     // Start DMA transfer for the line
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
@@ -165,7 +166,7 @@ void Renderer::dmaTransfer()
     // Wait for DMA completion
     dma_mm2s_sync(dma_virtual_addr);
     dma_mm2s_status(dma_virtual_addr);
-
+    std::cout << "DMA Synced" << std::endl;
 }
 
 void Renderer::handleIRQ()
