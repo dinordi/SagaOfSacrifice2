@@ -46,5 +46,13 @@ private:
     size_t total_size;
     size_t num_chunks;
 
+    size_t sprite_width;
+
+    size_t sprite_offset;
+    size_t bytes_to_transfer;
+    size_t offset;
+    size_t bytes_per_pixel;
+    size_t line_offset;
+
     void* bram_ptr;
 };
