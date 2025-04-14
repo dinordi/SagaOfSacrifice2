@@ -75,6 +75,13 @@ Renderer::Renderer() : stop_thread(false),
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
 
+    BRAMDATA brData = {0, 0};
+    sprite_width = 400;
+    bytes_per_pixel = 4;
+    line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
+    offset = brData.y * line_offset; // Calculate the offset for the second line
+    bytes_to_transfer = line_offset; // Transfer the entire line
+
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
@@ -140,13 +147,7 @@ void Renderer::dmaTransfer()
     // BRAMDATA brData = readBRAM();
     // std::cout << "Read BRAM: Y=" << brData.y << ", ID=" << brData.id << std::endl;
    
-    BRAMDATA brData = {0, 0}; // Initialize to zero
-
-    size_t sprite_width = 400;
-    size_t bytes_per_pixel = 4;
-    size_t line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
-    size_t offset = brData.y * line_offset; // Calculate the offset for the second line
-    size_t bytes_to_transfer = line_offset; // Transfer the entire line
+    // BRAMDATA brData = {0, 0}; // Initialize to zero
  
     // Ensure the offset and bytes_to_transfer are within the sprite's total size
     if (offset + bytes_to_transfer > total_size) {
