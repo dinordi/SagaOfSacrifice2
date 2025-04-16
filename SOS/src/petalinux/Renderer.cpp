@@ -28,21 +28,21 @@ Renderer::Renderer() : stop_thread(false),
 
     
     // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
-    ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
-    if (ddr_memory < 0) {
-        perror("Failed to open /dev/mem");
-        close(uio_fd);
-        throw std::runtime_error("Failed to open /dev/mem");
-    }
+    // ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
+    // if (ddr_memory < 0) {
+    //     perror("Failed to open /dev/mem");
+    //     close(uio_fd);
+    //     throw std::runtime_error("Failed to open /dev/mem");
+    // }
     
     // Map DMA control registers
-    dma_virtual_addr = (unsigned int*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, MM2S_DMA_BASE_ADDR);
-    if (dma_virtual_addr == MAP_FAILED) {
-        perror("Failed to map DMA registers");
-        close(ddr_memory);
-        close(uio_fd);
-        throw std::runtime_error("Failed to map DMA registers");
-    }
+    // dma_virtual_addr = (unsigned int*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, MM2S_DMA_BASE_ADDR);
+    // if (dma_virtual_addr == MAP_FAILED) {
+    //     perror("Failed to map DMA registers");
+    //     close(ddr_memory);
+    //     close(uio_fd);
+    //     throw std::runtime_error("Failed to map DMA registers");
+    // }
     
     uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
     const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/Solid_blue.png";  // Pad naar je PNG bestand
@@ -55,7 +55,7 @@ Renderer::Renderer() : stop_thread(false),
     // Eerst laden we het PNG bestand
     if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
         perror("Failed to load PNG file");
-        close(ddr_memory);
+        // close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to load PNG file");
     }
@@ -67,7 +67,7 @@ Renderer::Renderer() : stop_thread(false),
     if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
         spriteLoader.free_sprite_data(sprite_data);
         perror("Failed to map sprite to memory");
-        close(ddr_memory);
+        // close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to map sprite to memory");
     }
@@ -90,7 +90,7 @@ Renderer::Renderer() : stop_thread(false),
     // }
 
     // Create a thread to handle interrupts
-    irq_thread = std::thread(&Renderer::irqHandlerThread, this);
+    // irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
 Renderer::~Renderer()
@@ -107,7 +107,7 @@ Renderer::~Renderer()
     if (irq_thread.joinable()) {
         irq_thread.join();
     }
-    close(ddr_memory);
+    // close(ddr_memory);
     close(uio_fd);
 
 }
