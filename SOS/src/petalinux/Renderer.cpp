@@ -44,7 +44,7 @@ Renderer::Renderer() : stop_thread(false),
     //     throw std::runtime_error("Failed to map DMA registers");
     // }
     
-    uint32_t phys_addr = 0x014B2000;  // Start fysiek adres (voorbeeld)
+    uint32_t phys_addr = 0x0e000000;  // Start fysiek adres (voorbeeld)
     const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/Solid_blue.png";  // Pad naar je PNG bestand
     
     SpriteLoader spriteLoader;
@@ -164,7 +164,7 @@ void Renderer::dmaTransfer()
     // Just set source address and length
    
     // Set source address directly
-    uint32_t src_addr = 0x014B2000 + (brData.y * sprite_width * bytes_per_pixel);
+    uint32_t src_addr = 0x0e000000 + (brData.y * sprite_width * bytes_per_pixel);
     write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
    
     // Start transfer immediately by setting length
