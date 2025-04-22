@@ -41,9 +41,9 @@ void SDL2AudioManager::loadSound(const std::string& filePath) {
         return;
     }
     std::string fullPath = this->basePath + filePath;
-    
+
     std::string soundName = getFilenameFromPath(fullPath);
-    Mix_Chunk* sound = Mix_LoadWAV(filePath.c_str());
+    Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str());
     
     if (!sound) {
         std::cerr << "Failed to load sound effect: " << fullPath << std::endl;
