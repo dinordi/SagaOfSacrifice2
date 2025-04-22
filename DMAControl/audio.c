@@ -34,6 +34,7 @@ int main() {
         return 1;
     }
     
+    Mix_VolumeMusic(128);
     Mix_PlayMusic(music, -1);
     SDL_Delay(5000); // Let it play 5 seconds
     Mix_FreeMusic(music);
