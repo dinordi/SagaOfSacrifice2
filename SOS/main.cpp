@@ -7,6 +7,9 @@
 
 #include "petalinux/input_pl.h"
 
+// Example usage in your game initialization
+#include "petalinux/SDL2AudioManager.h"
+
 #include "Renderer.h"
 
 float FPS = 60.0f;
@@ -27,8 +30,22 @@ int main() {
 	
 	auto lastTime = get_ticks();
 	auto lastRenderTime = lastTime;
+	
 
+	// In your game initialization code
+	std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
+	audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
 
+	// Load sounds and music
+	// audioManager->loadSound("assets/music/effect1.wav");
+	audioManager->loadMusic("music/02/001.wav");
+
+	// Play music
+	audioManager->setMusicVolume(0.9f);
+	audioManager->playMusic();
+
+	// Play sound effects during gameplay
+	audioManager->playSound("sfx/jump.wav");
 
 	std::cout << "Entering gameloop..." << std::endl;
 	// while (game.isRunning()) {
