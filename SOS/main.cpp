@@ -43,10 +43,10 @@ int main() {
 
 	// Play music
 	audioManager->setMusicVolume(0.9f);
-	audioManager->playMusic();
+	// audioManager->playMusic();
 
 	// Play sound effects during gameplay
-	audioManager->playSound("jump");
+	// audioManager->playSound("jump");
 
 	std::cout << "Entering gameloop..." << std::endl;
 	// while (game.isRunning()) {
@@ -55,9 +55,17 @@ int main() {
 		uint32_t deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 		
+		//Every second play sound
+		static int lastSoundTime = 0;
+		if (currentTime - lastSoundTime > 1000) {
+			audioManager->playSound("jump");
+			std::cout << "Playing sound effect" << std::endl;
+			lastSoundTime = currentTime;
+		}
+
 		// game.update(deltaTime);
 		uint32_t renderElapsedTime = currentTime - lastRenderTime;
-		if (renderElapsedTime > 1000.0f / FPS)
+		if (renderElapsedTime > 1000.0f)
 		{
 			// renderer.render(game.getObjects());
 			// controller->readInput();
