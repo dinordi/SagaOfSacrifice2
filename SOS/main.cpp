@@ -38,7 +38,7 @@ int main() {
 
 	// Load sounds and music
 	// audioManager->loadSound("assets/music/effect1.wav");
-	audioManager->loadMusic("music/menu/001.wav");
+	audioManager->loadMusic("music/menu/menu.wav");
 	audioManager->loadSound("sfx/jump.wav");
 
 	// Play music
@@ -46,7 +46,7 @@ int main() {
 	audioManager->playMusic();
 
 	// Play sound effects during gameplay
-	audioManager->playSound("sfx/jump.wav");
+	audioManager->playSound("jump");
 
 	std::cout << "Entering gameloop..." << std::endl;
 	// while (game.isRunning()) {
