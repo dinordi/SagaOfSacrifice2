@@ -40,12 +40,13 @@ void SDL2AudioManager::loadSound(const std::string& filePath) {
         std::cerr << "Audio system not initialized!" << std::endl;
         return;
     }
+    std::string fullPath = this->basePath + filePath;
     
-    std::string soundName = getFilenameFromPath(filePath);
+    std::string soundName = getFilenameFromPath(fullPath);
     Mix_Chunk* sound = Mix_LoadWAV(filePath.c_str());
     
     if (!sound) {
-        std::cerr << "Failed to load sound effect: " << filePath << std::endl;
+        std::cerr << "Failed to load sound effect: " << fullPath << std::endl;
         std::cerr << "SDL_mixer Error: " << Mix_GetError() << std::endl;
         return;
     }
@@ -100,18 +101,20 @@ void SDL2AudioManager::setVolume(float volume) {
 void SDL2AudioManager::loadMusic(const std::string& filePath) {
     if (!isInitialized) return;
     
+    std::string fullPath = this->basePath + filePath;
+
     // Free previous music if it exists
     if (backgroundMusic != nullptr) {
         Mix_FreeMusic(backgroundMusic);
         backgroundMusic = nullptr;
     }
     
-    backgroundMusic = Mix_LoadMUS(filePath.c_str());
+    backgroundMusic = Mix_LoadMUS(fullPath.c_str());
     if (!backgroundMusic) {
-        std::cerr << "Failed to load music: " << filePath << std::endl;
+        std::cerr << "Failed to load music: " << fullPath << std::endl;
         std::cerr << "SDL_mixer Error: " << Mix_GetError() << std::endl;
     } else {
-        std::cout << "Music loaded: " << filePath << std::endl;
+        std::cout << "Music loaded: " << fullPath << std::endl;
     }
 }
 

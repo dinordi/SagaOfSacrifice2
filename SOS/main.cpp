@@ -39,6 +39,7 @@ int main() {
 	// Load sounds and music
 	// audioManager->loadSound("assets/music/effect1.wav");
 	audioManager->loadMusic("music/02/001.wav");
+	audioManager->loadSound("sfx/jump.wav");
 
 	// Play music
 	audioManager->setMusicVolume(0.9f);
