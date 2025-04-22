@@ -12,6 +12,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIRS})
 
+# Find SDL2 packages
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
