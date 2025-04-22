@@ -11,6 +11,9 @@ int main() {
     // Try to bypass PulseAudio plugin
     setenv("AUDIODEV", "hw:0,0", 1);
     
+    // Set system volume to 100% using ALSA directly
+    system("amixer -c 0 set Master 100%");
+
     // Check if initialization works
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
