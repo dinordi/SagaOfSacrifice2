@@ -8,6 +8,9 @@ project(SOS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
 # Find the PNG package
 find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIRS})
@@ -38,4 +41,4 @@ file(GLOB_RECURSE SOURCES
 add_executable(SOS ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS ${PNG_LIBRARIES})
+target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer)
