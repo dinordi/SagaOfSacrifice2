@@ -29,6 +29,7 @@ struct AppContext {
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
+    std::filesystem::path basePathSOS;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -274,7 +275,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
-       .game = game
+       .game = game,
+       .basePathSOS = basePathSOS,
     };
     
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
@@ -305,15 +307,22 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     for(const auto& entity : app->game->getObjects()) {
         //log ID
-        int ID = entity->spriteData->ID;
-        auto it = spriteMap.find(ID);
-        if (it == spriteMap.end()) {
-            SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
-            continue;
-        }
+        int ID = entity->spriteData->id;
 
-        SDL_Texture* texture = it->second.texture;
-        SDL_FRect srcRect = it->second.srcRect;
+        // auto it = spriteMap.find(ID);
+        // if (it == spriteMap.end()) {
+        //     SDL_Log("ID not found in spritemap: %d", entity->spriteData->id);
+        //     continue;
+        // }
+
+        // SDL_Texture* texture = it->second.texture;
+        // SDL_FRect srcRect = it->second.srcRect;
+        Sprite sprite = initSprite(*entity->spriteData, app->renderer, (app->basePathSOS).make_preferred());
+
+        SDL_Texture* texture = sprite.texture;
+        SDL_FRect srcRect = sprite.srcRect;
+
+
         SDL_FRect destRect{
             .x = static_cast<float>(entity->position.x),
             .y = static_cast<float>(entity->position.y),

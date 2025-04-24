@@ -19,5 +19,6 @@ extern std::unordered_map<int, Sprite> spriteMap;
 
 void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& path);
 SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path);
+Sprite initSprite(SpriteData sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath);
 
 #endif // SPRITES_SDL_H
