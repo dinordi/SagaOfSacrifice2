@@ -38,6 +38,15 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
+# Find Boost libraries
+# Hint for Homebrew on Apple Silicon if find_package fails automatically
+# set(Boost_ROOT /opt/homebrew) 
+# set(CMAKE_PREFIX_PATH /opt/homebrew)
+find_package(Boost COMPONENTS system thread chrono REQUIRED) # Added thread component for server/client
+message(STATUS "Boost include dirs found: ${Boost_INCLUDE_DIRS}") # Check if path is found
+message(STATUS "Boost libraries found: ${Boost_LIBRARIES}")     # Check libraries
+
+
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
@@ -58,6 +67,7 @@ target_include_directories(${EXECUTABLE_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
+    ${Boost_INCLUDE_DIRS}
 )
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
@@ -111,6 +121,9 @@ target_link_libraries(${EXECUTABLE_NAME} PUBLIC
     SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
     SDL3_image::SDL3_image	# remove if you are not using SDL_image
     SDL3::SDL3              # If using satelite libraries, SDL must be the last item in the list. 
+    Boost::system
+    Boost::thread
+    Boost::chrono
 )
 
 if (APPLE)
