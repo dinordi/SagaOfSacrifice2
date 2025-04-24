@@ -21,12 +21,26 @@ uint32_t get_ticks() {
 }
 
 
-int main() {
+int main( int argc, char *argv[] ) {
+	std::string imageName = std::string("Solid_blue") + ".png";
+	
+	if (argc > 1) {
+		imageName = argv[1] + std::string(".png");
+		std::cout << "Image name: " << imageName << std::endl;
+	}
+	else {
+		std::cout << "No image name provided, using default: " << imageName << std::endl;
+	}
+
 	Renderer renderer;
 	// PlayerInput* controller = new EvdevController();
 	// Game game(controller);
 	std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
 	renderer.init();
+	std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
+
+
+	renderer.setImgPath(path + imageName);
 	
 	auto lastTime = get_ticks();
 	auto lastRenderTime = lastTime;
