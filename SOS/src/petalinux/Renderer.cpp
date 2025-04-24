@@ -45,7 +45,7 @@ Renderer::Renderer() : stop_thread(false),
     // }
     
     uint32_t phys_addr = 0x0e000000;  // Start fysiek adres (voorbeeld)
-    const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/pride.png";  // Pad naar je PNG bestand
+    const char *png_file = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/grid.png";  // Pad naar je PNG bestand
     
     SpriteLoader spriteLoader;
     uint32_t *sprite_data = nullptr;
