@@ -58,7 +58,7 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
 
 // ...existing code...
 Sprite initSprite(SpriteData sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath) {
-    std::string filename = "SOS/assets/sprites/" + std::to_string(sprData.id) + ".png";
+    std::string filename = "SOS/assets/sprites/" + std::to_string(sprData.ID) + ".png";
     SDL_Texture* texture = LoadSprite(renderer, (baseAssetsPath / filename).make_preferred());
     SDL_FRect srcRect = { 0, 0, static_cast<float>(sprData.width), static_cast<float>(sprData.height) };
 
