@@ -1,7 +1,8 @@
 #pragma once
 
 #include "NetworkInterface.h"
-#include "../objects/player.h"
+#include "Object.h"
+#include "objects/player.h"
 #include <memory>
 #include <string>
 #include <map>
@@ -82,29 +83,32 @@ private:
 };
 
 // RemotePlayer class to represent other players in the game
-class RemotePlayer {
+class RemotePlayer : public Object
+{
 public:
     RemotePlayer(const std::string& id);
     
     void update(uint64_t deltaTime);
     
     // Setters
-    void setPosition(const Vec2& position);
-    void setVelocity(const Vec2& velocity);
+    // void setPosition(const Vec2& position);
+    // void setVelocity(const Vec2& velocity);
     void setOrientation(float orientation);
     void setState(int state);
     
+    void accept(CollisionVisitor& visitor) override;
+
     // Getters
-    const std::string& getId() const { return id_; }
-    const Vec2& getPosition() const { return position_; }
-    const Vec2& getVelocity() const { return velocity_; }
+    // const std::string& getId() const { return id_; }
+    // const Vec2& getPosition() const { return position_; }
+    // const Vec2& getVelocity() const { return velocity_; }
     float getOrientation() const { return orientation_; }
     int getState() const { return state_; }
     
 private:
-    std::string id_;
-    Vec2 position_;
-    Vec2 velocity_;
+    // std::string id_;
+    // Vec2 position_;
+    // Vec2 velocity_;
     float orientation_;
     int state_;
 };

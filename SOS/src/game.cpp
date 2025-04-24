@@ -144,6 +144,21 @@ void Game::handleNetworkMessages() {
 
 void Game::updateRemotePlayers(uint64_t deltaTime) {
     // The remote players are updated internally by the MultiplayerManager
+    if (multiplayerManager) {
+        const auto& remotePlayers = multiplayerManager->getRemotePlayers();
+        mpl_objects.clear();
+        for (const auto& pair : remotePlayers) {
+            // Get the remote player
+            RemotePlayer* remotePlayer = pair.second.get();
+            
+            mpl_objects.push_back(remotePlayer);
+            
+            // For debugging, just print the remote player positions
+            std::cout << "Remote player " << remotePlayer->spriteData->ID
+                      << " at position (" << remotePlayer->position.x
+                      << ", " << remotePlayer->position.y << ")" << std::endl;
+        }
+    }
 }
 
 void Game::renderRemotePlayers() {
@@ -155,16 +170,14 @@ void Game::renderRemotePlayers() {
         const auto& remotePlayers = multiplayerManager->getRemotePlayers();
         for (const auto& pair : remotePlayers) {
             // Get the remote player
-            const RemotePlayer* remotePlayer = pair.second.get();
+            RemotePlayer* remotePlayer = pair.second.get();
             
-            // Here you would render the remote player at its position
-            // For example:
-            // renderer->drawSprite(remotePlayer->getPosition(), playerSprite);
+            // objects.push_back(remotePlayer);
             
             // For debugging, just print the remote player positions
-            std::cout << "Remote player " << remotePlayer->getId() 
-                      << " at position (" << remotePlayer->getPosition().x 
-                      << ", " << remotePlayer->getPosition().y << ")" << std::endl;
+            // std::cout << "Remote player " << remotePlayer->getId() 
+            //           << " at position (" << remotePlayer->getPosition().x 
+            //           << ", " << remotePlayer->getPosition().y << ")" << std::endl;
         }
     }
 }
