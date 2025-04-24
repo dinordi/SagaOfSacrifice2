@@ -20,12 +20,17 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
+# Find Boost libraries
+find_package(Boost COMPONENTS system REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/include/petalinux)
 include_directories(${PROJECT_SOURCE_DIR}/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/include/logging)
+include_directories(${PROJECT_SOURCE_DIR}/include/network)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Echo the include directories
@@ -41,4 +46,4 @@ file(GLOB_RECURSE SOURCES
 add_executable(SOS ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer)
+target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer ${Boost_LIBRARIES})
