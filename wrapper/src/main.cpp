@@ -307,7 +307,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     for(const auto& entity : app->game->getObjects()) {
         //log ID
-        int ID = entity->spriteData->id;
+        int ID = entity->spriteData->ID;
 
         // auto it = spriteMap.find(ID);
         // if (it == spriteMap.end()) {
