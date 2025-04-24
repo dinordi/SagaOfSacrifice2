@@ -36,6 +36,17 @@ void CollisionHandler::visit(Platform* platform) {
     handleInteraction(platform);
 }
 
+void CollisionHandler::visit(RemotePlayer* remotePlayer) {
+    // Handle collision between initiator and remote player
+    // if (initiator->type == ObjectType::PLATFORM) {
+    //     // Remote player collided with platform
+    //     handleInteraction(remotePlayer);
+    // } else if (initiator->type == ObjectType::ENEMY) {
+    //     // Remote player collided with enemy
+    //     handleInteraction(remotePlayer);
+    // }
+}
+
 void CollisionHandler::handleInteraction(Player* player) {
     if (initiator->type == ObjectType::PLATFORM) {
         // Player landed on platform

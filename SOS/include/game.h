@@ -37,6 +37,8 @@ private:
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
+
+    std::vector<Object*> mpl_objects;
     
     // Multiplayer support
     std::unique_ptr<MultiplayerManager> multiplayerManager;

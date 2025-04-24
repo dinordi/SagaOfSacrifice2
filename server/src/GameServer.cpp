@@ -95,6 +95,7 @@ bool GameServer::sendMessageToPlayer(const NetworkMessage& message, const std::s
     }
     
     it->second->sendMessage(message);
+    std::cout << "Message sent to player " << targetPlayerId << std::endl;
     return true;
 }
 

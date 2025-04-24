@@ -4,23 +4,23 @@
 #include <cstring>
 
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string& id) 
-    : id_(id), position_(0, 0), velocity_(0, 0), orientation_(0), state_(0) {
+RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(1, 0, 0)) {
+
 }
 
 void RemotePlayer::update(uint64_t deltaTime) {
     // Simple linear interpolation for position based on velocity
-    position_.x += velocity_.x * (deltaTime / 1000.0f);
-    position_.y += velocity_.y * (deltaTime / 1000.0f);
+    // position_.x += velocity_.x * (deltaTime / 1000.0f);
+    // position_.y += velocity_.y * (deltaTime / 1000.0f);
 }
 
-void RemotePlayer::setPosition(const Vec2& position) {
-    position_ = position;
-}
+// void RemotePlayer::setPosition(const Vec2& position) {
+//     position_ = position;
+// }
 
-void RemotePlayer::setVelocity(const Vec2& velocity) {
-    velocity_ = velocity;
-}
+// void RemotePlayer::setVelocity(const Vec2& velocity) {
+//     velocity_ = velocity;
+// }
 
 void RemotePlayer::setOrientation(float orientation) {
     orientation_ = orientation;
@@ -28,6 +28,10 @@ void RemotePlayer::setOrientation(float orientation) {
 
 void RemotePlayer::setState(int state) {
     state_ = state;
+}
+
+void RemotePlayer::accept(CollisionVisitor& visitor) {
+    visitor.visit(this);
 }
 
 // MultiplayerManager implementation
@@ -155,6 +159,7 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
     switch (message.type) {
         case MessageType::PLAYER_POSITION:
             handlePlayerPositionMessage(message);
+            std::cout << "Player position message received from " << message.senderId << std::endl;
             break;
         case MessageType::PLAYER_ACTION:
             handlePlayerActionMessage(message);
@@ -299,6 +304,9 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     std::memcpy(&vel.y, &data[12], sizeof(float));
     
     // Update player state
-    player->setPosition(pos);
-    player->setVelocity(vel);
+    player->position = (pos);
+    player->velocity = (vel);
+    std::cout << "Updated remote player " << player->spriteData->ID
+              << " position: (" << pos.x << ", " << pos.y << ")"
+              << " velocity: (" << vel.x << ", " << vel.y << ")" << std::endl;
 }
