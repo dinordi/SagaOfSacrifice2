@@ -46,6 +46,7 @@ Renderer::Renderer() : stop_thread(false),
     
     uint32_t phys_addr = 0x0e000000;  // Start fysiek adres (voorbeeld)
     const char *png_file = this->img_path.c_str();  // Pad naar je PNG bestand
+    std::cout << "PNG file path img_path: " << this->img_path.c_str() << std::endl;
     std::cout << "PNG file path: " << png_file << std::endl;
     
     SpriteLoader spriteLoader;
