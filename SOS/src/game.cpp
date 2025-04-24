@@ -1,17 +1,20 @@
 // SOS/src/game.cpp
 
 #include "game.h"
+#include "characters.h"
 
 Game::Game(PlayerInput* input) : running(true), input(input) {
     
     CollisionManager* collisionManager = new CollisionManager();
     this->collisionManager = collisionManager;
-    // Initialize game objects here
-    player = new Player(Vec2(500,100), new SpriteData(1, 128, 128));
+    
+    // Initialize game objects here with relative paths
+    // Use "sprites/player.png" format that can be resolved relative to your asset path
+    player = new Player(Vec2(500,100), new SpriteData(SpriteTypes::COMMANDO, "sprites/player.png", 128, 128));
     objects.push_back(player);
 
-    Platform* floor = new Platform(4, 500, 850, new SpriteData(4, 128, 128));
-    Platform* floor2 = new Platform(4, 700, 850, new SpriteData(4, 15, 15));
+    Platform* floor = new Platform(4, 500, 850, new SpriteData(SpriteTypes::PLATFORM1, "sprites/tiles.png", 128, 128));
+    Platform* floor2 = new Platform(4, 700, 850, new SpriteData(SpriteTypes::PLATFORM1, "sprites/tiles.png", 15, 15));
     objects.push_back(floor);
     objects.push_back(floor2);
 

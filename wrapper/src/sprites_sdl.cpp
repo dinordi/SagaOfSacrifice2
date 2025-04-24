@@ -55,3 +55,13 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     // Add more sprites as needed
 }
+
+// ...existing code...
+Sprite initSprite(SpriteData sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath) {
+    std::string filename = "SOS/assets/sprites/" + std::to_string(sprData.id) + ".png";
+    SDL_Texture* texture = LoadSprite(renderer, (baseAssetsPath / filename).make_preferred());
+    SDL_FRect srcRect = { 0, 0, static_cast<float>(sprData.width), static_cast<float>(sprData.height) };
+
+    return { texture, srcRect };
+}
+// ...existing code...
