@@ -31,16 +31,15 @@ int main( int argc, char *argv[] ) {
 	else {
 		std::cout << "No image name provided, using default: " << imageName << std::endl;
 	}
+	std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
 
-	Renderer renderer;
+	Renderer renderer(path + imageName);
 	// PlayerInput* controller = new EvdevController();
 	// Game game(controller);
 	std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
 	renderer.init();
-	std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
 
 
-	renderer.setImgPath(path + imageName);
 	
 	auto lastTime = get_ticks();
 	auto lastRenderTime = lastTime;
