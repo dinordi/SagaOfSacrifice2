@@ -3,7 +3,7 @@
 // Define MM2S_DMA_BASE_ADDR with the appropriate value
 #define MM2S_DMA_BASE_ADDR 0x40400000 // Replace with the correct base address for your hardware
 
-Renderer::Renderer() : stop_thread(false), 
+Renderer::Renderer(const std::string& img_path) : stop_thread(false), 
                            uio_fd(-1),
                            ddr_memory(-1),
                            dma_virtual_addr(NULL),
@@ -45,8 +45,8 @@ Renderer::Renderer() : stop_thread(false),
     // }
     
     uint32_t phys_addr = 0x0e000000;  // Start fysiek adres (voorbeeld)
-    const char *png_file = this->img_path.c_str();  // Pad naar je PNG bestand
-    std::cout << "PNG file path img_path: " << this->img_path.c_str() << std::endl;
+    const char *png_file = img_path.c_str();  // Pad naar je PNG bestand
+    std::cout << "PNG file path img_path: " << img_path.c_str() << std::endl;
     std::cout << "PNG file path: " << png_file << std::endl;
     
     SpriteLoader spriteLoader;
@@ -95,10 +95,6 @@ Renderer::Renderer() : stop_thread(false),
     // irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
-void Renderer::setImgPath(std::string path)
-{
-    this->img_path = path;
-}
 
 Renderer::~Renderer()
 {

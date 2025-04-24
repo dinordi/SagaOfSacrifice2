@@ -20,14 +20,12 @@ typedef struct BRAMDATA
 class Renderer
 {
 public:
-    Renderer();
+    Renderer(const std::string& img_path);
     ~Renderer();
 
     void init();
     void render(std::vector<Object*> objects);
-    void setImgPath(std::string path);
 private:
-    std::string img_path;
     void handleIRQ();
     void irqHandlerThread();
     bool stop_thread;
