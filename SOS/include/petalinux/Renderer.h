@@ -25,7 +25,7 @@ public:
 
     void init();
     void render(std::vector<Object*> objects);
-    void setImgPath(std::string path) { img_path = path; }
+    void setImgPath(std::string path);
 private:
     std::string img_path;
     void handleIRQ();

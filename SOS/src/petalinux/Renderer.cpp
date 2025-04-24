@@ -94,6 +94,11 @@ Renderer::Renderer() : stop_thread(false),
     // irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
+void Renderer::setImgPath(std::string path)
+{
+    this->img_path = path;
+}
+
 Renderer::~Renderer()
 {
     // Unmap the DMA virtual address
