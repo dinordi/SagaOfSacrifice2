@@ -232,7 +232,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     // Copy the actual sprite data
     std::cout << "Copying " << sprite_size << " bytes to virtual address " << mapped_mem
               << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
-    memcpy(mapped_mem, data_to_use, sprite_size);
+    //memcpy(mapped_mem, data_to_use, sprite_size);
 
     // --- Debugging before msync ---
     std::cout << "Preparing for msync:" << std::endl;
