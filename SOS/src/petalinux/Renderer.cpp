@@ -44,7 +44,7 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     //     throw std::runtime_error("Failed to map DMA registers");
     // }
     
-    uint32_t phys_addr = 0x0e000000;  // Start fysiek adres (voorbeeld)
+    uint32_t phys_addr = 0x0e000000 - 250;  // Start fysiek adres (voorbeeld)
     const char *png_file = img_path.c_str();  // Pad naar je PNG bestand
     std::cout << "PNG file path img_path: " << img_path.c_str() << std::endl;
     std::cout << "PNG file path: " << png_file << std::endl;
