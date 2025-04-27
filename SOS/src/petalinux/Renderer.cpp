@@ -46,37 +46,50 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     
     // Use a properly page-aligned physical address
     uint32_t phys_addr = 0x0e000000;  // Ensure this is page-aligned (multiple of 0x1000)
-    const char *png_file = img_path.c_str();  // Pad naar je PNG bestand
-    std::cout << "PNG file path img_path: " << img_path.c_str() << std::endl;
-    std::cout << "PNG file path: " << png_file << std::endl;
+    sprite_base_addr = phys_addr;     // Store base address for future reference
+    
+    const char *png_file = img_path.c_str();
+    std::cout << "PNG file path img_path: " << img_path << std::endl;
     
     SpriteLoader spriteLoader;
     uint32_t *sprite_data = nullptr;
     int width = 0, height = 0;
     size_t sprite_size = 0;
     
-    // Eerst laden we het PNG bestand
+    // Load the PNG file
     if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
         perror("Failed to load PNG file");
-        // close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to load PNG file");
     }
     
-    // Store the total size for later use
+    // Store sprite properties from actual loaded data
+    sprite_width = width;
+    sprite_height = height;
+    bytes_per_pixel = 4;  // RGBA format = 4 bytes per pixel
+    line_offset = sprite_width * bytes_per_pixel;
     total_size = sprite_size;
     
-    // Daarna mappen we het naar het geheugen
+    std::cout << "Loaded sprite: " << sprite_width << "x" << sprite_height 
+              << ", " << bytes_per_pixel << " bytes per pixel" << std::endl;
+    
+    // Map the sprite data to physical memory
     if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
         spriteLoader.free_sprite_data(sprite_data);
         perror("Failed to map sprite to memory");
-        // close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to map sprite to memory");
     }
     
-    // Na het mappen kunnen we de sprite data vrijgeven
+    std::cout << "Sprite mapped to physical memory: 0x" << std::hex << sprite_base_addr 
+              << " - 0x" << phys_addr << std::dec << std::endl;
+    
+    // Calculate how many lines/rows are in the sprite
+    sprite_lines = sprite_height;
+    
+    // Free temporary sprite data (it's now in physical memory)
     spriteLoader.free_sprite_data(sprite_data);
+    sprite_data = nullptr;  // Avoid dangling pointers
 
     BRAMDATA brData = {0, 0};
     sprite_width = 400;
