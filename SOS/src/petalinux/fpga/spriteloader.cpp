@@ -170,6 +170,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     uint32_t *data_to_use = sprite_data;
     uint32_t original_phys_addr = *phys_addr;
     int result = 0;
+    size_t size_to_sync = 0; // Declare size_to_sync here, initialize to 0
 
     // --- Potential Issue 1: Address Alignment ---
     // Although you mentioned it's page aligned, let's add a check/assertion for safety.
@@ -205,6 +206,9 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
          return 0; // Or handle as an error if needed
     }
 
+    // Now that sprite_size is definitively set (either passed in or loaded), assign it to size_to_sync
+    size_to_sync = sprite_size;
+
     mapped_size = round_up_to_page_size(sprite_size);  // Rond af naar de dichtstbijzijnde page size
 
     // Open /dev/mem voor directe toegang tot fysiek geheugen
@@ -229,9 +233,9 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     std::cout << "Initializing mapped region (" << mapped_size << " bytes) to 0xFFFFFFFF..." << std::endl;
     memset(mapped_mem, 0xFF, mapped_size);
 
-    // Copy the actual sprite data
-    std::cout << "Copying " << sprite_size << " bytes to virtual address " << mapped_mem
-              << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
+    // Copy the actual sprite data (currently commented out)
+    // std::cout << "Copying " << sprite_size << " bytes to virtual address " << mapped_mem
+    //           << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
     //memcpy(mapped_mem, data_to_use, sprite_size);
 
     // --- Debugging before msync ---
@@ -247,13 +251,8 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     // --- End Debugging ---
 
     // Explicitly synchronize the memory: Flush CPU cache and invalidate others
-    // --- Potential Fix: Try syncing only the actual sprite_size ---
-    // Sometimes msync is sensitive to the length argument, especially with /dev/mem.
-    // Let's try syncing only the bytes we actually wrote (sprite_size) instead of the
-    // full page-aligned mapped_size.
-    size_t size_to_sync = sprite_size;
     std::cout << "Synchronizing memory (msync with MS_SYNC | MS_INVALIDATE) for "
-              << size_to_sync << " bytes..." << std::endl;
+              << size_to_sync << " bytes..." << std::endl; // Now uses the declared variable
 
     if (msync(mapped_mem, size_to_sync, MS_SYNC | MS_INVALIDATE) == -1) { // Using size_to_sync
          // Capture errno immediately
