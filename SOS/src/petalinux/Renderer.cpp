@@ -44,7 +44,8 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     //     throw std::runtime_error("Failed to map DMA registers");
     // }
     
-    uint32_t phys_addr = 0x0e000000 - 200;  // Start fysiek adres (voorbeeld)
+    // Use a properly page-aligned physical address
+    uint32_t phys_addr = 0x0e000000;  // Ensure this is page-aligned (multiple of 0x1000)
     const char *png_file = img_path.c_str();  // Pad naar je PNG bestand
     std::cout << "PNG file path img_path: " << img_path.c_str() << std::endl;
     std::cout << "PNG file path: " << png_file << std::endl;
@@ -73,6 +74,14 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
         close(uio_fd);
         throw std::runtime_error("Failed to map sprite to memory");
     }
+    
+    // After mapping, phys_addr now points to the next available address
+    std::cout << "Next available address after sprite: 0x" << std::hex << phys_addr << std::dec << std::endl;
+    
+    // The next memory region you can safely use would be:
+    uint32_t next_safe_addr = phys_addr;
+    // Round up to next 4K boundary for extra safety if needed
+    next_safe_addr = ((next_safe_addr + 0xFFF) & ~0xFFF);
     
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
