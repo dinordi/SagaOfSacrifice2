@@ -234,11 +234,26 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
               << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
     memcpy(mapped_mem, data_to_use, sprite_size);
 
+    // --- Debugging before msync ---
+    std::cout << "Preparing for msync:" << std::endl;
+    std::cout << "  mapped_mem address: " << mapped_mem << std::endl;
+    std::cout << "  mapped_size: " << mapped_size << " bytes" << std::endl;
+    if (mapped_mem == NULL || mapped_mem == MAP_FAILED) {
+        std::cerr << "  ERROR: mapped_mem pointer is invalid!" << std::endl;
+    }
+    if (mapped_size == 0) {
+        std::cerr << "  ERROR: mapped_size is zero!" << std::endl;
+    }
+    // --- End Debugging ---
+
     // Explicitly synchronize the memory: Flush CPU cache to physical memory
-    // This ensures the data written by memcpy is visible to the DMA controller.
     std::cout << "Synchronizing memory (msync)..." << std::endl;
     if (msync(mapped_mem, mapped_size, MS_SYNC) == -1) {
+         // Capture errno immediately
+         int msync_errno = errno;
          perror("Error during msync");
+         std::cerr << "  msync errno: " << msync_errno << " (" << strerror(msync_errno) << ")" << std::endl;
+         std::cerr << "  msync arguments: addr=" << mapped_mem << ", len=" << mapped_size << std::endl;
          // Decide if this is a fatal error
          // result = 1;
          // goto cleanup;
