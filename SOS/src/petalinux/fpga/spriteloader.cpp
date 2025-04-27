@@ -246,14 +246,21 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     }
     // --- End Debugging ---
 
-    // Explicitly synchronize the memory: Flush CPU cache to physical memory
-    std::cout << "Synchronizing memory (msync)..." << std::endl;
-    if (msync(mapped_mem, mapped_size, MS_SYNC) == -1) {
+    // Explicitly synchronize the memory: Flush CPU cache and invalidate others
+    // --- Potential Fix: Try syncing only the actual sprite_size ---
+    // Sometimes msync is sensitive to the length argument, especially with /dev/mem.
+    // Let's try syncing only the bytes we actually wrote (sprite_size) instead of the
+    // full page-aligned mapped_size.
+    size_t size_to_sync = sprite_size;
+    std::cout << "Synchronizing memory (msync with MS_SYNC | MS_INVALIDATE) for "
+              << size_to_sync << " bytes..." << std::endl;
+
+    if (msync(mapped_mem, size_to_sync, MS_SYNC | MS_INVALIDATE) == -1) { // Using size_to_sync
          // Capture errno immediately
          int msync_errno = errno;
          perror("Error during msync");
          std::cerr << "  msync errno: " << msync_errno << " (" << strerror(msync_errno) << ")" << std::endl;
-         std::cerr << "  msync arguments: addr=" << mapped_mem << ", len=" << mapped_size << std::endl;
+         std::cerr << "  msync arguments: addr=" << mapped_mem << ", len=" << size_to_sync << std::endl; // Log the size used
          // Decide if this is a fatal error
          // result = 1;
          // goto cleanup;
@@ -268,6 +275,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
 
 cleanup:
     // Verwijder de mapping
+    // munmap requires the starting virtual address returned by mmap and the original mapped size.
     if (mapped_mem != MAP_FAILED) {
         munmap(mapped_mem, mapped_size);
     }
