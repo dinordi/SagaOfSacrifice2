@@ -75,14 +75,6 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
         throw std::runtime_error("Failed to map sprite to memory");
     }
     
-    // After mapping, phys_addr now points to the next available address
-    std::cout << "Next available address after sprite: 0x" << std::hex << phys_addr << std::dec << std::endl;
-    
-    // The next memory region you can safely use would be:
-    uint32_t next_safe_addr = phys_addr;
-    // Round up to next 4K boundary for extra safety if needed
-    next_safe_addr = ((next_safe_addr + 0xFFF) & ~0xFFF);
-    
     // Na het mappen kunnen we de sprite data vrijgeven
     spriteLoader.free_sprite_data(sprite_data);
 
