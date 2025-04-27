@@ -163,13 +163,25 @@ int SpriteLoader::load_png(const char *filename, uint32_t **sprite_data_out, int
 
 // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren (Vereenvoudigd)
 int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
-    int mem_fd = -1; // Initialize to -1
-    uint32_t *mapped_mem = nullptr; // Initialize to MAP_FAILED
+    int mem_fd = -1;
+    void *mapped_mem = MAP_FAILED; // Use void* for mmap, cast later
     size_t mapped_size;
     bool should_free_data = false;
     uint32_t *data_to_use = sprite_data;
-    uint32_t original_phys_addr = *phys_addr; // Store original address if needed later
-    int result = 0; // Success by default
+    uint32_t original_phys_addr = *phys_addr;
+    int result = 0;
+
+    // --- Potential Issue 1: Address Alignment ---
+    // Although you mentioned it's page aligned, let's add a check/assertion for safety.
+    if ((*phys_addr & (PAGE_SIZE - 1)) != 0) {
+        std::cerr << "ERROR: Physical address 0x" << std::hex << *phys_addr
+                  << " is NOT page aligned!" << std::dec << std::endl;
+        // Optionally, force alignment (though this might shift your intended start address)
+        // *phys_addr = *phys_addr & ~(PAGE_SIZE - 1);
+        // std::cout << "Forcing alignment to: 0x" << std::hex << *phys_addr << std::dec << std::endl;
+        result = 1; // Treat non-alignment as an error
+        goto cleanup;
+    }
 
     if (!sprite_data) {
         // Als er geen sprite_data is meegegeven, laad het dan vanuit het bestand
@@ -203,21 +215,41 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
         goto cleanup; // Use goto for centralized cleanup
     }
 
-    // Map het gehele benodigde gebied in één keer
-    mapped_mem = (uint32_t *)mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, *phys_addr);
+    // Map the required region based on the page-aligned physical address
+    mapped_mem = mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, *phys_addr);
     if (mapped_mem == MAP_FAILED) {
         perror("Fout bij mmap");
+        std::cerr << "Failed mapping address: 0x" << std::hex << *phys_addr
+                  << " size: " << std::dec << mapped_size << std::endl;
         result = 1;
         goto cleanup;
     }
 
-    // Kopieer de *werkelijke* sprite data (niet de afgeronde grootte)
+    // Initialize the mapped region to 0xFFFFFFFF before copying
+    std::cout << "Initializing mapped region (" << mapped_size << " bytes) to 0xFFFFFFFF..." << std::endl;
+    memset(mapped_mem, 0xFF, mapped_size);
+
+    // Copy the actual sprite data
+    std::cout << "Copying " << sprite_size << " bytes to virtual address " << mapped_mem
+              << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
     memcpy(mapped_mem, data_to_use, sprite_size);
 
-    // Optioneel: Werk het fysieke adres bij voor de aanroeper
-    // *phys_addr += mapped_size; // Update pointer like the original loop did
+    // Explicitly synchronize the memory: Flush CPU cache to physical memory
+    // This ensures the data written by memcpy is visible to the DMA controller.
+    std::cout << "Synchronizing memory (msync)..." << std::endl;
+    if (msync(mapped_mem, mapped_size, MS_SYNC) == -1) {
+         perror("Error during msync");
+         // Decide if this is a fatal error
+         // result = 1;
+         // goto cleanup;
+    } else {
+         std::cout << "msync completed successfully for mapped region." << std::endl;
+    }
 
-    // Geen loop meer nodig
+    // Update the physical address pointer for the caller to the next available address
+    // *phys_addr += sprite_size; // Point right after the actual data
+    // Or round up to the next page if you want page-aligned blocks
+    *phys_addr += mapped_size;
 
 cleanup:
     // Verwijder de mapping
