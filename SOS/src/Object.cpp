@@ -1,5 +1,5 @@
 #include "object.h"
-#include "interfaces/sprite_data.h"
+#include "sprite_data.h"
 #include "platform.h"
 
 Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
@@ -16,3 +16,10 @@ Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
 // void Object::handlePlatformCollision(Platform* platform) {
     // virtual Method 
 // }
+
+
+Actor::Actor(Vec2 pos, const SpriteData* spData, int spriteIndex) : spriteIndex(spriteIndex)
+{
+    this->position = pos;
+    this->spriteData = spData;
+}

@@ -305,31 +305,110 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
+    // for(const auto& entity : app->game->getObjects()) {
+    //     //log ID
+    //     const SpriteRect spriteRect = entity->spriteData->getSpriteRect(1);
+
+    //     Sprite sprite = initSprite(spriteRect, app->renderer, (app->basePathSOS).make_preferred());
+
+    //     SDL_Texture* texture = sprite.texture;
+    //     SDL_FRect srcRect = sprite.srcRect;
+
+
+    //     SDL_FRect destRect{
+    //         .x = static_cast<float>(entity->position.x),
+    //         .y = static_cast<float>(entity->position.y),
+    //         .w = static_cast<float>(spriteRect.w),
+    //         .h = static_cast<float>(spriteRect.h)
+    //     };
+    //     SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+    // }
+
+    // for(const auto& actor : app->game->getActors()) {
+    //     //log ID
+
+    //     if (!actor) {
+    //         continue; // Skip if actor is null
+    //     }
+    //     // if(!actor->spriteRect) {
+    //     //     SDL_LogWarn(SDL_LOG_CATEGORY_CUSTOM, "Actor spriteRect is null");
+    //         // continue; // Skip if spriteRect is null
+    //     // }
+    //     // const Actor* tempactor = actor;
+    //     // std::cout << "Actor ID: " << actor->spriteIndex << std::endl;
+    //     // std::cout << "Actor position: " << actor->position.x << ", " << actor->position.y << std::endl;
+    //     // std::cout << "Actor spriteData ID: " << actor->spriteData->ID << std::endl;
+
+    //     Sprite sprite = initSprite((actor->spriteData->getSpriteRect(actor->spriteIndex)), app->renderer, (app->basePathSOS).make_preferred());
+
+    //     SDL_Texture* texture = sprite.texture;
+    //     SDL_FRect srcRect = sprite.srcRect;
+
+    //     SDL_FRect destRect{
+    //         .x = static_cast<float>(actor->position.x),
+    //         .y = static_cast<float>(actor->position.y),
+    //         .w = static_cast<float>(actor->spriteData->getSpriteRect(actor->spriteIndex).w),
+    //         .h = static_cast<float>(actor->spriteData->getSpriteRect(actor->spriteIndex).h)
+    //     };
+    //     SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+    // }
+
+
     for(const auto& entity : app->game->getObjects()) {
-        //log ID
-        int ID = entity->spriteData->ID;
+        if (!entity || !entity->spriteData) continue; // Basic safety check
 
-        // auto it = spriteMap.find(ID);
-        // if (it == spriteMap.end()) {
-        //     SDL_Log("ID not found in spritemap: %d", entity->spriteData->id);
-        //     continue;
-        // }
+        // Get the pre-loaded sprite info from the map
+        auto it = spriteMap.find(entity->spriteData->ID);
+        if (it == spriteMap.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %d not found in spriteMap for Object", entity->spriteData->ID);
+             continue; // Skip rendering if sprite not found
+        }
+        const Sprite& sprite = it->second; // Use the existing sprite (texture + srcRect)
 
-        // SDL_Texture* texture = it->second.texture;
-        // SDL_FRect srcRect = it->second.srcRect;
-        Sprite sprite = initSprite(*entity->spriteData, app->renderer, (app->basePathSOS).make_preferred());
-
-        SDL_Texture* texture = sprite.texture;
-        SDL_FRect srcRect = sprite.srcRect;
-
+        // Use the entity's specific sprite rect index if applicable (modify as needed)
+        // For simplicity, this example uses the base srcRect from spriteMap
+        // You might need entity->spriteData->getSpriteRect(index) to adjust srcRect if using sprite sheets
+        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(0); // Example: Get rect for index 0
+        SDL_FRect srcRect = sprite.srcRect; // Start with base rect
+        // Potentially adjust srcRect.x/y based on currentSpriteRect.x/y if it's an atlas
 
         SDL_FRect destRect{
             .x = static_cast<float>(entity->position.x),
             .y = static_cast<float>(entity->position.y),
-            .w = static_cast<float>(entity->spriteData->width),
-            .h = static_cast<float>(entity->spriteData->height)
+            .w = static_cast<float>(currentSpriteRect.w), // Use actual width/height
+            .h = static_cast<float>(currentSpriteRect.h)
         };
-        SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+        SDL_RenderTexture(app->renderer, sprite.texture, &srcRect, &destRect); // Use pre-loaded texture
+    }
+
+    for(const auto& actor : app->game->getActors()) {
+         if (!actor || !actor->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info for the character texture (ID 11)
+        auto it_char_tex = spriteMap.find(actor->spriteData->ID); // Should be ID 11 for letters
+         if (it_char_tex == spriteMap.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %d not found in spriteMap for Actor", actor->spriteData->ID);
+             continue;
+         }
+        const Sprite& charSpriteBase = it_char_tex->second; // Base texture for letters.png
+
+        // Get the specific source rect for this character index
+        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
+        SDL_FRect srcRect = {
+            static_cast<float>(charSpriteRect.x),
+            static_cast<float>(charSpriteRect.y),
+            static_cast<float>(charSpriteRect.w),
+            static_cast<float>(charSpriteRect.h)
+        };
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(actor->position.x),
+            .y = static_cast<float>(actor->position.y),
+            .w = static_cast<float>(charSpriteRect.w),
+            .h = static_cast<float>(charSpriteRect.h)
+        };
+        SDL_RenderTexture(app->renderer, charSpriteBase.texture, &srcRect, &destRect); // Use pre-loaded texture
     }
 
     // If 16ms has passed since the last update, update the game
@@ -344,9 +423,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     app->game->update(deltaTime);
     lastUpdate = currentTime;
     
-    if(deltaTime > 1000.0f / 60.0f) {
-        app->game->render();
-    }
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;

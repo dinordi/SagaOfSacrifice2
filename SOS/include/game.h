@@ -16,18 +16,26 @@ class Game {
 public:
     Game(PlayerInput* input);
     ~Game();
+    bool isRunning() const;
 
     void update(uint64_t deltaTime);
-    void render();
-    bool isRunning() const;
     std::vector<Object*>& getObjects();
+    std::vector<Actor*>& getActors();
+
 
 private:
+    void drawWord(const std::string& word, int x, int y);
+    void mapCharacters();
+
     bool running;
     std::vector<Object*> objects;
+    std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
+    
+    SpriteData* characters;
+    std::map<char, int> characterMap;
 };
 
 #endif // GAME_H
