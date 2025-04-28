@@ -52,6 +52,7 @@ include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/utils)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
 

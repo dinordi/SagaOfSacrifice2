@@ -23,22 +23,22 @@ public:
     void stop();
     
     // Add a client session
-    void addSession(const std::string& playerId, std::shared_ptr<GameSession> session);
+    void addSession(const uint8_t playerId, std::shared_ptr<GameSession> session);
     
     // Remove a client session
-    void removeSession(const std::string& playerId);
+    void removeSession(const uint8_t playerId);
     
     // Broadcast a message to all clients
     void broadcastMessage(const NetworkMessage& message);
     
     // Broadcast a message to all clients except the sender
-    void broadcastMessageExcept(const NetworkMessage& message, const std::string& excludedPlayerId);
+    void broadcastMessageExcept(const NetworkMessage& message, const uint8_t excludedPlayerId);
     
     // Send a message to a specific client
-    bool sendMessageToPlayer(const NetworkMessage& message, const std::string& targetPlayerId);
+    bool sendMessageToPlayer(const NetworkMessage& message, const uint8_t targetPlayerId);
     
     // Check if a player is connected
-    bool isPlayerConnected(const std::string& playerId) const;
+    bool isPlayerConnected(const uint8_t playerId) const;
 
 private:
     // Start accepting client connections
@@ -54,7 +54,7 @@ private:
     boost::asio::ip::tcp::acceptor acceptor_;
     
     // Map of player ID to session
-    std::map<std::string, std::shared_ptr<GameSession>> sessions_;
+    std::map<uint8_t, std::shared_ptr<GameSession>> sessions_;
     
     // Mutex to protect access to the sessions map
     mutable std::mutex sessionsMutex_;

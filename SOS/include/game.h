@@ -19,20 +19,21 @@ public:
     ~Game();
 
     void update(uint64_t deltaTime);
-    void render();
+    // void render();
     bool isRunning() const;
     std::vector<Object*>& getObjects();
     
     // Multiplayer functionality
-    bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId);
+    bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const uint8_t playerId);
     void shutdownMultiplayer();
     bool isMultiplayerActive() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
     void sendChatMessage(const std::string& message);
-    void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const uint8_t sender, const std::string& message)> handler);
 
 private:
     bool running;
+    bool isPaused = false; // Added isPaused member variable
     std::vector<Object*> objects;
     PlayerInput* input;
     CollisionManager* collisionManager;
@@ -48,10 +49,10 @@ private:
     void handleNetworkMessages();
     
     // Update remote player positions
-    void updateRemotePlayers(uint64_t deltaTime);
+    void updateRemotePlayers(const std::map<uint8_t, std::unique_ptr<RemotePlayer>>& remotePlayers);
     
     // Render remote players
-    void renderRemotePlayers();
+    // void renderRemotePlayers();
 };
 
 #endif // GAME_H

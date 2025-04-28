@@ -17,6 +17,6 @@ enum class MessageType {
 // Base message structure - same as client side
 struct NetworkMessage {
     MessageType type;
-    std::string senderId;
+    uint8_t senderId;
     std::vector<uint8_t> data;
 };

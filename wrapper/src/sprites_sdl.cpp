@@ -53,5 +53,6 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     spriteMap[2] = { LoadSprite(renderer, (path / "SOS/assets/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     spriteMap[3] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    spriteMap[5] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     // Add more sprites as needed
 }

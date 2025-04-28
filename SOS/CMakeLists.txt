@@ -38,12 +38,22 @@ message("Include directories: ${PROJECT_SOURCE_DIR}/include")
 message("Include directories: ${PROJECT_SOURCE_DIR}/src")
 
 # Add source files
-file(GLOB_RECURSE SOURCES
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
+set(SOS_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/game.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Object.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/platform.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/entity.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/player.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/enemy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/network/AsioNetworkClient.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/network/MultiplayerManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtils.cpp  # Added new TimeUtils file
 )
 
 # Add executable
-add_executable(SOS ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
+add_executable(SOS ${SOS_SOURCES})
 
 # Link libraries (moved after add_executable)
 target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer ${Boost_LIBRARIES})

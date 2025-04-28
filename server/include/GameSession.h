@@ -23,7 +23,7 @@ public:
     void sendMessage(const NetworkMessage& message);
     
     // Get the player ID
-    const std::string& getPlayerId() const { return playerId_; }
+    const uint8_t getPlayerId() const { return playerId_; }
     
     // Check if connected
     bool isConnected() const { return connected_; }
@@ -63,7 +63,7 @@ private:
     std::vector<uint8_t> readBuffer_;
     
     // Player ID for this session
-    std::string playerId_;
+    uint8_t playerId_;
     
     // Connection status
     bool connected_;

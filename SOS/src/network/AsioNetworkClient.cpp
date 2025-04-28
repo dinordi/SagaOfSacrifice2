@@ -15,7 +15,7 @@ AsioNetworkClient::~AsioNetworkClient() {
 
 bool AsioNetworkClient::connect(const std::string& host, int port) {
     if (connected_) {
-        std::cerr << "Already connected, disconnect first" << std::endl;
+        std::cerr << "[Network] Already connected, disconnect first" << std::endl;
         return false;
     }
 
@@ -25,6 +25,8 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
     try {
         boost::asio::ip::tcp::resolver resolver(io_context_);
         auto endpoints = resolver.resolve(host, std::to_string(port));
+        
+        std::cout << "[Network] Attempting to connect to " << host << ":" << port << std::endl;
 
         // Ensure the handler signature matches one of the expected overloads.
         // Common signature takes error_code and the endpoint type.
@@ -38,9 +40,11 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
         // Start the ASIO io_context in a separate thread
         io_thread_ = boost::thread([this]() {
             try {
+                std::cout << "[Network] IO thread started" << std::endl;
                 io_context_.run();
+                std::cout << "[Network] IO thread finished" << std::endl;
             } catch (const std::exception& e) {
-                std::cerr << "Network thread exception: " << e.what() << std::endl;
+                std::cerr << "[Network] Network thread exception: " << e.what() << std::endl;
                 connected_ = false;
             }
         });
@@ -49,7 +53,7 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
         boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
         return connected_;
     } catch (const std::exception& e) {
-        std::cerr << "Connection error: " << e.what() << std::endl;
+        std::cerr << "[Network] Connection error: " << e.what() << std::endl;
         return false;
     }
 }
@@ -79,6 +83,7 @@ void AsioNetworkClient::disconnect() {
 
 bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
     if (!connected_ || !socket_.is_open()) {
+        std::cerr << "[Network] Cannot send message, not connected" << std::endl;
         return false;
     }
 
@@ -100,6 +105,10 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         // Copy message body
         std::memcpy(buffer.data() + sizeof(header), serializedMsg.data(), serializedMsg.size());
         
+        // std::cout << "[Network] Sending message type: " << static_cast<int>(message.type) 
+        //           << ", size: " << serializedMsg.size() 
+        //           << ", sender: " << message.senderId << std::endl;
+        
         // Send the message asynchronously
         boost::asio::async_write(socket_, 
             boost::asio::buffer(buffer, buffer.size()),
@@ -109,7 +118,7 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         
         return true;
     } catch (const std::exception& e) {
-        std::cerr << "Error sending message: " << e.what() << std::endl;
+        std::cerr << "[Network] Error sending message: " << e.what() << std::endl;
         return false;
     }
 }
@@ -138,7 +147,10 @@ void AsioNetworkClient::handleConnect(const boost::system::error_code& error) {
 }
 
 void AsioNetworkClient::startRead() {
-    if (!socket_.is_open()) return;
+    if (!socket_.is_open()) {
+        std::cerr << "[Network] Cannot start read, socket is closed" << std::endl;
+        return;
+    }
     
     // First, read the message header to know the size
     boost::asio::async_read(socket_,
@@ -147,6 +159,8 @@ void AsioNetworkClient::startRead() {
             if (!error && bytes_transferred == sizeof(MessageHeader)) {
                 // Read the message header
                 MessageHeader* header = reinterpret_cast<MessageHeader*>(read_buffer_.data());
+                
+                // std::cout << "[Network] Received message header, size: " << header->size << " bytes" << std::endl;
                 
                 // Now read the message body
                 if (header->size > 0 && header->size < max_buffer_size) {
@@ -162,8 +176,14 @@ void AsioNetworkClient::startRead() {
                                 
                                 // Deserialize and add to queue
                                 NetworkMessage message = deserializeMessage(messageData);
+                                // std::cout << "[Network] Received complete message, type: " << static_cast<int>(message.type) 
+                                //           << ", sender: " << message.senderId
+                                //           << ", data size: " << message.data.size() << " bytes" << std::endl;
+                                
                                 std::lock_guard<std::mutex> lock(message_mutex_);
                                 received_messages_.push(message);
+                            } else if (error) {
+                                std::cerr << "[Network] Error reading message body: " << error.message() << std::endl;
                             }
                             
                             // Continue reading
@@ -171,12 +191,13 @@ void AsioNetworkClient::startRead() {
                         });
                 } else {
                     // Invalid message size, restart reading
+                    std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
                     startRead();
                 }
             } else if (error != boost::asio::error::operation_aborted) {
                 // Handle error but don't restart if we're intentionally shutting down
                 if (connected_) {
-                    std::cerr << "Read error: " << error.message() << std::endl;
+                    std::cerr << "[Network] Read error: " << error.message() << std::endl;
                     // Try to reconnect or handle disconnection
                     connected_ = false;
                     // Could implement reconnection logic here
@@ -217,9 +238,17 @@ void AsioNetworkClient::handleWrite(const boost::system::error_code& error) {
 void AsioNetworkClient::processMessageQueue() {
     std::lock_guard<std::mutex> lock(message_mutex_);
     
+    if (!received_messages_.empty()) {
+        // std::cout << "[Network] Processing " << received_messages_.size() << " received messages" << std::endl;
+    }
+    
     while (!received_messages_.empty()) {
         if (message_handler_) {
+            // std::cout << "[Network] Dispatching message type: " << static_cast<int>(received_messages_.front().type) 
+            //           << " from " << received_messages_.front().senderId << std::endl;
             message_handler_(received_messages_.front());
+        } else {
+            std::cerr << "[Network] Warning: No message handler registered" << std::endl;
         }
         received_messages_.pop();
     }
@@ -234,12 +263,9 @@ std::vector<uint8_t> AsioNetworkClient::serializeMessage(const NetworkMessage& m
     result.push_back(static_cast<uint8_t>(message.type));
     
     // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId.size()));
+    result.push_back(static_cast<uint8_t>(message.senderId));
     
-    // 3. Sender ID content
-    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
-    
-    // 4. Data length - 4 bytes
+    // 3. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
     result.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
     result.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
@@ -264,13 +290,14 @@ NetworkMessage AsioNetworkClient::deserializeMessage(const std::vector<uint8_t>&
     if (offset >= data.size()) return message;
     
     // 2. Sender ID length
-    uint8_t senderIdLength = data[offset++];
+    // uint8_t senderIdLength = data[offset++];
+    message.senderId = data[offset++];
     
-    // 3. Sender ID content
-    if (offset + senderIdLength <= data.size()) {
-        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-        offset += senderIdLength;
-    }
+    // // 3. Sender ID content
+    // if (offset + senderIdLength <= data.size()) {
+    //     message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
+    //     offset += senderIdLength;
+    // }
     
     if (offset + 4 > data.size()) return message;
     

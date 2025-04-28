@@ -1,6 +1,7 @@
 // SOS/main.cpp
 
 #include "game.h"
+#include "utils/TimeUtils.h" // Include our TimeUtils header
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -16,11 +17,7 @@
 
 float FPS = 60.0f;
 
-uint32_t get_ticks() {
-    using namespace std::chrono;
-    auto now = high_resolution_clock::now().time_since_epoch();
-    return duration_cast<milliseconds>(now).count();
-}
+// Note: get_ticks() is now defined in TimeUtils.cpp
 
 void printUsage(const char* programName) {
     std::cout << "Usage: " << programName << " [options]" << std::endl;

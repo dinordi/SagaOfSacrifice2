@@ -118,7 +118,7 @@ void GameSession::startRead() {
                     connected_ = false;
                     
                     // Remove this session from the server
-                    if (!playerId_.empty()) {
+                    if (!playerId_) {
                         server_.removeSession(playerId_);
                     }
                 }
@@ -128,6 +128,10 @@ void GameSession::startRead() {
 
 void GameSession::handleMessage(const NetworkMessage& message) {
     // Process messages based on type
+    std::cout << "[Server Session] Handling message type: " << static_cast<int>(message.type)
+              << " from player: " << message.senderId 
+              << " with data size: " << message.data.size() << " bytes" << std::endl;
+    
     switch (message.type) {
         case MessageType::CONNECT:
             processConnect(message);
@@ -136,9 +140,11 @@ void GameSession::handleMessage(const NetworkMessage& message) {
             processDisconnect(message);
             break;
         case MessageType::PLAYER_POSITION:
+            std::cout << "[Server Session] Broadcasting position update from player: " << message.senderId << std::endl;
             server_.broadcastMessageExcept(message, message.senderId);
             break;
         case MessageType::PLAYER_ACTION:
+            std::cout << "[Server Session] Broadcasting player action from player: " << message.senderId << std::endl;
             server_.broadcastMessageExcept(message, message.senderId);
             break;
         case MessageType::CHAT_MESSAGE:
@@ -146,10 +152,11 @@ void GameSession::handleMessage(const NetworkMessage& message) {
             break;
         case MessageType::PING:
             // Echo back the ping message
+            std::cout << "[Server Session] Echoing ping message to player: " << message.senderId << std::endl;
             sendMessage(message);
             break;
         default:
-            std::cerr << "Unknown message type: " << static_cast<int>(message.type) << std::endl;
+            std::cerr << "[Server Session] Unknown message type: " << static_cast<int>(message.type) << std::endl;
             break;
     }
 }
@@ -157,13 +164,21 @@ void GameSession::handleMessage(const NetworkMessage& message) {
 void GameSession::processConnect(const NetworkMessage& message) {
     // A new player has connected
     playerId_ = message.senderId;
-    std::cout << "Player connected: " << playerId_ << std::endl;
+    std::cout << "[Server Session] Player connected with ID: " << playerId_ << std::endl;
+    
+    // Extract the player name if available
+    std::string playerName;
+    if(!message.data.empty()) {
+        playerName = std::string(message.data.begin(), message.data.end());
+        std::cout << "[Server Session] Player name: " << playerName << std::endl;
+    }
     
     // Add this session to the server's session map
     server_.addSession(playerId_, shared_from_this());
     
     // Broadcast the new player's connection to all existing players
     server_.broadcastMessageExcept(message, playerId_);
+    std::cout << "[Server Session] Processed connect message for player: " << playerId_ << std::endl;
 }
 
 void GameSession::processDisconnect(const NetworkMessage& message) {
@@ -203,7 +218,7 @@ void GameSession::handleWrite(const boost::system::error_code& error, size_t /*b
         connected_ = false;
         
         // Remove this session from the server
-        if (!playerId_.empty()) {
+        if (!playerId_) {
             server_.removeSession(playerId_);
         }
     }
@@ -217,12 +232,9 @@ std::vector<uint8_t> GameSession::serializeMessage(const NetworkMessage& message
     result.push_back(static_cast<uint8_t>(message.type));
     
     // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId.size()));
+    result.push_back(static_cast<uint8_t>(message.senderId));
     
-    // 3. Sender ID content
-    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
-    
-    // 4. Data length - 4 bytes
+    // 3. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
     result.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
     result.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
@@ -247,13 +259,7 @@ NetworkMessage GameSession::deserializeMessage(const std::vector<uint8_t>& data)
     if (offset >= data.size()) return message;
     
     // 2. Sender ID length
-    uint8_t senderIdLength = data[offset++];
-    
-    // 3. Sender ID content
-    if (offset + senderIdLength <= data.size()) {
-        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-        offset += senderIdLength;
-    }
+    message.senderId = data[offset++];
     
     if (offset + 4 > data.size()) return message;
     
