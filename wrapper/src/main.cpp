@@ -41,21 +41,22 @@ SDL_AppResult SDL_Fail(){
 }
 
 // Helper function from SOS/main.cpp
-std::string generateRandomPlayerId() {
-    const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    const int idLength = 8;
-    std::string result;
-    result.reserve(idLength);
+uint8_t generateRandomPlayerId() {
+    // const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    // const int idLength = 8;
+    // std::string result;
+    // result.reserve(idLength);
 
     // Seed random number generator (optional, but good practice)
     // Consider seeding once at the start if called multiple times
     // srand(time(NULL)); // Requires <ctime>
+    uint8_t result = 3;
+    // uint8_t result = static_cast<uint8_t>(rand() % 256);
+    // for (int i = 0; i < idLength; ++i) {
+        // result += charset[rand() % (sizeof(charset) - 1)];
+    // }
 
-    for (int i = 0; i < idLength; ++i) {
-        result += charset[rand() % (sizeof(charset) - 1)];
-    }
-
-    return result;
+    return result; // Random ID between 0 and 255
 }
 
 
@@ -64,7 +65,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     bool enableMultiplayer = false;
     std::string serverAddress = "localhost";
     int serverPort = 8080;
-    std::string playerId = generateRandomPlayerId(); // Generate default random ID
+    uint8_t playerId = 3; // Generate default random ID
+    // uint8_t playerId = generateRandomPlayerId(); // Generate default random ID
 
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -96,21 +98,34 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
             } else {
                  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
             }
-        } else if (arg == "-id" || arg == "--playerid") {
+        } 
+        else if (arg == "-id" || arg == "--playerid") {
             if (i + 1 < argc) {
-                playerId = argv[++i];
+                try {
+                    playerId = static_cast<uint8_t>(std::stoi(argv[++i]));
+                } catch (const std::invalid_argument& e) {
+                    SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid player ID argument '%s'. Using default ID %d.", argv[i], playerId);
+                } catch (const std::out_of_range& e) {
+                     SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Player ID argument '%s' out of range. Using default ID %d.", argv[i], playerId);
+                }
             } else {
                  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
             }
-        } else {
+        } 
+        else {
             // Handle other arguments if necessary, e.g., image name from original main.cpp
              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown option: %s", arg.c_str());
         }
     }
 
+
+
     if (enableMultiplayer) {
-        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %s",
-                  serverAddress.c_str(), serverPort, playerId.c_str());
+        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %d",
+                  serverAddress.c_str(), serverPort, playerId);
+    }
+    else {
+        SDL_Log("Multiplayer disabled.");
     }
     // --- End Multiplayer Argument Parsing ---
 
@@ -297,10 +312,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 
     PlayerInput* input = new SDLInput(gamepad);
+    // SDL_Log("Input initialized successfully!");
 
     //Load game
     Game* game = new Game(input);
-
     // --- Initialize Multiplayer ---
     if (enableMultiplayer) {
         if (!game->initializeMultiplayer(serverAddress, serverPort, playerId)) {
@@ -387,16 +402,27 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     // Render game objects (ensure game object exists)
     if (app->game) {
         for(const auto& entity : app->game->getObjects()) {
+            SDL_Texture* texture = nullptr;
+            SDL_FRect srcRect = {};
             //log ID
             int ID = entity->spriteData->ID;
             auto it = spriteMap.find(ID);
             if (it == spriteMap.end()) {
-                SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
-                continue;
+                // SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
+                auto it = spriteMap.find(1); // Fallback texture   
+                texture = it->second.texture;
+                srcRect = it->second.srcRect;
+                if(ID == 5 || ID == 10)
+                {
+                    SDL_Log("Drawing other player at X: %f Y: %f ID: %d", entity->position.x, entity->position.y, ID);
+                }
             }
-
-            SDL_Texture* texture = it->second.texture;
-            SDL_FRect srcRect = it->second.srcRect;
+            else
+            {
+                texture = it->second.texture;
+                srcRect = it->second.srcRect;
+            }
+            
             SDL_FRect destRect{
                 .x = static_cast<float>(entity->position.x),
                 .y = static_cast<float>(entity->position.y),

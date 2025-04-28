@@ -1,10 +1,14 @@
 #include "network/MultiplayerManager.h"
 #include "network/AsioNetworkClient.h"
+#include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include <iostream>
 #include <cstring>
 
+// External function declaration
+extern uint32_t get_ticks();
+
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(1, 0, 0)) {
+RemotePlayer::RemotePlayer(const uint8_t id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(id, 128, 128)), id_(id) {
 
 }
 
@@ -45,7 +49,7 @@ MultiplayerManager::~MultiplayerManager() {
     shutdown();
 }
 
-bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
+bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const uint8_t playerId) {
     // Store player ID
     playerId_ = playerId;
     
@@ -58,7 +62,7 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
     bool connected = network_->connect(serverAddress, serverPort);
     
     if (connected) {
-        std::cout << "Connected to multiplayer server" << std::endl;
+        std::cout << "[Client] Connected to multiplayer server at " << serverAddress << ":" << serverPort << std::endl;
         
         // Send a connection message to the server
         NetworkMessage connectMsg;
@@ -69,9 +73,10 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
         std::string playerName = "Player_" + playerId_;
         connectMsg.data.assign(playerName.begin(), playerName.end());
         
+        std::cout << "[Client] Sending CONNECT message with player ID: " << playerId_ << std::endl;
         network_->sendMessage(connectMsg);
     } else {
-        std::cerr << "Failed to connect to multiplayer server" << std::endl;
+        std::cerr << "[Client] Failed to connect to multiplayer server" << std::endl;
     }
     
     return connected;
@@ -83,23 +88,40 @@ void MultiplayerManager::shutdown() {
         NetworkMessage disconnectMsg;
         disconnectMsg.type = MessageType::DISCONNECT;
         disconnectMsg.senderId = playerId_;
+        
+        std::cout << "[Client] Sending DISCONNECT message" << std::endl;
         network_->sendMessage(disconnectMsg);
         
         // Disconnect from server
         network_->disconnect();
+        std::cout << "[Client] Disconnected from server" << std::endl;
     }
     
     // Clear remote players
+    std::cout << "[Client] Clearing " << remotePlayers_.size() << " remote players" << std::endl;
     remotePlayers_.clear();
 }
 
 void MultiplayerManager::update(uint64_t deltaTime) {
     if (!network_ || !network_->isConnected()) {
+        std::cout << "No network in MPManager update" << std::endl;
         return;
     }
     
     // Process incoming messages
     network_->update();
+    
+    static uint64_t lastUpdateTime = 0;
+    lastUpdateTime += deltaTime;
+    // Debug: output current remote players count
+    if (lastUpdateTime > 2000) { // Every 5 seconds approximately
+        std::cout << "[Client] Current remote players: " << remotePlayers_.size() << std::endl;
+        for (const auto& pair : remotePlayers_) {
+            std::cout << "[Client] Remote player ID: " << static_cast<int>(pair.first) 
+                      << " at position: (" << pair.second->position.x << ", " << pair.second->position.y << ")" << std::endl;
+        }
+        lastUpdateTime = 0;
+    }
     
     // Update all remote players
     for (auto& pair : remotePlayers_) {
@@ -107,7 +129,7 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     }
     
     // Send player state periodically
-    if (localPlayer_ && (lastUpdateTime_ + UpdateInterval <= deltaTime || lastUpdateTime_ > deltaTime)) {
+    if (localPlayer_ && lastUpdateTime >= UpdateInterval) {
         sendPlayerState();
         lastUpdateTime_ = deltaTime;
     }
@@ -115,6 +137,7 @@ void MultiplayerManager::update(uint64_t deltaTime) {
 
 void MultiplayerManager::setLocalPlayer(Player* player) {
     localPlayer_ = player;
+    std::cout << "[Client] Local player set: " << (player ? "yes" : "no") << std::endl;
 }
 
 void MultiplayerManager::sendPlayerState() {
@@ -127,6 +150,15 @@ void MultiplayerManager::sendPlayerState() {
     posMsg.senderId = playerId_;
     posMsg.data = serializePlayerState(localPlayer_);
     
+    // Only print debug every few seconds to avoid flooding
+    static uint64_t lastLogTime = 0;
+    uint64_t currentTime = get_ticks();
+    if (currentTime - lastLogTime > 5000) { // Log every 5 seconds
+        std::cout << "[Client] Sending player position: ("
+                  << localPlayer_->position.x << ", " << localPlayer_->position.y << ")" << std::endl;
+        lastLogTime = currentTime;
+    }
+    
     network_->sendMessage(posMsg);
 }
 
@@ -134,7 +166,7 @@ bool MultiplayerManager::isConnected() const {
     return network_ && network_->isConnected();
 }
 
-const std::map<std::string, std::unique_ptr<RemotePlayer>>& MultiplayerManager::getRemotePlayers() const {
+const std::map<uint8_t, std::unique_ptr<RemotePlayer>>& MultiplayerManager::getRemotePlayers() const {
     return remotePlayers_;
 }
 
@@ -151,15 +183,17 @@ void MultiplayerManager::sendChatMessage(const std::string& message) {
     network_->sendMessage(chatMsg);
 }
 
-void MultiplayerManager::setChatMessageHandler(std::function<void(const std::string&, const std::string&)> handler) {
+void MultiplayerManager::setChatMessageHandler(std::function<void(const uint8_t, const std::string&)> handler) {
     chatHandler_ = handler;
 }
 
 void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
+    // std::cout << "[Client] Received message type: " << static_cast<int>(message.type) 
+    //           << " from sender: " << message.senderId << std::endl;
+    
     switch (message.type) {
         case MessageType::PLAYER_POSITION:
             handlePlayerPositionMessage(message);
-            std::cout << "Player position message received from " << message.senderId << std::endl;
             break;
         case MessageType::PLAYER_ACTION:
             handlePlayerActionMessage(message);
@@ -177,7 +211,7 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
             handlePlayerDisconnectMessage(message);
             break;
         default:
-            std::cerr << "Unknown message type received: " << static_cast<int>(message.type) << std::endl;
+            std::cerr << "[Client] Unknown message type received: " << static_cast<int>(message.type) << std::endl;
             break;
     }
 }
@@ -188,12 +222,18 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
         return;
     }
     
+    // std::cout << "[Client] Received position update from player: " << message.senderId << std::endl;
+    
     // Find or create the remote player
     auto it = remotePlayers_.find(message.senderId);
     if (it == remotePlayers_.end()) {
+        // std::cout << "[Client] Creating new remote player for ID: " << message.senderId << std::endl;
         auto newPlayer = std::make_unique<RemotePlayer>(message.senderId);
         it = remotePlayers_.emplace(message.senderId, std::move(newPlayer)).first;
     }
+    
+    // Debug: check data size
+    // std::cout << "[Client] Position message data size: " << message.data.size() << " bytes" << std::endl;
     
     // Update the remote player's state with the received data
     deserializePlayerState(message.data, it->second.get());
@@ -306,7 +346,7 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     // Update player state
     player->position = (pos);
     player->velocity = (vel);
-    std::cout << "Updated remote player " << player->spriteData->ID
-              << " position: (" << pos.x << ", " << pos.y << ")"
-              << " velocity: (" << vel.x << ", " << vel.y << ")" << std::endl;
+    // std::cout << "Updated remote player " << player->spriteData->ID
+    //           << " position: (" << pos.x << ", " << pos.y << ")"
+    //           << " velocity: (" << vel.x << ", " << vel.y << ")" << std::endl;
 }
