@@ -1,7 +1,7 @@
 #pragma once
 
 #include "objects/entity.h"
-#include "interfaces/sprite_data.h"
+#include "sprite_data.h"
 #include "objects/platform.h"
 #include "playerInput.h"
 

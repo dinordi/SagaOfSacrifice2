@@ -4,7 +4,7 @@
 
 Player::Player( Vec2 pos, SpriteData* spData) : Entity(pos, spData) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << spriteData->ID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << spriteData->getSpriteRect(1).spriteID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
     setisOnGround(false);
 }
 

@@ -11,26 +11,26 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             Object* objB = gameObjects[j];
 
             // Get the sprite dimensions for collision detection
-            const SpriteData* spriteA = objA->spriteData;
-            const SpriteData* spriteB = objB->spriteData;
+            const SpriteRect spriteA = objA->spriteData->getSpriteRect(1);
+            const SpriteRect spriteB = objB->spriteData->getSpriteRect(1);
 
-            if (!spriteA || !spriteB) 
-            {
-                //NO SPRITE DATA
-                std::cout << "No sprite data for one of the objects." << std::endl;
-                continue;
-            }
+            // if (!spriteA || !spriteB) 
+            // {
+            //     //NO SPRITE DATA
+            //     std::cout << "No sprite data for one of the objects." << std::endl;
+            //     continue;
+            // }
 
             // Simple AABB collision detection
             float leftA = objA->position.x;
-            float rightA = objA->position.x + spriteA->width;
+            float rightA = objA->position.x + spriteA.w;
             float topA = objA->position.y;
-            float bottomA = objA->position.y + spriteA->height;
+            float bottomA = objA->position.y + spriteA.h;
 
             float leftB = objB->position.x;
-            float rightB = objB->position.x + spriteB->width;
+            float rightB = objB->position.x + spriteB.w;
             float topB = objB->position.y;
-            float bottomB = objB->position.y + spriteB->height;
+            float bottomB = objB->position.y + spriteB.h;
 
             // Check if the two AABBs intersect
             if (leftA <= rightB && rightA >= leftB && topA <= bottomB && bottomA >= topB) {

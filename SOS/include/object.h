@@ -3,6 +3,7 @@
 // #ifndef OBJECT_H
 // #define OBJECT_H
 #pragma once
+#include <map>
 
 #include <Vec2.h>
 #include "sprite_data.h"
@@ -42,6 +43,14 @@ public:
     virtual void accept(CollisionVisitor& visitor) = 0;
 private:
     // DEFINE_GETTER_SETTER(Vec2, position);
+};
+
+class Actor {
+public:
+    Vec2 position;
+    const SpriteData* spriteData;
+    const int spriteIndex;
+    Actor(Vec2 pos, const SpriteData* spData, int spriteIndex = 1);
 };
 
 // #endif // OBJECT_H

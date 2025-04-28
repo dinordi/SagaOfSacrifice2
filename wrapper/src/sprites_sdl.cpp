@@ -49,18 +49,30 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     spriteMap[sdl_characters[' ']] = { lettersTexture, { 0, 11 * spriteHeight, spriteWidth, spriteHeight } };
 
     // Load additional sprites
-    spriteMap[1] = { LoadSprite(renderer, (path / "SOS/assets/sprites/playerBig.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[2] = { LoadSprite(renderer, (path / "SOS/assets/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[3] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    // spriteMap[1] = { LoadSprite(renderer, (path / "SOS/assets/sprites/playerBig.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    // spriteMap[2] = { LoadSprite(renderer, (path / "SOS/assets/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    // spriteMap[3] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
+    // spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
     // Add more sprites as needed
+    //
+
+    // For all png files with numbers as filename
+    for (int i = 1; i <= 11; ++i) {
+        std::string filename = "SOS/assets/sprites/" + std::to_string(i) + ".png";
+        SDL_Texture* texture = LoadSprite(renderer, (path / filename).make_preferred());
+        if (!texture) {
+            SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", filename.c_str());
+            continue;
+        }
+        spriteMap[i] = { texture, { 0, 0, spriteWidth, spriteHeight } };
+    }
 }
 
 // ...existing code...
-Sprite initSprite(SpriteData sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath) {
-    std::string filename = "SOS/assets/sprites/" + std::to_string(sprData.ID) + ".png";
+Sprite initSprite(const SpriteRect sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath) {
+    std::string filename = "SOS/assets/sprites/" + std::to_string(sprData.spriteID) + ".png";
     SDL_Texture* texture = LoadSprite(renderer, (baseAssetsPath / filename).make_preferred());
-    SDL_FRect srcRect = { 0, 0, static_cast<float>(sprData.width), static_cast<float>(sprData.height) };
+    SDL_FRect srcRect = { 0, 0, static_cast<float>(sprData.w), static_cast<float>(sprData.h) };
 
     return { texture, srcRect };
 }
