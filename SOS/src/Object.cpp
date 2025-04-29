@@ -2,8 +2,8 @@
 #include "sprite_data.h"
 #include "platform.h"
 
-Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
-    : position(pos), type(type), spriteData(spData), facingRight(true)
+Object::Object( Vec2 pos, ObjectType type, SpriteData* spData, std::string ID)
+    : position(pos), type(type), spriteData(spData), facingRight(true), ObjID(ID)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;
@@ -37,7 +37,7 @@ void Object::addAnimation(AnimationState state, int startFrame, int frameCount,
 // }
 
 
-Actor::Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex) : spriteIndex(spriteIndex)
+Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteIndex(spriteIndex)
 {
     this->position = pos;
     this->spriteData = spData;

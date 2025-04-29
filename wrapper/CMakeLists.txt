@@ -38,11 +38,38 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
+if(MSVC)
+    # Boost configuration - use consistent path separators and naming
+    set(BOOST_ROOT "C:/local/boost_1_87_0" CACHE PATH "Boost root directory")
+    set(Boost_NO_SYSTEM_PATHS ON)
+    set(Boost_NO_BOOST_CMAKE ON)
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_USE_MULTITHREADED ON)
+    set(Boost_USE_DEBUG_LIBS OFF)
+    set(Boost_USE_RELEASE_LIBS ON)
+    set(Boost_DEBUG ON)
+    set(Boost_DETAILED_FAILURE_MSG ON)
+
+    # The Boost install may not have "include" subfolder - check directory structure
+    set(BOOST_INCLUDEDIR "${BOOST_ROOT}" CACHE PATH "Boost include directory")
+    set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib64-msvc-14.3" CACHE PATH "Boost library directory")
+endif()
+
+# Find Boost libraries
+# Hint for Homebrew on Apple Silicon if find_package fails automatically
+# set(Boost_ROOT /opt/homebrew) 
+# set(CMAKE_PREFIX_PATH /opt/homebrew)
+find_package(Boost COMPONENTS system thread chrono REQUIRED) # Added thread component for server/client
+message(STATUS "Boost include dirs found: ${Boost_INCLUDE_DIRS}") # Check if path is found
+message(STATUS "Boost libraries found: ${Boost_LIBRARIES}")     # Check libraries
+
+
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/utils)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
 
@@ -58,6 +85,7 @@ target_include_directories(${EXECUTABLE_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
+    ${Boost_INCLUDE_DIRS}
 )
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
@@ -111,6 +139,9 @@ target_link_libraries(${EXECUTABLE_NAME} PUBLIC
     SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
     SDL3_image::SDL3_image	# remove if you are not using SDL_image
     SDL3::SDL3              # If using satelite libraries, SDL must be the last item in the list. 
+    Boost::system
+    Boost::thread
+    Boost::chrono
 )
 
 if (APPLE)

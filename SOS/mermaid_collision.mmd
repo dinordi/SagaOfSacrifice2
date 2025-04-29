@@ -1,0 +1,44 @@
+classDiagram
+    direction LR  %% Layout Left-to-Right for better readability
+    
+    %% Collision System
+    
+    class CollisionVisitor {
+        <<Interface>>
+        + visit(player : Player)*
+        + visit(enemy : Enemy)*
+        + visit(platform : Platform)*
+    }
+
+    class CollisionHandler {
+        - initiator : Object*
+        - info : CollisionInfo
+        + CollisionHandler(initiator : Object*, info : CollisionInfo)
+        + visit(player : Player)
+        + visit(enemy : Enemy)
+        + visit(platform : Platform)
+        # handleInteraction(player : Player)
+        # handleInteraction(enemy : Enemy)
+        # handleInteraction(platform : Platform)
+    }
+
+    class CollisionInfo {
+        + penetrationVector : Vec2
+        + contactPoint : Vec2
+    }
+
+    class CollisionManager {
+        + detectCollisions(gameObjects : List~Object*~) : List~Pair~Object*,Object*~~
+        + resolveCollision(objA : Object*, objB : Object*, info : CollisionInfo)
+    }
+    
+    CollisionHandler --|> CollisionVisitor : implements
+    CollisionManager ..> Object : uses
+    CollisionManager ..> CollisionHandler : creates/uses
+    CollisionManager ..> CollisionInfo : uses
+    
+    CollisionHandler ..> Object : uses (initiator member)
+    CollisionHandler ..> CollisionInfo : uses
+    CollisionHandler ..> Player : calls methods on
+    CollisionHandler ..> Enemy : calls methods on
+    CollisionHandler ..> Platform : calls methods on

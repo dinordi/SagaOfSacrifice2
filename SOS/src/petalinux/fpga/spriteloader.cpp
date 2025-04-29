@@ -65,25 +65,35 @@ int SpriteLoader::load_png(const char *filename, uint32_t **sprite_data_out, int
     return 0;
 }
 
-// Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren
+// Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren (Vereenvoudigd)
 int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
-    int mem_fd;
-    uint32_t *mapped_mem;
+    int mem_fd = -1; // Initialize to -1
+    uint32_t *mapped_mem = nullptr; // Initialize to MAP_FAILED
     size_t mapped_size;
     bool should_free_data = false;
     uint32_t *data_to_use = sprite_data;
-    
+    uint32_t original_phys_addr = *phys_addr; // Store original address if needed later
+    int result = 0; // Success by default
+
     if (!sprite_data) {
         // Als er geen sprite_data is meegegeven, laad het dan vanuit het bestand
         uint32_t *loaded_sprite_data = nullptr;
         int width, height;
         size_t loaded_sprite_size;
         if (load_png(filename, &loaded_sprite_data, &width, &height, &loaded_sprite_size) != 0) {
-            return 1;
+            return 1; // Error loading PNG
         }
         data_to_use = loaded_sprite_data;
         sprite_size = loaded_sprite_size;
         should_free_data = true;  // Flag om aan te geven dat we dit geheugen moeten vrijgeven
+    }
+
+    if (sprite_size == 0) {
+         // Nothing to map or copy
+         if (should_free_data) {
+             free_sprite_data(data_to_use);
+         }
+         return 0; // Or handle as an error if needed
     }
 
     mapped_size = round_up_to_page_size(sprite_size);  // Rond af naar de dichtstbijzijnde page size
@@ -92,48 +102,46 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     mem_fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (mem_fd < 0) {
         perror("Fout bij openen /dev/mem");
-        if (should_free_data) {
-            free_sprite_data(data_to_use);
-        }
-        return 1;
+        result = 1;
+        goto cleanup; // Use goto for centralized cleanup
     }
 
-    // Itereer door alle pagina's die we moeten mappen
-    size_t offset = 0;
-    int result = 0;  // Success by default
-    
-    while (offset < sprite_size) {
-        size_t remaining_size = sprite_size - offset;
-        size_t page_size_to_map = (remaining_size < PAGE_SIZE) ? remaining_size : PAGE_SIZE;
-
-        // Map de pagina in het fysieke geheugen
-        mapped_mem = (uint32_t *)mmap(NULL, page_size_to_map, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, *phys_addr);
-        if (mapped_mem == MAP_FAILED) {
-            perror("Fout bij mmap");
-            result = 1;
-            break;
-        }
-
-        // Kopieer de sprite data naar de gemapte geheugenpagina
-        memcpy(mapped_mem, data_to_use + offset / sizeof(uint32_t), page_size_to_map);
-
-        // Verhoog de offset en fysiek adres voor de volgende pagina
-        offset += page_size_to_map;
-        *phys_addr += page_size_to_map;
-
-        // Verwijder de mapping van de huidige pagina
-        munmap(mapped_mem, page_size_to_map);
+    // Map het gehele benodigde gebied in één keer
+    mapped_mem = (uint32_t *)mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, *phys_addr);
+    if (mapped_mem == MAP_FAILED) {
+        perror("Fout bij mmap");
+        result = 1;
+        goto cleanup;
     }
 
-    close(mem_fd);
-    
+    // Kopieer de *werkelijke* sprite data (niet de afgeronde grootte)
+    memcpy(mapped_mem, data_to_use, sprite_size);
+
+    // Optioneel: Werk het fysieke adres bij voor de aanroeper
+    // *phys_addr += mapped_size; // Update pointer like the original loop did
+
+    // Geen loop meer nodig
+
+cleanup:
+    // Verwijder de mapping
+    if (mapped_mem != MAP_FAILED) {
+        munmap(mapped_mem, mapped_size);
+    }
+
+    // Sluit /dev/mem
+    if (mem_fd >= 0) {
+        close(mem_fd);
+    }
+
     // Maak het geheugen vrij als we het zelf hebben gealloceerd
     if (should_free_data) {
         free_sprite_data(data_to_use);
     }
-    
+
     return result;
 }
+
+// ...existing code...
 
 // Verwijder de sprite data
 void SpriteLoader::free_sprite_data(uint32_t *sprite_data) {
