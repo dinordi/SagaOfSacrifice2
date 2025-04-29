@@ -6,6 +6,7 @@
 #include <vector>
 #include "object.h"
 #include <iostream>
+#include <algorithm>
 
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
