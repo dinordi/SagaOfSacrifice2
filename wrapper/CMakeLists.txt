@@ -171,10 +171,31 @@ else()
     copy_helper("gs_tiger.svg")
 
     # Copy entire directories
+    # file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites/*")
+    # foreach(sprite_file ${SPRITE_FILES})
+    #     file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites" "${sprite_file}")
+    #     set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/sprites/${relpath}")
+    #     add_custom_command(POST_BUILD
+    #         TARGET "${EXECUTABLE_NAME}"
+    #         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${sprite_file}" "${outname}"
+    #         DEPENDS "${sprite_file}"
+    #     )
+    # endforeach()
+    
+    # Copy entire directories
     file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites/*")
     foreach(sprite_file ${SPRITE_FILES})
         file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/sprites" "${sprite_file}")
-        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/sprites/${relpath}")
+        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/assets/sprites/${relpath}")
+        
+        # Get the directory part of the output path
+        get_filename_component(outdir "${outname}" DIRECTORY)
+        
+        # Ensure the directory exists
+        add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${outdir}"
+        )
+        
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${sprite_file}" "${outname}"
@@ -182,10 +203,16 @@ else()
         )
     endforeach()
 
+    # Copy entire directories music
     file(GLOB_RECURSE MUSIC_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/music/*")
     foreach(music_file ${MUSIC_FILES})
         file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/music" "${music_file}")
         set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/music/${relpath}")
+
+        add_custom_command((TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${outname}"
+        ))
+
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${music_file}" "${outname}"
