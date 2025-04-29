@@ -55,7 +55,7 @@ class Actor {
 public:
     const SpriteData* spriteData;
     const int spriteIndex;  //Current image in spritesheet, SpriteData handles index to srcrect
-    Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex = 1);
+    Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex = 1);
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
 };
