@@ -1,13 +1,12 @@
 // SOS1/include/object.h
 
-// #ifndef OBJECT_H
-// #define OBJECT_H
 #pragma once
 #include <map>
 
 #include <Vec2.h>
 #include "sprite_data.h"
 #include "collision/CollisionVisitor.h"
+#include "animation.h"
 
 
 class Platform;
@@ -30,10 +29,22 @@ public:
     // Vec2 velocity;
     const ObjectType type;
     const SpriteData* spriteData;
-    Object( Vec2 pos, ObjectType type, SpriteData* spData);
+    Object(Vec2 pos, ObjectType type, SpriteData* spData);
 
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
+    
+    // Animation methods
+    void updateAnimation(uint64_t deltaTime);
+    void setAnimationState(AnimationState state);
+    int getCurrentSpriteIndex() const;
+    void addAnimation(AnimationState state, int startFrame, int frameCount, 
+                     int framesPerRow, uint32_t frameTime = 100, bool loop = true);
+    bool isFacingRight() const { return facingRight; }
+protected:
+    AnimationController animController;
+    bool facingRight;
+    
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
     DEFINE_GETTER_SETTER(Vec2, velocity);
@@ -47,5 +58,3 @@ public:
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
 };
-
-// #endif // OBJECT_H
