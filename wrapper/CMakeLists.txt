@@ -167,8 +167,8 @@ else()
 
     # Copy individual files
     copy_helper("Inter-VariableFont.ttf")
-    copy_helper("the_entertainer.ogg")
-    copy_helper("gs_tiger.svg")
+    # copy_helper("the_entertainer.ogg")
+    # copy_helper("gs_tiger.svg")
 
     # Copy SOS/assets/ to windows Debug folder
     # First ensure the base SOS/assets directory exists
@@ -177,6 +177,8 @@ else()
         COMMENT "Creating SOS/assets directory"
     )
     
+    set(OUTPUT_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
     file(GLOB_RECURSE ASSETS "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/*")
     foreach(ASSET ${ASSETS})
         # Get relative path from source assets dir to maintain folder structure
@@ -195,7 +197,7 @@ else()
             endif()
         else()
             # for platforms that do not have a good packaging format, all we can do is copy the assets to the process working directory.
-            set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/${ASSET_REL_PATH}")
+            set(outname "${OUTPUT_DIR}/SOS/assets/${ASSET_REL_PATH}")
             
             # Create directory structure if needed
             if(NOT "${ASSET_DIR}" STREQUAL "")
