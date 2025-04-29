@@ -3,7 +3,7 @@
 
 Enemy::Enemy( Vec2 pos, SpriteData* spData) : Entity(pos, spData) {
     // Initialize Enemy-specific attributes here
-    std::cout << "Enemy created with ID: " << spriteData->ID << " at position (" << position.x << ", " << position.y << ")" << std::endl;
+    std::cout << "Enemy created with ID: " << spriteData->getid_() << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
 }
 
 void Enemy::accept(CollisionVisitor& visitor) {

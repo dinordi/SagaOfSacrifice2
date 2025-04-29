@@ -17,11 +17,11 @@ class Game {
 public:
     Game(PlayerInput* input);
     ~Game();
+    bool isRunning() const;
 
     void update(uint64_t deltaTime);
     // void render();
     bool isRunning() const;
-    std::vector<Object*>& getObjects();
     
     // Multiplayer functionality
     bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const uint8_t playerId);
@@ -30,11 +30,18 @@ public:
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
     void sendChatMessage(const std::string& message);
     void setChatMessageHandler(std::function<void(const uint8_t sender, const std::string& message)> handler);
+    std::vector<Object*>& getObjects();
+    std::vector<Actor*>& getActors();
+
 
 private:
+    void drawWord(const std::string& word, int x, int y);
+    void mapCharacters();
+
     bool running;
     bool isPaused = false; // Added isPaused member variable
     std::vector<Object*> objects;
+    std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
@@ -53,6 +60,9 @@ private:
     
     // Render remote players
     // void renderRemotePlayers();
+    
+    SpriteData* characters;
+    std::map<char, int> characterMap;
 };
 
 #endif // GAME_H
