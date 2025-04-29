@@ -382,22 +382,22 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
-    static Uint64 lastIDPrint = 0;
-    bool printID = false;
-    Uint64 printtime = SDL_GetTicks();
-    if (printtime - lastIDPrint > 1000) {
-        printID = true;
-        lastIDPrint = printtime;
-    }
+    // static Uint64 lastIDPrint = 0;
+    // bool printID = false;
+    // Uint64 printtime = SDL_GetTicks();
+    // if (printtime - lastIDPrint > 1000) {
+    //     printID = true;
+    //     lastIDPrint = printtime;
+    // }
 
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
         if (!entity || !entity->spriteData) continue; // Basic safety check
         SDL_Texture* sprite_tex = nullptr;
-        if(printID)
-        {
-            SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
-        }
+        // if(printID)
+        // {
+        //     SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
+        // }
         // Get the pre-loaded sprite info from the map
         auto it = spriteMap2.find(entity->spriteData->getid_());
         if (it == spriteMap2.end()) {
