@@ -1,0 +1,9 @@
+services:
+  saga-server:
+    build:
+      context: ./server # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8282:8282" # Map host port 8282 to container port 8282
+    restart: unless-stopped
+    container_name: saga-server
