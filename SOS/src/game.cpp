@@ -8,15 +8,15 @@ Game::Game(PlayerInput* input) : running(true), input(input) {
     CollisionManager* collisionManager = new CollisionManager();
     this->collisionManager = collisionManager;
     // Initialize game objects here
-    player = new Player(Vec2(500,100), new SpriteData(1, 128, 128, 1));
+    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5));
     objects.push_back(player);
 
-    Platform* floor = new Platform(500, 850, new SpriteData(5, 128, 128, 4));
-    Platform* floor2 = new Platform(700, 850, new SpriteData(5, 15, 15, 4));
+    Platform* floor = new Platform(500, 850, new SpriteData(std::string("tiles"), 128, 128, 4));
+    Platform* floor2 = new Platform(700, 850, new SpriteData(std::string("tiles"), 15, 15, 4));
     objects.push_back(floor);
     objects.push_back(floor2);
 
-    characters = new SpriteData(11, 127, 127, 3);
+    characters = new SpriteData(std::string("letters"), 127, 127, 3);
     mapCharacters();
 
     drawWord("Saga Of Sacrifice 2", 100, 100);
@@ -74,7 +74,7 @@ void Game::drawWord(const std::string& word, int x, int y) {
         if(c == ' ') {
             continue;
         }
-        Actor* actor = new Actor(Vec2(start_x, start_y), new SpriteData(11, 64, 64, 3), characterMap[c]);
+        Actor* actor = new Actor(Vec2(start_x, start_y), new SpriteData(std::string("letters"), 64, 64, 3), characterMap[c]);
         // Set the position of the actor based on the character width
         actors.push_back(actor);
     }

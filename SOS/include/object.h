@@ -9,18 +9,11 @@
 #include "sprite_data.h"
 #include "collision/CollisionVisitor.h"
 
-#define DEFINE_GETTER_SETTER(type, member) \
-private:                                   \
-    type member;                           \
-public:                                    \
-    type& get##member() { return member; } \
-    void set##member(const type& value) { member = value; }
-
 
 class Platform;
 
 constexpr float GRAVITY = 9.8f;
-constexpr float MAX_VELOCITY = 20.0f;
+constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
     ENTITY,
@@ -33,8 +26,8 @@ enum class ObjectType {
 
 class Object {
 public:
-    Vec2 position;
-    Vec2 velocity;
+    // Vec2 position;
+    // Vec2 velocity;
     const ObjectType type;
     const SpriteData* spriteData;
     Object( Vec2 pos, ObjectType type, SpriteData* spData);
@@ -42,15 +35,17 @@ public:
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
 private:
-    // DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(Vec2, velocity);
 };
 
 class Actor {
 public:
-    Vec2 position;
     const SpriteData* spriteData;
-    const int spriteIndex;
-    Actor(Vec2 pos, const SpriteData* spData, int spriteIndex = 1);
+    const int spriteIndex;  //Current image in spritesheet, SpriteData handles index to srcrect
+    Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex = 1);
+private:
+    DEFINE_GETTER_SETTER(Vec2, position);
 };
 
 // #endif // OBJECT_H
