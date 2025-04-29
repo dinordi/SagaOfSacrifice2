@@ -8,6 +8,10 @@
 #include <cmath>
 #include <string_view>
 #include <filesystem>
+#include <string> // Added for string manipulation
+#include <cstdlib> // Added for atoi and rand
+#include <vector> // Added for vector usage if needed indirectly
+#include <iostream> // Added for std::cerr, std::cout
 
 #include "game.h"
 #include "sprites_sdl.h"
@@ -37,30 +41,110 @@ SDL_AppResult SDL_Fail(){
     return SDL_APP_FAILURE;
 }
 
+// Helper function from SOS/main.cpp
+std::string generateRandomPlayerId() {
+    const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const int idLength = 8;
+    std::string result;
+    result.reserve(idLength);
+
+    // Seed random number generator
+    // srand(time(NULL)); // Requires <ctime>
+    
+    for (int i = 0; i < idLength; ++i) {
+        result += charset[rand() % (sizeof(charset) - 1)];
+    }
+
+    return result;
+}
+
+
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
+    // --- Multiplayer Argument Parsing ---
+    bool enableMultiplayer = false;
+    std::string serverAddress = "localhost";
+    int serverPort = 8080;
+    std::string playerId = generateRandomPlayerId(); // Generate default random ID
+
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+
+        // Note: No -h/--help here as SDL might handle it, or it's less common in SDL apps
+        if (arg == "-m" || arg == "--multiplayer") {
+            enableMultiplayer = true;
+        } else if (arg == "-s" || arg == "--server") {
+            if (i + 1 < argc) {
+                serverAddress = argv[++i];
+            } else {
+                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } else if (arg == "-p" || arg == "--port") {
+            if (i + 1 < argc) {
+                try {
+                    serverPort = std::stoi(argv[++i]);
+                    if (serverPort <= 0 || serverPort > 65535) {
+                        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid port number '%s'. Using default port %d.", argv[i], 8080);
+                        serverPort = 8080;
+                    }
+                } catch (const std::invalid_argument& e) {
+                    SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid port argument '%s'. Using default port %d.", argv[i], 8080);
+                    serverPort = 8080;
+                } catch (const std::out_of_range& e) {
+                     SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Port argument '%s' out of range. Using default port %d.", argv[i], 8080);
+                    serverPort = 8080;
+                }
+            } else {
+                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } 
+        else if (arg == "-id" || arg == "--playerid") {
+            if (i + 1 < argc) {
+                playerId = argv[++i];
+            } else {
+                SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } 
+        else {
+            // Handle other arguments if necessary, e.g., image name from original main.cpp
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown option: %s", arg.c_str());
+        }
+    }
+
+
+
+    if (enableMultiplayer) {
+        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %s",
+                  serverAddress.c_str(), serverPort, playerId.c_str());
+    }
+    else {
+        SDL_Log("Multiplayer disabled.");
+    }
+    // --- End Multiplayer Argument Parsing ---
+
+
     // init the library, here we make a window so we only need the Video capabilities.
     if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)){
         return SDL_Fail();
     }
-    
+
     // init TTF
     if (not TTF_Init()) {
         return SDL_Fail();
     }
-    
+
     // create a window
-   
-    SDL_Window* window = SDL_CreateWindow("SDL Minimal Sample", windowStartWidth, windowStartHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+
+    SDL_Window* window = SDL_CreateWindow("Saga Of Sacrifice 2", windowStartWidth, windowStartHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (not window){
         return SDL_Fail();
     }
-    
+
     // create a renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
     if (not renderer){
         return SDL_Fail();
     }
-    
+
     // load the font
 #if __ANDROID__
     std::filesystem::path basePath = "";   // on Android we do not want to use basepath. Instead, assets are available at the root directory.
@@ -153,10 +237,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // play the music (does not loop)
-    Mix_PlayMusic(music, 0);
-    
+    // Mix_PlayMusic(music, 0);
 
-    Logger::getInstance()->log("Logger started successfully!");    
+
+    Logger::getInstance()->log("Logger started successfully!");
 
     SDL_Gamepad* gamepad = nullptr;
     SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
@@ -166,35 +250,30 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
 
     if (joystick_ids == nullptr) {
-        std::cerr << "Could not get joysticks! SDL Error: " << SDL_GetError() << std::endl;
-        // Logger::getInstance()->log("Could not get joysticks! SDL Error: " + std::string(SDL_GetError()));
+        SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not get joysticks! SDL Error: %s", SDL_GetError());
         count = 0; // Ensure count is 0 if allocation failed
     }
 
-    std::cout << "Found " << count << " joystick(s)." << std::endl;
+    SDL_Log("Found %d joystick(s).", count);
 
     // 2. Iterate through instance IDs and check if they are gamepads
     for (int i = 0; i < count; ++i) {
         SDL_JoystickID current_id = joystick_ids[i];
         const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
-        std::cout << "Checking device ID " << current_id << ": " << (name ? name : "Unknown Name") << std::endl;
+        SDL_Log("Checking device ID %u: %s", current_id, (name ? name : "Unknown Name"));
 
-        if (SDL_HasGamepad()) {
-            std::cout << "  -> Device ID " << current_id << " is a recognized gamepad." << std::endl;
-            // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is a recognized gamepad.");
+        if (SDL_IsGamepad(current_id)) { // Use SDL_IsGamepad
+            SDL_Log("  -> Device ID %u is a recognized gamepad.", current_id);
 
             // Found a gamepad, let's target this one
             targetInstanceID = current_id;
             break; // Stop searching, we'll open the first one found
         } else {
-             std::cout << "  -> Device ID " << current_id << " is NOT a recognized gamepad." << std::endl;
-             // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is NOT a recognized gamepad.");
+             SDL_Log("  -> Device ID %u is NOT a recognized gamepad.", current_id);
         }
     }
 
     // 3. Free the array returned by SDL_GetJoysticks
-    // IMPORTANT: Do this *after* you are finished with the joystick_ids array
-    // (e.g., after finding the targetInstanceID you want to open).
     SDL_free(joystick_ids);
     joystick_ids = nullptr; // Good practice to null the pointer after freeing
 
@@ -203,28 +282,33 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     if (targetInstanceID != 0) { // Check against the invalid ID 0
         gamepad = SDL_OpenGamepad(targetInstanceID);
         if (!gamepad) {
-            std::cerr << "Could not open gamepad with ID " << targetInstanceID << "! SDL Error: " << SDL_GetError() << std::endl;
-            // Logger::getInstance()->log("Could not open gamepad with ID " + std::to_string(targetInstanceID) + ". SDL Error: " + std::string(SDL_GetError()));
+            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
         } else {
             // Get the name from the opened gamepad handle (preferred method)
             const char* gamepadName = SDL_GetGamepadName(gamepad);
-            std::cout << "Gamepad connected: " << (gamepadName ? gamepadName : "Unknown Name") << " (ID: " << targetInstanceID << ")" << std::endl;
-            // Logger::getInstance()->log("Gamepad connected: " + std::string(gamepadName ? gamepadName : "Unknown Name") + " (ID: " + std::to_string(targetInstanceID) + ")");
-
-            // The instance ID is also stored in the gamepad struct if needed:
-            // SDL_InstanceID id_from_struct = SDL_GetGamepadInstanceID(gamepad);
-            // std::cout << "Instance ID from struct: " << id_from_struct << std::endl;
+            SDL_Log("Gamepad connected: %s (ID: %u)", (gamepadName ? gamepadName : "Unknown Name"), targetInstanceID);
         }
     } else {
-         std::cout << "No recognized gamepad found." << std::endl;
-         // Logger::getInstance()->log("No recognized gamepad found.");
+         SDL_Log("No recognized gamepad found.");
     }
 
 
     PlayerInput* input = new SDLInput(gamepad);
+    // SDL_Log("Input initialized successfully!");
 
     //Load game
     Game* game = new Game(input);
+    // --- Initialize Multiplayer ---
+    if (enableMultiplayer) {
+        if (!game->initializeMultiplayer(serverAddress, serverPort, playerId)) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize multiplayer. Continuing in single player mode.");
+            // Consider if this should be fatal: return SDL_APP_FAILURE;
+        } else {
+            SDL_Log("Multiplayer initialized successfully!");
+        }
+    }
+    // --- End Initialize Multiplayer ---
+
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -268,9 +352,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .game = game,
        .basePathSOS = basePathSOS,
     };
-    
+
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
-    
+
     SDL_Log("Application started successfully!");
 
     return SDL_APP_CONTINUE;
@@ -278,10 +362,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
     auto* app = (AppContext*)appstate;
-    
+
     if (event->type == SDL_EVENT_QUIT) {
         app->app_quit = SDL_APP_SUCCESS;
     }
+
+    // Pass event to input handler if needed (SDLInput might handle events internally or need polling)
+    // Example: if (app->game) { static_cast<SDLInput*>(app->game->getInput())->handleEvent(event); }
 
     return SDL_APP_CONTINUE;
 }
@@ -289,23 +376,39 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-    
+
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
+    static Uint64 lastIDPrint = 0;
+    bool printID = false;
+    Uint64 printtime = SDL_GetTicks();
+    if (printtime - lastIDPrint > 1000) {
+        printID = true;
+        lastIDPrint = printtime;
+    }
+
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
         if (!entity || !entity->spriteData) continue; // Basic safety check
-
+        SDL_Texture* sprite_tex = nullptr;
+        if(printID)
+        {
+            SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
+        }
         // Get the pre-loaded sprite info from the map
         auto it = spriteMap2.find(entity->spriteData->getid_());
         if (it == spriteMap2.end()) {
              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
-             continue; // Skip rendering if sprite not found
+            //  continue; // Skip rendering if sprite not found
+            sprite_tex = spriteMap2["fatbat.png"];
         }
-        SDL_Texture* sprite_tex = it->second; // Use the existing texture from the map
+        else
+        {
+            sprite_tex = it->second; // Use the existing texture from the map
+        }
 
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
@@ -371,11 +474,18 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     Uint64 currentTime = SDL_GetTicks();
     Uint64 deltaTime = currentTime - lastUpdate;
-    if(deltaTime > 16)
-    {
-        deltaTime = 16;
+
+    // Simple delta time clamping
+    const Uint64 maxDeltaTime = 33; // ~30 FPS minimum update rate
+    if (deltaTime > maxDeltaTime) {
+        // SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Large delta time detected: %llu ms. Clamping to %llu ms.", deltaTime, maxDeltaTime);
+        deltaTime = maxDeltaTime;
     }
-    app->game->update(deltaTime);
+
+
+    if (app->game) {
+        app->game->update(deltaTime); // Update game logic
+    }
     lastUpdate = currentTime;
     
     SDL_RenderPresent(app->renderer);
@@ -386,19 +496,37 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
+        // --- Shutdown Multiplayer ---
+        if (app->game && app->game->isMultiplayerActive()) {
+            app->game->shutdownMultiplayer();
+        }
+        // --- End Shutdown Multiplayer ---
+
+        // Clean up game object
+        delete app->game; // Delete the game instance
+
+        // Clean up SDL resources
+        SDL_DestroyTexture(app->messageTex);
+        SDL_DestroyTexture(app->imageTex);
+        SDL_DestroyTexture(app->backgroundTex);
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
 
+        // Clean up audio
         Mix_FadeOutMusic(1000);  // prevent the music from abruptly ending.
         Mix_FreeMusic(app->music); // this call blocks until the music has finished fading
         Mix_CloseAudio();
         SDL_CloseAudioDevice(app->audioDevice);
 
-        delete app;
+        // Clean up input (if dynamically allocated in AppInit)
+        // delete static_cast<SDLInput*>(app->game->getInput()); // Be careful with ownership
+
+        delete app; // Delete the context itself
     }
     TTF_Quit();
     Mix_Quit();
+    // IMG_Quit(); // Added IMG_Quit
 
-    SDL_Log("Application quit successfully!");
+    SDL_Log("Application quit with result %d.", result);
     SDL_Quit();
 }

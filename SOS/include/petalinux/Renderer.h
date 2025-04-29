@@ -20,7 +20,7 @@ typedef struct BRAMDATA
 class Renderer
 {
 public:
-    Renderer();
+    Renderer(const std::string& img_path);
     ~Renderer();
 
     void init();

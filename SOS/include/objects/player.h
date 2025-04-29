@@ -9,7 +9,7 @@
 class Player : public Entity {
 
 public:
-    Player(Vec2 pos, SpriteData* spData);
+    Player(Vec2 pos, SpriteData* spData, std::string objID);
     void setInput(PlayerInput* input) { this->input = input; }
     void update(uint64_t deltaTime) override;
     void accept(CollisionVisitor& visitor) override;

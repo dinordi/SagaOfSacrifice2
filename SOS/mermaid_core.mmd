@@ -1,0 +1,46 @@
+classDiagram
+    direction LR  %% Layout Left-to-Right for better readability
+    
+    %% Core Utilities and Base Classes
+    
+    class Vec2 {
+        + x : float
+        + y : float
+        + operator+() : Vec2
+        + operator-() : Vec2
+        + operator*() : Vec2
+        + operator+=() : Vec2
+        + dot() : float
+        + length() : float
+        + normalize() : Vec2
+    }
+
+    class PlayerInput {
+        <<Interface>>
+        + read()*
+        + get_jump() : bool*
+        + get_left() : bool
+        + get_right() : bool
+        + get_attack() : bool
+    }
+
+    class SpriteData {
+        + width : int
+        + height : int
+        + columns : int
+        + SpriteData(id : string, width : int, height : int, columns : int)
+        + getSpriteRect(index : int) : SpriteRect
+        - id_ : string
+        + getid_() : const string&
+    }
+
+    class SpriteRect {
+        + x : int
+        + y : int
+        + w : int
+        + h : int
+        + id_ : string
+        + SpriteRect(x : int, y : int, w : int, h : int, id : string)
+    }
+
+    SpriteData --|> SpriteRect : returns
