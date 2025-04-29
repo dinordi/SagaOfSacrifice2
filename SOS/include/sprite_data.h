@@ -7,6 +7,7 @@ private:                                   \
     type member;                           \
 public:                                    \
     type& get##member() { return member; } \
+    const type& get##member() const { return member; } \
     void set##member(const type& value) { member = value; }
 
 #define DEFINE_CONST_GETTER_SETTER(type, member) \

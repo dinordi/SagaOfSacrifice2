@@ -9,12 +9,17 @@ Game::Game(PlayerInput* input) : running(true), input(input) {
     this->collisionManager = collisionManager;
     // Initialize game objects here
     player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5));
+    player->setInput(input);
     objects.push_back(player);
 
     Platform* floor = new Platform(500, 850, new SpriteData(std::string("tiles"), 128, 128, 4));
-    Platform* floor2 = new Platform(700, 850, new SpriteData(std::string("tiles"), 15, 15, 4));
+    Platform* floor2 = new Platform(500 + (1*128), 850, new SpriteData(std::string("tiles"), 128, 128, 4));
+    Platform* floor3 = new Platform(500 + (2*128), 850, new SpriteData(std::string("tiles"), 128, 128, 4));
+    Platform* floor4 = new Platform(500 + (3*128), 850, new SpriteData(std::string("tiles"), 128, 128, 4));
     objects.push_back(floor);
     objects.push_back(floor2);
+    objects.push_back(floor3);
+    objects.push_back(floor4);
 
     characters = new SpriteData(std::string("letters"), 127, 127, 3);
     mapCharacters();
@@ -52,13 +57,15 @@ void Game::update(uint64_t deltaTime) {
         timeseconds = 0.0f;
     }
     input->readInput();
-    player->handleInput(input, deltaTime);
+    // player->handleInput(input, deltaTime);
     // Update player input here
+
+    collisionManager->detectCollisions(objects);
+
     for(auto object : objects) {
         object->update(deltaTime);
     }
 
-    collisionManager->detectCollisions(objects);
 }
 
 void Game::drawWord(const std::string& word, int x, int y) {

@@ -307,11 +307,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         }
         SDL_Texture* sprite_tex = it->second; // Use the existing texture from the map
 
-        // Use the entity's specific sprite rect index if applicable (modify as needed)
-        // For simplicity, this example uses the base srcRect from spriteMap
-        // You might need entity->spriteData->getSpriteRect(index) to adjust srcRect if using sprite sheets
-
-        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(1);
+        // Use the current sprite index from animation system
+        int spriteIndex = entity->getCurrentSpriteIndex();
+        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(spriteIndex);
+        
         SDL_FRect srcRect = {
             static_cast<float>(currentSpriteRect.x),
             static_cast<float>(currentSpriteRect.y),
@@ -319,15 +318,22 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(currentSpriteRect.h)
         };
 
-        // Potentially adjust srcRect.x/y based on currentSpriteRect.x/y if it's an atlas
 
         SDL_FRect destRect{
             .x = static_cast<float>(entity->getposition().x),
             .y = static_cast<float>(entity->getposition().y),
-            .w = static_cast<float>(currentSpriteRect.w), // Use actual width/height
+            .w = static_cast<float>(currentSpriteRect.w * (entity->isFacingRight() ? 1.0f : -1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };
-        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+
+        // Adjust the dest rect's position when flipped
+        if (!entity->isFacingRight()) {
+            destRect.x -= destRect.w; // Adjust x position when flipped
+        }
+
+        // Normal rendering without flip
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
+        
     }
 
     for(const auto& actor : app->game->getActors()) {
