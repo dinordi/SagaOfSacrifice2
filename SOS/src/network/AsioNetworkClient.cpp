@@ -263,9 +263,12 @@ std::vector<uint8_t> AsioNetworkClient::serializeMessage(const NetworkMessage& m
     result.push_back(static_cast<uint8_t>(message.type));
     
     // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId));
+    result.push_back(static_cast<uint8_t>(message.senderId.size()));
+
+    // 3. Sender ID content
+    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
     
-    // 3. Data length - 4 bytes
+    // 4. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
     result.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
     result.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));

@@ -8,8 +8,8 @@
 extern uint32_t get_ticks();
 
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const uint8_t id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(id, 128, 128)), id_(id) {
-
+RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playerMap"), 128, 128, 5)), id_(id) {
+    // Note: we're using a default sprite ID of 0 since we can't directly convert strings to sprite IDs
 }
 
 void RemotePlayer::update(uint64_t deltaTime) {
@@ -49,7 +49,7 @@ MultiplayerManager::~MultiplayerManager() {
     shutdown();
 }
 
-bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const uint8_t playerId) {
+bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
     // Store player ID
     playerId_ = playerId;
     
@@ -117,8 +117,8 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     if (lastUpdateTime > 2000) { // Every 5 seconds approximately
         std::cout << "[Client] Current remote players: " << remotePlayers_.size() << std::endl;
         for (const auto& pair : remotePlayers_) {
-            std::cout << "[Client] Remote player ID: " << static_cast<int>(pair.first) 
-                      << " at position: (" << pair.second->position.x << ", " << pair.second->position.y << ")" << std::endl;
+            std::cout << "[Client] Remote player ID: " << pair.first 
+                      << " at position: (" << pair.second->getposition().x << ", " << pair.second->getposition().y << ")" << std::endl;
         }
         lastUpdateTime = 0;
     }
@@ -155,7 +155,7 @@ void MultiplayerManager::sendPlayerState() {
     uint64_t currentTime = get_ticks();
     if (currentTime - lastLogTime > 5000) { // Log every 5 seconds
         std::cout << "[Client] Sending player position: ("
-                  << localPlayer_->position.x << ", " << localPlayer_->position.y << ")" << std::endl;
+                  << localPlayer_->getposition().x << ", " << localPlayer_->getposition().y << ")" << std::endl;
         lastLogTime = currentTime;
     }
     
@@ -166,7 +166,7 @@ bool MultiplayerManager::isConnected() const {
     return network_ && network_->isConnected();
 }
 
-const std::map<uint8_t, std::unique_ptr<RemotePlayer>>& MultiplayerManager::getRemotePlayers() const {
+const std::map<std::string, std::unique_ptr<RemotePlayer>>& MultiplayerManager::getRemotePlayers() const {
     return remotePlayers_;
 }
 
@@ -183,7 +183,7 @@ void MultiplayerManager::sendChatMessage(const std::string& message) {
     network_->sendMessage(chatMsg);
 }
 
-void MultiplayerManager::setChatMessageHandler(std::function<void(const uint8_t, const std::string&)> handler) {
+void MultiplayerManager::setChatMessageHandler(std::function<void(const std::string&, const std::string&)> handler) {
     chatHandler_ = handler;
 }
 
@@ -310,8 +310,8 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     std::vector<uint8_t> data;
     
     // Get player position and velocity
-    const Vec2& pos = player->position;
-    const Vec2& vel = player->velocity;
+    const Vec2& pos = player->getposition();
+    const Vec2& vel = player->getvelocity();
     
     // Allocate space for the data (2 Vec2s = 4 floats = 16 bytes)
     data.resize(16);
@@ -344,8 +344,8 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     std::memcpy(&vel.y, &data[12], sizeof(float));
     
     // Update player state
-    player->position = (pos);
-    player->velocity = (vel);
+    player->getposition() = (pos);
+    player->getvelocity() = (vel);
     // std::cout << "Updated remote player " << player->spriteData->ID
     //           << " position: (" << pos.x << ", " << pos.y << ")"
     //           << " velocity: (" << vel.x << ", " << vel.y << ")" << std::endl;
