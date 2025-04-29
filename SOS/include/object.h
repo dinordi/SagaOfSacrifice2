@@ -29,7 +29,7 @@ public:
     // Vec2 velocity;
     const ObjectType type;
     const SpriteData* spriteData;
-    Object(Vec2 pos, ObjectType type, SpriteData* spData);
+    Object(Vec2 pos, ObjectType type, SpriteData* spData, std::string ID);
 
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
@@ -48,6 +48,7 @@ protected:
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
     DEFINE_GETTER_SETTER(Vec2, velocity);
+    DEFINE_CONST_GETTER_SETTER(std::string, ObjID); // ID of the object, for multiplayer to indicate between players and objects
 };
 
 class Actor {

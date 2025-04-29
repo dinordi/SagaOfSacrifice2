@@ -293,14 +293,13 @@ NetworkMessage AsioNetworkClient::deserializeMessage(const std::vector<uint8_t>&
     if (offset >= data.size()) return message;
     
     // 2. Sender ID length
-    // uint8_t senderIdLength = data[offset++];
-    message.senderId = data[offset++];
+    uint8_t senderIdLength = data[offset++];
     
     // // 3. Sender ID content
-    // if (offset + senderIdLength <= data.size()) {
-    //     message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-    //     offset += senderIdLength;
-    // }
+    if (offset + senderIdLength <= data.size()) {
+        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
+        offset += senderIdLength;
+    }
     
     if (offset + 4 > data.size()) return message;
     

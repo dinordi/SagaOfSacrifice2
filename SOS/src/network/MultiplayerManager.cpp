@@ -8,7 +8,7 @@
 extern uint32_t get_ticks();
 
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playerMap"), 128, 128, 5)), id_(id) {
+RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playermap"), 128, 128, 5), id), id_(id) {
     // Note: we're using a default sprite ID of 0 since we can't directly convert strings to sprite IDs
 }
 

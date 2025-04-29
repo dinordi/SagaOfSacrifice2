@@ -118,7 +118,7 @@ void GameSession::startRead() {
                     connected_ = false;
                     
                     // Remove this session from the server
-                    if (!playerId_) {
+                    if (playerId_.empty()) {
                         server_.removeSession(playerId_);
                     }
                 }
@@ -128,9 +128,9 @@ void GameSession::startRead() {
 
 void GameSession::handleMessage(const NetworkMessage& message) {
     // Process messages based on type
-    std::cout << "[Server Session] Handling message type: " << static_cast<int>(message.type)
-              << " from player: " << message.senderId 
-              << " with data size: " << message.data.size() << " bytes" << std::endl;
+    // std::cout << "[Server Session] Handling message type: " << static_cast<int>(message.type)
+    //           << " from player: " << message.senderId 
+    //           << " with data size: " << message.data.size() << " bytes" << std::endl;
     
     switch (message.type) {
         case MessageType::CONNECT:
@@ -140,11 +140,11 @@ void GameSession::handleMessage(const NetworkMessage& message) {
             processDisconnect(message);
             break;
         case MessageType::PLAYER_POSITION:
-            std::cout << "[Server Session] Broadcasting position update from player: " << message.senderId << std::endl;
+            // std::cout << "[Server Session] Broadcasting position update from player: " << message.senderId << std::endl;
             server_.broadcastMessageExcept(message, message.senderId);
             break;
         case MessageType::PLAYER_ACTION:
-            std::cout << "[Server Session] Broadcasting player action from player: " << message.senderId << std::endl;
+            // std::cout << "[Server Session] Broadcasting player action from player: " << message.senderId << std::endl;
             server_.broadcastMessageExcept(message, message.senderId);
             break;
         case MessageType::CHAT_MESSAGE:
@@ -218,7 +218,7 @@ void GameSession::handleWrite(const boost::system::error_code& error, size_t /*b
         connected_ = false;
         
         // Remove this session from the server
-        if (!playerId_) {
+        if (playerId_.empty()) {
             server_.removeSession(playerId_);
         }
     }
@@ -232,9 +232,12 @@ std::vector<uint8_t> GameSession::serializeMessage(const NetworkMessage& message
     result.push_back(static_cast<uint8_t>(message.type));
     
     // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId));
+    result.push_back(static_cast<uint8_t>(message.senderId.size()));
     
-    // 3. Data length - 4 bytes
+    // 3. Sender ID content
+    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
+    
+    // 4. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
     result.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
     result.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
@@ -259,11 +262,12 @@ NetworkMessage GameSession::deserializeMessage(const std::vector<uint8_t>& data)
     if (offset >= data.size()) return message;
     
     // 2. Sender ID length
-    uint8_t senderIDLength = data[offset++];
-
+    uint8_t senderIdLength = data[offset++];
+    
     // 3. Sender ID content
-    for (size_t i = 0; i < senderIDLength && offset < data.size(); ++i) {
-        message.senderId = data[offset++];
+    if (offset + senderIdLength <= data.size()) {
+        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
+        offset += senderIdLength;
     }
     
     if (offset + 4 > data.size()) return message;
