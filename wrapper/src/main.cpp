@@ -1,15 +1,19 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_init.h>
+#include <SDL3/SDL_gamepad.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 #include <string_view>
 #include <filesystem>
+#include <string> // Added for string manipulation
+#include <cstdlib> // Added for atoi and rand
+#include <vector> // Added for vector usage if needed indirectly
+#include <iostream> // Added for std::cerr, std::cout
 
 #include "game.h"
-#include "sdl_gfx.h"
 #include "sprites_sdl.h"
 #include "logger_sdl.h"
 #include "sdl_input.h"
@@ -19,59 +23,17 @@ constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
-
-#include "Fatbat.h"
-#include "Bullet.h"
-#include "WerewolfMan.h"
-#include "Platform.h"
-#include "Teleporter.h"
-#include "level.h"
-
-std::vector<Fatbat*> fatbats;
-std::vector<Platform*> level1;
-std::vector<Platform*> level2;
-std::vector<Platform*> level3;
-std::vector<Bullet*> bullets;
-std::vector<WerewolfMan*> werewolfMans;
-
-std::vector<Teleporter*> teleporters;
-
-
-void loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
-{
-	for(int i = 0; i < 16; i++) // 16 rows
-    {
-        for(int j = 0; j < 63; j++) // 63 columns
-        {
-            if(level[levelNum][i][j] != 0)    // If the tile is not empty
-            {
-				if(level[levelNum][i][j] == 21)
-				{
-					// Teleporter
-					teleporters.push_back(new Teleporter(j * 31, i * 31));
-					continue;
-				}
-                int tileX = j * 31; //31 is tile width/height
-                int tileY = i * 31;
-                int tileID = level[levelNum][i][j] + 99;  // Add 99 to the tileID to get the correct sprite
-                Platform* platform = new Platform(tileID, tileX, tileY, 15);    // Create a new platform
-                platforms->push_back(platform);
-            }
-        }
-    }
-}
-
-
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Texture* messageTex, *imageTex;
+    SDL_Texture* messageTex, *imageTex, *backgroundTex;
     SDL_Rect imageDest;
     SDL_FRect messageDest;
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
+    std::filesystem::path basePathSOS;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -79,30 +41,110 @@ SDL_AppResult SDL_Fail(){
     return SDL_APP_FAILURE;
 }
 
+// Helper function from SOS/main.cpp
+std::string generateRandomPlayerId() {
+    const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const int idLength = 8;
+    std::string result;
+    result.reserve(idLength);
+
+    // Seed random number generator
+    // srand(time(NULL)); // Requires <ctime>
+    
+    for (int i = 0; i < idLength; ++i) {
+        result += charset[rand() % (sizeof(charset) - 1)];
+    }
+
+    return result;
+}
+
+
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
+    // --- Multiplayer Argument Parsing ---
+    bool enableMultiplayer = false;
+    std::string serverAddress = "localhost";
+    int serverPort = 8080;
+    std::string playerId = generateRandomPlayerId(); // Generate default random ID
+
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+
+        // Note: No -h/--help here as SDL might handle it, or it's less common in SDL apps
+        if (arg == "-m" || arg == "--multiplayer") {
+            enableMultiplayer = true;
+        } else if (arg == "-s" || arg == "--server") {
+            if (i + 1 < argc) {
+                serverAddress = argv[++i];
+            } else {
+                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } else if (arg == "-p" || arg == "--port") {
+            if (i + 1 < argc) {
+                try {
+                    serverPort = std::stoi(argv[++i]);
+                    if (serverPort <= 0 || serverPort > 65535) {
+                        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid port number '%s'. Using default port %d.", argv[i], 8080);
+                        serverPort = 8080;
+                    }
+                } catch (const std::invalid_argument& e) {
+                    SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid port argument '%s'. Using default port %d.", argv[i], 8080);
+                    serverPort = 8080;
+                } catch (const std::out_of_range& e) {
+                     SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Port argument '%s' out of range. Using default port %d.", argv[i], 8080);
+                    serverPort = 8080;
+                }
+            } else {
+                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } 
+        else if (arg == "-id" || arg == "--playerid") {
+            if (i + 1 < argc) {
+                playerId = argv[++i];
+            } else {
+                SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+            }
+        } 
+        else {
+            // Handle other arguments if necessary, e.g., image name from original main.cpp
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown option: %s", arg.c_str());
+        }
+    }
+
+
+
+    if (enableMultiplayer) {
+        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %s",
+                  serverAddress.c_str(), serverPort, playerId.c_str());
+    }
+    else {
+        SDL_Log("Multiplayer disabled.");
+    }
+    // --- End Multiplayer Argument Parsing ---
+
+
     // init the library, here we make a window so we only need the Video capabilities.
-    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)){
+    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)){
         return SDL_Fail();
     }
-    
+
     // init TTF
     if (not TTF_Init()) {
         return SDL_Fail();
     }
-    
+
     // create a window
-   
-    SDL_Window* window = SDL_CreateWindow("SDL Minimal Sample", windowStartWidth, windowStartHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+
+    SDL_Window* window = SDL_CreateWindow("Saga Of Sacrifice 2", windowStartWidth, windowStartHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (not window){
         return SDL_Fail();
     }
-    
+
     // create a renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
     if (not renderer){
         return SDL_Fail();
     }
-    
+
     // load the font
 #if __ANDROID__
     std::filesystem::path basePath = "";   // on Android we do not want to use basepath. Instead, assets are available at the root directory.
@@ -124,6 +166,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 #endif
 
     Logger::setInstance(new LoggerSDL());
+
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -134,7 +177,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
 
-    initializeCharacters(renderer, basePathSOS);
+    //Load sprites from PNG into memory
+    loadAllSprites(renderer, basePathSOS);
+    // initializeCharacters(renderer, basePathSOS);
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -143,20 +188,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
 
-    //Load spritemap
-    // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
-    // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
-    // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
-
-    for(const auto& [id, sprite] : spriteMap) {
-        SDL_Log("ID init spritemap: %d", id);
-        if (!sprite.texture) {
-            return SDL_Fail();
-        }
-    }
-
     // load the PNG
-    auto png_surface = IMG_Load(((basePathSOS / "SOS/sprites/playerBig.png").make_preferred()).string().c_str());
+    auto png_surface = IMG_Load(((basePathSOS / "SOS/assets/sprites/playerBig.png").make_preferred()).string().c_str());
     if (!png_surface) {
         return SDL_Fail();
     }
@@ -193,7 +226,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // load the music
 
     // Resolve the full path to the music folder
-    auto musicPath = (basePathSOS / "SOS/music").make_preferred();
+    auto musicPath = (basePathSOS / "SOS/assets/music").make_preferred();
 
     // Combine the resolved path with the music file name
     auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
@@ -204,38 +237,78 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // play the music (does not loop)
-    Mix_PlayMusic(music, 0);
-    
+    // Mix_PlayMusic(music, 0);
 
-    GFX* gfx = new SDL_GFX();
-    gfx->initialize();
 
-    Logger::getInstance()->log("Logger started successfully!");    
+    Logger::getInstance()->log("Logger started successfully!");
 
-    for (int i = 0; i < 40; i++) {
-    	Fatbat* fatbat = new Fatbat(360, 0);
-    	fatbats.push_back(fatbat);
-	}
-	
-	for (int i = 0; i < 20; i++) {
-    	WerewolfMan* werewolfMan = new WerewolfMan(360, 0);
-    	werewolfMans.push_back(werewolfMan);
-	}
+    SDL_Gamepad* gamepad = nullptr;
+    SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
 
-	loadPlatforms(0, &level1);
-	loadPlatforms(1, &level2);
-	loadPlatforms(2, &level3);
+    // 1. Get the list of joystick instance IDs
+    int count = 0;
+    SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
 
-	for(int i=0; i < 20; i++)
-	{
-		Bullet* bullet = new Bullet(bulletID,7, 400,400,true);
-		bullets.push_back(bullet);
-	}
+    if (joystick_ids == nullptr) {
+        SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not get joysticks! SDL Error: %s", SDL_GetError());
+        count = 0; // Ensure count is 0 if allocation failed
+    }
 
-    SDLInput* input = new SDLInput();
+    SDL_Log("Found %d joystick(s).", count);
+
+    // 2. Iterate through instance IDs and check if they are gamepads
+    for (int i = 0; i < count; ++i) {
+        SDL_JoystickID current_id = joystick_ids[i];
+        const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
+        SDL_Log("Checking device ID %u: %s", current_id, (name ? name : "Unknown Name"));
+
+        if (SDL_IsGamepad(current_id)) { // Use SDL_IsGamepad
+            SDL_Log("  -> Device ID %u is a recognized gamepad.", current_id);
+
+            // Found a gamepad, let's target this one
+            targetInstanceID = current_id;
+            break; // Stop searching, we'll open the first one found
+        } else {
+             SDL_Log("  -> Device ID %u is NOT a recognized gamepad.", current_id);
+        }
+    }
+
+    // 3. Free the array returned by SDL_GetJoysticks
+    SDL_free(joystick_ids);
+    joystick_ids = nullptr; // Good practice to null the pointer after freeing
+
+
+    // 4. If we found a suitable Instance ID, try to open it
+    if (targetInstanceID != 0) { // Check against the invalid ID 0
+        gamepad = SDL_OpenGamepad(targetInstanceID);
+        if (!gamepad) {
+            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
+        } else {
+            // Get the name from the opened gamepad handle (preferred method)
+            const char* gamepadName = SDL_GetGamepadName(gamepad);
+            SDL_Log("Gamepad connected: %s (ID: %u)", (gamepadName ? gamepadName : "Unknown Name"), targetInstanceID);
+        }
+    } else {
+         SDL_Log("No recognized gamepad found.");
+    }
+
+
+    PlayerInput* input = new SDLInput(gamepad);
+    // SDL_Log("Input initialized successfully!");
 
     //Load game
-    Game* game = new Game(gfx, input);
+    Game* game = new Game(input);
+    // --- Initialize Multiplayer ---
+    if (enableMultiplayer) {
+        if (!game->initializeMultiplayer(serverAddress, serverPort, playerId)) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize multiplayer. Continuing in single player mode.");
+            // Consider if this should be fatal: return SDL_APP_FAILURE;
+        } else {
+            SDL_Log("Multiplayer initialized successfully!");
+        }
+    }
+    // --- End Initialize Multiplayer ---
+
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -250,21 +323,38 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         }
     }
 
+    // Load the background image
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background.png").make_preferred();
+    SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
+    if (!backgroundSurface) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
+    SDL_Texture* backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundSurface);
+    SDL_DestroySurface(backgroundSurface); // Free the surface after creating the texture
+    if (!backgroundTex) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
     // set up the application data
     *appstate = new AppContext{
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
        .imageTex = tex,
+       .backgroundTex = backgroundTex,
        .imageDest = imageDest,
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
-       .game = game
+       .game = game,
+       .basePathSOS = basePathSOS,
     };
-    
+
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
-    
+
     SDL_Log("Application started successfully!");
 
     return SDL_APP_CONTINUE;
@@ -272,10 +362,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
     auto* app = (AppContext*)appstate;
-    
+
     if (event->type == SDL_EVENT_QUIT) {
         app->app_quit = SDL_APP_SUCCESS;
     }
+
+    // Pass event to input handler if needed (SDLInput might handle events internally or need polling)
+    // Example: if (app->game) { static_cast<SDLInput*>(app->game->getInput())->handleEvent(event); }
 
     return SDL_APP_CONTINUE;
 }
@@ -283,55 +376,118 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-    // draw a color
-    auto time = SDL_GetTicks() / 1000.f;
-    auto red = (std::sin(time) + 1) / 2.0 * 255;
-    auto green = (std::sin(time / 2) + 1) / 2.0 * 255;
-    auto blue = (std::sin(time) * 2 + 1) / 2.0 * 255;
-    
-    SDL_SetRenderDrawColor(app->renderer, red, green, blue, SDL_ALPHA_OPAQUE);
+
+    SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
-    SDL_FRect imageDestFRect {
-        .x = static_cast<float>(app->imageDest.x),
-        .y = static_cast<float>(app->imageDest.y),
-        .w = static_cast<float>(app->imageDest.w),
-        .h = static_cast<float>(app->imageDest.h)
-    };
+    SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
-    // for(const auto& entity : app->game->gfx->getEntityList()) {
-    //     app->logger->log("ID: " + std::to_string(entity.ID));
-    // }
-    for(const auto& entity : app->game->gfx->getEntityList()) {
-        //log ID
-        int ID = entity->ID;
-        if(ID < 11 || ID > 37)
+    static Uint64 lastIDPrint = 0;
+    bool printID = false;
+    Uint64 printtime = SDL_GetTicks();
+    if (printtime - lastIDPrint > 1000) {
+        printID = true;
+        lastIDPrint = printtime;
+    }
+
+    //Load game objects (Entities, player(s), platforms)
+    for(const auto& entity : app->game->getObjects()) {
+        if (!entity || !entity->spriteData) continue; // Basic safety check
+        SDL_Texture* sprite_tex = nullptr;
+        if(printID)
         {
-            ID = 1;
+            SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
         }
-        auto it = spriteMap.find(ID);
-        if (it == spriteMap.end()) {
-            SDL_Log("ID not found in spritemap: %d", entity->ID);
-            continue;
+        // Get the pre-loaded sprite info from the map
+        auto it = spriteMap2.find(entity->spriteData->getid_());
+        if (it == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
+            //  continue; // Skip rendering if sprite not found
+            sprite_tex = spriteMap2["fatbat.png"];
         }
-        SDL_Texture* texture = it->second.texture;
-        SDL_FRect srcRect = it->second.srcRect;
-        SDL_FRect destRect{
-            .x = static_cast<float>(entity->x),
-            .y = static_cast<float>(entity->y),
-            .w = 15,
-            .h = 15
+        else
+        {
+            sprite_tex = it->second; // Use the existing texture from the map
+        }
+
+        // Use the current sprite index from animation system
+        int spriteIndex = entity->getCurrentSpriteIndex();
+        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(spriteIndex);
+        
+        SDL_FRect srcRect = {
+            static_cast<float>(currentSpriteRect.x),
+            static_cast<float>(currentSpriteRect.y),
+            static_cast<float>(currentSpriteRect.w),
+            static_cast<float>(currentSpriteRect.h)
         };
-        SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(entity->getposition().x),
+            .y = static_cast<float>(entity->getposition().y),
+            .w = static_cast<float>(currentSpriteRect.w * (entity->isFacingRight() ? 1.0f : -1.0f)),
+            .h = static_cast<float>(currentSpriteRect.h)
+        };
+
+        // Adjust the dest rect's position when flipped
+        if (!entity->isFacingRight()) {
+            destRect.x -= destRect.w; // Adjust x position when flipped
+        }
+
+        // Normal rendering without flip
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
+        
+    }
+
+    for(const auto& actor : app->game->getActors()) {
+         if (!actor || !actor->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info for the character texture (ID 11)
+        auto it_char_tex = spriteMap2.find(actor->spriteData->getid_()); // Should be ID 11 for letters
+         if (it_char_tex == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", actor->spriteData->getid_().c_str());
+             continue;
+         }
+        SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
+
+        // Get the specific source rect for this character index
+        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
+        SDL_FRect srcRect = {
+            static_cast<float>(charSpriteRect.x),
+            static_cast<float>(charSpriteRect.y),
+            static_cast<float>(charSpriteRect.w),
+            static_cast<float>(charSpriteRect.h)
+        };
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(actor->getposition().x),
+            .y = static_cast<float>(actor->getposition().y),
+            .w = static_cast<float>(charSpriteRect.w),
+            .h = static_cast<float>(charSpriteRect.h)
+        };
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
     }
 
     // If 16ms has passed since the last update, update the game
-    static Uint32 lastUpdate = 0;
-    app->game->readInput();
-    app->game->update();
+    static Uint64 lastUpdate = 0;
 
-    SDL_Delay(1000/60);
+    Uint64 currentTime = SDL_GetTicks();
+    Uint64 deltaTime = currentTime - lastUpdate;
 
+    // Simple delta time clamping
+    const Uint64 maxDeltaTime = 33; // ~30 FPS minimum update rate
+    if (deltaTime > maxDeltaTime) {
+        // SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Large delta time detected: %llu ms. Clamping to %llu ms.", deltaTime, maxDeltaTime);
+        deltaTime = maxDeltaTime;
+    }
+
+
+    if (app->game) {
+        app->game->update(deltaTime); // Update game logic
+    }
+    lastUpdate = currentTime;
+    
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;
@@ -340,19 +496,37 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
+        // --- Shutdown Multiplayer ---
+        if (app->game && app->game->isMultiplayerActive()) {
+            app->game->shutdownMultiplayer();
+        }
+        // --- End Shutdown Multiplayer ---
+
+        // Clean up game object
+        delete app->game; // Delete the game instance
+
+        // Clean up SDL resources
+        SDL_DestroyTexture(app->messageTex);
+        SDL_DestroyTexture(app->imageTex);
+        SDL_DestroyTexture(app->backgroundTex);
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
 
+        // Clean up audio
         Mix_FadeOutMusic(1000);  // prevent the music from abruptly ending.
         Mix_FreeMusic(app->music); // this call blocks until the music has finished fading
         Mix_CloseAudio();
         SDL_CloseAudioDevice(app->audioDevice);
 
-        delete app;
+        // Clean up input (if dynamically allocated in AppInit)
+        // delete static_cast<SDLInput*>(app->game->getInput()); // Be careful with ownership
+
+        delete app; // Delete the context itself
     }
     TTF_Quit();
     Mix_Quit();
+    // IMG_Quit(); // Added IMG_Quit
 
-    SDL_Log("Application quit successfully!");
+    SDL_Log("Application quit with result %d.", result);
     SDL_Quit();
 }
