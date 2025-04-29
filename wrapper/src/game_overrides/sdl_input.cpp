@@ -57,7 +57,7 @@ void SDLInput::readInput() {
     
     // Handle attack (triggered only on press, not hold)
     if(attack_pressed && !get_last_attack()) {
-        Logger::getInstance()->log("Attack pressed");
+        // Logger::getInstance()->log("Attack pressed");
         set_attack(true);
     } else {
         set_attack(false);

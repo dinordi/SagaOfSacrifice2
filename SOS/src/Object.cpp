@@ -18,7 +18,7 @@ Object::Object( Vec2 pos, ObjectType type, SpriteData* spData)
 // }
 
 
-Actor::Actor(Vec2 pos, const SpriteData* spData, int spriteIndex) : spriteIndex(spriteIndex)
+Actor::Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex) : spriteIndex(spriteIndex)
 {
     this->position = pos;
     this->spriteData = spData;
