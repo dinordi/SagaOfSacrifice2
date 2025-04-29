@@ -1,25 +1,18 @@
 // SOS1/include/object.h
 
-// #ifndef OBJECT_H
-// #define OBJECT_H
 #pragma once
+#include <map>
 
 #include <Vec2.h>
 #include "sprite_data.h"
 #include "collision/CollisionVisitor.h"
-
-#define DEFINE_GETTER_SETTER(type, member) \
-private:                                   \
-    type member;                           \
-public:                                    \
-    type& get##member() { return member; } \
-    void set##member(const type& value) { member = value; }
+#include "animation.h"
 
 
 class Platform;
 
 constexpr float GRAVITY = 9.8f;
-constexpr float MAX_VELOCITY = 20.0f;
+constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
     ENTITY,
@@ -32,16 +25,36 @@ enum class ObjectType {
 
 class Object {
 public:
-    Vec2 position;
-    Vec2 velocity;
+    // Vec2 position;
+    // Vec2 velocity;
     const ObjectType type;
     const SpriteData* spriteData;
-    Object( Vec2 pos, ObjectType type, SpriteData* spData);
+    Object(Vec2 pos, ObjectType type, SpriteData* spData);
 
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
+    
+    // Animation methods
+    void updateAnimation(uint64_t deltaTime);
+    void setAnimationState(AnimationState state);
+    int getCurrentSpriteIndex() const;
+    void addAnimation(AnimationState state, int startFrame, int frameCount, 
+                     int framesPerRow, uint32_t frameTime = 100, bool loop = true);
+    bool isFacingRight() const { return facingRight; }
+protected:
+    AnimationController animController;
+    bool facingRight;
+    
 private:
-    // DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(Vec2, velocity);
 };
 
-// #endif // OBJECT_H
+class Actor {
+public:
+    const SpriteData* spriteData;
+    const int spriteIndex;  //Current image in spritesheet, SpriteData handles index to srcrect
+    Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex = 1);
+private:
+    DEFINE_GETTER_SETTER(Vec2, position);
+};

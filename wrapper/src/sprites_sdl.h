@@ -16,8 +16,11 @@ struct Sprite {
 };
 
 extern std::unordered_map<int, Sprite> spriteMap;
+extern std::unordered_map<std::string, SDL_Texture*> spriteMap2;
 
 void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& path);
 SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path);
+Sprite initSprite(const SpriteRect sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath);
+void loadAllSprites(SDL_Renderer* renderer, const std::filesystem::path& path);
 
 #endif // SPRITES_SDL_H

@@ -1,5 +1,5 @@
 #include "collision/CollisionHandler.h"
-#include "player.h"  // Include specific object headers
+#include "objects/player.h"  // Include specific object headers
 #include "Enemy.h"
 #include "platform.h"
 
@@ -50,20 +50,25 @@ void CollisionHandler::visit(RemotePlayer* remotePlayer) {
 void CollisionHandler::handleInteraction(Player* player) {
     if (initiator->type == ObjectType::PLATFORM) {
         // Player landed on platform
+        Vec2 pos = player->getposition();
+        Vec2 vel = player->getvelocity();
         if (info.penetrationVector.y > 0) {
             // Coming from above
-            player->position.y -= info.penetrationVector.y;
-            player->velocity.y = 0;
+            pos.y -= info.penetrationVector.y;
+            vel.y = 0;
             // Set the player as being on ground
             player->setisOnGround(true);
         } else if (info.penetrationVector.x != 0) {
             // Side collision
-            player->position.x += info.penetrationVector.x;
+            pos.x += info.penetrationVector.x;
         } else if (info.penetrationVector.y < 0) {
             // Hitting head on platform
             // player->position.y += info.penetrationVector.y;
             // player->velocity.y = 0;
         }
+
+        player->setposition(pos);
+        player->setvelocity(vel);
     } else if (initiator->type == ObjectType::ENEMY) {
         // Player collided with enemy - cause damage
         // player->takeDamage(1); // Example damage amount
@@ -74,8 +79,12 @@ void CollisionHandler::handleInteraction(Enemy* enemy) {
     if (initiator->type == ObjectType::PLATFORM) {
         // Enemy landed on platform
         if (info.penetrationVector.y < 0) {
-            enemy->position.y += info.penetrationVector.y;
-            enemy->velocity.y = 0;
+            Vec2 pos = enemy->getposition();
+            Vec2 vel = enemy->getvelocity();
+            pos.y += info.penetrationVector.y;
+            vel.y = 0;
+            enemy->setposition(pos);
+            enemy->setvelocity(vel);
         } else if (info.penetrationVector.x != 0) {
             // Side collision - reverse direction
             // enemy->reverseDirection();

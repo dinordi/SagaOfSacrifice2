@@ -11,26 +11,28 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             Object* objB = gameObjects[j];
 
             // Get the sprite dimensions for collision detection
-            const SpriteData* spriteA = objA->spriteData;
-            const SpriteData* spriteB = objB->spriteData;
+            const SpriteRect spriteA = objA->spriteData->getSpriteRect(1);
+            const SpriteRect spriteB = objB->spriteData->getSpriteRect(1);
 
-            if (!spriteA || !spriteB) 
-            {
-                //NO SPRITE DATA
-                std::cout << "No sprite data for one of the objects." << std::endl;
-                continue;
-            }
+            // if (!spriteA || !spriteB) 
+            // {
+            //     //NO SPRITE DATA
+            //     std::cout << "No sprite data for one of the objects." << std::endl;
+            //     continue;
+            // }
+            Vec2 posA = objA->getposition();
+            Vec2 posB = objB->getposition();
 
             // Simple AABB collision detection
-            float leftA = objA->position.x;
-            float rightA = objA->position.x + spriteA->width;
-            float topA = objA->position.y;
-            float bottomA = objA->position.y + spriteA->height;
+            float leftA = posA.x;
+            float rightA = posA.x + spriteA.w;
+            float topA = posA.y;
+            float bottomA = posA.y + spriteA.h;
 
-            float leftB = objB->position.x;
-            float rightB = objB->position.x + spriteB->width;
-            float topB = objB->position.y;
-            float bottomB = objB->position.y + spriteB->height;
+            float leftB = posB.x;
+            float rightB = posB.x + spriteB.w;
+            float topB = posB.y;
+            float bottomB = posB.y + spriteB.h;
 
             // Check if the two AABBs intersect
             if (leftA <= rightB && rightA >= leftB && topA <= bottomB && bottomA >= topB) {
@@ -45,13 +47,13 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
                 // Set penetration vector to the minimal displacement
                 if (overlapX < overlapY) {
                     // X-axis penetration is smaller
-                    info.penetrationVector.x = (objA->position.x < objB->position.x) ? -overlapX : overlapX;
+                    info.penetrationVector.x = (posA.x < posB.x) ? -overlapX : overlapX;
                     info.penetrationVector.y = 0;
                     // std::cout << "X PENETRATION SMALLER: " << overlapX << " " << overlapY << std::endl;
                 } else {
                     // Y-axis penetration is smaller
                     info.penetrationVector.x = 0;
-                    info.penetrationVector.y = (objA->position.y < objB->position.y) ? -overlapY : overlapY;
+                    info.penetrationVector.y = (posA.y < posB.y) ? -overlapY : overlapY;
                 }
                 
                 // Calculate approximate contact point (center of overlap area)

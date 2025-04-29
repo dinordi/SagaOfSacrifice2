@@ -33,6 +33,7 @@ struct AppContext {
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
+    std::filesystem::path basePathSOS;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -185,7 +186,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
 
-    initializeCharacters(renderer, basePathSOS);
+    //Load sprites from PNG into memory
+    loadAllSprites(renderer, basePathSOS);
+    // initializeCharacters(renderer, basePathSOS);
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -193,18 +196,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // we no longer need the font or the surface, so we can destroy those now.
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
-
-    // Load spritemap
-    // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
-    // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
-    // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
-
-    for(const auto& [id, sprite] : spriteMap) {
-        SDL_Log("ID init spritemap: %d", id);
-        if (!sprite.texture) {
-            return SDL_Fail();
-        }
-    }
 
     // load the PNG
     auto png_surface = IMG_Load(((basePathSOS / "SOS/assets/sprites/playerBig.png").make_preferred()).string().c_str());
@@ -367,7 +358,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
-       .game = game // Store the game object in the context
+       .game = game,
+       .basePathSOS = basePathSOS,
     };
 
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
@@ -399,40 +391,76 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
-    // Render game objects (ensure game object exists)
-    if (app->game) {
-        for(const auto& entity : app->game->getObjects()) {
-            SDL_Texture* texture = nullptr;
-            SDL_FRect srcRect = {};
-            //log ID
-            int ID = entity->spriteData->ID;
-            auto it = spriteMap.find(ID);
-            if (it == spriteMap.end()) {
-                // SDL_Log("ID not found in spritemap: %d", entity->spriteData->ID);
-                auto it = spriteMap.find(1); // Fallback texture   
-                texture = it->second.texture;
-                srcRect = it->second.srcRect;
-                if(ID == 5 || ID == 10)
-                {
-                    SDL_Log("Drawing other player at X: %f Y: %f ID: %d", entity->position.x, entity->position.y, ID);
-                }
-            }
-            else
-            {
-                texture = it->second.texture;
-                srcRect = it->second.srcRect;
-            }
-            
-            SDL_FRect destRect{
-                .x = static_cast<float>(entity->position.x),
-                .y = static_cast<float>(entity->position.y),
-                .w = static_cast<float>(entity->spriteData->width),
-                .h = static_cast<float>(entity->spriteData->height)
-            };
-            SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+    //Load game objects (Entities, player(s), platforms)
+    for(const auto& entity : app->game->getObjects()) {
+        if (!entity || !entity->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info from the map
+        auto it = spriteMap2.find(entity->spriteData->getid_());
+        if (it == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
+             continue; // Skip rendering if sprite not found
         }
+        SDL_Texture* sprite_tex = it->second; // Use the existing texture from the map
+
+        // Use the current sprite index from animation system
+        int spriteIndex = entity->getCurrentSpriteIndex();
+        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(spriteIndex);
+        
+        SDL_FRect srcRect = {
+            static_cast<float>(currentSpriteRect.x),
+            static_cast<float>(currentSpriteRect.y),
+            static_cast<float>(currentSpriteRect.w),
+            static_cast<float>(currentSpriteRect.h)
+        };
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(entity->getposition().x),
+            .y = static_cast<float>(entity->getposition().y),
+            .w = static_cast<float>(currentSpriteRect.w * (entity->isFacingRight() ? 1.0f : -1.0f)),
+            .h = static_cast<float>(currentSpriteRect.h)
+        };
+
+        // Adjust the dest rect's position when flipped
+        if (!entity->isFacingRight()) {
+            destRect.x -= destRect.w; // Adjust x position when flipped
+        }
+
+        // Normal rendering without flip
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
+        
     }
 
+    for(const auto& actor : app->game->getActors()) {
+         if (!actor || !actor->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info for the character texture (ID 11)
+        auto it_char_tex = spriteMap2.find(actor->spriteData->getid_()); // Should be ID 11 for letters
+         if (it_char_tex == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", actor->spriteData->getid_().c_str());
+             continue;
+         }
+        SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
+
+        // Get the specific source rect for this character index
+        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
+        SDL_FRect srcRect = {
+            static_cast<float>(charSpriteRect.x),
+            static_cast<float>(charSpriteRect.y),
+            static_cast<float>(charSpriteRect.w),
+            static_cast<float>(charSpriteRect.h)
+        };
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(actor->getposition().x),
+            .y = static_cast<float>(actor->getposition().y),
+            .w = static_cast<float>(charSpriteRect.w),
+            .h = static_cast<float>(charSpriteRect.h)
+        };
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+    }
 
     // If 16ms has passed since the last update, update the game
     static Uint64 lastUpdate = 0;
@@ -452,15 +480,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         app->game->update(deltaTime); // Update game logic
     }
     lastUpdate = currentTime;
-
-    // Rendering is now tied to VSync or happens every frame, no need for separate timing here
-    // if(deltaTime > 1000.0f / 60.0f) { // Remove this condition
-    //     if (app->game) app->game->render(); // render() might be redundant if rendering happens below
-    // }
-
-    // Render the text message (example)
-    // SDL_RenderTexture(app->renderer, app->messageTex, NULL, &app->messageDest);
-
+    
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;
