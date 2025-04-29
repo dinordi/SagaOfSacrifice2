@@ -4,8 +4,9 @@ FROM gcc:latest AS builder
 # Install dependencies (CMake and Boost libraries)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
-    libboost-system-dev \
-    libboost-asio-dev \
+    g++ \
+    libboost-system1.74-dev \
+    libboost-asio1.74-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -16,7 +17,7 @@ COPY . .
 
 # Create a build directory and build the project
 RUN mkdir build && cd build && \
-    cmake .. && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make
 
 # --- Runtime Stage ---
