@@ -38,6 +38,23 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
+if(MSVC)
+    # Boost configuration - use consistent path separators and naming
+    set(BOOST_ROOT "C:/local/boost_1_87_0" CACHE PATH "Boost root directory")
+    set(Boost_NO_SYSTEM_PATHS ON)
+    set(Boost_NO_BOOST_CMAKE ON)
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_USE_MULTITHREADED ON)
+    set(Boost_USE_DEBUG_LIBS OFF)
+    set(Boost_USE_RELEASE_LIBS ON)
+    set(Boost_DEBUG ON)
+    set(Boost_DETAILED_FAILURE_MSG ON)
+
+    # The Boost install may not have "include" subfolder - check directory structure
+    set(BOOST_INCLUDEDIR "${BOOST_ROOT}" CACHE PATH "Boost include directory")
+    set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib64-msvc-14.3" CACHE PATH "Boost library directory")
+endif()
+
 # Find Boost libraries
 # Hint for Homebrew on Apple Silicon if find_package fails automatically
 # set(Boost_ROOT /opt/homebrew) 
