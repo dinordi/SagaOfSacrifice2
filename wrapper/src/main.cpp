@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_init.h>
+#include <SDL3/SDL_gamepad.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_image/SDL_image.h>
@@ -9,7 +10,6 @@
 #include <filesystem>
 
 #include "game.h"
-#include "sdl_gfx.h"
 #include "sprites_sdl.h"
 #include "logger_sdl.h"
 #include "sdl_input.h"
@@ -19,59 +19,17 @@ constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
 
-
-#include "Fatbat.h"
-#include "Bullet.h"
-#include "WerewolfMan.h"
-#include "Platform.h"
-#include "Teleporter.h"
-#include "level.h"
-
-std::vector<Fatbat*> fatbats;
-std::vector<Platform*> level1;
-std::vector<Platform*> level2;
-std::vector<Platform*> level3;
-std::vector<Bullet*> bullets;
-std::vector<WerewolfMan*> werewolfMans;
-
-std::vector<Teleporter*> teleporters;
-
-
-void loadPlatforms(int levelNum, std::vector<Platform*>* platforms)
-{
-	for(int i = 0; i < 16; i++) // 16 rows
-    {
-        for(int j = 0; j < 63; j++) // 63 columns
-        {
-            if(level[levelNum][i][j] != 0)    // If the tile is not empty
-            {
-				if(level[levelNum][i][j] == 21)
-				{
-					// Teleporter
-					teleporters.push_back(new Teleporter(j * 31, i * 31));
-					continue;
-				}
-                int tileX = j * 31; //31 is tile width/height
-                int tileY = i * 31;
-                int tileID = level[levelNum][i][j] + 99;  // Add 99 to the tileID to get the correct sprite
-                Platform* platform = new Platform(tileID, tileX, tileY, 15);    // Create a new platform
-                platforms->push_back(platform);
-            }
-        }
-    }
-}
-
-
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Texture* messageTex, *imageTex;
+    SDL_Texture* messageTex, *imageTex, *backgroundTex;
     SDL_Rect imageDest;
     SDL_FRect messageDest;
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
+    std::filesystem::path basePathSOS;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -81,7 +39,7 @@ SDL_AppResult SDL_Fail(){
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // init the library, here we make a window so we only need the Video capabilities.
-    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)){
+    if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)){
         return SDL_Fail();
     }
     
@@ -124,6 +82,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 #endif
 
     Logger::setInstance(new LoggerSDL());
+
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -134,7 +93,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
 
-    initializeCharacters(renderer, basePathSOS);
+    //Load sprites from PNG into memory
+    loadAllSprites(renderer, basePathSOS);
+    // initializeCharacters(renderer, basePathSOS);
 
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -143,20 +104,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
 
-    //Load spritemap
-    // spriteMap[1] = LoadSprite(renderer, basePathSOS / "SOS/sprites/playerBig.png");
-    // spriteMap[2] = LoadSprite(renderer, basePathSOS / "SOS/sprites/player.png");
-    // spriteMap[3] = LoadSprite(renderer, basePathSOS / "SOS/sprites/fatbat.png");
-
-    for(const auto& [id, sprite] : spriteMap) {
-        SDL_Log("ID init spritemap: %d", id);
-        if (!sprite.texture) {
-            return SDL_Fail();
-        }
-    }
-
     // load the PNG
-    auto png_surface = IMG_Load(((basePathSOS / "SOS/sprites/playerBig.png").make_preferred()).string().c_str());
+    auto png_surface = IMG_Load(((basePathSOS / "SOS/assets/sprites/playerBig.png").make_preferred()).string().c_str());
     if (!png_surface) {
         return SDL_Fail();
     }
@@ -193,7 +142,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // load the music
 
     // Resolve the full path to the music folder
-    auto musicPath = (basePathSOS / "SOS/music").make_preferred();
+    auto musicPath = (basePathSOS / "SOS/assets/music").make_preferred();
 
     // Combine the resolved path with the music file name
     auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
@@ -207,35 +156,75 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     Mix_PlayMusic(music, 0);
     
 
-    GFX* gfx = new SDL_GFX();
-    gfx->initialize();
-
     Logger::getInstance()->log("Logger started successfully!");    
 
-    for (int i = 0; i < 40; i++) {
-    	Fatbat* fatbat = new Fatbat(360, 0);
-    	fatbats.push_back(fatbat);
-	}
-	
-	for (int i = 0; i < 20; i++) {
-    	WerewolfMan* werewolfMan = new WerewolfMan(360, 0);
-    	werewolfMans.push_back(werewolfMan);
-	}
+    SDL_Gamepad* gamepad = nullptr;
+    SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
 
-	loadPlatforms(0, &level1);
-	loadPlatforms(1, &level2);
-	loadPlatforms(2, &level3);
+    // 1. Get the list of joystick instance IDs
+    int count = 0;
+    SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
 
-	for(int i=0; i < 20; i++)
-	{
-		Bullet* bullet = new Bullet(bulletID,7, 400,400,true);
-		bullets.push_back(bullet);
-	}
+    if (joystick_ids == nullptr) {
+        std::cerr << "Could not get joysticks! SDL Error: " << SDL_GetError() << std::endl;
+        // Logger::getInstance()->log("Could not get joysticks! SDL Error: " + std::string(SDL_GetError()));
+        count = 0; // Ensure count is 0 if allocation failed
+    }
 
-    SDLInput* input = new SDLInput();
+    std::cout << "Found " << count << " joystick(s)." << std::endl;
+
+    // 2. Iterate through instance IDs and check if they are gamepads
+    for (int i = 0; i < count; ++i) {
+        SDL_JoystickID current_id = joystick_ids[i];
+        const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
+        std::cout << "Checking device ID " << current_id << ": " << (name ? name : "Unknown Name") << std::endl;
+
+        if (SDL_HasGamepad()) {
+            std::cout << "  -> Device ID " << current_id << " is a recognized gamepad." << std::endl;
+            // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is a recognized gamepad.");
+
+            // Found a gamepad, let's target this one
+            targetInstanceID = current_id;
+            break; // Stop searching, we'll open the first one found
+        } else {
+             std::cout << "  -> Device ID " << current_id << " is NOT a recognized gamepad." << std::endl;
+             // Logger::getInstance()->log("Device ID " + std::to_string(current_id) + " is NOT a recognized gamepad.");
+        }
+    }
+
+    // 3. Free the array returned by SDL_GetJoysticks
+    // IMPORTANT: Do this *after* you are finished with the joystick_ids array
+    // (e.g., after finding the targetInstanceID you want to open).
+    SDL_free(joystick_ids);
+    joystick_ids = nullptr; // Good practice to null the pointer after freeing
+
+
+    // 4. If we found a suitable Instance ID, try to open it
+    if (targetInstanceID != 0) { // Check against the invalid ID 0
+        gamepad = SDL_OpenGamepad(targetInstanceID);
+        if (!gamepad) {
+            std::cerr << "Could not open gamepad with ID " << targetInstanceID << "! SDL Error: " << SDL_GetError() << std::endl;
+            // Logger::getInstance()->log("Could not open gamepad with ID " + std::to_string(targetInstanceID) + ". SDL Error: " + std::string(SDL_GetError()));
+        } else {
+            // Get the name from the opened gamepad handle (preferred method)
+            const char* gamepadName = SDL_GetGamepadName(gamepad);
+            std::cout << "Gamepad connected: " << (gamepadName ? gamepadName : "Unknown Name") << " (ID: " << targetInstanceID << ")" << std::endl;
+            // Logger::getInstance()->log("Gamepad connected: " + std::string(gamepadName ? gamepadName : "Unknown Name") + " (ID: " + std::to_string(targetInstanceID) + ")");
+
+            // The instance ID is also stored in the gamepad struct if needed:
+            // SDL_InstanceID id_from_struct = SDL_GetGamepadInstanceID(gamepad);
+            // std::cout << "Instance ID from struct: " << id_from_struct << std::endl;
+        }
+    } else {
+         std::cout << "No recognized gamepad found." << std::endl;
+         // Logger::getInstance()->log("No recognized gamepad found.");
+    }
+
+
+    PlayerInput* input = new SDLInput(gamepad);
 
     //Load game
-    Game* game = new Game(gfx, input);
+    Game* game = new Game(input);
 
     // print some information about the window
     SDL_ShowWindow(window);
@@ -250,17 +239,34 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         }
     }
 
+    // Load the background image
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background.png").make_preferred();
+    SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
+    if (!backgroundSurface) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
+    SDL_Texture* backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundSurface);
+    SDL_DestroySurface(backgroundSurface); // Free the surface after creating the texture
+    if (!backgroundTex) {
+        SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
     // set up the application data
     *appstate = new AppContext{
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
        .imageTex = tex,
+       .backgroundTex = backgroundTex,
        .imageDest = imageDest,
        .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
-       .game = game
+       .game = game,
+       .basePathSOS = basePathSOS,
     };
     
     SDL_SetRenderVSync(renderer, -1);   // enable vysnc
@@ -283,55 +289,95 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-    // draw a color
-    auto time = SDL_GetTicks() / 1000.f;
-    auto red = (std::sin(time) + 1) / 2.0 * 255;
-    auto green = (std::sin(time / 2) + 1) / 2.0 * 255;
-    auto blue = (std::sin(time) * 2 + 1) / 2.0 * 255;
     
-    SDL_SetRenderDrawColor(app->renderer, red, green, blue, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
-    SDL_FRect imageDestFRect {
-        .x = static_cast<float>(app->imageDest.x),
-        .y = static_cast<float>(app->imageDest.y),
-        .w = static_cast<float>(app->imageDest.w),
-        .h = static_cast<float>(app->imageDest.h)
-    };
+    SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
-    // for(const auto& entity : app->game->gfx->getEntityList()) {
-    //     app->logger->log("ID: " + std::to_string(entity.ID));
-    // }
-    for(const auto& entity : app->game->gfx->getEntityList()) {
-        //log ID
-        int ID = entity->ID;
-        if(ID < 11 || ID > 37)
-        {
-            ID = 1;
+    //Load game objects (Entities, player(s), platforms)
+    for(const auto& entity : app->game->getObjects()) {
+        if (!entity || !entity->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info from the map
+        auto it = spriteMap2.find(entity->spriteData->getid_());
+        if (it == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
+             continue; // Skip rendering if sprite not found
         }
-        auto it = spriteMap.find(ID);
-        if (it == spriteMap.end()) {
-            SDL_Log("ID not found in spritemap: %d", entity->ID);
-            continue;
-        }
-        SDL_Texture* texture = it->second.texture;
-        SDL_FRect srcRect = it->second.srcRect;
-        SDL_FRect destRect{
-            .x = static_cast<float>(entity->x),
-            .y = static_cast<float>(entity->y),
-            .w = 15,
-            .h = 15
+        SDL_Texture* sprite_tex = it->second; // Use the existing texture from the map
+
+        // Use the current sprite index from animation system
+        int spriteIndex = entity->getCurrentSpriteIndex();
+        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(spriteIndex);
+        
+        SDL_FRect srcRect = {
+            static_cast<float>(currentSpriteRect.x),
+            static_cast<float>(currentSpriteRect.y),
+            static_cast<float>(currentSpriteRect.w),
+            static_cast<float>(currentSpriteRect.h)
         };
-        SDL_RenderTexture(app->renderer, texture, &srcRect, &destRect);
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(entity->getposition().x),
+            .y = static_cast<float>(entity->getposition().y),
+            .w = static_cast<float>(currentSpriteRect.w * (entity->isFacingRight() ? 1.0f : -1.0f)),
+            .h = static_cast<float>(currentSpriteRect.h)
+        };
+
+        // Adjust the dest rect's position when flipped
+        if (!entity->isFacingRight()) {
+            destRect.x -= destRect.w; // Adjust x position when flipped
+        }
+
+        // Normal rendering without flip
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
+        
+    }
+
+    for(const auto& actor : app->game->getActors()) {
+         if (!actor || !actor->spriteData) continue; // Basic safety check
+
+        // Get the pre-loaded sprite info for the character texture (ID 11)
+        auto it_char_tex = spriteMap2.find(actor->spriteData->getid_()); // Should be ID 11 for letters
+         if (it_char_tex == spriteMap2.end()) {
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", actor->spriteData->getid_().c_str());
+             continue;
+         }
+        SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
+
+        // Get the specific source rect for this character index
+        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
+        SDL_FRect srcRect = {
+            static_cast<float>(charSpriteRect.x),
+            static_cast<float>(charSpriteRect.y),
+            static_cast<float>(charSpriteRect.w),
+            static_cast<float>(charSpriteRect.h)
+        };
+
+
+        SDL_FRect destRect{
+            .x = static_cast<float>(actor->getposition().x),
+            .y = static_cast<float>(actor->getposition().y),
+            .w = static_cast<float>(charSpriteRect.w),
+            .h = static_cast<float>(charSpriteRect.h)
+        };
+        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
     }
 
     // If 16ms has passed since the last update, update the game
-    static Uint32 lastUpdate = 0;
-    app->game->readInput();
-    app->game->update();
+    static Uint64 lastUpdate = 0;
 
-    SDL_Delay(1000/60);
-
+    Uint64 currentTime = SDL_GetTicks();
+    Uint64 deltaTime = currentTime - lastUpdate;
+    if(deltaTime > 16)
+    {
+        deltaTime = 16;
+    }
+    app->game->update(deltaTime);
+    lastUpdate = currentTime;
+    
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;

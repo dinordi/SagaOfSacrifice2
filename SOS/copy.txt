@@ -1,0 +1,75 @@
+classDiagram
+    direction LR  // Layout Left-to-Right for potentially better readability
+
+    class CollisionInfo {
+        + penetrationVector : Vector2D
+        + contactPoint : Vector2D
+        + <<struct>>
+    }
+
+    class CollisionVisitor {
+        <<Interface>>
+        +visit(Player* player)*
+        +visit(Enemy* enemy)*
+        +visit(Platform* Platform)*
+    }
+
+    class CollisionHandler {
+        - initiator : Object*
+        - info : CollisionInfo
+        + CollisionHandler(Object* initiator, CollisionInfo info)
+        + visit(Player* player) override
+        + visit(Enemy* enemy) override
+        + visit(Platform* Platform) override
+        # handleInteraction(Player* player) // Example specific handlers
+        # handleInteraction(Enemy* enemy)
+        # handleInteraction(Platform* Platform)
+    }
+    CollisionHandler --|> CollisionVisitor : implements
+
+    class Object {
+        <<Interface>>
+        + accept(CollisionVisitor& visitor)*
+        + getID() : int
+        + isActive() : bool
+        # virtual ~Object() = default // Important!
+    }
+
+    class Player {
+        + health : int
+        + accept(CollisionVisitor& visitor) override
+        + takeDamage(int amount)
+        + collectItem()
+        + applyPhysicsResponse(Vector2D resolutionVector)
+    }
+    Player --|> Object : implements
+
+    class Enemy {
+        + health : int
+        + accept(CollisionVisitor& visitor) override
+        + takeDamage(int amount)
+        + reverseDirection()
+        + applyPhysicsResponse(Vector2D resolutionVector)
+    }
+    Enemy --|> Object : implements
+
+    class Platform {
+        + accept(CollisionVisitor& visitor) override
+        + isBreakable() : bool
+    }
+    Platform --|> Object : implements
+
+    class CollisionManager {
+        + detectCollisions(gameObjects : List~Object*~) : List~Pair~Object*,Object*~~
+        + resolveCollision(Object* objA, Object* objB, CollisionInfo info)
+    }
+    CollisionManager ..> Object : uses
+    CollisionManager ..> CollisionHandler : creates/uses
+    CollisionManager ..> CollisionInfo : uses
+
+    Object ..> CollisionVisitor : uses (accept method parameter)
+    CollisionHandler ..> Object : uses (initiator member, parameters in handleInteraction)
+    CollisionHandler ..> CollisionInfo : uses
+    CollisionHandler ..> Player : calls methods on
+    CollisionHandler ..> Enemy : calls methods on
+    CollisionHandler ..> Platform : calls methods on

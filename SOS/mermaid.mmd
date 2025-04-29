@@ -1,0 +1,132 @@
+classDiagram
+    direction LR  // Layout Left-to-Right for better readability
+
+    class Vec2 {
+        + x : float
+        + y : float
+        + operator+() : Vec2
+        + operator-() : Vec2
+        + operator*() : Vec2
+        + operator+=() : Vec2
+        + dot() : float
+        + length() : float
+        + normalize() : Vec2
+    }
+
+    class SpriteData {
+        + ID : int
+        + width : int
+        + height : int
+        + SpriteData(ID : int, width : int, height : int)
+    }
+
+    class Object {
+        + position : Vec2
+        + velocity : Vec2
+        + type : ObjectType
+        + spriteData : SpriteData*
+        + Object(pos : Vec2, type : ObjectType, spData : SpriteData*)
+        + update(deltaTime : uint64_t)
+        + accept(visitor : CollisionVisitor)
+    }
+
+    class Entity {
+        + isOnGround : bool
+        + Entity(pos : Vec2, spData : SpriteData*)
+        + handlePlatformCollision(platform : Platform)
+    }
+    Entity --|> Object : inherits
+
+    class Player {
+        + Player(pos : Vec2, spData : SpriteData*)
+        + update(deltaTime : uint64_t)
+        + accept(visitor : CollisionVisitor)
+        + takeDamage(amount : int)
+        + collectItem()
+        + applyPhysicsResponse(resolutionVector : Vec2)
+    }
+    Player --|> Entity : inherits
+
+    class Platform {
+        + Platform(ID : int, x : int, y : int)
+        + update(deltaTime : uint64_t)
+        + accept(visitor : CollisionVisitor)
+        + isBreakable() : bool
+    }
+    Platform --|> Object : inherits
+
+    class Enemy {
+        + health : int
+        + accept(visitor : CollisionVisitor)
+        + takeDamage(amount : int)
+        + reverseDirection()
+        + applyPhysicsResponse(resolutionVector : Vec2)
+    }
+    Enemy --|> Object : inherits
+
+    class CollisionVisitor {
+        <<Interface>>
+        + visit(player : Player)
+        + visit(enemy : Enemy)
+        + visit(platform : Platform)
+    }
+
+    class CollisionHandler {
+        - initiator : Object*
+        - info : CollisionInfo
+        + CollisionHandler(initiator : Object*, info : CollisionInfo)
+        + visit(player : Player)
+        + visit(enemy : Enemy)
+        + visit(platform : Platform)
+        # handleInteraction(player : Player)
+        # handleInteraction(enemy : Enemy)
+        # handleInteraction(platform : Platform)
+    }
+    CollisionHandler --|> CollisionVisitor : implements
+
+    class CollisionInfo {
+        + penetrationVector : Vec2
+        + contactPoint : Vec2
+    }
+
+    class CollisionManager {
+        + detectCollisions(gameObjects : List~Object*~) : List~Pair~Object*,Object*~~
+        + resolveCollision(objA : Object*, objB : Object*, info : CollisionInfo)
+    }
+    CollisionManager ..> Object : uses
+    CollisionManager ..> CollisionHandler : creates/uses
+    CollisionManager ..> CollisionInfo : uses
+
+    class PhysicsEngine {
+        + update(deltaTime : float, objects : List~Object*~)
+    }
+    PhysicsEngine ..> Object : updates
+
+    class Renderer {
+        + init()
+        + render(objects : List~Object*~)
+    }
+    Renderer ..> Object : renders
+
+    class Game {
+        + Game(input : PlayerInput*)
+        + update(deltaTime : uint64_t)
+        + render()
+        + isRunning() : bool
+        + getObjects() : List~Object*~
+    }
+    Game ..> Object : manages
+    Game ..> PlayerInput : uses
+
+    class PlayerInput {
+        <<Abstract>>
+        + read()
+        + get_jump() : bool
+    }
+
+    Object ..> CollisionVisitor : uses (accept method parameter)
+    CollisionHandler ..> Object : uses (initiator member, parameters in handleInteraction)
+    CollisionHandler ..> CollisionInfo : uses
+    CollisionHandler ..> Player : calls methods on
+    CollisionHandler ..> Enemy : calls methods on
+    CollisionHandler ..> Platform : calls methods on

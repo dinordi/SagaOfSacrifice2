@@ -38,7 +38,14 @@ else()
     add_executable(${EXECUTABLE_NAME})
 endif()
 
-file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/*.cpp")
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
+list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
+
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 # Add your sources to the target
@@ -46,8 +53,9 @@ file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 target_include_directories(${EXECUTABLE_NAME} PRIVATE 
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
 )
@@ -114,7 +122,7 @@ endif()
 target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 
 # Add include directories
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS1/src)
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../SOS/src)
 
 
 # Dealing with assets
@@ -159,31 +167,56 @@ else()
 
     # Copy individual files
     copy_helper("Inter-VariableFont.ttf")
-    copy_helper("the_entertainer.ogg")
-    copy_helper("gs_tiger.svg")
+    # copy_helper("the_entertainer.ogg")
+    # copy_helper("gs_tiger.svg")
 
-    # Copy entire directories
-    file(GLOB_RECURSE SPRITE_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites/*")
-    foreach(sprite_file ${SPRITE_FILES})
-        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/sprites" "${sprite_file}")
-        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/sprites/${relpath}")
+    # Copy SOS/assets/ to windows Debug folder
+    # First ensure the base SOS/assets directory exists
+    add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets"
+        COMMENT "Creating SOS/assets directory"
+    )
+    
+    set(OUTPUT_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
+    file(GLOB_RECURSE ASSETS "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/*")
+    foreach(ASSET ${ASSETS})
+        # Get relative path from source assets dir to maintain folder structure
+        file(RELATIVE_PATH ASSET_REL_PATH "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets" "${ASSET}")
+        get_filename_component(ASSET_DIR "${ASSET_REL_PATH}" DIRECTORY)
+        
+        if (ANDROID)
+            # on Android, we need to copy the assets to the mobile assets directory.
+            set(outname "${MOBILE_ASSETS_DIR}/${ASSET_REL_PATH}")
+            # Create directory structure
+            if(NOT "${ASSET_DIR}" STREQUAL "")
+                add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E make_directory "${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
+                    COMMENT "Creating directory ${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
+                )
+            endif()
+        else()
+            # for platforms that do not have a good packaging format, all we can do is copy the assets to the process working directory.
+            set(outname "${OUTPUT_DIR}/SOS/assets/${ASSET_REL_PATH}")
+            
+            # Create directory structure if needed
+            if(NOT "${ASSET_DIR}" STREQUAL "")
+                add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/${ASSET_DIR}"
+                    COMMENT "Creating directory SOS/assets/${ASSET_DIR}"
+                )
+            endif()
+        endif()
+        
+        # Copy the file with echo
         add_custom_command(POST_BUILD
             TARGET "${EXECUTABLE_NAME}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${sprite_file}" "${outname}"
-            DEPENDS "${sprite_file}"
+            COMMAND ${CMAKE_COMMAND} -E echo "Copying ${ASSET} to ${outname}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ASSET}" "${outname}"
+            DEPENDS "${ASSET}"
         )
     endforeach()
-
-    file(GLOB_RECURSE MUSIC_FILES "${CMAKE_CURRENT_LIST_DIR}/../SOS/music/*")
-    foreach(music_file ${MUSIC_FILES})
-        file(RELATIVE_PATH relpath "${CMAKE_CURRENT_LIST_DIR}/../SOS/music" "${music_file}")
-        set(outname "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/music/${relpath}")
-        add_custom_command(POST_BUILD
-            TARGET "${EXECUTABLE_NAME}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${music_file}" "${outname}"
-            DEPENDS "${music_file}"
-        )
-    endforeach()
+    
 endif()
 
 # set some extra configs for each platform
