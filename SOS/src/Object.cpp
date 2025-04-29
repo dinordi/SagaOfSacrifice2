@@ -37,7 +37,7 @@ void Object::addAnimation(AnimationState state, int startFrame, int frameCount,
 // }
 
 
-Actor::Actor(Vec2 pos, const SpriteData* spData, uint spriteIndex) : spriteIndex(spriteIndex)
+Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteIndex(spriteIndex)
 {
     this->position = pos;
     this->spriteData = spData;
