@@ -7,7 +7,7 @@ class AudioManager {
 public:
     virtual ~AudioManager() = default;
 
-    virtual void initialize() = 0;
+    virtual void initialize(const std::string& basePath) = 0;
     virtual void loadSound(const std::string& filePath) = 0;
     virtual void playSound(const std::string& soundName) = 0;
     virtual void stopSound(const std::string& soundName) = 0;

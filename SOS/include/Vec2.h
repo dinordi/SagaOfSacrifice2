@@ -4,6 +4,7 @@
 #define VEC2_H
 
 #include <cmath>
+#include <cstdint>
 
 class Vec2 {
 public:

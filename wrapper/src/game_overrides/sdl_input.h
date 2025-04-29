@@ -1,13 +1,16 @@
 #ifndef SDL_INPUT_H
 #define SDL_INPUT_H
 
-#include "input.h"
+#include "interfaces/playerInput.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_gamepad.h>
 
-class SDLInput : public Input {
+class SDLInput : public PlayerInput {
 public:
-    SDLInput();
-    void read() override;
+    SDLInput(SDL_Gamepad* gamepad);
+    void readInput() override;
+private:
+    SDL_Gamepad* dualsense;
 };
 
 #endif // SDL_INPUT_H
