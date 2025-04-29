@@ -20,14 +20,15 @@ public:
 
     void update(uint64_t deltaTime);
     bool isRunning() const;
+    std::string generateRandomPlayerId();
     
     // Multiplayer functionality
-    bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const uint8_t playerId);
+    bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId);
     void shutdownMultiplayer();
     bool isMultiplayerActive() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
     void sendChatMessage(const std::string& message);
-    void setChatMessageHandler(std::function<void(const uint8_t sender, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
     std::vector<Object*>& getObjects();
     std::vector<Actor*>& getActors();
 
@@ -54,7 +55,7 @@ private:
     void handleNetworkMessages();
     
     // Update remote player positions
-    void updateRemotePlayers(const std::map<uint8_t, std::unique_ptr<RemotePlayer>>& remotePlayers);
+    void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
     
     // Render remote players
     // void renderRemotePlayers();

@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Player::Player( Vec2 pos, SpriteData* spData) : Entity(pos, spData), 
+Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << spriteData->getid_() << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;

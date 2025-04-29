@@ -42,22 +42,20 @@ SDL_AppResult SDL_Fail(){
 }
 
 // Helper function from SOS/main.cpp
-uint8_t generateRandomPlayerId() {
-    // const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    // const int idLength = 8;
-    // std::string result;
-    // result.reserve(idLength);
+std::string generateRandomPlayerId() {
+    const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const int idLength = 8;
+    std::string result;
+    result.reserve(idLength);
 
-    // Seed random number generator (optional, but good practice)
-    // Consider seeding once at the start if called multiple times
+    // Seed random number generator
     // srand(time(NULL)); // Requires <ctime>
-    uint8_t result = 3;
-    // uint8_t result = static_cast<uint8_t>(rand() % 256);
-    // for (int i = 0; i < idLength; ++i) {
-        // result += charset[rand() % (sizeof(charset) - 1)];
-    // }
+    
+    for (int i = 0; i < idLength; ++i) {
+        result += charset[rand() % (sizeof(charset) - 1)];
+    }
 
-    return result; // Random ID between 0 and 255
+    return result;
 }
 
 
@@ -66,8 +64,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     bool enableMultiplayer = false;
     std::string serverAddress = "localhost";
     int serverPort = 8080;
-    uint8_t playerId = 3; // Generate default random ID
-    // uint8_t playerId = generateRandomPlayerId(); // Generate default random ID
+    std::string playerId = generateRandomPlayerId(); // Generate default random ID
 
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -102,15 +99,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         } 
         else if (arg == "-id" || arg == "--playerid") {
             if (i + 1 < argc) {
-                try {
-                    playerId = static_cast<uint8_t>(std::stoi(argv[++i]));
-                } catch (const std::invalid_argument& e) {
-                    SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Invalid player ID argument '%s'. Using default ID %d.", argv[i], playerId);
-                } catch (const std::out_of_range& e) {
-                     SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Player ID argument '%s' out of range. Using default ID %d.", argv[i], playerId);
-                }
+                playerId = argv[++i];
             } else {
-                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
+                SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
             }
         } 
         else {
@@ -122,8 +113,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 
     if (enableMultiplayer) {
-        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %d",
-                  serverAddress.c_str(), serverPort, playerId);
+        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %s",
+                  serverAddress.c_str(), serverPort, playerId.c_str());
     }
     else {
         SDL_Log("Multiplayer disabled.");
@@ -246,7 +237,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // play the music (does not loop)
-    Mix_PlayMusic(music, 0);
+    // Mix_PlayMusic(music, 0);
 
 
     Logger::getInstance()->log("Logger started successfully!");
@@ -391,17 +382,33 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
 
+    static Uint64 lastIDPrint = 0;
+    bool printID = false;
+    Uint64 printtime = SDL_GetTicks();
+    if (printtime - lastIDPrint > 1000) {
+        printID = true;
+        lastIDPrint = printtime;
+    }
+
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
         if (!entity || !entity->spriteData) continue; // Basic safety check
-
+        SDL_Texture* sprite_tex = nullptr;
+        if(printID)
+        {
+            SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
+        }
         // Get the pre-loaded sprite info from the map
         auto it = spriteMap2.find(entity->spriteData->getid_());
         if (it == spriteMap2.end()) {
              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
-             continue; // Skip rendering if sprite not found
+            //  continue; // Skip rendering if sprite not found
+            sprite_tex = spriteMap2["fatbat.png"];
         }
-        SDL_Texture* sprite_tex = it->second; // Use the existing texture from the map
+        else
+        {
+            sprite_tex = it->second; // Use the existing texture from the map
+        }
 
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
