@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 // Enum for different types of network messages - same as client side
 enum class MessageType {
