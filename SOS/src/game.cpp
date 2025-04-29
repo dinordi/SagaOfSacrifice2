@@ -69,13 +69,6 @@ void Game::update(uint64_t deltaTime) {
     }
     input->readInput();
     player->handleInput(input, deltaTime);
-    // Update player input here
-    // For example, check if the jump button is pressed
-    // if (input->get_jump()) {
-    //     // Handle jump action
-    //     Player* player = static_cast<Player*>(objects[0]);
-    //     player->velocity.y -= 2.0f; // Apply jump force
-    // }
     for(auto object : objects) {
         object->update(deltaTime);
     }
@@ -83,9 +76,6 @@ void Game::update(uint64_t deltaTime) {
     collisionManager->detectCollisions(objects);
 }
 
-void Game::render() {
-    // Render game objects here
-}
 
 bool Game::isRunning() const {
     return running;

@@ -17,10 +17,8 @@ class Game {
 public:
     Game(PlayerInput* input);
     ~Game();
-    bool isRunning() const;
 
     void update(uint64_t deltaTime);
-    // void render();
     bool isRunning() const;
     
     // Multiplayer functionality

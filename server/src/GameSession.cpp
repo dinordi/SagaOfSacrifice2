@@ -259,7 +259,12 @@ NetworkMessage GameSession::deserializeMessage(const std::vector<uint8_t>& data)
     if (offset >= data.size()) return message;
     
     // 2. Sender ID length
-    message.senderId = data[offset++];
+    uint8_t senderIDLength = data[offset++];
+
+    // 3. Sender ID content
+    for (size_t i = 0; i < senderIDLength && offset < data.size(); ++i) {
+        message.senderId = data[offset++];
+    }
     
     if (offset + 4 > data.size()) return message;
     

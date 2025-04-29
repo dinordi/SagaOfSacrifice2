@@ -18,7 +18,7 @@ public:
     ~MultiplayerManager();
 
     // Initialize the multiplayer system
-    bool initialize(const std::string& serverAddress, int serverPort, const uint8_t playerId);
+    bool initialize(const std::string& serverAddress, int serverPort, const std::string& playerId);
     
     // Shutdown multiplayer system
     void shutdown();
@@ -36,13 +36,13 @@ public:
     bool isConnected() const;
     
     // Get all remote players
-    const std::map<uint8_t, std::unique_ptr<RemotePlayer>>& getRemotePlayers() const;
+    const std::map<std::string, std::unique_ptr<RemotePlayer>>& getRemotePlayers() const;
     
     // Send a chat message
     void sendChatMessage(const std::string& message);
     
     // Set the chat message handler
-    void setChatMessageHandler(std::function<void(const uint8_t senderId, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const std::string& senderId, const std::string& message)> handler);
 
 private:
     // Handle network messages received from the server
@@ -67,13 +67,13 @@ private:
     Player* localPlayer_;
     
     // Remote players
-    std::map<uint8_t, std::unique_ptr<RemotePlayer>> remotePlayers_;
+    std::map<std::string, std::unique_ptr<RemotePlayer>> remotePlayers_;
     
     // Player ID
-    uint8_t playerId_;
+    std::string playerId_;
     
     // Chat message handler
-    std::function<void(const uint8_t senderId, const std::string& message)> chatHandler_;
+    std::function<void(const std::string& senderId, const std::string& message)> chatHandler_;
     
     // Last time we sent a player update
     uint64_t lastUpdateTime_;
@@ -86,7 +86,7 @@ private:
 class RemotePlayer : public Object
 {
 public:
-    RemotePlayer(const uint8_t id);
+    RemotePlayer(const std::string& id);
     
     void update(uint64_t deltaTime);
     
@@ -111,5 +111,5 @@ private:
     // Vec2 velocity_;
     float orientation_;
     int state_;
-    const uint8_t id_;
+    const std::string id_;
 };
