@@ -1,16 +1,19 @@
-# Use a base image with GCC and CMake
-FROM gcc:latest AS builder
+# Use Debian Bullseye for consistent Boost version (1.74)
+FROM debian:bullseye AS builder
 
-# Install dependencies (CMake and Boost libraries)
+# Install build dependencies (CMake, g++, make, and Boost 1.74 dev libraries)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     g++ \
-    libboost-system1.74-dev \
-    libboost-asio1.74-dev \
+    make \
+    libboost-dev \
+    libboost-system-dev \
+    libboost-thread-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /app
+# ... rest of the Dockerfile remains the same ...
 
 # Copy the server source code
 COPY . .
@@ -27,7 +30,7 @@ FROM debian:bullseye-slim
 # Install runtime dependencies (Boost libraries)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-system1.74.0 \
-    libboost-asio1.74.0 \
+    libboost-thread1.74.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory

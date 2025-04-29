@@ -4,6 +4,8 @@
 #include <boost/bind.hpp>
 #include <string>
 
+using namespace boost::placeholders;
+
 GameServer::GameServer(boost::asio::io_context& ioContext, int port)
     : ioContext_(ioContext),
       acceptor_(ioContext, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),

@@ -5,7 +5,7 @@
 #include <csignal>
 
 // Default server port
-const int DEFAULT_PORT = 8080;
+const int DEFAULT_PORT = 8282;
 
 // Pointer to server for signal handler
 GameServer* g_server = nullptr;
@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
                 if (port < 1 || port > 65535) {
                     std::cerr << "Invalid port number. Using default port " << DEFAULT_PORT << std::endl;
                     port = DEFAULT_PORT;
+		    std::cout << "Changed port to: " << port << std::endl;
                 }
             } catch (const std::exception& e) {
                 std::cerr << "Invalid port argument. Using default port " << DEFAULT_PORT << std::endl;
