@@ -31,14 +31,12 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // but we still need to initialize the local player for input and rendering
     player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), playerID);
     player->setInput(input);
-    objects.push_back(player);
+    objects.push_back(std::shared_ptr<Player>(player));
 }
 
 Game::~Game() {
     // Clean up game objects
-    for(auto object : objects) {
-        delete object;
-    }
+    // No need to manually delete objects as they are managed by shared_ptr
     objects.clear();
     
     delete collisionManager;
@@ -86,7 +84,7 @@ void Game::update(uint64_t deltaTime) {
         multiplayerManager->update(deltaTime);
         
         // Send player input to server
-        multiplayerManager->setPlayerInput(input);
+        // multiplayerManager->setPlayerInput(input);
         
         // In the server-authoritative model:
         // 1. We still apply local input immediately for responsive feel
@@ -111,40 +109,37 @@ bool Game::isRunning() const {
     return running;
 }
 
-std::vector<Object*>& Game::getObjects() {
+std::vector<std::shared_ptr<Object>>& Game::getObjects() {
     return objects;
 }
 
-bool Game::initializeSinglePlayer(std::filesystem::path server_path) {
-    // Initialize multiplayer with local server
+bool Game::initializeSinglePlayerEmbedded() {
+    // Initialize multiplayer with embedded server
     if (usingSinglePlayerServer) {
         return true; // Already initialized
     }
     
-    std::cout << "[Game] Setting up single player with local server" << std::endl;
+    std::cout << "[Game] Setting up single player with embedded server" << std::endl;
     
-    // Start the local server
-    if (!localServerManager->startLocalServer(LOCAL_SERVER_PORT, server_path)) {
-        std::cerr << "[Game] Failed to start local server" << std::endl;
+    // Start the embedded server
+    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT)) {
+        std::cerr << "[Game] Failed to start embedded server" << std::endl;
         return false;
     }
-    
-    // Give the server a moment to start up
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
     // Connect to the local server
     std::string playerId = player->getObjID();
     if (!initializeMultiplayer("localhost", LOCAL_SERVER_PORT, playerId)) {
-        std::cerr << "[Game] Failed to connect to local server" << std::endl;
-        localServerManager->stopLocalServer();
+        std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
+        localServerManager->stopEmbeddedServer();
         return false;
     }
-    
     usingSinglePlayerServer = true;
-    std::cout << "[Game] Single player mode with local server initialized" << std::endl;
+    std::cout << "[Game] Single player mode with embedded server initialized" << std::endl;
     
     return true;
 }
+
 
 bool Game::initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId) {
     if (!multiplayerManager) {
@@ -157,9 +152,9 @@ bool Game::initializeMultiplayer(const std::string& serverAddress, int serverPor
         multiplayerActive = true;
         multiplayerManager->setLocalPlayer(player);
         multiplayerManager->setPlayerInput(input);
-        std::cout << "[Game] Multiplayer initialized successfully" << std::endl;
+        std::cout << "[Game] (Multiplayer)server initialized successfully" << std::endl;
     } else {
-        std::cerr << "[Game] Failed to initialize multiplayer" << std::endl;
+        std::cerr << "[Game] Failed to initialize (multiplayer) server" << std::endl;
     }
     
     return success;
@@ -169,11 +164,10 @@ void Game::shutdownMultiplayer() {
     if (multiplayerManager && multiplayerActive) {
         multiplayerManager->shutdown();
         multiplayerActive = false;
-        std::cout << "[Game] Multiplayer shut down" << std::endl;
+        std::cout << "[Game] (Multiplayer) server shut down" << std::endl;
     }
     
-    if (usingSinglePlayerServer && localServerManager) {
-        localServerManager->stopLocalServer();
+    if ((usingSinglePlayerServer) && localServerManager) {
         usingSinglePlayerServer = false;
         std::cout << "[Game] Local server shut down" << std::endl;
     }
@@ -204,7 +198,7 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
     for (const auto& pair : remotePlayers) {
         //Find the remote player in the gameobjects
         //If not found, create a new one, otherwise continue
-        auto it = std::find_if(objects.begin(), objects.end(), [&](Object* obj) {
+        auto it = std::find_if(objects.begin(), objects.end(), [&](const std::shared_ptr<Object>& obj) {
             return obj->getObjID() == pair.first;
         });
         if (it == objects.end()) {
@@ -213,7 +207,7 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
             remotePlayer->setposition(pair.second->getposition());
             remotePlayer->setvelocity(pair.second->getvelocity());
-            objects.push_back(remotePlayer);
+            objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
             // Update existing remote player
             (*it)->setposition(pair.second->getposition());

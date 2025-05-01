@@ -3,6 +3,11 @@
 #include <memory>
 #include <thread>
 #include <filesystem>
+#include <functional>
+#include <atomic>
+
+// Forward declarations
+class EmbeddedServer;
 
 // Class to manage launching and stopping a local game server
 class LocalServerManager {
@@ -10,17 +15,13 @@ public:
     LocalServerManager();
     ~LocalServerManager();
 
-    // Start the local server process
-    bool startLocalServer(int port, std::filesystem::path serverPath);
+    // Start the local server as a thread in the same process
+    bool startEmbeddedServer(int port);
 
-    // Stop the local server
-    void stopLocalServer();
-
-    // Check if local server is running
-    bool isLocalServerRunning() const;
+    bool stopEmbeddedServer();
 
 private:
-    std::unique_ptr<std::thread> serverThread_;
-    bool serverRunning_;
+    std::atomic<bool> serverRunning_;
     int serverPort_;
+    std::unique_ptr<EmbeddedServer> embeddedServer_;
 };
