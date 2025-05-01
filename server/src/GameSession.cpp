@@ -118,8 +118,9 @@ void GameSession::startRead() {
                     connected_ = false;
                     
                     // Remove this session from the server
-                    if (playerId_.empty()) {
+                    if (!playerId_.empty()) {
                         server_.removeSession(playerId_);
+                        server_.removePlayerObject(playerId_);
                     }
                 }
             }
@@ -140,11 +141,15 @@ void GameSession::handleMessage(const NetworkMessage& message) {
             processDisconnect(message);
             break;
         case MessageType::PLAYER_POSITION:
-            // std::cout << "[Server Session] Broadcasting position update from player: " << message.senderId << std::endl;
-            server_.broadcastMessageExcept(message, message.senderId);
+            // In server-controlled physics, we ignore position messages from clients
+            // The server determines positions and broadcasts them
+            break;
+        case MessageType::PLAYER_INPUT:
+            // New: Process player input
+            processInput(message);
             break;
         case MessageType::PLAYER_ACTION:
-            // std::cout << "[Server Session] Broadcasting player action from player: " << message.senderId << std::endl;
+            // Actions are still broadcast for special events that don't affect physics
             server_.broadcastMessageExcept(message, message.senderId);
             break;
         case MessageType::CHAT_MESSAGE:
@@ -176,6 +181,9 @@ void GameSession::processConnect(const NetworkMessage& message) {
     // Add this session to the server's session map
     server_.addSession(playerId_, shared_from_this());
     
+    // Create a new player object in the game world
+    server_.createPlayerObject(playerId_);
+    
     // Broadcast the new player's connection to all existing players
     server_.broadcastMessageExcept(message, playerId_);
     std::cout << "[Server Session] Processed connect message for player: " << playerId_ << std::endl;
@@ -188,11 +196,18 @@ void GameSession::processDisconnect(const NetworkMessage& message) {
     // Broadcast the disconnection to other players
     server_.broadcastMessageExcept(message, message.senderId);
     
-    // Remove this session from the server
+    // Remove this session and player object from the server
     if (message.senderId == playerId_) {
+        server_.removePlayerObject(playerId_);
         server_.removeSession(playerId_);
         connected_ = false;
     }
+}
+
+void GameSession::processInput(const NetworkMessage& message) {
+    // Process player input (new method)
+    // Let the server handle the input to update game state
+    server_.processPlayerInput(message.senderId, message);
 }
 
 void GameSession::processChat(const NetworkMessage& message) {
@@ -218,7 +233,7 @@ void GameSession::handleWrite(const boost::system::error_code& error, size_t /*b
         connected_ = false;
         
         // Remove this session from the server
-        if (playerId_.empty()) {
+        if (!playerId_.empty()) {
             server_.removeSession(playerId_);
         }
     }

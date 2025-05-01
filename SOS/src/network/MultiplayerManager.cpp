@@ -1,6 +1,7 @@
 #include "network/MultiplayerManager.h"
 #include "network/AsioNetworkClient.h"
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
+#include "interfaces/playerInput.h"  // Add player input header
 #include <iostream>
 #include <cstring>
 
@@ -8,23 +9,38 @@
 extern uint32_t get_ticks();
 
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string& id) : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playermap"), 128, 128, 5), id), id_(id) {
+RemotePlayer::RemotePlayer(const std::string& id) 
+    : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playermap"), 128, 128, 5), id), 
+      id_(id),
+      interpolationTime_(0.0f),
+      targetPosition_(Vec2(0, 0)),
+      targetVelocity_(Vec2(0, 0)) {
     // Note: we're using a default sprite ID of 0 since we can't directly convert strings to sprite IDs
 }
 
 void RemotePlayer::update(uint64_t deltaTime) {
-    // Simple linear interpolation for position based on velocity
-    // position_.x += velocity_.x * (deltaTime / 1000.0f);
-    // position_.y += velocity_.y * (deltaTime / 1000.0f);
+    // Smooth interpolation between current position and target position
+    float dt = deltaTime / 1000.0f;  // Convert to seconds
+    
+    // Update interpolation timer
+    interpolationTime_ += dt;
+    float t = std::min(interpolationTime_ / InterpolationPeriod, 1.0f);
+    
+    // Only interpolate if we have a different target position
+    if ((targetPosition_.x != position_.x || targetPosition_.y != position_.y) && t < 1.0f) {
+        // Linear interpolation
+        position_.x = position_.x + (targetPosition_.x - position_.x) * t;
+        position_.y = position_.y + (targetPosition_.y - position_.y) * t;
+        
+        // Update velocity based on target velocity
+        velocity_.x = velocity_.x + (targetVelocity_.x - velocity_.x) * t;
+        velocity_.y = velocity_.y + (targetVelocity_.y - velocity_.y) * t;
+    } else {
+        // We've reached the target or never started interpolating, apply velocity directly
+        position_.x += velocity_.x * dt;
+        position_.y += velocity_.y * dt;
+    }
 }
-
-// void RemotePlayer::setPosition(const Vec2& position) {
-//     position_ = position;
-// }
-
-// void RemotePlayer::setVelocity(const Vec2& velocity) {
-//     velocity_ = velocity;
-// }
 
 void RemotePlayer::setOrientation(float orientation) {
     orientation_ = orientation;
@@ -34,13 +50,29 @@ void RemotePlayer::setState(int state) {
     state_ = state;
 }
 
+void RemotePlayer::setTargetPosition(const Vec2& position) {
+    targetPosition_ = position;
+}
+
+void RemotePlayer::setTargetVelocity(const Vec2& velocity) {
+    targetVelocity_ = velocity;
+}
+
+void RemotePlayer::resetInterpolation() {
+    interpolationTime_ = 0.0f;
+}
+
 void RemotePlayer::accept(CollisionVisitor& visitor) {
     visitor.visit(this);
 }
 
 // MultiplayerManager implementation
 MultiplayerManager::MultiplayerManager()
-    : localPlayer_(nullptr), lastUpdateTime_(0) {
+    : localPlayer_(nullptr), 
+      playerInput_(nullptr),
+      lastUpdateTime_(0),
+      lastSentInputTime_(0.0f),
+      inputSequenceNumber_(0) {
     // Create the network interface
     network_ = std::make_unique<AsioNetworkClient>();
 }
@@ -114,24 +146,14 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     static uint64_t lastUpdateTime = 0;
     lastUpdateTime += deltaTime;
 
-    // Debug: output current remote players count
-    // if (lastUpdateTime > 2000) { // Every 5 seconds approximately
-    //     std::cout << "[Client] Current remote players: " << remotePlayers_.size() << std::endl;
-    //     for (const auto& pair : remotePlayers_) {
-    //         std::cout << "[Client] Remote player ID: " << pair.first 
-    //                   << " at position: (" << pair.second->getposition().x << ", " << pair.second->getposition().y << ")" << std::endl;
-    //     }
-    //     lastUpdateTime = 0;
-    // }
-    
     // Update all remote players
     for (auto& pair : remotePlayers_) {
         pair.second->update(deltaTime);
     }
     
-    // Send player state periodically
-    if (localPlayer_ && lastUpdateTime >= UpdateInterval) {
-        sendPlayerState();
+    // Send player input periodically (primary control method now)
+    if (playerInput_ && localPlayer_ && lastUpdateTime >= UpdateInterval) {
+        sendPlayerInput();
         lastUpdateTime_ = deltaTime;
     }
 }
@@ -141,7 +163,16 @@ void MultiplayerManager::setLocalPlayer(Player* player) {
     std::cout << "[Client] Local player set: " << (player ? "yes" : "no") << std::endl;
 }
 
+void MultiplayerManager::setPlayerInput(PlayerInput* input) {
+    playerInput_ = input;
+    std::cout << "[Client] Player input set: " << (input ? "yes" : "no") << std::endl;
+}
+
 void MultiplayerManager::sendPlayerState() {
+    // This method is retained for backwards compatibility
+    // In the new model, the server is authoritative, so we primarily send input
+    // But we can still send position updates occasionally as a sync check
+    
     if (!localPlayer_ || !network_ || !network_->isConnected()) {
         return;
     }
@@ -151,16 +182,40 @@ void MultiplayerManager::sendPlayerState() {
     posMsg.senderId = playerId_;
     posMsg.data = serializePlayerState(localPlayer_);
     
-    // Only print debug every few seconds to avoid flooding
-    // static uint64_t lastLogTime = 0;
-    // uint64_t currentTime = get_ticks();
-    // if (currentTime - lastLogTime > 5000) { // Log every 5 seconds
-    //     std::cout << "[Client] Sending player position: ("
-    //               << localPlayer_->getposition().x << ", " << localPlayer_->getposition().y << ")" << std::endl;
-    //     lastLogTime = currentTime;
-    // }
-    
     network_->sendMessage(posMsg);
+}
+
+void MultiplayerManager::sendPlayerInput() {
+    if (!playerInput_ || !network_ || !network_->isConnected()) {
+        return;
+    }
+    
+    // Serialize player input state
+    NetworkMessage inputMsg;
+    inputMsg.type = MessageType::PLAYER_INPUT;
+    inputMsg.senderId = playerId_;
+    inputMsg.data = serializePlayerInput(playerInput_);
+    
+    // Send to server
+    network_->sendMessage(inputMsg);
+    
+    // Update sequence number for client-side prediction
+    inputSequenceNumber_++;
+    lastSentInputTime_ = get_ticks() / 1000.0f;  // Convert to seconds
+}
+
+void MultiplayerManager::sendPlayerAction(int actionType) {
+    if (!network_ || !network_->isConnected()) {
+        return;
+    }
+    
+    // Send special player actions like jumping, attacking, etc.
+    NetworkMessage actionMsg;
+    actionMsg.type = MessageType::PLAYER_ACTION;
+    actionMsg.senderId = playerId_;
+    actionMsg.data = {static_cast<uint8_t>(actionType)};
+    
+    network_->sendMessage(actionMsg);
 }
 
 bool MultiplayerManager::isConnected() const {
@@ -223,21 +278,25 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
         return;
     }
     
-    // std::cout << "[Client] Received position update from player: " << message.senderId << std::endl;
-    
     // Find or create the remote player
     auto it = remotePlayers_.find(message.senderId);
     if (it == remotePlayers_.end()) {
-        // std::cout << "[Client] Creating new remote player for ID: " << message.senderId << std::endl;
         auto newPlayer = std::make_unique<RemotePlayer>(message.senderId);
         it = remotePlayers_.emplace(message.senderId, std::move(newPlayer)).first;
     }
     
-    // Debug: check data size
-    // std::cout << "[Client] Position message data size: " << message.data.size() << " bytes" << std::endl;
+    // Get pointer to remote player
+    RemotePlayer* remotePlayer = it->second.get();
     
-    // Update the remote player's state with the received data
-    deserializePlayerState(message.data, it->second.get());
+    // Deserialize the position data
+    deserializePlayerState(message.data, remotePlayer);
+    
+    // Reset interpolation timer whenever we get a new position update
+    remotePlayer->resetInterpolation();
+    
+    // Store the target position and velocity for interpolation
+    remotePlayer->setTargetPosition(remotePlayer->getposition());
+    remotePlayer->setTargetVelocity(remotePlayer->getvelocity());
 }
 
 void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message) {
@@ -252,7 +311,7 @@ void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message
         return; // Player not found
     }
     
-    // Process action (simplified example)
+    // Process action
     if (message.data.size() >= 1) {
         int actionType = message.data[0];
         // Handle different action types
@@ -270,11 +329,21 @@ void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message
 
 void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
     // Process game state updates from the server
-    // This could include information about game objects, world state, etc.
+    // This now contains authoritative position/physics data from the server
     
-    // Example: Parse game state information (would be more complex in a real game)
-    // For now, just log the event
-    std::cout << "Game state update received from server" << std::endl;
+    // Parse the game state data
+    processGameState(message.data);
+}
+
+void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateData) {
+    // This would parse the game state data and update all game objects
+    // For now, just log the event since we don't have the full serialization format defined
+    std::cout << "Game state update received from server (" << gameStateData.size() << " bytes)" << std::endl;
+    
+    // In a full implementation, this would:
+    // 1. Update positions of all game objects
+    // 2. Reconcile client-side predictions
+    // 3. Update game state (scores, health, etc.)
 }
 
 void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
@@ -345,9 +414,30 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     std::memcpy(&vel.y, &data[12], sizeof(float));
     
     // Update player state
-    player->getposition() = (pos);
-    player->getvelocity() = (vel);
-    // std::cout << "Updated remote player " << player->spriteData->ID
-    //           << " position: (" << pos.x << ", " << pos.y << ")"
-    //           << " velocity: (" << vel.x << ", " << vel.y << ")" << std::endl;
+    player->setposition(pos);
+    player->setvelocity(vel);
+}
+
+std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput* input) {
+    std::vector<uint8_t> data;
+    
+    // Need to cast away const because PlayerInput getters aren't const methods
+    PlayerInput* nonConstInput = const_cast<PlayerInput*>(input);
+    
+    uint8_t inputState = 0;
+    if (nonConstInput->get_left()) inputState |= 1;
+    if (nonConstInput->get_right()) inputState |= 2;
+    if (nonConstInput->get_jump()) inputState |= 4;
+    if (nonConstInput->get_attack()) inputState |= 8;
+    
+    // Add input state
+    data.push_back(inputState);
+    
+    // Add sequence number (32-bit)
+    data.push_back((inputSequenceNumber_ >> 24) & 0xFF);
+    data.push_back((inputSequenceNumber_ >> 16) & 0xFF);
+    data.push_back((inputSequenceNumber_ >> 8) & 0xFF);
+    data.push_back(inputSequenceNumber_ & 0xFF);
+    
+    return data;
 }
