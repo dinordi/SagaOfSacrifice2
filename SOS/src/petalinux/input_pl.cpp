@@ -41,10 +41,23 @@
         update();
         if (isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
             std::cout << "X (BTN_SOUTH) pressed!\n";
+            set_jump(true);
         }
-        set_left(isKeyPressed(BTN_DPAD_LEFT));
-        set_right(isKeyPressed(BTN_DPAD_RIGHT));
-        set_jump(isKeyPressed(BTN_SOUTH));
+        if(isKeyDown(BTN_EAST)) { // O knop
+            std::cout << "O (BTN_EAST) is down.\n";
+        }
+        if(isKeyPressed(BTN_DPAD_LEFT)) { // DPAD left
+            std::cout << "DPAD left pressed!\n";
+            set_left(isKeyPressed(true));
+        }
+        if(isKeyPressed(BTN_DPAD_UP)) { // DPAD up
+            std::cout << "DPAD up pressed!\n";
+            set_jump(isKeyPressed(true));
+        }
+        if(isKeyPressed(BTN_DPAD_RIGHT)) { // DPAD right
+            std::cout << "DPAD right pressed!\n";
+            set_right(isKeyPressed(true));
+        }
         
     }
 
