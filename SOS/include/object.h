@@ -30,6 +30,7 @@ public:
     const ObjectType type;
     const SpriteData* spriteData;
     Object(Vec2 pos, ObjectType type, SpriteData* spData, std::string ID);
+    virtual ~Object() = default;
 
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;

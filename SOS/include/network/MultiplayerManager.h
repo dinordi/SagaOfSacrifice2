@@ -88,7 +88,7 @@ class RemotePlayer : public Object
 public:
     RemotePlayer(const std::string& id);
     
-    void update(uint64_t deltaTime);
+    void update(uint64_t deltaTime) override;
     
     // Setters
     // void setPosition(const Vec2& position);
