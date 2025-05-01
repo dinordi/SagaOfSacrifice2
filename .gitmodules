@@ -1,12 +1,12 @@
-[submodule "wrapper/SDL"]
-	path = wrapper/SDL
+[submodule "wrapper_client/SDL"]
+	path = wrapper_client/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "wrapper/SDL_ttf"]
-	path = wrapper/SDL_ttf
+[submodule "wrapper_client/SDL_ttf"]
+	path = wrapper_client/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf
-[submodule "wrapper/SDL_mixer"]
-	path = wrapper/SDL_mixer
+[submodule "wrapper_client/SDL_mixer"]
+	path = wrapper_client/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer
-[submodule "wrapper/SDL_image"]
-	path = wrapper/SDL_image
+[submodule "wrapper_client/SDL_image"]
+	path = wrapper_client/SDL_image
 	url = https://github.com/libsdl-org/SDL_image
