@@ -42,9 +42,9 @@
         if (isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
             std::cout << "X (BTN_SOUTH) pressed!\n";
         }
-        set_left(false);
-        set_right(false);
-        set_jump(false);
+        set_left(isKeyPressed(BTN_TL));
+        set_right(isKeyPressed(BTN_TR));
+        set_jump(isKeyPressed(BTN_SOUTH));
         
     }
 
