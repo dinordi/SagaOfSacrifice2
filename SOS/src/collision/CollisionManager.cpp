@@ -60,6 +60,8 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
                 info.contactPoint.x = (std::max(leftA, leftB) + std::min(rightA, rightB)) / 2;
                 info.contactPoint.y = (std::max(topA, topB) + std::min(bottomA, bottomB)) / 2;
                 
+                std::cout << "Collision detected between " << objA->getObjID() << " and " << objB->getObjID() << std::endl;
+
                 // Resolve the collision
                 resolveCollision(objA, objB, info);
                 // Add to the collision list
