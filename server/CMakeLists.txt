@@ -36,6 +36,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
+# Add shared library
+add_subdirectory(${CMAKE_SOURCE_DIR}/shared)
+
 # Add source files
 file(GLOB_RECURSE SOURCES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
@@ -45,4 +48,5 @@ file(GLOB_RECURSE SOURCES
 add_executable(SagaServer ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 
 # Link libraries
-target_link_libraries(SagaServer PRIVATE ${Boost_LIBRARIES})
+include_directories(${CMAKE_SOURCE_DIR}/shared/include)
+target_link_libraries(SagaServer PRIVATE ${Boost_LIBRARIES} shared)
