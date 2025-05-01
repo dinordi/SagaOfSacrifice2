@@ -20,7 +20,7 @@
         previousKeyStates_.resize(KEY_MAX + 1, false);
         currentAbsValues_.resize(ABS_MAX + 1, 0);
 
-        findAndOpenDevice();    //Throws exception
+        // findAndOpenDevice();    //Throws exception
         std::cout << devicePath_ << std::endl;
         // Configureer polling
         pollfd_.fd = ev_fd_;
