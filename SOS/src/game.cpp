@@ -115,7 +115,7 @@ std::vector<Object*>& Game::getObjects() {
     return objects;
 }
 
-bool Game::initializeSinglePlayer() {
+bool Game::initializeSinglePlayer(std::filesystem::path server_path) {
     // Initialize multiplayer with local server
     if (usingSinglePlayerServer) {
         return true; // Already initialized
@@ -124,7 +124,7 @@ bool Game::initializeSinglePlayer() {
     std::cout << "[Game] Setting up single player with local server" << std::endl;
     
     // Start the local server
-    if (!localServerManager->startLocalServer(LOCAL_SERVER_PORT)) {
+    if (!localServerManager->startLocalServer(LOCAL_SERVER_PORT, server_path)) {
         std::cerr << "[Game] Failed to start local server" << std::endl;
         return false;
     }

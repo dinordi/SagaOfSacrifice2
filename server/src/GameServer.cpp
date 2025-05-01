@@ -6,6 +6,8 @@
 #include <thread>
 #include <chrono>
 
+#include "object.h"
+
 // Include object headers needed for game logic 
 // Using forward includes to avoid dependency issues
 class Object;
