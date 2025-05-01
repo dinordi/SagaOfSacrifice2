@@ -10,6 +10,7 @@
 #include <thread>
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
 #include "object.h"
 #include "interfaces/playerInput.h"
@@ -31,15 +32,15 @@ public:
     // Multiplayer functionality
     bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId);
     
-    // New: Initialize single player mode with local server
-    bool initializeSinglePlayer(std::filesystem::path server_path);
+    // New: Initialize single player mode with embedded server
+    bool initializeSinglePlayerEmbedded();
     
     void shutdownMultiplayer();
     bool isMultiplayerActive() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
     void sendChatMessage(const std::string& message);
     void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
-    std::vector<Object*>& getObjects();
+    std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
 
 
@@ -56,7 +57,7 @@ private:
 
     bool running;
     bool isPaused = false;
-    std::vector<Object*> objects;
+    std::vector<std::shared_ptr<Object>> objects;
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;
@@ -73,11 +74,14 @@ private:
     // Handle messages from remote players
     void handleNetworkMessages();
     
-    // Update remote player positions
+    // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
     
     SpriteData* characters;
     std::map<char, int> characterMap;
+
+    // Default ports
+    static const int LOCAL_SERVER_PORT = 8081;
 };
 
 #endif // GAME_H

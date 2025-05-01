@@ -1,4 +1,5 @@
 #include "LocalServerManager.h"
+#include "network/EmbeddedServer.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -17,75 +18,37 @@ LocalServerManager::LocalServerManager() : serverRunning_(false), serverPort_(0)
 }
 
 LocalServerManager::~LocalServerManager() {
-    stopLocalServer();
+
 }
 
-bool LocalServerManager::startLocalServer(int port, std::filesystem::path serverPath) {
+bool LocalServerManager::startEmbeddedServer(int port) {
     if (serverRunning_) {
-        std::cerr << "Local server is already running" << std::endl;
+        std::cerr << "[LocalServerManager] Server is already running" << std::endl;
         return false;
     }
-
+    
     serverPort_ = port;
     
-    // Start a thread to run the local server
-    serverThread_ = std::make_unique<std::thread>([this, port, serverPath]() {
-        // Command to run local server
-        std::string command;
-        
-        #ifdef _WIN32
-        // Windows-specific command
-        command = "start /B .\\server\\build\\SagaServer.exe " + std::to_string(port);
-        #else
-        // macOS/Linux command
-        
-        command = serverPath.string() + std::to_string(port) + " &";
-        #endif
-        
-        std::cout << "Starting local server with command: " << command << std::endl;
-        int result = system(command.c_str());
-        
-        if (result != 0) {
-            std::cerr << "Failed to start local server, error code: " << result << std::endl;
-            serverRunning_ = false;
-        } else {
-            std::cout << "Local server process started successfully" << std::endl;
-            serverRunning_ = true;
-            
-            // Wait for a bit to let the server initialize
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-    });
+    std::cout << "[LocalServerManager] Starting embedded server on port " << port << std::endl;
     
-    // Detach the thread so it runs independently
-    serverThread_->detach();
-    
-    // Wait a moment for the server to start
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    return true;
-}
-
-void LocalServerManager::stopLocalServer() {
-    if (!serverRunning_) {
-        return;
+    try {
+        // Create and start the embedded server
+        embeddedServer_ = std::make_unique<EmbeddedServer>(port);
+        embeddedServer_->start();
+        // Sleep for half a second...
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        serverRunning_ = true;
+        std::cout << "[LocalServerManager] Embedded server started successfully" << std::endl;
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "[LocalServerManager] Failed to start embedded server: " << e.what() << std::endl;
+        embeddedServer_.reset();
+        return false;
     }
-
-    std::cout << "Stopping local server..." << std::endl;
-
-    // Stop the server by sending a request or killing the process
-    #ifdef _WIN32
-    // Windows-specific termination (would need process ID tracking for a cleaner approach)
-    system("taskkill /F /IM SagaServer.exe");
-    #else
-    // On Unix systems, we could use a more targeted approach if we stored the PID
-    system("pkill -f \"SagaServer\"");
-    #endif
-
-    serverRunning_ = false;
-    std::cout << "Local server stopped" << std::endl;
 }
 
-bool LocalServerManager::isLocalServerRunning() const {
-    return serverRunning_;
+bool LocalServerManager::stopEmbeddedServer()
+{
+    embeddedServer_->stop();
+    return true;
 }

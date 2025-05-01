@@ -230,7 +230,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     else
     {
         // Initialize single player mode with local server
-        if (!game->initializeSinglePlayer(basePathSOS / "server/build/SagaServer:")) {
+        if (!game->initializeSinglePlayerEmbedded()) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize single player mode.");
             return SDL_APP_FAILURE;
         } else {

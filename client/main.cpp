@@ -7,14 +7,11 @@
 #include <thread>
 #include <string>
 #include <cstdlib>
+#include <filesystem>
 
 #include "petalinux/input_pl.h"
-
-// Example usage in your game initialization
 #include "petalinux/SDL2AudioManager.h"
-
 #include "petalinux/Renderer.h"
-#include "GameServer.h" // Include the local server header
 
 float FPS = 60.0f;
 
@@ -30,6 +27,7 @@ void printUsage(const char* programName) {
     std::cout << "  -p, --port <port>             Specify server port (default: 8080)" << std::endl;
     std::cout << "  -id, --playerid <id>          Specify player ID (default: random)" << std::endl;
     std::cout << "  -l, --local                   Run in local-only mode without server (for development)" << std::endl;
+    std::cout << "  -e, --embedded               Use embedded server (default) instead of external server" << std::endl;
 }
 
 std::string generateRandomPlayerId() {
@@ -50,6 +48,7 @@ int main(int argc, char *argv[]) {
     std::string imageName = "Solid_blue";
     bool enableRemoteMultiplayer = false;
     bool localOnlyMode = false;
+    bool useEmbeddedServer = true; // Default to embedded server
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
@@ -68,6 +67,8 @@ int main(int argc, char *argv[]) {
             enableRemoteMultiplayer = true;
         } else if (arg == "-l" || arg == "--local") {
             localOnlyMode = true;
+        } else if (arg == "-e" || arg == "--embedded") {
+            useEmbeddedServer = true;
         } else if (arg == "-s" || arg == "--server") {
             if (i + 1 < argc) {
                 serverAddress = argv[++i];
@@ -92,7 +93,11 @@ int main(int argc, char *argv[]) {
         std::cout << "Multiplayer enabled. Connecting to server: " << serverAddress 
                   << ":" << serverPort << " with player ID: " << playerId << std::endl;
     } else if (!localOnlyMode) {
-        std::cout << "Single player mode with local server enabled." << std::endl;
+        if (useEmbeddedServer) {
+            std::cout << "Single player mode with embedded server enabled." << std::endl;
+        } else {
+            std::cout << "Single player mode with external server enabled." << std::endl;
+        }
     } else {
         std::cout << "Local-only mode (no server) enabled for development." << std::endl;
     }
@@ -115,26 +120,25 @@ int main(int argc, char *argv[]) {
             std::cout << "Multiplayer initialized successfully!" << std::endl;
         }
     } else if (!localOnlyMode) {
-        // Initialize single player with local server (new default behavior)
-        if (!game.initializeSinglePlayer()) {
-            std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
+        if (useEmbeddedServer) {
+            // Initialize single player with embedded server (new recommended approach)
+            if (!game.initializeSinglePlayerEmbedded()) {
+                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
+            } else {
+                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
+            }
         } else {
-            std::cout << "Single player with local server initialized successfully!" << std::endl;
+            // Initialize single player with external server executable (legacy approach)
+            std::filesystem::path serverPath = "../server/build/SagaServer.exe";
+            if (!game.initializeSinglePlayer(serverPath)) {
+                std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
+            } else {
+                std::cout << "Single player with external server initialized successfully!" << std::endl;
+            }
         }
     } else {
         // Local-only mode (no server) for development/debugging
         std::cout << "Running in local-only mode without server." << std::endl;
-    }
-    
-    std::thread localServerThread;
-
-    if (!localOnlyMode) {
-        // Start the local server in a separate thread
-        localServerThread = std::thread([]() {
-            GameServer server;
-            server.run();
-        });
-        std::cout << "Local server started in a separate thread." << std::endl;
     }
 
     auto lastTime = get_ticks();
@@ -172,11 +176,6 @@ int main(int argc, char *argv[]) {
     }
     
     // Clean up
-    if (localServerThread.joinable()) {
-        localServerThread.join();
-        std::cout << "Local server thread joined." << std::endl;
-    }
-
     if (game.isMultiplayerActive()) {
         game.shutdownMultiplayer();
     }

@@ -13,7 +13,10 @@ enum class MessageType {
     CHAT_MESSAGE,      // Text chat
     CONNECT,           // Player connected
     DISCONNECT,        // Player disconnected
-    PING               // Network ping/pong
+    PING,               // Network ping/pong
+    PLAYER_JOINED,     // Player joined the game
+    PLAYER_LEFT,       // Player left the game
+    CHAT,            // Chat message
 };
 
 // Base message structure - same as client side
