@@ -16,7 +16,7 @@
 
 class Game {
 public:
-    Game(PlayerInput* input);
+    Game(PlayerInput* input, std::string playerID);
     ~Game();
 
     void update(uint64_t deltaTime);
