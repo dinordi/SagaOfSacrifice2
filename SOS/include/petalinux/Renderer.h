@@ -46,8 +46,12 @@ private:
     size_t total_size;
     size_t num_chunks;
 
+    // Sprite properties
     size_t sprite_width;
-
+    size_t sprite_height;     // Height in pixels
+    uint32_t sprite_base_addr; // Physical base address in memory
+    size_t sprite_lines;      // Number of lines in sprite (equal to height)
+    
     size_t sprite_offset;
     size_t bytes_to_transfer;
     size_t offset;
