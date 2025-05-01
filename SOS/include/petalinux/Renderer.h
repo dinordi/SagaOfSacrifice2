@@ -10,7 +10,7 @@
 #define BRAM_BASE_ADDR 0x40000000  // Fysiek adres van BRAM
 #define BRAM_SIZE      0x1FFF     // Grootte van de BRAM (pas aan indien nodig)
 
-typedef struct BRAMDATA
+struct BRAMDATA
 {
     int y;
     int id;
