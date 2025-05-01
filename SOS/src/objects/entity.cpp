@@ -1,7 +1,7 @@
 #include "objects/entity.h"
 #include "platform.h"
 
-Entity::Entity( Vec2 pos, SpriteData* spData) : Object( pos, ObjectType::ENTITY, spData) {}
+Entity::Entity( Vec2 pos, SpriteData* spData, std::string objID) : Object( pos, ObjectType::ENTITY, spData, objID) {}
 
 // void Entity::handlePlatformCollision(Platform* platform)
 // {
