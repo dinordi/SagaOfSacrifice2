@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <thread>
+#include <filesystem>
 
 // Class to manage launching and stopping a local game server
 class LocalServerManager {
@@ -10,7 +11,7 @@ public:
     ~LocalServerManager();
 
     // Start the local server process
-    bool startLocalServer(int port);
+    bool startLocalServer(int port, std::filesystem::path serverPath);
 
     // Stop the local server
     void stopLocalServer();

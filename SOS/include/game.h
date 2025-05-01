@@ -32,7 +32,7 @@ public:
     bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId);
     
     // New: Initialize single player mode with local server
-    bool initializeSinglePlayer();
+    bool initializeSinglePlayer(std::filesystem::path server_path);
     
     void shutdownMultiplayer();
     bool isMultiplayerActive() const;

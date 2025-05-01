@@ -20,7 +20,7 @@ LocalServerManager::~LocalServerManager() {
     stopLocalServer();
 }
 
-bool LocalServerManager::startLocalServer(int port) {
+bool LocalServerManager::startLocalServer(int port, std::filesystem::path serverPath) {
     if (serverRunning_) {
         std::cerr << "Local server is already running" << std::endl;
         return false;
@@ -29,7 +29,7 @@ bool LocalServerManager::startLocalServer(int port) {
     serverPort_ = port;
     
     // Start a thread to run the local server
-    serverThread_ = std::make_unique<std::thread>([this, port]() {
+    serverThread_ = std::make_unique<std::thread>([this, port, serverPath]() {
         // Command to run local server
         std::string command;
         
@@ -38,7 +38,8 @@ bool LocalServerManager::startLocalServer(int port) {
         command = "start /B .\\server\\build\\SagaServer.exe " + std::to_string(port);
         #else
         // macOS/Linux command
-        command = "./server/build/SagaServer " + std::to_string(port) + " &";
+        
+        command = serverPath.string() + std::to_string(port) + " &";
         #endif
         
         std::cout << "Starting local server with command: " << command << std::endl;

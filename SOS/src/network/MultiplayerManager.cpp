@@ -25,6 +25,9 @@ void RemotePlayer::update(uint64_t deltaTime) {
     // Update interpolation timer
     interpolationTime_ += dt;
     float t = std::min(interpolationTime_ / InterpolationPeriod, 1.0f);
+
+    Vec2 velocity_ = getvelocity();
+    Vec2 position_ = getposition();
     
     // Only interpolate if we have a different target position
     if ((targetPosition_.x != position_.x || targetPosition_.y != position_.y) && t < 1.0f) {
@@ -40,6 +43,10 @@ void RemotePlayer::update(uint64_t deltaTime) {
         position_.x += velocity_.x * dt;
         position_.y += velocity_.y * dt;
     }
+
+    // Update the object's position
+    setposition(position_);
+    setvelocity(velocity_);
 }
 
 void RemotePlayer::setOrientation(float orientation) {

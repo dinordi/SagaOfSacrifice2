@@ -22,13 +22,14 @@
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
 
+SDL_Gamepad* getGamepad();
+
 
 struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Texture* messageTex, *imageTex, *backgroundTex;
+    SDL_Texture* messageTex, *backgroundTex;
     SDL_Rect imageDest;
-    SDL_FRect messageDest;
     SDL_AudioDeviceID audioDevice;
     Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
@@ -66,6 +67,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId(); // Generate default random ID
 
+    // Parse command line arguments
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
 
@@ -111,29 +113,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
 
-
-    if (enableMultiplayer) {
-        SDL_Log("Multiplayer enabled. Connecting to server: %s:%d with player ID: %s",
-                  serverAddress.c_str(), serverPort, playerId.c_str());
-    }
-    else {
-        SDL_Log("Multiplayer disabled.");
-    }
-    // --- End Multiplayer Argument Parsing ---
-
-
-    // init the library, here we make a window so we only need the Video capabilities.
+    // init the library
     if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)){
         return SDL_Fail();
     }
 
     // init TTF
+    // Probably not needed for our project, but keeping it in since it was in the original code
     if (not TTF_Init()) {
         return SDL_Fail();
     }
 
     // create a window
-
     SDL_Window* window = SDL_CreateWindow("Saga Of Sacrifice 2", windowStartWidth, windowStartHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (not window){
         return SDL_Fail();
@@ -145,7 +136,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_Fail();
     }
 
-    // load the font
+    // Get base path
 #if __ANDROID__
     std::filesystem::path basePath = "";   // on Android we do not want to use basepath. Instead, assets are available at the root directory.
 #else
@@ -155,18 +146,17 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
      const std::filesystem::path basePath = basePathPtr;
 
-    //  std::filesystem::path basePath = SDL_GetBasePath();
     std::string basePathStr = basePath.string();
     std::size_t pos = basePathStr.find("SagaOfSacrifice2/");
     if (pos != std::string::npos) {
         basePathStr = basePathStr.substr(0, pos + std::string("SagaOfSacrifice2/").length());
     }
     auto basePathSOS = std::filesystem::path(basePathStr);
-
 #endif
 
     Logger::setInstance(new LoggerSDL());
 
+    // FONT STUFF
     const auto fontPath = basePath / "Inter-VariableFont.ttf";
     TTF_Font* font = TTF_OpenFont(fontPath.string().c_str(), 36);
     if (not font) {
@@ -176,35 +166,12 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // render the font to a surface
     const std::string_view text = "Welcome to Saga Of Sacrifice 2!";
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.data(), text.length(), { 255,255,255 });
-
-    //Load sprites from PNG into memory
-    loadAllSprites(renderer, basePathSOS);
-    // initializeCharacters(renderer, basePathSOS);
-
+    
     // make a texture from the surface
     SDL_Texture* messageTex = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
     // we no longer need the font or the surface, so we can destroy those now.
     TTF_CloseFont(font);
     SDL_DestroySurface(surfaceMessage);
-
-    // load the PNG
-    auto png_surface = IMG_Load(((basePathSOS / "SOS/assets/sprites/playerBig.png").make_preferred()).string().c_str());
-    if (!png_surface) {
-        return SDL_Fail();
-    }
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, png_surface);
-    int png_width = png_surface->w;
-    int png_height = png_surface->h;
-
-    SDL_Rect imageDest{
-        .x = 800,
-        .y = 400,
-        .w = png_width,
-        .h = png_height
-    };
-    SDL_DestroySurface(png_surface);
-
     // get the on-screen dimensions of the text. this is necessary for rendering it
     auto messageTexProps = SDL_GetTextureProperties(messageTex);
     SDL_FRect text_rect{
@@ -213,6 +180,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
             .w = float(SDL_GetNumberProperty(messageTexProps, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0)),
             .h = float(SDL_GetNumberProperty(messageTexProps, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0))
     };
+    
+    //END FONT STUFF
+
+
+    //Load sprites from PNG into memory
+    loadAllSprites(renderer, basePathSOS);
+
 
     // init SDL Mixer
     auto audioDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL);
@@ -222,8 +196,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     if (not Mix_OpenAudio(audioDevice, NULL)) {
         return SDL_Fail();
     }
-
-    // load the music
 
     // Resolve the full path to the music folder
     auto musicPath = (basePathSOS / "SOS/assets/music").make_preferred();
@@ -242,59 +214,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     Logger::getInstance()->log("Logger started successfully!");
 
-    SDL_Gamepad* gamepad = nullptr;
-    SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
-
-    // 1. Get the list of joystick instance IDs
-    int count = 0;
-    SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
-
-    if (joystick_ids == nullptr) {
-        SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not get joysticks! SDL Error: %s", SDL_GetError());
-        count = 0; // Ensure count is 0 if allocation failed
-    }
-
-    SDL_Log("Found %d joystick(s).", count);
-
-    // 2. Iterate through instance IDs and check if they are gamepads
-    for (int i = 0; i < count; ++i) {
-        SDL_JoystickID current_id = joystick_ids[i];
-        const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
-        SDL_Log("Checking device ID %u: %s", current_id, (name ? name : "Unknown Name"));
-
-        if (SDL_IsGamepad(current_id)) { // Use SDL_IsGamepad
-            SDL_Log("  -> Device ID %u is a recognized gamepad.", current_id);
-
-            // Found a gamepad, let's target this one
-            targetInstanceID = current_id;
-            break; // Stop searching, we'll open the first one found
-        } else {
-             SDL_Log("  -> Device ID %u is NOT a recognized gamepad.", current_id);
-        }
-    }
-
-    // 3. Free the array returned by SDL_GetJoysticks
-    SDL_free(joystick_ids);
-    joystick_ids = nullptr; // Good practice to null the pointer after freeing
-
-
-    // 4. If we found a suitable Instance ID, try to open it
-    if (targetInstanceID != 0) { // Check against the invalid ID 0
-        gamepad = SDL_OpenGamepad(targetInstanceID);
-        if (!gamepad) {
-            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
-        } else {
-            // Get the name from the opened gamepad handle (preferred method)
-            const char* gamepadName = SDL_GetGamepadName(gamepad);
-            SDL_Log("Gamepad connected: %s (ID: %u)", (gamepadName ? gamepadName : "Unknown Name"), targetInstanceID);
-        }
-    } else {
-         SDL_Log("No recognized gamepad found.");
-    }
-
-
-    PlayerInput* input = new SDLInput(gamepad);
-    // SDL_Log("Input initialized successfully!");
+    PlayerInput* input = new SDLInput(getGamepad());
 
     //Load game
     Game* game = new Game(input, playerId);
@@ -305,6 +225,16 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
             // Consider if this should be fatal: return SDL_APP_FAILURE;
         } else {
             SDL_Log("Multiplayer initialized successfully!");
+        }
+    }
+    else
+    {
+        // Initialize single player mode with local server
+        if (!game->initializeSinglePlayer(basePathSOS / "server/build/SagaServer:")) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize single player mode.");
+            return SDL_APP_FAILURE;
+        } else {
+            SDL_Log("Single player mode initialized successfully!");
         }
     }
     // --- End Initialize Multiplayer ---
@@ -343,10 +273,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
-       .imageTex = tex,
        .backgroundTex = backgroundTex,
-       .imageDest = imageDest,
-       .messageDest = text_rect,
        .audioDevice = audioDevice,
        .music = music,
        .game = game,
@@ -507,7 +434,6 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
-        SDL_DestroyTexture(app->imageTex);
         SDL_DestroyTexture(app->backgroundTex);
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
@@ -529,4 +455,60 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 
     SDL_Log("Application quit with result %d.", result);
     SDL_Quit();
+}
+
+
+SDL_Gamepad* getGamepad()
+{
+    SDL_Gamepad* gamepad = nullptr;
+    SDL_JoystickID targetInstanceID = 0; // SDL_InstanceID is Uint32, 0 is invalid/none
+
+    // 1. Get the list of joystick instance IDs
+    int count = 0;
+    SDL_JoystickID* joystick_ids = SDL_GetJoysticks(&count); // SDL_GetJoysticks allocates memory
+
+    if (joystick_ids == nullptr) {
+        SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not get joysticks! SDL Error: %s", SDL_GetError());
+        count = 0; // Ensure count is 0 if allocation failed
+    }
+
+    SDL_Log("Found %d joystick(s).", count);
+
+    // 2. Iterate through instance IDs and check if they are gamepads
+    for (int i = 0; i < count; ++i) {
+        SDL_JoystickID current_id = joystick_ids[i];
+        const char* name = SDL_GetJoystickNameForID(current_id); // Get name even before opening
+        SDL_Log("Checking device ID %u: %s", current_id, (name ? name : "Unknown Name"));
+
+        if (SDL_IsGamepad(current_id)) { // Use SDL_IsGamepad
+            SDL_Log("  -> Device ID %u is a recognized gamepad.", current_id);
+
+            // Found a gamepad, let's target this one
+            targetInstanceID = current_id;
+            break; // Stop searching, we'll open the first one found
+        } else {
+             SDL_Log("  -> Device ID %u is NOT a recognized gamepad.", current_id);
+        }
+    }
+
+    // 3. Free the array returned by SDL_GetJoysticks
+    SDL_free(joystick_ids);
+    joystick_ids = nullptr; // Good practice to null the pointer after freeing
+
+
+    // 4. If we found a suitable Instance ID, try to open it
+    if (targetInstanceID != 0) { // Check against the invalid ID 0
+        gamepad = SDL_OpenGamepad(targetInstanceID);
+        if (!gamepad) {
+            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
+        } else {
+            // Get the name from the opened gamepad handle (preferred method)
+            const char* gamepadName = SDL_GetGamepadName(gamepad);
+            SDL_Log("Gamepad connected: %s (ID: %u)", (gamepadName ? gamepadName : "Unknown Name"), targetInstanceID);
+        }
+    } else {
+         SDL_Log("No recognized gamepad found.");
+    }
+
+    return gamepad; // Return the opened gamepad or nullptr if none found
 }
