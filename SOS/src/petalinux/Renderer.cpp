@@ -13,11 +13,11 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
                            bram_ptr(NULL)
 {
     // Open the UIO device
-    uio_fd = open("/dev/uio0", O_RDWR);
-    if (uio_fd < 0) {
-        perror("Failed to open UIO device");
-        throw std::runtime_error("Failed to open UIO device");
-    }
+    // uio_fd = open("/dev/uio0", O_RDWR);
+    // if (uio_fd < 0) {
+    //     perror("Failed to open UIO device");
+    //     throw std::runtime_error("Failed to open UIO device");
+    // }
 
     // Clear any pending interrupts at the start by writing to the UIO device
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
