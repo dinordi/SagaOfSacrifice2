@@ -297,7 +297,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // SDL_Log("Input initialized successfully!");
 
     //Load game
-    Game* game = new Game(input);
+    Game* game = new Game(input, playerId);
     // --- Initialize Multiplayer ---
     if (enableMultiplayer) {
         if (!game->initializeMultiplayer(serverAddress, serverPort, playerId)) {
