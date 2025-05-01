@@ -10,6 +10,15 @@
 // Forward declaration
 class GameServer;
 
+// Message types for game state handling
+enum class PlayerInputType {
+    MOVE_LEFT = 1,
+    MOVE_RIGHT = 2,
+    JUMP = 3,
+    ATTACK = 4,
+    NONE = 0
+};
+
 // Class to handle a client connection session
 class GameSession : public std::enable_shared_from_this<GameSession> {
 public:
@@ -42,6 +51,7 @@ private:
     void processConnect(const NetworkMessage& message);
     void processDisconnect(const NetworkMessage& message);
     void processPosition(const NetworkMessage& message);
+    void processInput(const NetworkMessage& message);
     void processChat(const NetworkMessage& message);
     
     // Helper functions
