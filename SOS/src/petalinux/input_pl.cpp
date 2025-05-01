@@ -42,6 +42,10 @@
         if (isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
             std::cout << "X (BTN_SOUTH) pressed!\n";
         }
+        set_left(false);
+        set_right(false);
+        set_jump(false);
+        
     }
 
     void EvdevController::findAndOpenDevice()

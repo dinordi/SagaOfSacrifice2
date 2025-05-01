@@ -73,7 +73,15 @@ void Player::update(uint64_t deltaTime) {
     float deltaTimeF = static_cast<float>(deltaTime);
     // Prints velocity.y every second
     static uint64_t timems = 0.0f;
+    static uint64_t timems_print = 0.0f;
     timems += deltaTime;
+    timems_print += deltaTime;
+
+    if(timems_print >= 1000.0f)
+    {
+        std::cout << "pos (" << pos.x << ", " << pos.y << ") vel (" << vel.x << ", " << vel.y << ")" << std::endl;
+        timems_print = 0.0f;
+    }
 
     if(getisOnGround() == false)
     {
