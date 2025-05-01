@@ -11,6 +11,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+# Find Boost libraries
+find_package(Boost REQUIRED COMPONENTS system thread chrono)
+include_directories(${Boost_INCLUDE_DIRS})
+
+# Add pthread
+find_package(Threads REQUIRED)
+
 # Find the PNG package
 find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIRS})
@@ -20,25 +27,36 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
+
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/include/petalinux)
 include_directories(${PROJECT_SOURCE_DIR}/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/include/logging)
+include_directories(${PROJECT_SOURCE_DIR}/include/network)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Echo the include directories
 message("Include directories: ${PROJECT_SOURCE_DIR}/include")
 message("Include directories: ${PROJECT_SOURCE_DIR}/src")
 
-# Add source files
-file(GLOB_RECURSE SOURCES
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
+# Get all source files
+file(GLOB_RECURSE SOS_SOURCES 
+    "src/*.cpp"
+    "src/*/*.cpp"
+    "src/*/*/*.cpp"
+    "main.cpp"
 )
 
 # Add executable
-add_executable(SOS ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
+add_executable(SOS ${SOS_SOURCES})
 
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer)
+target_link_libraries(SOS 
+    ${PNG_LIBRARIES} 
+    ${SDL2_LIBRARIES} 
+    ${Boost_LIBRARIES}
+    ${SDL2_MIXER_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+)

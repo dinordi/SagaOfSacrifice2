@@ -3,6 +3,7 @@
 std::map<char, int> sdl_characters;
 std::map<int, SDL_FRect> characterRects;
 std::unordered_map<int, Sprite> spriteMap;
+std::unordered_map<std::string, SDL_Texture*> spriteMap2;
 
 SDL_Texture* LoadSprite(SDL_Renderer* renderer, const std::filesystem::path& path) {
     SDL_Surface* surface = IMG_Load(path.string().c_str());
@@ -48,10 +49,49 @@ void initializeCharacters(SDL_Renderer* renderer, const std::filesystem::path& p
     characterRects[sdl_characters[' ']] = { 0, 11 * spriteHeight, spriteWidth, spriteHeight };
     spriteMap[sdl_characters[' ']] = { lettersTexture, { 0, 11 * spriteHeight, spriteWidth, spriteHeight } };
 
-    // Load additional sprites
-    spriteMap[1] = { LoadSprite(renderer, (path / "SOS/assets/sprites/playerBig.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[2] = { LoadSprite(renderer, (path / "SOS/assets/sprites/player.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[3] = { LoadSprite(renderer, (path / "SOS/assets/sprites/fatbat.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    spriteMap[4] = { LoadSprite(renderer, (path / "SOS/assets/sprites/tiles.png").make_preferred()), { 0, 0, spriteWidth, spriteHeight } };
-    // Add more sprites as needed
+
+    // For all png files with numbers as filename
+    for (int i = 1; i <= 11; ++i) {
+        std::string filename = "SOS/assets/sprites/" + std::to_string(i) + ".png";
+        SDL_Texture* texture = LoadSprite(renderer, (path / filename).make_preferred());
+        if (!texture) {
+            SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", filename.c_str());
+            continue;
+        }
+        spriteMap[i] = { texture, { 0, 0, spriteWidth, spriteHeight } };
+    }
+}
+
+// ...existing code...
+Sprite initSprite(const SpriteRect sprData, SDL_Renderer* renderer, const std::filesystem::path& baseAssetsPath) {
+    std::string filename = "SOS/assets/sprites/" + sprData.id_ + ".png";
+    SDL_Texture* texture = LoadSprite(renderer, (baseAssetsPath / filename).make_preferred());
+    SDL_FRect srcRect = { 0, 0, static_cast<float>(sprData.w), static_cast<float>(sprData.h) };
+
+    return { texture, srcRect };
+}
+// ...existing code...
+
+void loadAllSprites(SDL_Renderer* renderer, const std::filesystem::path& path)
+{
+    //Get amount of images in sprites/ folder
+    std::vector<std::string> imageFiles;
+
+    for (const auto& entry : std::filesystem::directory_iterator(path / "SOS/assets/sprites/")) {
+        if (entry.is_regular_file() && entry.path().extension() == ".png") {
+            imageFiles.push_back(entry.path().filename().string());
+        }
+    }
+    // Load each image into the spriteMap2
+    for (const auto& imageFile : imageFiles) {
+        std::string filename = "SOS/assets/sprites/" + imageFile;
+        SDL_Texture* texture = LoadSprite(renderer, (path / filename).make_preferred());
+        if (!texture) {
+            SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load sprite: %s", filename.c_str());
+            continue;
+        }
+        std::string imageName = imageFile.substr(0, imageFile.find_last_of('.'));
+        spriteMap2[imageName] = texture;
+    }
+
 }
