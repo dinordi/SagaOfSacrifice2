@@ -11,6 +11,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+# Find Boost libraries
+find_package(Boost REQUIRED COMPONENTS system thread chrono)
+include_directories(${Boost_INCLUDE_DIRS})
+
+# Add pthread
+find_package(Threads REQUIRED)
+
 # Find the PNG package
 find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIRS})
@@ -20,9 +27,6 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-# Find Boost libraries
-find_package(Boost COMPONENTS system REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
 
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -37,23 +41,22 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 message("Include directories: ${PROJECT_SOURCE_DIR}/include")
 message("Include directories: ${PROJECT_SOURCE_DIR}/src")
 
-# Add source files
-set(SOS_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/game.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Object.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/platform.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/entity.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/player.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/enemy.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/network/AsioNetworkClient.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/network/MultiplayerManager.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtils.cpp  # Added new TimeUtils file
+# Get all source files
+file(GLOB_RECURSE SOS_SOURCES 
+    "src/*.cpp"
+    "src/*/*.cpp"
+    "src/*/*/*.cpp"
+    "main.cpp"
 )
 
 # Add executable
 add_executable(SOS ${SOS_SOURCES})
 
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer ${Boost_LIBRARIES})
+target_link_libraries(SOS 
+    ${PNG_LIBRARIES} 
+    ${SDL2_LIBRARIES} 
+    ${Boost_LIBRARIES}
+    ${SDL2_MIXER_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+)

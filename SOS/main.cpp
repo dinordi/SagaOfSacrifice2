@@ -13,7 +13,7 @@
 // Example usage in your game initialization
 #include "petalinux/SDL2AudioManager.h"
 
-#include "Renderer.h"
+#include "petalinux/Renderer.h"
 
 float FPS = 60.0f;
 
