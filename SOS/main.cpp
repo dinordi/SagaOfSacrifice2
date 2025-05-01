@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
     Renderer renderer(path + imageName);
     PlayerInput* controller = new EvdevController();
-    Game game(controller);
+    Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     

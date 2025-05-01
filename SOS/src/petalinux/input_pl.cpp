@@ -41,7 +41,24 @@
         update();
         if (isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
             std::cout << "X (BTN_SOUTH) pressed!\n";
+            set_jump(true);
         }
+        if(isKeyDown(BTN_EAST)) { // O knop
+            std::cout << "O (BTN_EAST) is down.\n";
+        }
+        if(isKeyPressed(BTN_DPAD_LEFT)) { // DPAD left
+            std::cout << "DPAD left pressed!\n";
+            set_left(isKeyPressed(true));
+        }
+        if(isKeyPressed(BTN_DPAD_UP)) { // DPAD up
+            std::cout << "DPAD up pressed!\n";
+            set_jump(isKeyPressed(true));
+        }
+        if(isKeyPressed(BTN_DPAD_RIGHT)) { // DPAD right
+            std::cout << "DPAD right pressed!\n";
+            set_right(isKeyPressed(true));
+        }
+        
     }
 
     void EvdevController::findAndOpenDevice()
@@ -239,53 +256,3 @@
                 break;
         }
     }
-
-// --- Voorbeeld van gebruik ---
-/*
-int main() {
-    try {
-        EvdevController controller("/dev/input/event0"); // Pas pad eventueel aan
-
-        while (true) { // Je game loop
-            controller.update(); // Lees nieuwe events
-
-            // Check knoppen (DualSense via evdev gebruikt BTN_* codes)
-            if (controller.isKeyPressed(BTN_SOUTH)) { // X knop op PlayStation layout
-                std::cout << "X (BTN_SOUTH) pressed!\n";
-            }
-            if (controller.isKeyDown(BTN_EAST)) { // O knop
-                std::cout << "O (BTN_EAST) is down.\n";
-            }
-            if (controller.isKeyReleased(BTN_TR)) { // R1 Trigger knop
-                std::cout << "R1 (BTN_TR) released!\n";
-            }
-
-            // Check assen (linker stick)
-            float leftStickX = controller.getAbsValueNormalized(ABS_X);
-            float leftStickY = controller.getAbsValueNormalized(ABS_Y);
-            if (leftStickX != 0.0f || leftStickY != 0.0f) {
-                 std::cout << "Left Stick: X=" << leftStickX << ", Y=" << leftStickY << std::endl;
-            }
-
-            // Check D-pad (vaak als ABS_HAT0X en ABS_HAT0Y)
-            int dpadX = controller.getAbsValue(ABS_HAT0X, 0); // Dpad heeft meestal geen deadzone nodig
-            int dpadY = controller.getAbsValue(ABS_HAT0Y, 0);
-            if (dpadX != 0 || dpadY != 0) {
-                 std::cout << "D-Pad: X=" << dpadX << ", Y=" << dpadY << std::endl;
-            }
-
-             // Voeg een kleine pauze toe om CPU niet 100% te belasten in dit voorbeeld
-             usleep(16000); // ~60 FPS
-        }
-
-    } catch (const std::system_error& e) {
-        std::cerr << "Error: " << e.what() << " (Code: " << e.code() << ")" << std::endl;
-        return 1;
-    } catch (const std::exception& e) {
-         std::cerr << "Error: " << e.what() << std::endl;
-         return 1;
-    }
-
-    return 0;
-}
-*/
