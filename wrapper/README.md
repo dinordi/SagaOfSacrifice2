@@ -27,6 +27,7 @@ https://cmake.org/download/
 Or use choco in a administrator powershell:
 ```shell
 choco install cmake
+choco install boost-msvc-14.3
 ```
 
 ```shell
