@@ -85,7 +85,16 @@ MultiplayerManager::MultiplayerManager()
 }
 
 MultiplayerManager::~MultiplayerManager() {
-    shutdown();
+    // Don't automatically shutdown in the destructor as it can cause premature DISCONNECT messages
+    // The owner of this object should call shutdown() explicitly when ready
+    std::cout << "[Client] MultiplayerManager destructor called, network will be cleaned up but no DISCONNECT sent" << std::endl;
+    
+    // Just clean up resources without sending DISCONNECT
+    if (network_ && network_->isConnected()) {
+        network_->disconnect();
+    }
+    
+    remotePlayers_.clear();
 }
 
 bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
@@ -122,6 +131,9 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
 }
 
 void MultiplayerManager::shutdown() {
+    std::cout << "[Client DEBUG] MultiplayerManager::shutdown() called" << std::endl;
+    std::cout << "[Client DEBUG] Stack trace/debugging info would be useful here" << std::endl;
+    
     if (network_ && network_->isConnected()) {
         // Notify server about disconnection
         NetworkMessage disconnectMsg;

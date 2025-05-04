@@ -88,7 +88,7 @@ void EmbeddedServer::stop() {
         return;
     }
     
-    std::cout << "[EmbeddedServer] Stopping..." << std::endl;
+    std::cout << "[EmbeddedServer] Stopping... (Step 1: Setting flags and preparing shutdown)" << std::endl;
     
     // Set flags first to ensure loops break
     running_ = false;
@@ -99,6 +99,7 @@ void EmbeddedServer::stop() {
     
     // Stop network operations first
     if (acceptor_ && acceptor_->is_open()) {
+        std::cout << "[EmbeddedServer] Stopping... (Step 2: Canceling and closing acceptor)" << std::endl;
         try {
             boost::system::error_code ec;
             acceptor_->cancel(ec); // Cancel any pending async operations
@@ -117,88 +118,170 @@ void EmbeddedServer::stop() {
     
     // Close all client connections
     {
+        std::cout << "[EmbeddedServer] Stopping... (Step 3: Closing client connections)" << std::endl;
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
         for (auto& client : clientSockets_) {
             try {
                 if (client.second && client.second->is_open()) {
                     boost::system::error_code ec;
                     client.second->cancel(ec); // Cancel any pending async operations
+                    std::cout << "[EmbeddedServer] Cancelling socket for client: " << client.first << std::endl;
                     client.second->close(ec);
+                    std::cout << "[EmbeddedServer] Closed socket for client: " << client.first << std::endl;
                 }
             } catch (const std::exception& e) {
                 std::cerr << "[EmbeddedServer] Error closing client socket: " << e.what() << std::endl;
             }
         }
         clientSockets_.clear();
+        std::cout << "[EmbeddedServer] All client connections closed" << std::endl;
     }
     
     // Cancel all pending operations and stop the io_context
+    std::cout << "[EmbeddedServer] Stopping... (Step 4: Stopping io_context)" << std::endl;
     io_context_.stop();
+    std::cout << "[EmbeddedServer] io_context stopped" << std::endl;
     
-    // Join the io_thread with timeout using standard C++ techniques
+    // Join the io_thread with a simple timeout approach
     if (io_thread_ && io_thread_->joinable()) {
-        // Create a future to track the joining
-        std::promise<void> exitPromise;
-        std::future<void> exitFuture = exitPromise.get_future();
+        std::cout << "[EmbeddedServer] Stopping... (Step 5: Joining IO thread, joinable=" 
+                  << (io_thread_->joinable() ? "true" : "false") << ")" << std::endl;
         
-        // Create a thread to join the IO thread safely
-        std::thread joinThread([&exitPromise, this]() {
-            if (io_thread_->joinable()) {
-                try {
+        // Check if thread ID is valid and thread is actually running
+        std::thread::id thread_id = io_thread_->get_id();
+        std::cout << "[EmbeddedServer] IO thread ID: " << thread_id << std::endl;
+        
+        // Try a direct join first with short timeout
+        bool joined = false;
+        {
+            std::cout << "[EmbeddedServer] Attempting immediate join of IO thread..." << std::endl;
+            
+            try {
+                if (io_thread_->joinable()) {
                     io_thread_->join();
-                    exitPromise.set_value();
-                } catch (...) {
+                    std::cout << "[EmbeddedServer] IO thread joined successfully on first attempt" << std::endl;
+                    joined = true;
+                } else {
+                    std::cout << "[EmbeddedServer] IO thread not joinable (despite earlier check), skipping join" << std::endl;
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "[EmbeddedServer] First join attempt failed with error: " << e.what() << std::endl;
+            }
+        }
+        
+        // If first attempt failed, try with timeout approach
+        if (!joined) {
+            std::cout << "[EmbeddedServer] First join attempt failed, trying with timeout approach" << std::endl;
+            
+            const auto timeout = std::chrono::seconds(3);
+            std::thread* thread_ptr = io_thread_.get();
+            auto start_time = std::chrono::steady_clock::now();
+            
+            // Only continue if thread is still joinable
+            if (!thread_ptr->joinable()) {
+                std::cout << "[EmbeddedServer] Thread no longer joinable after first attempt, skipping further join attempts" << std::endl;
+            } else {
+                while (thread_ptr->joinable()) {
+                    // Try to join with a small timeout to keep checking if we should give up
+                    if (std::chrono::steady_clock::now() - start_time > timeout) {
+                        std::cerr << "[EmbeddedServer] IO thread join timed out after " << timeout.count() 
+                                << " seconds. Forcibly detaching thread." << std::endl;
+                        thread_ptr->detach();  // Detach explicitly instead of leaking
+                        break; // Give up after timeout
+                    }
+                    
+                    std::cout << "[EmbeddedServer] Attempting join with timeout..." << std::endl;
+                    
+                    // Try to join with a very short timeout
                     try {
-                        exitPromise.set_exception(std::current_exception());
-                    } catch (...) {} // Set_exception might throw if promise is already satisfied
+                        // Thread is detached in destructor if not joined here
+                        if (thread_ptr->joinable()) {
+                            thread_ptr->join();
+                            std::cout << "[EmbeddedServer] IO thread joined successfully" << std::endl;
+                        }
+                        break; // We joined successfully
+                    } catch (const std::exception& e) {
+                        std::cerr << "[EmbeddedServer] Error joining IO thread: " << e.what() << std::endl;
+                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    }
                 }
             }
-        });
-        
-        // Wait with timeout
-        if (exitFuture.wait_for(timeout) == std::future_status::ready) {
-            std::cout << "[EmbeddedServer] Network thread joined successfully" << std::endl;
-            joinThread.join(); // Safe to join here
-        } else {
-            std::cerr << "[EmbeddedServer] Network thread join timed out, will be detached" << std::endl;
-            joinThread.detach(); // Can't wait for join thread any longer
-            // Note: io_thread will leak, but attempting to force terminate it would be unsafe
         }
+    } else {
+        std::cout << "[EmbeddedServer] IO thread is null or not joinable, skipping join" << std::endl;
     }
     
     // Wait for game loop thread to finish with timeout
     if (gameLoopThread_ && gameLoopThread_->joinable()) {
-        // Create a future to track the joining
-        std::promise<void> exitPromise;
-        std::future<void> exitFuture = exitPromise.get_future();
+        std::cout << "[EmbeddedServer] Stopping... (Step 6: Joining game loop thread, joinable=" 
+                  << (gameLoopThread_->joinable() ? "true" : "false") << ")" << std::endl;
         
-        // Create a thread to join the game loop thread safely
-        std::thread joinThread([&exitPromise, this]() {
-            if (gameLoopThread_->joinable()) {
-                try {
+        // Check if thread ID is valid
+        std::thread::id thread_id = gameLoopThread_->get_id();
+        std::cout << "[EmbeddedServer] Game loop thread ID: " << thread_id << std::endl;
+        
+        // Try a direct join first with short timeout
+        bool joined = false;
+        {
+            std::cout << "[EmbeddedServer] Attempting immediate join of game loop thread..." << std::endl;
+            
+            try {
+                if (gameLoopThread_->joinable()) {
                     gameLoopThread_->join();
-                    exitPromise.set_value();
-                } catch (...) {
+                    std::cout << "[EmbeddedServer] Game loop thread joined successfully on first attempt" << std::endl;
+                    joined = true;
+                } else {
+                    std::cout << "[EmbeddedServer] Game loop thread not joinable (despite earlier check), skipping join" << std::endl;
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "[EmbeddedServer] First game loop join attempt failed with error: " << e.what() << std::endl;
+            }
+        }
+        
+        // If first attempt failed, try with timeout approach
+        if (!joined) {
+            std::cout << "[EmbeddedServer] First game loop join attempt failed, trying with timeout approach" << std::endl;
+            
+            const auto timeout = std::chrono::seconds(3);
+            std::thread* thread_ptr = gameLoopThread_.get();
+            auto start_time = std::chrono::steady_clock::now();
+            
+            // Only continue if thread is still joinable
+            if (!thread_ptr->joinable()) {
+                std::cout << "[EmbeddedServer] Game loop thread no longer joinable after first attempt, skipping further join attempts" << std::endl;
+            } else {
+                while (thread_ptr->joinable()) {
+                    // Try to join with a small timeout to keep checking if we should give up
+                    if (std::chrono::steady_clock::now() - start_time > timeout) {
+                        std::cerr << "[EmbeddedServer] Game loop thread join timed out after " << timeout.count() 
+                                << " seconds. Forcibly detaching thread." << std::endl;
+                        thread_ptr->detach();  // Detach explicitly instead of leaking
+                        break; // Give up after timeout
+                    }
+                    
+                    std::cout << "[EmbeddedServer] Attempting game loop join with timeout..." << std::endl;
+                    
+                    // Try to join with a very short timeout
                     try {
-                        exitPromise.set_exception(std::current_exception());
-                    } catch (...) {} // Set_exception might throw if promise is already satisfied
+                        if (thread_ptr->joinable()) {
+                            thread_ptr->join();
+                            std::cout << "[EmbeddedServer] Game loop thread joined successfully" << std::endl;
+                        }
+                        break; // We joined successfully
+                    } catch (const std::exception& e) {
+                        std::cerr << "[EmbeddedServer] Error joining game loop thread: " << e.what() << std::endl;
+                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    }
                 }
             }
-        });
-        
-        // Wait with timeout
-        if (exitFuture.wait_for(timeout) == std::future_status::ready) {
-            std::cout << "[EmbeddedServer] Game loop thread joined successfully" << std::endl;
-            joinThread.join(); // Safe to join here
-        } else {
-            std::cerr << "[EmbeddedServer] Game loop thread join timed out, will be detached" << std::endl;
-            joinThread.detach(); // Can't wait for join thread any longer
-            // Note: gameLoopThread will leak, but attempting to force terminate it would be unsafe
         }
+    } else {
+        std::cout << "[EmbeddedServer] Game loop thread is null or not joinable, skipping join" << std::endl;
     }
     
     // Clear game state
     {
+        std::cout << "[EmbeddedServer] Stopping... (Step 7: Clearing game state)" << std::endl;
         std::lock_guard<std::mutex> lock(gameStateMutex_);
         gameObjects_.clear();
         players_.clear();
@@ -352,20 +435,53 @@ void EmbeddedServer::run() {
     std::cout << "[EmbeddedServer] Game loop started" << std::endl;
     
     const auto tickDuration = std::chrono::milliseconds(1000 / SERVER_TICK_RATE);
+    unsigned int loopCounter = 0;
     
     while (gameLoopRunning_) {
+        // Print debug info every 300 frames (roughly once per 5 seconds at 60Hz)
+        // This reduces log spam that might be affecting thread shutdown
+        if (++loopCounter % 300 == 0) {
+            std::cout << "[EmbeddedServer] Game loop running (iteration " << loopCounter << ")" << std::endl;
+        }
+        
         auto now = std::chrono::high_resolution_clock::now();
         auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime_).count();
         lastUpdateTime_ = now;
         
-        // Update game state
-        updateGameState(deltaTime);
+        try {
+            // Update game state - only log at 1/60th frequency to reduce spam
+            if (loopCounter % 60 == 0) {
+                std::cout << "[EmbeddedServer] Updating game state..." << std::endl;
+            }
+            
+            updateGameState(deltaTime);
+            
+            if (loopCounter % 60 == 0) {
+                std::cout << "[EmbeddedServer] Game state updated" << std::endl;
+            }
+        }
+        catch (const std::exception& e) {
+            std::cerr << "[EmbeddedServer] Exception in game update: " << e.what() << std::endl;
+        }
+        
+        // Check flag again before sleeping to respond faster to shutdown requests
+        if (!gameLoopRunning_) {
+            std::cout << "[EmbeddedServer] Game loop flag set to false, exiting loop" << std::endl;
+            break;
+        }
         
         // Sleep until next tick
-        std::this_thread::sleep_for(tickDuration);
+        try {
+            std::this_thread::sleep_for(tickDuration);
+        }
+        catch (const std::exception& e) {
+            std::cerr << "[EmbeddedServer] Exception during game loop sleep: " << e.what() << std::endl;
+            // Brief pause to avoid spinning if something is wrong with sleep
+            std::this_thread::yield();
+        }
     }
     
-    std::cout << "[EmbeddedServer] Game loop stopped" << std::endl;
+    std::cout << "[EmbeddedServer] Game loop stopped after " << loopCounter << " iterations" << std::endl;
 }
 
 bool EmbeddedServer::isRunning() const {
