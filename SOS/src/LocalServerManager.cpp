@@ -49,6 +49,41 @@ bool LocalServerManager::startEmbeddedServer(int port) {
 
 bool LocalServerManager::stopEmbeddedServer()
 {
-    embeddedServer_->stop();
-    return true;
+    std::cout << "[LocalServerManager] Attempting to stop embedded server..." << std::endl;
+    
+    if (!serverRunning_) {
+        std::cout << "[LocalServerManager] No server was running, nothing to stop" << std::endl;
+        return true;
+    }
+    
+    if (!embeddedServer_) {
+        std::cerr << "[LocalServerManager] ERROR: Server marked as running but no server instance exists!" << std::endl;
+        serverRunning_ = false;
+        return false;
+    }
+    
+    try {
+        std::cout << "[LocalServerManager] Calling stop() on embedded server..." << std::endl;
+        embeddedServer_->stop();
+        std::cout << "[LocalServerManager] Embedded server stop() completed" << std::endl;
+        
+        // Reset the server instance and update state
+        embeddedServer_.reset();
+        serverRunning_ = false;
+        
+        std::cout << "[LocalServerManager] Embedded server successfully stopped and resources freed" << std::endl;
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "[LocalServerManager] ERROR while stopping embedded server: " << e.what() << std::endl;
+        
+        // Even though there was an error, we should still try to clean up
+        try {
+            embeddedServer_.reset();
+        } catch (...) {
+            // Ignore any exceptions during cleanup
+        }
+        
+        serverRunning_ = false;
+        return false;
+    }
 }

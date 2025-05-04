@@ -43,6 +43,7 @@ Game::~Game() {
     
     // Shutdown multiplayer if active
     shutdownMultiplayer();
+    localServerManager->stopEmbeddedServer();
 }
 
 std::string Game::generateRandomPlayerId() {
