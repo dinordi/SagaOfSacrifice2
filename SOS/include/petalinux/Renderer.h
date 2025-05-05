@@ -10,7 +10,7 @@
 #define BRAM_BASE_ADDR 0x40000000  // Fysiek adres van BRAM
 #define BRAM_SIZE      0x1FFF     // Grootte van de BRAM (pas aan indien nodig)
 
-typedef struct BRAMDATA
+struct BRAMDATA
 {
     int y;
     int id;
@@ -46,8 +46,12 @@ private:
     size_t total_size;
     size_t num_chunks;
 
+    // Sprite properties
     size_t sprite_width;
-
+    size_t sprite_height;     // Height in pixels
+    uint32_t sprite_base_addr; // Physical base address in memory
+    size_t sprite_lines;      // Number of lines in sprite (equal to height)
+    
     size_t sprite_offset;
     size_t bytes_to_transfer;
     size_t offset;

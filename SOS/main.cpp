@@ -13,7 +13,7 @@
 // Example usage in your game initialization
 #include "petalinux/SDL2AudioManager.h"
 
-#include "Renderer.h"
+#include "petalinux/Renderer.h"
 
 float FPS = 60.0f;
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
     Renderer renderer(path + imageName);
     PlayerInput* controller = new EvdevController();
-    Game game(controller);
+    Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     

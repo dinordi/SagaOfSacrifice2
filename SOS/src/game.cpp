@@ -11,12 +11,12 @@
 // External function declaration
 extern uint32_t get_ticks(); // Declare the get_ticks function
 
-Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(false) {
+Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false) {
     
     CollisionManager* collisionManager = new CollisionManager();
     this->collisionManager = collisionManager;
     // Initialize game objects here
-    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), generateRandomPlayerId());
+    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), playerID);
     player->setInput(input);
     objects.push_back(player);
 

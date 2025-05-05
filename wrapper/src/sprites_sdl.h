@@ -1,11 +1,15 @@
 #ifndef SPRITES_SDL_H
 #define SPRITES_SDL_H
 
+#include <filesystem>
 #include <map>
+#include <unordered_map>
+#include <vector>
+#include <string>
+
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include <filesystem>
-#include <unordered_map>
+
 #include "sprite_data.h"
 
 extern std::map<char, int> sdl_characters;

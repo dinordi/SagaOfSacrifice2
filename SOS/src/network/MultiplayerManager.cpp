@@ -113,15 +113,16 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     
     static uint64_t lastUpdateTime = 0;
     lastUpdateTime += deltaTime;
+
     // Debug: output current remote players count
-    if (lastUpdateTime > 2000) { // Every 5 seconds approximately
-        std::cout << "[Client] Current remote players: " << remotePlayers_.size() << std::endl;
-        for (const auto& pair : remotePlayers_) {
-            std::cout << "[Client] Remote player ID: " << pair.first 
-                      << " at position: (" << pair.second->getposition().x << ", " << pair.second->getposition().y << ")" << std::endl;
-        }
-        lastUpdateTime = 0;
-    }
+    // if (lastUpdateTime > 2000) { // Every 5 seconds approximately
+    //     std::cout << "[Client] Current remote players: " << remotePlayers_.size() << std::endl;
+    //     for (const auto& pair : remotePlayers_) {
+    //         std::cout << "[Client] Remote player ID: " << pair.first 
+    //                   << " at position: (" << pair.second->getposition().x << ", " << pair.second->getposition().y << ")" << std::endl;
+    //     }
+    //     lastUpdateTime = 0;
+    // }
     
     // Update all remote players
     for (auto& pair : remotePlayers_) {
@@ -151,13 +152,13 @@ void MultiplayerManager::sendPlayerState() {
     posMsg.data = serializePlayerState(localPlayer_);
     
     // Only print debug every few seconds to avoid flooding
-    static uint64_t lastLogTime = 0;
-    uint64_t currentTime = get_ticks();
-    if (currentTime - lastLogTime > 5000) { // Log every 5 seconds
-        std::cout << "[Client] Sending player position: ("
-                  << localPlayer_->getposition().x << ", " << localPlayer_->getposition().y << ")" << std::endl;
-        lastLogTime = currentTime;
-    }
+    // static uint64_t lastLogTime = 0;
+    // uint64_t currentTime = get_ticks();
+    // if (currentTime - lastLogTime > 5000) { // Log every 5 seconds
+    //     std::cout << "[Client] Sending player position: ("
+    //               << localPlayer_->getposition().x << ", " << localPlayer_->getposition().y << ")" << std::endl;
+    //     lastLogTime = currentTime;
+    // }
     
     network_->sendMessage(posMsg);
 }
