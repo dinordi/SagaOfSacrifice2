@@ -9,6 +9,9 @@
 #include <iostream>
 #include <set> // Add missing header for std::set
 
+// Initialize static instance pointer
+Game* Game::instance_ = nullptr;
+
 // External function declaration
 extern uint32_t get_ticks(); // Declare the get_ticks function
 
@@ -16,6 +19,9 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 const int LOCAL_SERVER_PORT = 8081;
 
 Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false) {
+    // Set this as the active instance
+    instance_ = this;
+    
     // Initialize the local server manager
     localServerManager = std::make_unique<LocalServerManager>();
     
@@ -35,6 +41,11 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
 }
 
 Game::~Game() {
+    // If we are the current instance, clear the static pointer
+    if (instance_ == this) {
+        instance_ = nullptr;
+    }
+    
     // Clean up game objects
     // No need to manually delete objects as they are managed by shared_ptr
     objects.clear();
@@ -223,7 +234,7 @@ void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
-    player->update(deltaTime);
+    // player->update(deltaTime);
 }
 
 void Game::handleServerStateUpdate(const std::vector<uint8_t>& stateData) {
@@ -241,4 +252,23 @@ void Game::reconcileWithServerState() {
     
     // This would happen after receiving a server state update that includes
     // the client's input sequence number
+}
+
+// New method to add objects to the game
+void Game::addObject(std::shared_ptr<Object> object) {
+    if (object) {
+        // Check if object with this ID already exists
+        auto it = std::find_if(objects.begin(), objects.end(), 
+                              [&](const std::shared_ptr<Object>& obj) {
+                                  return obj->getObjID() == object->getObjID();
+                              });
+        
+        if (it == objects.end()) {
+            // Add new object if it doesn't exist
+            objects.push_back(object);
+            std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
+        } else {
+            std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
+        }
+    }
 }

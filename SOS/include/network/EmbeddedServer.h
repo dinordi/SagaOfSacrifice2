@@ -116,3 +116,8 @@ class TempInput : public PlayerInput {
             set_attack(a);
         }
     };
+
+// Message header structure
+struct MessageHeader {
+    uint32_t size;
+};
