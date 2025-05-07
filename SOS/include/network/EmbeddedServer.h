@@ -12,6 +12,8 @@
 #include <functional>
 #include <boost/asio.hpp>  // Added Boost.Asio
 
+#include "interfaces/playerInput.h"
+
 // Forward declarations
 class Object;
 class Player;
@@ -101,3 +103,16 @@ private:
     // Last update time for delta calculation
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime_;
 };
+
+// Create a temporary input object to handle player movement
+class TempInput : public PlayerInput {
+    public:
+        void readInput() override {}
+        
+        void setInputs(bool j, bool l, bool r, bool a) {
+            set_jump(j);
+            set_left(l);
+            set_right(r);
+            set_attack(a);
+        }
+    };

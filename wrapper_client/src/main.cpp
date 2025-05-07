@@ -220,7 +220,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     Game* game = new Game(input, playerId);
     // --- Initialize Multiplayer ---
     if (enableMultiplayer) {
-        if (!game->initializeMultiplayer(serverAddress, serverPort, playerId)) {
+        if (!game->initializeServerConnection(serverAddress, serverPort, playerId)) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize multiplayer. Continuing in single player mode.");
             // Consider if this should be fatal: return SDL_APP_FAILURE;
         } else {
@@ -230,7 +230,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     else
     {
         // Initialize single player mode with local server
-        if (!game->initializeSinglePlayerEmbedded()) {
+        if (!game->initializeSinglePlayerEmbeddedServer()) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize single player mode.");
             return SDL_APP_FAILURE;
         } else {
@@ -424,9 +424,9 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
         // --- Shutdown Multiplayer ---
-        if (app->game && app->game->isMultiplayerActive()) {
-            app->game->shutdownMultiplayer();
-        }
+        // if (app->game && app->game->isMultiplayerActive()) {
+        //     app->game->shutdownMultiplayer();
+        // }
         // --- End Shutdown Multiplayer ---
 
         // Clean up game object
