@@ -184,7 +184,7 @@ void MultiplayerManager::setLocalPlayer(Player* player) {
 
 void MultiplayerManager::setPlayerInput(PlayerInput* input) {
     playerInput_ = input;
-    std::cout << "[Client] Player input set: " << (input ? "yes" : "no") << std::endl;
+    // std::cout << "[Client] Player input set: " << (input ? "yes" : "no") << std::endl;
 }
 
 void MultiplayerManager::sendPlayerState() {
@@ -357,7 +357,7 @@ void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
 void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateData) {
     // This would parse the game state data and update all game objects
     // For now, just log the event since we don't have the full serialization format defined
-    std::cout << "Game state update received from server (" << gameStateData.size() << " bytes)" << std::endl;
+    // std::cout << "Game state update received from server (" << gameStateData.size() << " bytes)" << std::endl;
     
     // In a full implementation, this would:
     // 1. Update positions of all game objects
