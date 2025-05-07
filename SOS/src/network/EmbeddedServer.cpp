@@ -407,20 +407,46 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
 
 void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket,
                                  const NetworkMessage& message) {
-    // In a real implementation, we would serialize the message to a binary format
-    // For simplicity, we'll use a very basic format
-    std::string serialized = std::to_string(static_cast<int>(message.type)) + "|" +
-                           message.senderId + "|";
-    
-    if (!message.data.empty()) {
-        serialized.append(message.data.begin(), message.data.end());
-    }
-    
-    serialized += "\n";
-    
     try {
+        // Create a binary buffer for the message
+        std::vector<uint8_t> buffer;
+        
+        // First, the message header that contains the size (we'll fill this later)
+        struct MessageHeader {
+            uint32_t size;
+        } header;
+        
+        // Serializing the message type and sender ID
+        // Type (1 byte)
+        buffer.push_back(static_cast<uint8_t>(message.type));
+        
+        // Sender ID length (1 byte)
+        buffer.push_back(static_cast<uint8_t>(message.senderId.size()));
+        
+        // Sender ID content
+        buffer.insert(buffer.end(), message.senderId.begin(), message.senderId.end());
+        
+        // Add message data
+        if (!message.data.empty()) {
+            buffer.insert(buffer.end(), message.data.begin(), message.data.end());
+        }
+        
+        // Create the complete message with header + body
+        std::vector<uint8_t> completeMessage;
+        
+        // Set the header size field to the size of the buffer (which is the message body)
+        header.size = static_cast<uint32_t>(buffer.size());
+        
+        // Add the header to the beginning of the complete message
+        completeMessage.resize(sizeof(header) + buffer.size());
+        std::memcpy(completeMessage.data(), &header, sizeof(header));
+        
+        // Add the message body after the header
+        std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+        
+        // Send the complete message asynchronously
         boost::asio::async_write(*socket, 
-            boost::asio::buffer(serialized),
+            boost::asio::buffer(completeMessage),
             [this](const boost::system::error_code& error, std::size_t bytes_transferred) {
                 if (error) {
                     std::cerr << "[EmbeddedServer] Write error: " << error.message() << std::endl;
@@ -634,41 +660,42 @@ void EmbeddedServer::detectAndResolveCollisions() {
 }
 
 void EmbeddedServer::sendGameStateToClients() {
-    std::cout << "[EmbeddedServer] Sending game state to clients" << std::endl;
     // Create state update message
     NetworkMessage stateMsg;
     stateMsg.type = MessageType::GAME_STATE;
     stateMsg.senderId = "server";
-    
-    // We would normally serialize all game objects here
-    // For now, just send player positions
+
+    // Serialize game state into binary format
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        std::cout << "[EmbeddedServer] Serializing game state" << std::endl;
         for (const auto& playerPair : players_) {
             const auto& playerId = playerPair.first;
             const auto& player = playerPair.second;
-            
+
             // Serialize player state
             const Vec2& pos = player->getposition();
             const Vec2& vel = player->getvelocity();
-            
-            // Format: playerId|x|y|vx|vy
-            std::string playerData = playerId + "|" +
-                                  std::to_string(pos.x) + "|" +
-                                  std::to_string(pos.y) + "|" +
-                                  std::to_string(vel.x) + "|" +
-                                  std::to_string(vel.y);
-            std::cout << "[EmbeddedServer] Serialized player data: " << playerData << std::endl;
-            // Add to state data
-            stateMsg.data.insert(stateMsg.data.end(), playerData.begin(), playerData.end());
-            stateMsg.data.push_back(','); // Separator between players
+
+            // Binary serialization: playerId length + playerId + pos.x + pos.y + vel.x + vel.y
+            uint8_t playerIdLength = static_cast<uint8_t>(playerId.size());
+            stateMsg.data.push_back(playerIdLength);
+            stateMsg.data.insert(stateMsg.data.end(), playerId.begin(), playerId.end());
+
+            float posX = pos.x;
+            float posY = pos.y;
+            float velX = vel.x;
+            float velY = vel.y;
+
+            // Fixed to use correct memory addresses for each float
+            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&posX), reinterpret_cast<uint8_t*>(&posX) + sizeof(float));
+            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&posY), reinterpret_cast<uint8_t*>(&posY) + sizeof(float));
+            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&velX), reinterpret_cast<uint8_t*>(&velX) + sizeof(float));
+            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&velY), reinterpret_cast<uint8_t*>(&velY) + sizeof(float));
         }
     }
-    
+
     // Send to each connected client
     {
-        std::cout << "[EmbeddedServer] Sending game state to clients" << std::endl;
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
         for (const auto& clientPair : clientSockets_) {
             auto& socket = clientPair.second;
@@ -677,12 +704,11 @@ void EmbeddedServer::sendGameStateToClients() {
             }
         }
     }
-    std::cout << "[EmbeddedServer] Game state sent to clients" << std::endl;
-    // Also call the message callback if it exists
+
+    // Call the message callback if it exists
     if (messageCallback_) {
         messageCallback_(stateMsg);
     }
-    std::cout << "[EmbeddedServer] Game state callback executed" << std::endl;
 }
 
 void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {

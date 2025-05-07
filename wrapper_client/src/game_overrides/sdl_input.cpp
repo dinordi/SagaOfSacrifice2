@@ -44,7 +44,7 @@ void SDLInput::readInput() {
     
     // Handle jump (triggered only on press, not hold)
     if(jump_pressed && !get_last_jump()) {
-        // Logger::getInstance()->log("Jump pressed");
+        Logger::getInstance()->log("Jump pressed");
         set_jump(true);
     } else {
         set_jump(false);

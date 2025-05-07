@@ -151,7 +151,7 @@ void AsioNetworkClient::startRead() {
         std::cerr << "[Network] Cannot start read, socket is closed" << std::endl;
         return;
     }
-    
+
     // First, read the message header to know the size
     boost::asio::async_read(socket_,
         boost::asio::buffer(&read_buffer_[0], sizeof(MessageHeader)),
@@ -159,48 +159,48 @@ void AsioNetworkClient::startRead() {
             if (!error && bytes_transferred == sizeof(MessageHeader)) {
                 // Read the message header
                 MessageHeader* header = reinterpret_cast<MessageHeader*>(read_buffer_.data());
-                
-                // std::cout << "[Network] Received message header, size: " << header->size << " bytes" << std::endl;
-                
-                // Now read the message body
-                if (header->size > 0 && header->size < max_buffer_size) {
-                    boost::asio::async_read(socket_,
-                        boost::asio::buffer(&read_buffer_[sizeof(MessageHeader)], header->size),
-                        [this, header](const boost::system::error_code& error, std::size_t bytes_transferred) {
-                            if (!error && bytes_transferred == header->size) {
-                                // Process the complete message
-                                std::vector<uint8_t> messageData(
-                                    read_buffer_.begin() + sizeof(MessageHeader),
-                                    read_buffer_.begin() + sizeof(MessageHeader) + header->size
-                                );
-                                
-                                // Deserialize and add to queue
-                                NetworkMessage message = deserializeMessage(messageData);
-                                // std::cout << "[Network] Received complete message, type: " << static_cast<int>(message.type) 
-                                //           << ", sender: " << message.senderId
-                                //           << ", data size: " << message.data.size() << " bytes" << std::endl;
-                                
-                                std::lock_guard<std::mutex> lock(message_mutex_);
-                                received_messages_.push(message);
-                            } else if (error) {
-                                std::cerr << "[Network] Error reading message body: " << error.message() << std::endl;
-                            }
-                            
-                            // Continue reading
-                            startRead();
-                        });
-                } else {
-                    // Invalid message size, restart reading
+
+                // Log raw header data for debugging
+                // std::cout << "[Network] Raw header data: ";
+                // for (size_t i = 0; i < sizeof(MessageHeader); ++i) {
+                //     std::cout << std::hex << static_cast<int>(read_buffer_[i]) << " ";
+                // }
+                // std::cout << std::dec << std::endl;
+
+                // Sanity check for message size
+                if (header->size <= 0 || header->size >= max_buffer_size) {
                     std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
-                    startRead();
+                    startRead(); // Restart reading
+                    return;
                 }
+
+                // Now read the message body
+                boost::asio::async_read(socket_,
+                    boost::asio::buffer(&read_buffer_[sizeof(MessageHeader)], header->size),
+                    [this, header](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                        if (!error && bytes_transferred == header->size) {
+                            // Process the complete message
+                            std::vector<uint8_t> messageData(
+                                read_buffer_.begin() + sizeof(MessageHeader),
+                                read_buffer_.begin() + sizeof(MessageHeader) + header->size
+                            );
+
+                            // Deserialize and add to queue
+                            NetworkMessage message = deserializeMessage(messageData);
+                            std::lock_guard<std::mutex> lock(message_mutex_);
+                            received_messages_.push(message);
+                        } else if (error) {
+                            std::cerr << "[Network] Error reading message body: " << error.message() << std::endl;
+                        }
+
+                        // Continue reading
+                        startRead();
+                    });
             } else if (error != boost::asio::error::operation_aborted) {
                 // Handle error but don't restart if we're intentionally shutting down
                 if (connected_) {
                     std::cerr << "[Network] Read error: " << error.message() << std::endl;
-                    // Try to reconnect or handle disconnection
                     connected_ = false;
-                    // Could implement reconnection logic here
                 }
             }
         });

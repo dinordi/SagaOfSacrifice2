@@ -83,15 +83,15 @@ void Game::update(uint64_t deltaTime) {
     // If multiplayer is active, update network state
     if (multiplayerActive && multiplayerManager) {
         // Update the network state
-        // multiplayerManager->update(deltaTime);
+        multiplayerManager->update(deltaTime);
         
         // Send player input to server
-        // multiplayerManager->setPlayerInput(input);
+        multiplayerManager->setPlayerInput(input);
         
         // In the server-authoritative model:
         // 1. We still apply local input immediately for responsive feel
         // 2. But the server will correct our position if needed
-        // predictLocalPlayerMovement(deltaTime);
+        predictLocalPlayerMovement(deltaTime);
         
         // Update remote players based on server data
         // updateRemotePlayers(multiplayerManager->getRemotePlayers());
