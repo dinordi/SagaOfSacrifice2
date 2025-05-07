@@ -30,16 +30,18 @@ public:
     std::string generateRandomPlayerId();
     
     // Multiplayer functionality
-    bool initializeMultiplayer(const std::string& serverAddress, int serverPort, const std::string& playerId);
-    
+    bool initializeServerConnection(const std::string& serverAddress, int serverPort, const std::string& playerId);
+
     // New: Initialize single player mode with embedded server
-    bool initializeSinglePlayerEmbedded();
+    bool initializeSinglePlayerEmbeddedServer();
     
-    void shutdownMultiplayer();
-    bool isMultiplayerActive() const;
+    void shutdownServerConnection();
+    bool isServerConnection() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
+
     void sendChatMessage(const std::string& message);
     void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
+
     std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
 
