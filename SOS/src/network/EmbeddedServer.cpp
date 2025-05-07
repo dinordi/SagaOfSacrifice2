@@ -619,10 +619,11 @@ void EmbeddedServer::createInitialGameObjects() {
     
     // Clear any existing objects
     gameObjects_.clear();
+    players_.clear();
     
     // Create platform at the bottom of the screen
     auto platform = std::make_shared<Platform>(400, 500, 
-                                             new SpriteData(std::string("tiles"), 128, 128, 1), 
+                                             new SpriteData(std::string("tiles"), 128, 128, 1),
                                              "platform_ground");
     gameObjects_.push_back(platform);
     
@@ -636,6 +637,23 @@ void EmbeddedServer::createInitialGameObjects() {
                                               new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_2");
     gameObjects_.push_back(platform3);
+    
+    // Create a default player - this will ensure there's always at least one player 
+    // in the game world, even before any clients connect
+    std::string defaultPlayerId = "server_player";
+    auto defaultPlayer = std::make_shared<Player>(Vec2(400, 100), 
+                                          new SpriteData(std::string("playermap"), 128, 128, 5), 
+                                          defaultPlayerId);
+    TempInput* input = new TempInput();
+    input->setInputs(false, false, false, false); // Initialize inputs to false
+    defaultPlayer->setInput(input);
+    
+    // Add default player to the game
+    players_[defaultPlayerId] = defaultPlayer;
+    gameObjects_.push_back(defaultPlayer);
+    
+    std::cout << "[EmbeddedServer] Created initial game objects including " << gameObjects_.size() 
+              << " objects with default player: " << defaultPlayerId << std::endl;
 }
 
 void EmbeddedServer::updateGameState(uint64_t deltaTime) {
