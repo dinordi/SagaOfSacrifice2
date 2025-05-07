@@ -2,6 +2,7 @@
 #include "network/AsioNetworkClient.h"
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include "interfaces/playerInput.h"  // Add player input header
+#include "game.h"
 #include <iostream>
 #include <cstring>
 
@@ -350,48 +351,147 @@ void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
     // Process game state updates from the server
     // This now contains authoritative position/physics data from the server
     
+    // Add debug logging
+    // std::cout << "[Client] Received game state message from " << message.senderId 
+    //           << " with data size: " << message.data.size() << " bytes" << std::endl;
+    
+    if (message.data.size() < 2) {
+        std::cerr << "[Client] Game state data is too small: " << message.data.size() << " bytes" << std::endl;
+        return;
+    }
+    
     // Parse the game state data
     processGameState(message.data);
 }
 
 void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateData) {
-    // This would parse the game state data and update all game objects
-    // For now, just log the event since we don't have the full serialization format defined
-    // std::cout << "Game state update received from server (" << gameStateData.size() << " bytes)" << std::endl;
+    if (gameStateData.size() < 2) {
+        std::cerr << "[Client] Invalid game state data received" << std::endl;
+        return;
+    }
     
-    // In a full implementation, this would:
-    // 1. Update positions of all game objects
-    // 2. Reconcile client-side predictions
-    // 3. Update game state (scores, health, etc.)
-}
-
-void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
-    if (chatHandler_) {
-        // Convert binary data to string
-        std::string chatMessage(message.data.begin(), message.data.end());
-        chatHandler_(message.senderId, chatMessage);
-    }
-}
-
-void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
-    // A new player has connected
-    // If it's not us, add them to our remote players list
-    if (message.senderId != playerId_) {
-        std::string playerName(message.data.begin(), message.data.end());
-        std::cout << "Player connected: " << playerName << std::endl;
+    // The first 2 bytes contain the object count
+    uint16_t objectCount = (static_cast<uint16_t>(gameStateData[0]) << 8) | 
+                           static_cast<uint16_t>(gameStateData[1]);
+    
+    // std::cout << "[Client] Processing game state with " << objectCount << " objects" << std::endl;
+    
+    // Current position in the data stream
+    size_t pos = 2;
+    
+    // Maps to track objects we've seen in this update
+    std::map<std::string, bool> objectsSeen;
+    std::vector<std::shared_ptr<Object>> newObjects;
+    
+    // Process each object
+    for (uint16_t i = 0; i < objectCount && pos < gameStateData.size(); i++) {
+        // Read object type
+        if (pos >= gameStateData.size()) break;
+        uint8_t objectType = gameStateData[pos++];
         
-        // Create a new remote player
-        auto newPlayer = std::make_unique<RemotePlayer>(message.senderId);
-        remotePlayers_.emplace(message.senderId, std::move(newPlayer));
+        // Read object ID length
+        if (pos >= gameStateData.size()) break;
+        uint8_t idLength = gameStateData[pos++];
+        
+        // Read object ID
+        if (pos + idLength > gameStateData.size()) break;
+        std::string objectId(gameStateData.begin() + pos, gameStateData.begin() + pos + idLength);
+        pos += idLength;
+        
+        // Read position and velocity (4 floats, 16 bytes total)
+        if (pos + 16 > gameStateData.size()) break;
+        
+        float posX, posY, velX, velY;
+        std::memcpy(&posX, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&posY, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&velX, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&velY, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        
+        // Mark this object as seen
+        objectsSeen[objectId] = true;
+        
+        // Process based on object type
+        switch (objectType) {
+            case 1: { // Player
+                // Skip if this is our local player
+                if (objectId == playerId_) {
+                    // Optionally reconcile local player state with server state
+                    // This is where you would add server reconciliation code
+                    continue;
+                }
+                
+                // Find or create remote player
+                auto it = remotePlayers_.find(objectId);
+                if (it == remotePlayers_.end()) {
+                    // Create new remote player
+                    auto newPlayer = std::make_unique<RemotePlayer>(objectId);
+                    it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
+                    std::cout << "[Client] Created new remote player: " << objectId << std::endl;
+                }
+                
+                // Update remote player state
+                RemotePlayer* player = it->second.get();
+                player->setTargetPosition(Vec2(posX, posY));
+                player->setTargetVelocity(Vec2(velX, velY));
+                player->resetInterpolation();
+                break;
+            }
+            case 2: { // Platform
+                // Read platform width and height (2 floats, 8 bytes total)
+                if (pos + 8 > gameStateData.size()) break;
+                
+                float width, height;
+                std::memcpy(&width, &gameStateData[pos], sizeof(float));
+                pos += sizeof(float);
+                std::memcpy(&height, &gameStateData[pos], sizeof(float));
+                pos += sizeof(float);
+                
+                // Check if we need to create a new platform object
+                bool found = false;
+                
+                // Let the Game class handle object management
+                if (Game* game = Game::getInstance()) {
+                    // Check if the platform already exists
+                    auto& objects = game->getObjects();
+                    for (auto& obj : objects) {
+                        if (obj->getObjID() == objectId) {
+                            // Update existing platform
+                            obj->setposition(Vec2(posX, posY));
+                            obj->setvelocity(Vec2(velX, velY));
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!found) {
+                        // Create new platform
+                        std::shared_ptr<Platform> platform = std::make_shared<Platform>(
+                            posX, posY, 
+                            new SpriteData(std::string("tiles"), width, height, 4),
+                            objectId
+                        );
+                        newObjects.push_back(platform);
+                        std::cout << "[Client] Created new platform: " << objectId << " at " 
+                                  << posX << "," << posY << " size: " << width << "x" << height << std::endl;
+                    }
+                }
+                break;
+            }
+            default:
+                std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
+                break;
+        }
     }
-}
-
-void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& message) {
-    // A player has disconnected
-    // Remove them from our remote players list
-    if (message.senderId != playerId_) {
-        std::cout << "Player disconnected: " << message.senderId << std::endl;
-        remotePlayers_.erase(message.senderId);
+    
+    // Add any new objects to the game
+    if (Game* game = Game::getInstance()) {
+        for (auto& obj : newObjects) {
+            game->addObject(obj);
+        }
     }
 }
 
@@ -459,4 +559,56 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput*
     data.push_back(inputSequenceNumber_ & 0xFF);
     
     return data;
+}
+
+void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
+    // Extract the chat message from the data
+    std::string chatMessage(message.data.begin(), message.data.end());
+    std::cout << "[Client] Received chat message from " << message.senderId << ": " << chatMessage << std::endl;
+    
+    // If we have a chat handler registered, call it
+    if (chatHandler_) {
+        chatHandler_(message.senderId, chatMessage);
+    }
+}
+
+void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
+    // A new player has connected, extract the player info from the message
+    std::string playerId = message.senderId;
+    std::string playerInfo;
+    
+    if (!message.data.empty()) {
+        playerInfo = std::string(message.data.begin(), message.data.end());
+    }
+    
+    std::cout << "[Client] New player connected: " << playerId << " - " << playerInfo << std::endl;
+    
+    // Check if this player is already known
+    if (remotePlayers_.find(playerId) != remotePlayers_.end()) {
+        std::cout << "[Client] Player " << playerId << " already exists, not creating a new remote player" << std::endl;
+        return;
+    }
+    
+    // Create a new remote player
+    auto newPlayer = std::make_unique<RemotePlayer>(playerId);
+    remotePlayers_.emplace(playerId, std::move(newPlayer));
+    
+    // Notify any listeners about the new player (e.g., UI updates)
+    if (chatHandler_) {
+        chatHandler_("SYSTEM", "Player " + playerId + " joined the game");
+    }
+}
+
+void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& message) {
+    // A player has disconnected
+    std::string playerId = message.senderId;
+    std::cout << "[Client] Player disconnected: " << playerId << std::endl;
+    
+    // Remove the player from our collection of remote players
+    remotePlayers_.erase(playerId);
+    
+    // Notify any listeners about the player leaving
+    if (chatHandler_) {
+        chatHandler_("SYSTEM", "Player " + playerId + " left the game");
+    }
 }

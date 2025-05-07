@@ -411,30 +411,30 @@ void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // Create a binary buffer for the message
         std::vector<uint8_t> buffer;
         
-        // First, the message header that contains the size (we'll fill this later)
-        struct MessageHeader {
-            uint32_t size;
-        } header;
-        
-        // Serializing the message type and sender ID
-        // Type (1 byte)
+        // 1. Message type - 1 byte
         buffer.push_back(static_cast<uint8_t>(message.type));
         
-        // Sender ID length (1 byte)
+        // 2. Sender ID length - 1 byte
         buffer.push_back(static_cast<uint8_t>(message.senderId.size()));
         
-        // Sender ID content
+        // 3. Sender ID content
         buffer.insert(buffer.end(), message.senderId.begin(), message.senderId.end());
         
-        // Add message data
-        if (!message.data.empty()) {
-            buffer.insert(buffer.end(), message.data.begin(), message.data.end());
-        }
+        // 4. Data length - 4 bytes (important!)
+        uint32_t dataSize = static_cast<uint32_t>(message.data.size());
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(dataSize & 0xFF));
+        
+        // 5. Data content
+        buffer.insert(buffer.end(), message.data.begin(), message.data.end());
         
         // Create the complete message with header + body
         std::vector<uint8_t> completeMessage;
         
         // Set the header size field to the size of the buffer (which is the message body)
+        MessageHeader header;
         header.size = static_cast<uint32_t>(buffer.size());
         
         // Add the header to the beginning of the complete message
@@ -443,6 +443,10 @@ void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         
         // Add the message body after the header
         std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+        
+        // std::cout << "[EmbeddedServer] Sending message type: " << static_cast<int>(message.type)
+        //           << " with data size: " << message.data.size() 
+        //           << " bytes, total message size: " << completeMessage.size() << " bytes" << std::endl;
         
         // Send the complete message asynchronously
         boost::asio::async_write(*socket, 
@@ -618,18 +622,18 @@ void EmbeddedServer::createInitialGameObjects() {
     
     // Create platform at the bottom of the screen
     auto platform = std::make_shared<Platform>(400, 500, 
-                                             new SpriteData(std::string("platform"), 600, 32, 1),
+                                             new SpriteData(std::string("tiles"), 128, 128, 1), 
                                              "platform_ground");
     gameObjects_.push_back(platform);
     
     // Add more platforms as needed
-    auto platform2 = std::make_shared<Platform>(200, 400, 
-                                              new SpriteData(std::string("platform"), 200, 32, 1),
+    auto platform2 = std::make_shared<Platform>(200, 500, 
+                                              new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_1");
     gameObjects_.push_back(platform2);
     
-    auto platform3 = std::make_shared<Platform>(600, 350, 
-                                              new SpriteData(std::string("platform"), 200, 32, 1),
+    auto platform3 = std::make_shared<Platform>(600, 500, 
+                                              new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_2");
     gameObjects_.push_back(platform3);
 }
@@ -668,39 +672,118 @@ void EmbeddedServer::sendGameStateToClients() {
     // Serialize game state into binary format
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        for (const auto& playerPair : players_) {
-            const auto& playerId = playerPair.first;
-            const auto& player = playerPair.second;
-
-            // Serialize player state
-            const Vec2& pos = player->getposition();
-            const Vec2& vel = player->getvelocity();
-
-            // Binary serialization: playerId length + playerId + pos.x + pos.y + vel.x + vel.y
-            uint8_t playerIdLength = static_cast<uint8_t>(playerId.size());
-            stateMsg.data.push_back(playerIdLength);
-            stateMsg.data.insert(stateMsg.data.end(), playerId.begin(), playerId.end());
-
+        
+        // Debug log for objects being sent
+        // std::cout << "[EmbeddedServer] Sending game state with " << gameObjects_.size() << " objects" << std::endl;
+        
+        // First, add the count of objects we're sending
+        uint16_t objectCount = gameObjects_.size();
+        stateMsg.data.push_back(static_cast<uint8_t>((objectCount >> 8) & 0xFF)); // High byte
+        stateMsg.data.push_back(static_cast<uint8_t>(objectCount & 0xFF));        // Low byte
+        
+        // Add all game objects to the state update
+        for (const auto& object : gameObjects_) {
+            // Skip null objects
+            if (!object) {
+                std::cerr << "[EmbeddedServer] Warning: Null object in gameObjects_" << std::endl;
+                continue;
+            }
+            
+            // Add object type identifier (1 byte)
+            // 1 = player, 2 = platform, etc.
+            uint8_t objectType = 0;
+            
+            if (dynamic_cast<Player*>(object.get())) {
+                objectType = 1; // Player
+            } else if (dynamic_cast<Platform*>(object.get())) {
+                objectType = 2; // Platform
+            } else {
+                objectType = 99; // Unknown/Other
+            }
+            
+            stateMsg.data.push_back(objectType);
+            
+            // Add object ID
+            const std::string& objId = object->getObjID();
+            uint8_t idLength = static_cast<uint8_t>(objId.size());
+            stateMsg.data.push_back(idLength);
+            stateMsg.data.insert(stateMsg.data.end(), objId.begin(), objId.end());
+            
+            // Add position and velocity for all objects
+            const Vec2& pos = object->getposition();
+            const Vec2& vel = object->getvelocity();
+            
+            // Position X, Y (each 4 bytes)
             float posX = pos.x;
             float posY = pos.y;
+            uint8_t* posXBytes = reinterpret_cast<uint8_t*>(&posX);
+            uint8_t* posYBytes = reinterpret_cast<uint8_t*>(&posY);
+            for (size_t i = 0; i < sizeof(float); i++) {
+                stateMsg.data.push_back(posXBytes[i]);
+            }
+            for (size_t i = 0; i < sizeof(float); i++) {
+                stateMsg.data.push_back(posYBytes[i]);
+            }
+            
+            // Velocity X, Y (each 4 bytes)
             float velX = vel.x;
             float velY = vel.y;
-
-            // Fixed to use correct memory addresses for each float
-            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&posX), reinterpret_cast<uint8_t*>(&posX) + sizeof(float));
-            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&posY), reinterpret_cast<uint8_t*>(&posY) + sizeof(float));
-            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&velX), reinterpret_cast<uint8_t*>(&velX) + sizeof(float));
-            stateMsg.data.insert(stateMsg.data.end(), reinterpret_cast<uint8_t*>(&velY), reinterpret_cast<uint8_t*>(&velY) + sizeof(float));
+            uint8_t* velXBytes = reinterpret_cast<uint8_t*>(&velX);
+            uint8_t* velYBytes = reinterpret_cast<uint8_t*>(&velY);
+            for (size_t i = 0; i < sizeof(float); i++) {
+                stateMsg.data.push_back(velXBytes[i]);
+            }
+            for (size_t i = 0; i < sizeof(float); i++) {
+                stateMsg.data.push_back(velYBytes[i]);
+            }
+            
+            // For platforms, add width and height
+            if (objectType == 2) {
+                Platform* platform = dynamic_cast<Platform*>(object.get());
+                if (platform) {
+                    // Add platform width and height
+                    float width = platform->spriteData->width;
+                    float height = platform->spriteData->height;
+                    
+                    uint8_t* widthBytes = reinterpret_cast<uint8_t*>(&width);
+                    uint8_t* heightBytes = reinterpret_cast<uint8_t*>(&height);
+                    
+                    for (size_t i = 0; i < sizeof(float); i++) {
+                        stateMsg.data.push_back(widthBytes[i]);
+                    }
+                    for (size_t i = 0; i < sizeof(float); i++) {
+                        stateMsg.data.push_back(heightBytes[i]);
+                    }
+                }
+            }
         }
+        
+        // Debug log for data size
+        // std::cout << "[EmbeddedServer] Game state serialized to " << stateMsg.data.size() 
+        //           << " bytes (" << gameObjects_.size() << " objects)" << std::endl;
     }
 
     // Send to each connected client
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+        
+        // Check if we have any clients to send to
+        if (clientSockets_.empty()) {
+            std::cout << "[EmbeddedServer] No clients connected, skipping game state update" << std::endl;
+            return;
+        }
+        
         for (const auto& clientPair : clientSockets_) {
-            auto& socket = clientPair.second;
-            if (socket && socket->is_open()) {
-                sendToClient(socket, stateMsg);
+            try {
+                if (!clientPair.second || !clientPair.second->is_open()) {
+                    std::cerr << "[EmbeddedServer] Client socket is null or closed: " << clientPair.first << std::endl;
+                    continue;
+                }
+                
+                sendToClient(clientPair.second, stateMsg);
+            } catch (const std::exception& e) {
+                std::cerr << "[EmbeddedServer] Error sending game state to client " 
+                          << clientPair.first << ": " << e.what() << std::endl;
             }
         }
     }

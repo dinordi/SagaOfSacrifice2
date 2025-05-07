@@ -44,7 +44,13 @@ public:
 
     std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
-
+    
+    // Method to add a game object dynamically
+    void addObject(std::shared_ptr<Object> object);
+    
+    // Static instance getter for singleton access
+    static Game* getInstance() { return instance_; }
+    static void setInstance(Game* instance) { instance_ = instance; }
 
 private:
     void drawWord(const std::string& word, int x, int y);
@@ -84,6 +90,9 @@ private:
 
     // Default ports
     static const int LOCAL_SERVER_PORT = 8081;
+    
+    // Static instance for singleton pattern
+    static Game* instance_;
 };
 
 #endif // GAME_H
