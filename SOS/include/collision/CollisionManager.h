@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <memory>
 #include "object.h"
 #include "CollisionInfo.h"
 #include "CollisionHandler.h"

@@ -2,10 +2,12 @@
 
 #include "NetworkInterface.h"
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <queue>
 #include <mutex>
+
+#include <boost/bind/bind.hpp>
+using namespace boost::placeholders;
 
 class AsioNetworkClient : public NetworkInterface {
 public:

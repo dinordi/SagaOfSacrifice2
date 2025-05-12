@@ -31,14 +31,27 @@ message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 
-# Add include directories
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
-# include_directories(${PROJECT_SOURCE_DIR}/src)
+# If docker build
+if(DEFINED ENV{DOCKER_BUILD})
+    message(STATUS "Building in Docker")
+    # Add include directories
+    include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/network)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/objects)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/interfaces)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/logging)
+else()
+    # Add include directories
+    include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
+    # include_directories(${PROJECT_SOURCE_DIR}/src)
+endif()
+
 
 # Add source files
 file(GLOB_RECURSE SOURCES
@@ -46,7 +59,7 @@ file(GLOB_RECURSE SOURCES
 )
 
 file(GLOB_RECURSE SOS_SOURCES
-    "${PROJECT_SOURCE_DIR}/../SOS/src/*.cpp"
+    "${PROJECT_SOURCE_DIR}/SOS/src/*.cpp"
 )
 
 # Add executable

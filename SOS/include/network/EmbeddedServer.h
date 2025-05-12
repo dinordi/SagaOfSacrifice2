@@ -10,7 +10,8 @@
 #include <thread>
 #include <atomic>
 #include <functional>
-#include <boost/asio.hpp>  // Added Boost.Asio
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+#include <boost/asio.hpp>
 
 #include "interfaces/playerInput.h"
 
