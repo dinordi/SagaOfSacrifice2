@@ -106,6 +106,16 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
                 SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Missing argument for %s option.", arg.c_str());
             }
         } 
+        else if (arg == "-h" || arg == "--help") {
+            SDL_Log("Usage: %s [options]\n", argv[0]);
+            SDL_Log("Options:\n");
+            SDL_Log("  -m, --multiplayer        Enable multiplayer mode\n");
+            SDL_Log("  -s, --server <address>   Set server address (default: localhost)\n");
+            SDL_Log("  -p, --port <port>       Set server port (default: 8080)\n");
+            SDL_Log("  -id, --playerid <id>    Set player ID (default: random)\n");
+            SDL_Log("  -h, --help              Show this help message\n");
+            return SDL_APP_FAILURE;
+        }
         else {
             // Handle other arguments if necessary, e.g., image name from original main.cpp
              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown option: %s", arg.c_str());

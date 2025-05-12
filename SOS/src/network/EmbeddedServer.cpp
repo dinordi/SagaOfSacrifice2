@@ -933,7 +933,13 @@ void EmbeddedServer::sendGameStateToClients() {
         
         // Check if we have any clients to send to
         if (clientSockets_.empty()) {
-            std::cout << "[EmbeddedServer] No clients connected, skipping game state update" << std::endl;
+            // Print every 5 seconds to avoid spam
+            static auto lastPrintTime = std::chrono::steady_clock::now();
+            auto now = std::chrono::steady_clock::now();
+            if (now - lastPrintTime > std::chrono::seconds(5)) {
+                lastPrintTime = now;
+                std::cout << "[EmbeddedServer] No clients connected, skipping game state update" << std::endl;
+            }
             return;
         }
         
