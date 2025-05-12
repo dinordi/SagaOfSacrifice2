@@ -1,4 +1,4 @@
-#include "petalinux/fpga/dma.h"
+#include "fpga/dma.h"
 
 unsigned int write_dma(unsigned int *virtual_addr, int offset, unsigned int value)
 {

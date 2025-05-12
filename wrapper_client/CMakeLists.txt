@@ -71,7 +71,6 @@ include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/utils)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
-list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/petalinux/.*")
 
 target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
