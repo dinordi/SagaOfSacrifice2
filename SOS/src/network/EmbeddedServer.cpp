@@ -724,7 +724,14 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         }
             
         case MessageType::DISCONNECT:
+            std::cout << "[EmbeddedServer] Processing disconnect message from " << message.senderId << std::endl;
+            // Remove the player from the game
             removePlayer(message.senderId);
+            // Remove the socket from the clientSockets_ map
+            {
+                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+                clientSockets_.erase(message.senderId);
+            }
             break;
             
         case MessageType::PLAYER_INPUT:
