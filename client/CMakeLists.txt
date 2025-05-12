@@ -40,13 +40,13 @@ include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/utils)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 
-target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+target_sources(${EXECUTABLE_NAME} ${SOURCES})
 
 # Add your sources to the target
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
-target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+target_sources(${EXECUTABLE_NAME} ${SOURCES})
 
-target_include_directories(${EXECUTABLE_NAME} PRIVATE 
+target_include_directories(${EXECUTABLE_NAME} 
 ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
 ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
 ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
@@ -55,7 +55,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
 ${Boost_INCLUDE_DIRS}
 )
 # Add include directories
-target_include_directories(SOS PRIVATE
+target_include_directories(SOS
 ${PROJECT_SOURCE_DIR}/../SOS/include
 ${PROJECT_SOURCE_DIR}/../SOS/include/interfaces
 ${PROJECT_SOURCE_DIR}/../SOS/include/petalinux
