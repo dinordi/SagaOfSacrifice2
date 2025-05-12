@@ -24,34 +24,44 @@ int main() {
     volatile uint64_t *bram = (volatile uint64_t *)bram_void_ptr;
     
     
-    // Image 1: X=400, Y=400, Width=400, Height=400, ID=160
-    // Combine all fields into a single 64-bit value
-    // Format: X(11) + Y(11) + Width(11) + Height(11) + ID(11) bits
-    uint64_t image1_value = ((uint64_t)400 << 44) |        // X position
-                             ((uint64_t)400 << 33) |        // Y position
-                             ((uint64_t)400 << 22) |      // Width
-                             ((uint64_t)400 << 11) |      // Height
-                             ((uint64_t)160);               // ID
-    // Write the 64-bit value directly
-    bram[0] = image1_value;
+    const int NUM_SPRITES = 8; // Number of sprites in the diagonal line
+    const uint64_t SPRITE_WIDTH = 400;
+    const uint64_t SPRITE_HEIGHT = 100;
+    uint64_t current_x = 0;
+    uint64_t current_y = 0;
 
-    // Image 2: X=100, Y=100, Width=200, Height=200, ID=2
-    uint64_t image2_value = ((uint64_t)800 << 44) |        // X position
-                             ((uint64_t)400 << 33) |        // Y position
-                             ((uint64_t)200 << 22) |      // Width
-                             ((uint64_t)200 << 11) |      // Height
-                             ((uint64_t)2);                // ID
-    // Write the second 64-bit value directly
-    bram[1] = image2_value;
+    printf("Writing %d sprites to BRAM...\n", NUM_SPRITES);
+
+    for (int i = 0; i < NUM_SPRITES; ++i) {
+        // Use a unique ID for each sprite, e.g., starting from 1
+        // Ensure sprite ID fits within 11 bits (0-2047)
+        uint64_t sprite_id = (i + 1) % 2048; 
+        if (sprite_id == 0) sprite_id = 1; // Avoid ID 0 if it has special meaning
+
+        uint64_t image_value = (current_x << 44) |        // X position
+                               (current_y << 33) |        // Y position
+                               (SPRITE_WIDTH << 22) |     // Width
+                               (SPRITE_HEIGHT << 11) |    // Height
+                               (sprite_id);               // ID
+        
+        bram[i] = image_value;
+        printf("Sprite %d: X=%llu, Y=%llu, W=%llu, H=%llu, ID=%llu\n", 
+               i + 1, current_x, current_y, SPRITE_WIDTH, SPRITE_HEIGHT, sprite_id);
+
+        // Update coordinates for the next sprite to start at the bottom-right of the current one
+        current_x += SPRITE_WIDTH;
+        current_y += SPRITE_HEIGHT;
+    }
     
     // Termination value (bits 54-33 all set to 1)
     // For termination: bits 54-33 (X and Y fields) must all be 1
     uint64_t termination_value = ((uint64_t)0x3FFFFF << 33); // Set bits 54-33 to all 1's (22 bits for X and Y)
     // Write the 64-bit termination value directly after the last image descriptor
-    bram[2] = termination_value;
+    bram[NUM_SPRITES] = termination_value;
+    printf("Wrote termination descriptor at BRAM index %d\n", NUM_SPRITES);
  
     munmap(bram_void_ptr, BRAM_SIZE); // Use the original void* for munmap
     close(fd);
-    printf("Successfully wrote 400x400 image, 200x200 image, and termination to BRAM\n");
+    printf("Successfully wrote %d sprites and termination to BRAM\n", NUM_SPRITES);
     return 0;
 }
