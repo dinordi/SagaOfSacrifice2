@@ -137,7 +137,7 @@ void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
     
     // Handle player input here
     Vec2 vel = getvelocity();
-    if (input->get_jump() && getisOnGround()) {
+    if (input->get_up() && getisOnGround()) {
         // Apply jump force only if on ground
         vel.y = -2.0f; // Example jump force (negative y is up)
         isJumping = true;

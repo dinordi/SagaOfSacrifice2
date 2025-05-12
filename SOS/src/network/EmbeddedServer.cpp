@@ -628,7 +628,7 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
                                            new SpriteData(std::string("playermap"), 128, 128, 5), 
                                            playerId);
     TempInput* input = new TempInput();
-    input->setInputs(false, false, false, false); // Initialize inputs to false
+    input->setInputs(false, false, false, false, false); // Initialize inputs to false
     player->setInput(input);
     // Add player to the game
     players_[playerId] = player;
@@ -984,21 +984,13 @@ void EmbeddedServer::processPlayerInput(const std::string& playerId, const Netwo
     // Extract individual input flags (matches MultiplayerManager::serializePlayerInput)
     bool left = (inputState & 1) != 0;
     bool right = (inputState & 2) != 0;
-    bool jump = (inputState & 4) != 0;
-    bool attack = (inputState & 8) != 0;
-    
-    // bool left = false;
-    // bool right = false;
-    // bool jump = false;
-    // bool attack = false;
+    bool up = (inputState & 4) != 0;
+    bool down = (inputState & 8) != 0;
+    bool attack = (inputState & 16) != 0;
 
-
-    // std::cout << "[EmbeddedServer] Player input: jump=" << jump << ", left=" << left 
-    //           << ", right=" << right << ", attack=" << attack << std::endl;
-    
     // Create input handler and apply to player
     auto input = std::make_unique<TempInput>();
-    input->setInputs(jump, left, right, attack);
+    input->setInputs(up, down, left, right, attack);
     player->setInput(input.get());
     
     // Let the player process the input

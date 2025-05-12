@@ -111,8 +111,9 @@ class TempInput : public PlayerInput {
     public:
         void readInput() override {}
         
-        void setInputs(bool j, bool l, bool r, bool a) {
-            set_jump(j);
+        void setInputs(bool u, bool d, bool l, bool r, bool a) {
+            set_up(u);
+            set_down(d);
             set_left(l);
             set_right(r);
             set_attack(a);
