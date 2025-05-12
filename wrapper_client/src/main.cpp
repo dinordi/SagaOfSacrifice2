@@ -3,7 +3,6 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 #include <string_view>
@@ -17,7 +16,7 @@
 #include "sprites_sdl.h"
 #include "logger_sdl.h"
 #include "sdl_input.h"
-
+#include "SDL3AudioManager.h"
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
@@ -31,7 +30,6 @@ struct AppContext {
     SDL_Texture* messageTex, *backgroundTex;
     SDL_Rect imageDest;
     SDL_AudioDeviceID audioDevice;
-    Mix_Music* music;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
     std::filesystem::path basePathSOS;
@@ -198,26 +196,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     loadAllSprites(renderer, basePathSOS);
 
 
-    // init SDL Mixer
-    auto audioDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL);
-    if (not audioDevice) {
-        return SDL_Fail();
-    }
-    if (not Mix_OpenAudio(audioDevice, NULL)) {
-        return SDL_Fail();
-    }
-
-    // Resolve the full path to the music folder
-    auto musicPath = (basePathSOS / "SOS/assets/music").make_preferred();
-
-    // Combine the resolved path with the music file name
-    auto menuMusic = (musicPath / "menu/001.mp3").make_preferred();
-    SDL_Log("Music path: %s", menuMusic.string().c_str());
-    auto music = Mix_LoadMUS(menuMusic.string().c_str());
-    if (not music) {
-        return SDL_Fail();
-    }
-
     // play the music (does not loop)
     // Mix_PlayMusic(music, 0);
 
@@ -225,6 +203,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     Logger::getInstance()->log("Logger started successfully!");
 
     PlayerInput* input = new SDLInput(getGamepad());
+
+    // Initialize AudioManager
+    AudioManager* audio = new SDL3AudioManager();
+    audio->initialize(basePathSOS.string());
 
     //Load game
     Game* game = new Game(input, playerId);
@@ -284,8 +266,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .renderer = renderer,
        .messageTex = messageTex,
        .backgroundTex = backgroundTex,
-       .audioDevice = audioDevice,
-       .music = music,
        .game = game,
        .basePathSOS = basePathSOS,
     };
@@ -448,19 +428,12 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
 
-        // Clean up audio
-        Mix_FadeOutMusic(1000);  // prevent the music from abruptly ending.
-        Mix_FreeMusic(app->music); // this call blocks until the music has finished fading
-        Mix_CloseAudio();
-        SDL_CloseAudioDevice(app->audioDevice);
-
         // Clean up input (if dynamically allocated in AppInit)
         // delete static_cast<SDLInput*>(app->game->getInput()); // Be careful with ownership
 
         delete app; // Delete the context itself
     }
     TTF_Quit();
-    Mix_Quit();
     // IMG_Quit(); // Added IMG_Quit
 
     SDL_Log("Application quit with result %d.", result);
@@ -510,7 +483,7 @@ SDL_Gamepad* getGamepad()
     if (targetInstanceID != 0) { // Check against the invalid ID 0
         gamepad = SDL_OpenGamepad(targetInstanceID);
         if (!gamepad) {
-            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", SDL_GetError());
         } else {
             // Get the name from the opened gamepad handle (preferred method)
             const char* gamepadName = SDL_GetGamepadName(gamepad);

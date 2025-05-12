@@ -1,4 +1,4 @@
-#include "../include/SDL2AudioManager.h" 
+#include "SDL2AudioManager.h"
 #include <SDL2/SDL_mixer.h> // Correct include for SDL2_mixer
 #include <iostream> // For std::cerr
 
@@ -61,7 +61,7 @@ void SDL2AudioManager::initialize(const std::string& basePath) {
     
     // Open audio device
     // Parameters: frequency, format, channels, chunksize
-    if (Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "SDL2_mixer could not open audio! Mix_Error: " << Mix_GetError() << std::endl;
         Mix_Quit();
         SDL_Quit();
