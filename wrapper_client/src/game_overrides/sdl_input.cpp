@@ -53,6 +53,8 @@ void SDLInput::readInput() {
     // Handle directional movement (continuous while held)
     set_left(left_pressed);
     set_right(right_pressed);
+    set_up(up_pressed);
+    set_down(down_pressed);
     
     // Handle attack (triggered only on press, not hold)
     if(attack_pressed && !get_last_attack()) {

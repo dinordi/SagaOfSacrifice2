@@ -348,16 +348,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(currentSpriteRect.h)
         };
 
-
+        bool isFacingRight = entity->getDir() == FacingDirection::RIGHT;
         SDL_FRect destRect{
             .x = static_cast<float>(entity->getposition().x),
             .y = static_cast<float>(entity->getposition().y),
-            .w = static_cast<float>(currentSpriteRect.w * (entity->isFacingRight() ? 1.0f : -1.0f)),
+            .w = static_cast<float>(currentSpriteRect.w * (isFacingRight ? 1.0f : -1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };
 
         // Adjust the dest rect's position when flipped
-        if (!entity->isFacingRight()) {
+        if (!isFacingRight) {
             destRect.x -= destRect.w; // Adjust x position when flipped
         }
 
