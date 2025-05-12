@@ -134,7 +134,7 @@ void Renderer::init()
     
 }
 
-void Renderer::render(std::vector<Object*> objects)
+void Renderer::render(std::vector<std::shared_ptr<Object>>& objects)
 {
     
 }

@@ -24,7 +24,7 @@ public:
     ~Renderer();
 
     void init();
-    void render(std::vector<Object*> objects);
+    void render(std::vector<std::shared_ptr<Object>>& objects);
 private:
     void handleIRQ();
     void irqHandlerThread();

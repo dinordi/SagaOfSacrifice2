@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     // Initialize network features based on mode
     if (enableRemoteMultiplayer) {
         // Connect to remote server for multiplayer
-        if (!game.initializeMultiplayer(serverAddress, serverPort, playerId)) {
+        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
             std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
         } else {
             std::cout << "Multiplayer initialized successfully!" << std::endl;
@@ -122,18 +122,10 @@ int main(int argc, char *argv[]) {
     } else if (!localOnlyMode) {
         if (useEmbeddedServer) {
             // Initialize single player with embedded server (new recommended approach)
-            if (!game.initializeSinglePlayerEmbedded()) {
+            if (!game.initializeSinglePlayerEmbeddedServer()) {
                 std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
             } else {
                 std::cout << "Single player with embedded server initialized successfully!" << std::endl;
-            }
-        } else {
-            // Initialize single player with external server executable (legacy approach)
-            std::filesystem::path serverPath = "../server/build/SagaServer.exe";
-            if (!game.initializeSinglePlayer(serverPath)) {
-                std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
-            } else {
-                std::cout << "Single player with external server initialized successfully!" << std::endl;
             }
         }
     } else {
@@ -176,8 +168,8 @@ int main(int argc, char *argv[]) {
     }
     
     // Clean up
-    if (game.isMultiplayerActive()) {
-        game.shutdownMultiplayer();
+    if (game.isServerConnection()) {
+        game.shutdownServerConnection();
     }
     
     return 0;
