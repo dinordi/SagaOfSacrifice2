@@ -422,16 +422,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
             case 1: { // Player
                 // Skip if this is our local player
                 if (objectId == playerId_) {
-                    // Update local player state
-                    if (localPlayer_) {
-                        // std::cout << "[Client] Updating local player state. Object ID: " << objectId 
-                        //           << " Position: (" << posX << ", " << posY << ") "
-                        //           << " Velocity: (" << velX << ", " << velY << ")" 
-                                //   << std::endl;
-                        localPlayer_->setposition(Vec2(posX, posY));
-                        localPlayer_->setvelocity(Vec2(velX, velY));
-                        // localPlayer_->resetInterpolation();
-                    }
+                    // Position and velocity are already handled by the local player and reconciliation
                 }
                 
                 // Find or create remote player
