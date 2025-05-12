@@ -503,11 +503,12 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
     }
 }
 
-void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket,
+bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket,
                                  const NetworkMessage& message) {
     try {
-        // Create a binary buffer for the message
-        std::vector<uint8_t> buffer;
+        // Create a shared_ptr to manage the message buffer lifetime
+        auto buffer_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& buffer = *buffer_ptr;
         
         // 1. Message type - 1 byte
         buffer.push_back(static_cast<uint8_t>(message.type));
@@ -535,25 +536,42 @@ void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         MessageHeader header;
         header.size = static_cast<uint32_t>(buffer.size());
         
-        // Add the header to the beginning of the complete message
-        completeMessage.resize(sizeof(header) + buffer.size());
-        std::memcpy(completeMessage.data(), &header, sizeof(header));
+        // Create a shared_ptr for the complete message
+        auto complete_message_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& complete_message = *complete_message_ptr;
+        complete_message.resize(sizeof(header) + buffer.size());
         
+        // Copy the header
+        std::memcpy(complete_message.data(), &header, sizeof(header));
+
         // Add the message body after the header
-        std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+        std::memcpy(complete_message.data() + sizeof(header), buffer.data(), buffer.size());
         
-        // std::cout << "[EmbeddedServer] Sending message type: " << static_cast<int>(message.type)
-        //           << " with data size: " << message.data.size() 
-        //           << " bytes, total message size: " << completeMessage.size() << " bytes" << std::endl;
-        
-        // Send the complete message asynchronously
-        boost::asio::async_write(*socket, 
-            boost::asio::buffer(completeMessage),
-            [this](const boost::system::error_code& error, std::size_t bytes_transferred) {
+        // Store the buffer to keep it alive
+        {
+            std::lock_guard<std::mutex> lock(outgoing_buffers_mutex_);
+            outgoing_buffers_.push_back(complete_message_ptr);
+        }
+
+        // Send the message asynchronously
+        boost::asio::async_write(*socket,
+            boost::asio::buffer(complete_message),
+            [this, complete_message_ptr](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                // Clean up the buffer only after the operation completes
+                {
+                    std::lock_guard<std::mutex> lock(outgoing_buffers_mutex_);
+                    outgoing_buffers_.erase(
+                        std::remove(outgoing_buffers_.begin(), outgoing_buffers_.end(), complete_message_ptr),
+                        outgoing_buffers_.end());
+                }
+                
                 if (error) {
-                    std::cerr << "[EmbeddedServer] Write error: " << error.message() << std::endl;
+                    std::cerr << "[EmbeddedServer] Error sending to client" 
+                              << ": " << error.message() << std::endl;
+                    
                 }
             });
+        return true;
     } catch (const std::exception& e) {
         std::cerr << "[EmbeddedServer] Error sending message to client: " << e.what() << std::endl;
     }
@@ -951,7 +969,7 @@ void EmbeddedServer::sendGameStateToClients() {
                     continue;
                 }
                 
-                sendToClient(clientPair.second, stateMsg);
+                bool success = sendToClient(clientPair.second, stateMsg);
             } catch (const std::exception& e) {
                 std::cerr << "[EmbeddedServer] Error sending game state to client " 
                           << clientPair.first << ": " << e.what() << std::endl;

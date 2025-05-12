@@ -23,19 +23,33 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
     server_port_ = port;
 
     try {
+        io_context_.restart(); // Restart the io_context if it was stopped
+
         boost::asio::ip::tcp::resolver resolver(io_context_);
-        auto endpoints = resolver.resolve(host, std::to_string(port));
+        
+        // Try to resolve the address with an explicit timeout
+        boost::system::error_code ec;
+        auto endpoints = resolver.resolve(host, std::to_string(port), ec);
+        
+        if (ec) {
+            std::cerr << "[Network] Failed to resolve host: " << host << ", error: " << ec.message() << std::endl;
+            return false;
+        }
         
         std::cout << "[Network] Attempting to connect to " << host << ":" << port << std::endl;
-
-        // Ensure the handler signature matches one of the expected overloads.
-        // Common signature takes error_code and the endpoint type.
-        boost::asio::async_connect(socket_, endpoints,
-            [this](const boost::system::error_code& error,
-                   const boost::asio::ip::tcp::endpoint& /* endpoint */) { // Using const& is common
-                handleConnect(error);
-            });
         
+        // Connect synchronously first to catch immediate failures
+        boost::system::error_code connect_ec;
+        boost::asio::connect(socket_, endpoints, connect_ec);
+        
+        if (connect_ec) {
+            std::cerr << "[Network] Synchronous connect failed: " << connect_ec.message() << std::endl;
+            return false;
+        }
+        
+        // If we got here, connection succeeded
+        connected_ = true;
+        std::cout << "[Network] Connected to " << host << ":" << port << std::endl;
 
         // Start the ASIO io_context in a separate thread
         io_thread_ = boost::thread([this]() {
@@ -48,9 +62,10 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
                 connected_ = false;
             }
         });
-
-        // Wait briefly to ensure connection has time to be established
-        boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
+        
+        // Start reading
+        startRead();
+        
         return connected_;
     } catch (const std::exception& e) {
         std::cerr << "[Network] Connection error: " << e.what() << std::endl;
