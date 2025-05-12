@@ -2,7 +2,7 @@
 * Author: Joey van Noort
 * 
 */
-#include "petalinux/input_pl.h"
+#include "include/input_pl.h"
 
 #define test_bit(bit, array) ((array[(bit) / 8] >> ((bit) % 8)) & 1)
 

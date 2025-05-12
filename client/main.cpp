@@ -9,9 +9,10 @@
 #include <cstdlib>
 #include <filesystem>
 
-#include "petalinux/input_pl.h"
-#include "petalinux/SDL2AudioManager.h"
-#include "petalinux/Renderer.h"
+#include "include/input_pl.h"
+#include "include/SDL2AudioManager.h"
+#include "include/Renderer.h"
+#include "include/SDL2AudioManager.h"
 
 float FPS = 60.0f;
 
@@ -149,7 +150,7 @@ int main(int argc, char *argv[]) {
     audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
     
     // Load sounds and music
-    audioManager->loadMusic("music/menu/menu.wav");
+    audioManager->loadMusic("music/menu/title.wav");
     audioManager->loadSound("sfx/jump.wav");
 
     // Play music
