@@ -1,10 +1,11 @@
+#include <iostream>
+#include <cstring>
 #include "network/MultiplayerManager.h"
 #include "network/AsioNetworkClient.h"
+#include "network/NetworkConfig.h"
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include "interfaces/playerInput.h"  // Add player input header
 #include "game.h"
-#include <iostream>
-#include <cstring>
 
 // External function declaration
 extern uint32_t get_ticks();
@@ -25,7 +26,7 @@ void RemotePlayer::update(uint64_t deltaTime) {
     
     // Update interpolation timer
     interpolationTime_ += dt;
-    float t = std::min(interpolationTime_ / InterpolationPeriod, 1.0f);
+    float t = std::min(interpolationTime_ / NetworkConfig::Client::InterpolationPeriod, 1.0f);
 
     Vec2 velocity_ = getvelocity();
     Vec2 position_ = getposition();
@@ -175,7 +176,7 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     }
     
     // Send player input periodically (primary control method now)
-    if (playerInput_ && localPlayer_ && lastUpdateTime >= UpdateInterval) {
+    if (playerInput_ && localPlayer_ && lastUpdateTime >= NetworkConfig::Client::UpdateInterval) {
         sendPlayerInput();
         lastUpdateTime_ = deltaTime;
     }
