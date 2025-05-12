@@ -139,7 +139,6 @@ void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
         vel.y = 0.3f; // Move down
     }
     if (input->get_up()) {
-        std::cout << "get_up" << std::endl;
         vel.y = -0.3f; // Move up
     }
     
