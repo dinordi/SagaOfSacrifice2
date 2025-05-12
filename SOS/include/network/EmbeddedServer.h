@@ -9,6 +9,7 @@
 #include <chrono>
 #include <thread>
 #include <atomic>
+#include <cstdint>
 #include <functional>
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/asio.hpp>
@@ -63,7 +64,7 @@ private:
     void handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> socket, 
                     const boost::system::error_code& error, 
                     size_t bytes_transferred);
-    void sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket, 
+    bool sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket, 
                      const NetworkMessage& message);
     // Deserialize message from binary data
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId);
@@ -100,6 +101,11 @@ private:
     
     // Callback for sending messages to clients
     std::function<void(const NetworkMessage&)> messageCallback_;
+
+    // buffers for outgoing messages
+private:
+    std::mutex outgoing_buffers_mutex_;
+    std::vector<std::shared_ptr<std::vector<uint8_t>>> outgoing_buffers_;
     
     // Last update time for delta calculation
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime_;
