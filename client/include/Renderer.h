@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <poll.h>
+#include <memory>
 #include "object.h"
 #include "fpga/dma.h"
 #include "fpga/spriteloader.h"
