@@ -39,6 +39,7 @@ public:
     bool isServerConnection() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
 
+    // Methods to handle chatting
     void sendChatMessage(const std::string& message);
     void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
 

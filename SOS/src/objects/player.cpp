@@ -142,8 +142,6 @@ void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
         vel.y = -2.0f; // Example jump force (negative y is up)
         isJumping = true;
     }
-    
-    std::cout << "[Player] left: " << input->get_left() << " right: " << input->get_right() << std::endl;
 
     if (input->get_left()) {
         vel.x = -0.3f; // Move left
