@@ -20,11 +20,11 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     // }
 
     // Clear any pending interrupts at the start by writing to the UIO device
-    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
-        perror("Failed to clear pending interrupt");
-        close(uio_fd);
-        throw std::runtime_error("Failed to clear pending interrupt");
-    }
+    // if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+    //     perror("Failed to clear pending interrupt");
+    //     close(uio_fd);
+    //     throw std::runtime_error("Failed to clear pending interrupt");
+    // }
 
     
     // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
