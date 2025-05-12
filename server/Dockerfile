@@ -17,7 +17,12 @@ WORKDIR /app
 # ... rest of the Dockerfile remains the same ...
 
 # Copy the server source code
-COPY . .
+COPY server/ .
+
+# Copy the SOS code folder
+COPY SOS/ /app/SOS/
+
+ENV DOCKER_BUILD=1
 
 # Create a build directory and build the project
 RUN mkdir build && cd build && \
