@@ -10,6 +10,7 @@
 
 // Forward declaration
 class RemotePlayer;
+class PlayerInput;
 
 // Handles all multiplayer functionality for the client
 class MultiplayerManager {
@@ -29,8 +30,17 @@ public:
     // Set the local player
     void setLocalPlayer(Player* player);
     
-    // Send local player state to the server
+    // Set the player input handler
+    void setPlayerInput(PlayerInput* input);
+    
+    // Send player input state to server
+    void sendPlayerInput();
+    
+    // Send player position (kept for backwards compatibility, less important now)
     void sendPlayerState();
+    
+    // Send player action
+    void sendPlayerAction(int actionType);
     
     // Check if connected to server
     bool isConnected() const;
@@ -43,6 +53,9 @@ public:
     
     // Set the chat message handler
     void setChatMessageHandler(std::function<void(const std::string& senderId, const std::string& message)> handler);
+    
+    // Process game state update from server
+    void processGameState(const std::vector<uint8_t>& gameStateData);
 
 private:
     // Handle network messages received from the server
@@ -60,11 +73,17 @@ private:
     std::vector<uint8_t> serializePlayerState(const Player* player);
     void deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player);
     
+    // Serialize player input
+    std::vector<uint8_t> serializePlayerInput(const PlayerInput* input);
+    
     // Network interface
     std::unique_ptr<NetworkInterface> network_;
     
     // Local player reference (not owned)
     Player* localPlayer_;
+    
+    // Player input reference (not owned)
+    PlayerInput* playerInput_;
     
     // Remote players
     std::map<std::string, std::unique_ptr<RemotePlayer>> remotePlayers_;
@@ -80,6 +99,10 @@ private:
     
     // How often to send updates (in ms)
     static constexpr uint64_t UpdateInterval = 50;  // 20 updates per second
+    
+    // Client-side prediction state
+    float lastSentInputTime_;
+    uint32_t inputSequenceNumber_;
 };
 
 // RemotePlayer class to represent other players in the game
@@ -91,25 +114,29 @@ public:
     void update(uint64_t deltaTime) override;
     
     // Setters
-    // void setPosition(const Vec2& position);
-    // void setVelocity(const Vec2& velocity);
     void setOrientation(float orientation);
     void setState(int state);
+    void setTargetPosition(const Vec2& position);
+    void setTargetVelocity(const Vec2& velocity);
+    void resetInterpolation();
     
     void accept(CollisionVisitor& visitor) override;
 
     // Getters
-    // const std::string& getId() const { return id_; }
-    // const Vec2& getPosition() const { return position_; }
-    // const Vec2& getVelocity() const { return velocity_; }
     float getOrientation() const { return orientation_; }
     int getState() const { return state_; }
+    const Vec2& getTargetPosition() const { return targetPosition_; }
+    const Vec2& getTargetVelocity() const { return targetVelocity_; }
+    float getInterpolationTime() const { return interpolationTime_; }
     
 private:
-    // std::string id_;
-    // Vec2 position_;
-    // Vec2 velocity_;
     float orientation_;
     int state_;
     const std::string id_;
+    
+    // Client-side interpolation variables
+    Vec2 targetPosition_;
+    Vec2 targetVelocity_;
+    float interpolationTime_;
+    static constexpr float InterpolationPeriod = 0.1f; // 100ms interpolation
 };

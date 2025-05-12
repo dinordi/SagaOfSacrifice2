@@ -7,12 +7,10 @@
 #include <thread>
 #include <string>
 #include <cstdlib>
+#include <filesystem>
 
 #include "petalinux/input_pl.h"
-
-// Example usage in your game initialization
 #include "petalinux/SDL2AudioManager.h"
-
 #include "petalinux/Renderer.h"
 
 float FPS = 60.0f;
@@ -24,10 +22,12 @@ void printUsage(const char* programName) {
     std::cout << "Options:" << std::endl;
     std::cout << "  -h, --help                    Show this help message" << std::endl;
     std::cout << "  -i, --image <imageName>       Specify image name (default: Solid_blue)" << std::endl;
-    std::cout << "  -m, --multiplayer             Enable multiplayer mode" << std::endl;
+    std::cout << "  -m, --multiplayer             Enable multiplayer mode with remote server" << std::endl;
     std::cout << "  -s, --server <serverAddress>  Specify server address (default: localhost)" << std::endl;
     std::cout << "  -p, --port <port>             Specify server port (default: 8080)" << std::endl;
     std::cout << "  -id, --playerid <id>          Specify player ID (default: random)" << std::endl;
+    std::cout << "  -l, --local                   Run in local-only mode without server (for development)" << std::endl;
+    std::cout << "  -e, --embedded               Use embedded server (default) instead of external server" << std::endl;
 }
 
 std::string generateRandomPlayerId() {
@@ -46,7 +46,9 @@ std::string generateRandomPlayerId() {
 int main(int argc, char *argv[]) {
     // Parse command line arguments
     std::string imageName = "Solid_blue";
-    bool enableMultiplayer = false;
+    bool enableRemoteMultiplayer = false;
+    bool localOnlyMode = false;
+    bool useEmbeddedServer = true; // Default to embedded server
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
@@ -62,7 +64,11 @@ int main(int argc, char *argv[]) {
                 imageName = argv[++i];
             }
         } else if (arg == "-m" || arg == "--multiplayer") {
-            enableMultiplayer = true;
+            enableRemoteMultiplayer = true;
+        } else if (arg == "-l" || arg == "--local") {
+            localOnlyMode = true;
+        } else if (arg == "-e" || arg == "--embedded") {
+            useEmbeddedServer = true;
         } else if (arg == "-s" || arg == "--server") {
             if (i + 1 < argc) {
                 serverAddress = argv[++i];
@@ -83,9 +89,17 @@ int main(int argc, char *argv[]) {
     }
     
     std::cout << "Image name: " << imageName << std::endl;
-    if (enableMultiplayer) {
+    if (enableRemoteMultiplayer) {
         std::cout << "Multiplayer enabled. Connecting to server: " << serverAddress 
                   << ":" << serverPort << " with player ID: " << playerId << std::endl;
+    } else if (!localOnlyMode) {
+        if (useEmbeddedServer) {
+            std::cout << "Single player mode with embedded server enabled." << std::endl;
+        } else {
+            std::cout << "Single player mode with external server enabled." << std::endl;
+        }
+    } else {
+        std::cout << "Local-only mode (no server) enabled for development." << std::endl;
     }
     
     std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
@@ -97,15 +111,36 @@ int main(int argc, char *argv[]) {
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     
-    // Initialize multiplayer if enabled
-    if (enableMultiplayer) {
+    // Initialize network features based on mode
+    if (enableRemoteMultiplayer) {
+        // Connect to remote server for multiplayer
         if (!game.initializeMultiplayer(serverAddress, serverPort, playerId)) {
             std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
         } else {
             std::cout << "Multiplayer initialized successfully!" << std::endl;
         }
+    } else if (!localOnlyMode) {
+        if (useEmbeddedServer) {
+            // Initialize single player with embedded server (new recommended approach)
+            if (!game.initializeSinglePlayerEmbedded()) {
+                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
+            } else {
+                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
+            }
+        } else {
+            // Initialize single player with external server executable (legacy approach)
+            std::filesystem::path serverPath = "../server/build/SagaServer.exe";
+            if (!game.initializeSinglePlayer(serverPath)) {
+                std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
+            } else {
+                std::cout << "Single player with external server initialized successfully!" << std::endl;
+            }
+        }
+    } else {
+        // Local-only mode (no server) for development/debugging
+        std::cout << "Running in local-only mode without server." << std::endl;
     }
-    
+
     auto lastTime = get_ticks();
     auto lastRenderTime = lastTime;
     
