@@ -38,16 +38,22 @@ include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-# Echo the include directories
-message("Include directories: ${PROJECT_SOURCE_DIR}/include")
-message("Include directories: ${PROJECT_SOURCE_DIR}/src")
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
 # Get all source files
-file(GLOB_RECURSE SOS_SOURCES 
-    "src/*.cpp"
-    "src/*/*.cpp"
-    "src/*/*/*.cpp"
-    "main.cpp"
+# file(GLOB_RECURSE SOS_SOURCES 
+#     "src/*.cpp"
+#     "src/*/*.cpp"
+#     "src/*/*/*.cpp"
+#     "main.cpp"
+# )
+target_include_directories(${EXECUTABLE_NAME} PRIVATE 
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
+    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${Boost_INCLUDE_DIRS}
 )
 
 # Add executable
