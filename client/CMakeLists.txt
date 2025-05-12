@@ -28,57 +28,53 @@ find_package(SDL2_mixer REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 
-# Add include directories
+message(STATUS "Boost include dirs found: ${Boost_INCLUDE_DIRS}") # Check if path is found
+message(STATUS "Boost libraries found: ${Boost_LIBRARIES}")     # Check libraries
+
+
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/petalinux)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
-include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/collision)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/utils)
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 
-file(GLOB_RECURSE SOS_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
 
-# Get all source files
-# file(GLOB_RECURSE SOS_SOURCES 
-#     "src/*.cpp"
-#     "src/*/*.cpp"
-#     "src/*/*/*.cpp"
-#     "main.cpp"
-# )
+# Add your sources to the target
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+
 target_include_directories(${EXECUTABLE_NAME} PRIVATE 
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
-    ${CMAKE_CURRENT_LIST_DIR}/src
-    ${Boost_INCLUDE_DIRS}
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
+${CMAKE_CURRENT_LIST_DIR}/src
+${CMAKE_CURRENT_LIST_DIR}/src/game_overrides
+${Boost_INCLUDE_DIRS}
 )
-
-# Add executable
-add_executable(SOS ${SOS_SOURCES})
-
 # Add include directories
 target_include_directories(SOS PRIVATE
-    ${PROJECT_SOURCE_DIR}/../SOS/include
-    ${PROJECT_SOURCE_DIR}/../SOS/include/interfaces
-    ${PROJECT_SOURCE_DIR}/../SOS/include/petalinux
-    ${PROJECT_SOURCE_DIR}/../SOS/include/objects
-    ${PROJECT_SOURCE_DIR}/../SOS/include/logging
-    ${PROJECT_SOURCE_DIR}/../SOS/include/network
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
-    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
-    ${CMAKE_CURRENT_LIST_DIR}/src
-    ${Boost_INCLUDE_DIRS}
-    ${PNG_INCLUDE_DIRS}
-    ${SDL2_INCLUDE_DIRS}
+${PROJECT_SOURCE_DIR}/../SOS/include
+${PROJECT_SOURCE_DIR}/../SOS/include/interfaces
+${PROJECT_SOURCE_DIR}/../SOS/include/petalinux
+${PROJECT_SOURCE_DIR}/../SOS/include/objects
+${PROJECT_SOURCE_DIR}/../SOS/include/logging
+${PROJECT_SOURCE_DIR}/../SOS/include/network
+${PROJECT_SOURCE_DIR}/include
+${PROJECT_SOURCE_DIR}/src
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
+${CMAKE_CURRENT_LIST_DIR}/src
+${Boost_INCLUDE_DIRS}
+${PNG_INCLUDE_DIRS}
+${SDL2_INCLUDE_DIRS}
 )
 
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS PRIVATE
+target_link_libraries(SOS PUBLIC
     ${PNG_LIBRARIES} 
     ${SDL2_LIBRARIES} 
     ${Boost_LIBRARIES}
