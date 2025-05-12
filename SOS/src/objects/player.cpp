@@ -5,9 +5,9 @@
 Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << spriteData->getid_() << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
     setisOnGround(false);
-    
+    setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
 }
@@ -65,33 +65,17 @@ void Player::accept(CollisionVisitor& visitor) {
 
 void Player::update(uint64_t deltaTime) {
     // Update player-specific logic here
-    handleInput(input, deltaTime); // Handle input
+    // handleInput(input, deltaTime); // Handle input
 
     Vec2 pos = getposition();
     Vec2 vel = getvelocity();
+
     // float deltaTimeSeconds = static_cast<float>(deltaTime) / 1000.0f;
     float deltaTimeF = static_cast<float>(deltaTime);
     // Prints velocity.y every second
     static uint64_t timems = 0.0f;
     timems += deltaTime;
 
-    // static uint64_t timems_print = 0.0f;
-    // timems_print += deltaTime;
-    // if(timems_print >= 1000.0f)
-    // {
-    //     std::cout << "pos (" << pos.x << ", " << pos.y << ") vel (" << vel.x << ", " << vel.y << ")" << std::endl;
-    //     timems_print = 0.0f;
-    // }
-
-    if(getisOnGround() == false)
-    {
-        // For example, move the player based on input
-        vel.y += GRAVITY * (deltaTimeF / 1000); // Apply gravity
-    }
-    if(vel.y > MAX_VELOCITY)
-    {
-        vel.y = MAX_VELOCITY; // Cap the velocity
-    }
 
     pos.x += vel.x * deltaTimeF;
     pos.y += vel.y * deltaTimeF;
@@ -99,9 +83,17 @@ void Player::update(uint64_t deltaTime) {
     
     // Set direction based on horizontal velocity
     if (vel.x > 0) {
-        facingRight = true;
-    } else if (vel.x < 0) {
-        facingRight = false;
+        dir = FacingDirection::RIGHT;
+    } 
+    else if (vel.x < 0) {
+        dir = FacingDirection::LEFT;
+    }
+
+    if (vel.y < 0) {
+        dir = FacingDirection::UP;
+    } 
+    else if (vel.y > 0) {
+        dir = FacingDirection::DOWN;
     }
     
     // Handle attack timer
@@ -120,6 +112,7 @@ void Player::update(uint64_t deltaTime) {
     updateAnimation(deltaTime);
 
     vel.x = 0; // Reset horizontal velocity
+    vel.y = 0; // Reset vertical velocity
     
     setvelocity(vel); // Update velocity
     setposition(pos); // Update position
@@ -134,19 +127,20 @@ void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
     
     // Handle player input here
     Vec2 vel = getvelocity();
-    if (input->get_jump() && getisOnGround()) {
-        // Apply jump force only if on ground
-        vel.y = -2.0f; // Example jump force (negative y is up)
-        isJumping = true;
-    }
     
     if (input->get_left()) {
         vel.x = -0.3f; // Move left
-        facingRight = false;
     }
     if (input->get_right()) {
+        // std::cout << "get_right" << std::endl;
         vel.x = 0.3f; // Move right
-        facingRight = true;
+    }
+    if (input->get_down()) {
+        vel.y = 0.3f; // Move down
+    }
+    if (input->get_up()) {
+        std::cout << "get_up" << std::endl;
+        vel.y = -0.3f; // Move up
     }
     
     // Handle attack input

@@ -52,6 +52,13 @@ file(GLOB_RECURSE SOS_SOURCES
 # Add executable
 add_executable(SOS ${SOS_SOURCES})
 
+# Add shared library
+add_subdirectory(${CMAKE_SOURCE_DIR}/shared)
+
+# Link shared library to SOS
+include_directories(${CMAKE_SOURCE_DIR}/shared/include)
+target_link_libraries(SOS shared)
+
 # Link libraries (moved after add_executable)
 target_link_libraries(SOS 
     ${PNG_LIBRARIES} 
