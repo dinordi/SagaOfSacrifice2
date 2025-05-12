@@ -38,8 +38,7 @@ include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
-target_sources(${EXECUTABLE_NAME} PRIVATE ${SOURCES})
+file(GLOB_RECURSE SOS_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 
 # Get all source files
 # file(GLOB_RECURSE SOS_SOURCES 
@@ -59,8 +58,27 @@ target_include_directories(${EXECUTABLE_NAME} PRIVATE
 # Add executable
 add_executable(SOS ${SOS_SOURCES})
 
+# Add include directories
+target_include_directories(SOS PRIVATE
+    ${PROJECT_SOURCE_DIR}/../SOS/include
+    ${PROJECT_SOURCE_DIR}/../SOS/include/interfaces
+    ${PROJECT_SOURCE_DIR}/../SOS/include/petalinux
+    ${PROJECT_SOURCE_DIR}/../SOS/include/objects
+    ${PROJECT_SOURCE_DIR}/../SOS/include/logging
+    ${PROJECT_SOURCE_DIR}/../SOS/include/network
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/interfaces
+    ${CMAKE_CURRENT_LIST_DIR}/../SOS/src/collision
+    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${Boost_INCLUDE_DIRS}
+    ${PNG_INCLUDE_DIRS}
+    ${SDL2_INCLUDE_DIRS}
+)
+
 # Link libraries (moved after add_executable)
-target_link_libraries(SOS 
+target_link_libraries(SOS PRIVATE
     ${PNG_LIBRARIES} 
     ${SDL2_LIBRARIES} 
     ${Boost_LIBRARIES}
