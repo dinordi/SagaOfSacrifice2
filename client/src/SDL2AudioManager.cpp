@@ -1,4 +1,4 @@
-#include "petalinux/SDL2AudioManager.h"
+#include "SDL2AudioManager.h"
 #include <iostream>
 #include <filesystem>
 

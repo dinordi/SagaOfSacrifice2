@@ -1,4 +1,4 @@
-#include "petalinux/Renderer.h"
+#include "Renderer.h"
 
 // Define MM2S_DMA_BASE_ADDR with the appropriate value
 #define MM2S_DMA_BASE_ADDR 0x40400000 // Replace with the correct base address for your hardware
