@@ -34,6 +34,11 @@ private:
     std::vector<uint8_t> serializeMessage(const NetworkMessage& message);
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data);
 
+    
+private:
+    std::mutex outgoing_messages_mutex_;
+    std::vector<std::shared_ptr<std::vector<uint8_t>>> outgoing_messages_;
+    
     // Asio io_context and socket
     boost::asio::io_context io_context_;
     boost::asio::ip::tcp::socket socket_;

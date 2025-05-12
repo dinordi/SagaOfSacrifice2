@@ -88,8 +88,9 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
     }
     
     try {
-        // Create a binary message
-        std::vector<uint8_t> buffer;
+        // Create a binary message as shared_ptr to manage message lifetime
+        auto buffer_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& buffer = *buffer_ptr;
         
         // Add message type (1 byte)
         buffer.push_back(static_cast<uint8_t>(message.type));
@@ -115,7 +116,8 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         header.size = static_cast<uint32_t>(buffer.size());
         
         // Create the complete message (header + body)
-        std::vector<uint8_t> completeMessage;
+        auto complete_message_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& completeMessage = *complete_message_ptr;
         completeMessage.resize(sizeof(header) + buffer.size());
         
         // Copy the header
@@ -136,11 +138,25 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
                 std::cout << "  - Player info: " << playerInfo << std::endl;
             }
         }
+
+        //Store the buffer in collection to keep alive
+        {
+            std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);
+            outgoing_messages_.push_back(buffer_ptr);
+        }
         
         // Send the message asynchronously
         boost::asio::async_write(socket_,
             boost::asio::buffer(completeMessage),
-            [this](const boost::system::error_code& error, std::size_t bytes_transferred) {
+            [this, complete_message_ptr](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                // Clean up the buffer after operation completes
+                {
+                    std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);
+                    outgoing_messages_.erase(
+                        std::remove(outgoing_messages_.begin(), outgoing_messages_.end(), complete_message_ptr),
+                        outgoing_messages_.end());
+                }
+                
                 if (error) {
                     std::cerr << "[AsioNetworkClient] Error sending message: " << error.message() << std::endl;
                     connected_ = false;
