@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-dev \
     libboost-system-dev \
     libboost-thread-dev \
+    libboost-chrono-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -31,6 +32,7 @@ FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-system1.74.0 \
     libboost-thread1.74.0 \
+    libboost-chrono1.74.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
