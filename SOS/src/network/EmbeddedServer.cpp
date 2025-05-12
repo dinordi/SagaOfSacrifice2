@@ -1,12 +1,15 @@
-#include "network/EmbeddedServer.h"
-#include "collision/CollisionManager.h"
-#include "objects/player.h"
-#include "objects/platform.h"
 #include <iostream>
 #include <chrono>
 #include <array>
-#include <boost/bind.hpp>
 #include <future>
+
+#include <boost/bind.hpp>
+
+#include "network/EmbeddedServer.h"
+#include "network/NetworkConfig.h"
+#include "collision/CollisionManager.h"
+#include "objects/player.h"
+#include "objects/platform.h"
 
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
@@ -559,7 +562,7 @@ void EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
 void EmbeddedServer::run() {
     std::cout << "[EmbeddedServer] Game loop started" << std::endl;
     
-    const auto tickDuration = std::chrono::milliseconds(1000 / SERVER_TICK_RATE);
+    const auto tickDuration = std::chrono::milliseconds(1000 / NetworkConfig::Server::TickRate);
     unsigned int loopCounter = 0;
 
     while (gameLoopRunning_) {
@@ -802,18 +805,9 @@ void EmbeddedServer::createInitialGameObjects() {
 void EmbeddedServer::updateGameState(uint64_t deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        static uint64_t timems = 0;
-        timems += deltaTime;
-        bool print = false;
-        if(timems > 1000) {
-            print = true;
-            timems = 0;
-        }
+        
         // Update all game objects
         for (auto& object : gameObjects_) {
-            if (print) {
-                // std::cout << "[EmbeddedServer] Updating object: " << object->getObjID() << std::endl;
-            }
             object->update(deltaTime);
         }
         
@@ -824,7 +818,7 @@ void EmbeddedServer::updateGameState(uint64_t deltaTime) {
     static uint64_t updateTimer = 0;
     updateTimer += deltaTime;
     
-    if (updateTimer >= 50) { // Send updates 20 times per second
+    if (updateTimer >= NetworkConfig::Server::StateUpdateInterval) {
         updateTimer = 0;
         sendGameStateToClients();
     }

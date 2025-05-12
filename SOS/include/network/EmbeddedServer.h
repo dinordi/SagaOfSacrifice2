@@ -20,8 +20,6 @@ class Object;
 class Player;
 class CollisionManager;
 
-// Constant tick rate for game logic updates (Hz)
-const int SERVER_TICK_RATE = 60;
 
 /**
  * Embedded server that runs in the same process as the client.
