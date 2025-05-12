@@ -9,9 +9,9 @@
 #include <cstdlib>
 #include <filesystem>
 
-#include "petalinux/input_pl.h"
-#include "petalinux/SDL2AudioManager.h"
-#include "petalinux/Renderer.h"
+#include "input_pl.h"
+#include "SDL2AudioManager.h"
+#include "Renderer.h"
 
 float FPS = 60.0f;
 
