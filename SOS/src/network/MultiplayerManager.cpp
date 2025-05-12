@@ -432,7 +432,6 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                         localPlayer_->setvelocity(Vec2(velX, velY));
                         // localPlayer_->resetInterpolation();
                     }
-                    continue;
                 }
                 
                 // Find or create remote player
@@ -557,8 +556,9 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput*
     uint8_t inputState = 0;
     if (nonConstInput->get_left()) inputState |= 1;
     if (nonConstInput->get_right()) inputState |= 2;
-    if (nonConstInput->get_jump()) inputState |= 4;
-    if (nonConstInput->get_attack()) inputState |= 8;
+    if (nonConstInput->get_up()) inputState |= 4;
+    if (nonConstInput->get_down()) inputState |= 8;
+    if (nonConstInput->get_attack()) inputState |= 16;
     
     // Add input state
     data.push_back(inputState);

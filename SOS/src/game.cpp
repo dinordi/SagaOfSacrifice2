@@ -103,6 +103,8 @@ void Game::update(uint64_t deltaTime) {
         // 1. We still apply local input immediately for responsive feel
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
+
+        reconcileWithServerState();
         
         // Update remote players based on server data
         updateRemotePlayers(multiplayerManager->getRemotePlayers());
@@ -233,8 +235,48 @@ void Game::drawWord(const std::string& word, int x, int y) {
 void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
-    // player->handleInput(input, deltaTime);
-    // player->update(deltaTime);
+    player->handleInput(input, deltaTime);
+    player->update(deltaTime);
+}
+
+void Game::reconcileWithServerState() {
+    // Compare the server's authoritative state with our predicted state
+    // and correct any discrepancies
+    
+    // This would happen after receiving a server state update that includes
+    // the client's input sequence number
+    
+    // Get the server position for our player from the MultiplayerManager
+    if (multiplayerManager && player) {
+
+        const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
+        auto it = remotePlayers.find(player->getObjID());
+        if (it == remotePlayers.end()) {
+            std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
+            return;
+        }
+        RemotePlayer* remotePlayer = it->second.get();
+        Vec2 serverPosition = remotePlayer->getposition();
+        Vec2 clientPosition = player->getposition();
+        
+        // Calculate position difference
+        float dx = serverPosition.x - clientPosition.x;
+        float dy = serverPosition.y - clientPosition.y;
+        float distSquared = dx*dx + dy*dy;
+        
+        // If difference is significant (beyond a small threshold)
+        if (distSquared > 4.0f) { // Small threshold to ignore minor differences
+            // Option 1: Smoothly interpolate toward server position
+            Vec2 newPosition = clientPosition;
+            
+            // Interpolate 20% of the way to the server position
+            newPosition.x += dx * 0.2f;
+            newPosition.y += dy * 0.2f;
+            
+            // Update player position
+            player->setposition(newPosition);
+        }
+    }
 }
 
 void Game::handleServerStateUpdate(const std::vector<uint8_t>& stateData) {
@@ -244,14 +286,6 @@ void Game::handleServerStateUpdate(const std::vector<uint8_t>& stateData) {
     
     // For now, just log that we received a state update
     std::cout << "[Game] Received server state update (" << stateData.size() << " bytes)" << std::endl;
-}
-
-void Game::reconcileWithServerState() {
-    // Compare the server's authoritative state with our predicted state
-    // and correct any discrepancies
-    
-    // This would happen after receiving a server state update that includes
-    // the client's input sequence number
 }
 
 // New method to add objects to the game
