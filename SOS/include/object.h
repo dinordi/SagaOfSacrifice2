@@ -11,7 +11,6 @@
 
 class Platform;
 
-// constexpr float GRAVITY = 9.8f;
 constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
