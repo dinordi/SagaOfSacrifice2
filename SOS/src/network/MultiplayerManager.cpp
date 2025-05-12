@@ -101,6 +101,7 @@ MultiplayerManager::~MultiplayerManager() {
 bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
     // Store player ID
     playerId_ = playerId;
+    std::cout << "[Client] MultiplayerManager::initialize() called with player ID: " << playerId_ << std::endl;
     
     // Set message handler
     network_->setMessageHandler([this](const NetworkMessage& msg) {
@@ -123,6 +124,8 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
         connectMsg.data.assign(playerName.begin(), playerName.end());
         
         std::cout << "[Client] Sending CONNECT message with player ID: " << playerId_ << std::endl;
+        // Sleep for a short time to ensure server is ready
+        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         network_->sendMessage(connectMsg);
     } else {
         std::cerr << "[Client] Failed to connect to multiplayer server" << std::endl;
@@ -209,7 +212,7 @@ void MultiplayerManager::sendPlayerInput() {
     if (!playerInput_ || !network_ || !network_->isConnected()) {
         return;
     }
-    
+    // std::cout << "[Client] Sending player input" << std::endl;
     // Serialize player input state
     NetworkMessage inputMsg;
     inputMsg.type = MessageType::PLAYER_INPUT;
@@ -419,8 +422,16 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
             case 1: { // Player
                 // Skip if this is our local player
                 if (objectId == playerId_) {
-                    // Optionally reconcile local player state with server state
-                    // This is where you would add server reconciliation code
+                    // Update local player state
+                    if (localPlayer_) {
+                        // std::cout << "[Client] Updating local player state. Object ID: " << objectId 
+                        //           << " Position: (" << posX << ", " << posY << ") "
+                        //           << " Velocity: (" << velX << ", " << velY << ")" 
+                                //   << std::endl;
+                        localPlayer_->setposition(Vec2(posX, posY));
+                        localPlayer_->setvelocity(Vec2(velX, velY));
+                        // localPlayer_->resetInterpolation();
+                    }
                     continue;
                 }
                 
@@ -573,6 +584,7 @@ void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
 }
 
 void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
+    std::cout << "[Client] Received player connect message from " << message.senderId << std::endl;
     // A new player has connected, extract the player info from the message
     std::string playerId = message.senderId;
     std::string playerInfo;

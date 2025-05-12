@@ -83,42 +83,73 @@ void AsioNetworkClient::disconnect() {
 
 bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
     if (!connected_ || !socket_.is_open()) {
-        std::cerr << "[Network] Cannot send message, not connected" << std::endl;
+        std::cerr << "[AsioNetworkClient] Cannot send message - not connected" << std::endl;
         return false;
     }
-
+    
     try {
-        // Serialize the message
-        std::vector<uint8_t> serializedMsg = serializeMessage(message);
-        
-        // Prefix with message size
-        MessageHeader header;
-        header.size = static_cast<uint32_t>(serializedMsg.size());
-        
-        // Create combined buffer with header + message
+        // Create a binary message
         std::vector<uint8_t> buffer;
-        buffer.resize(sizeof(header) + serializedMsg.size());
         
-        // Copy header
-        std::memcpy(buffer.data(), &header, sizeof(header));
+        // Add message type (1 byte)
+        buffer.push_back(static_cast<uint8_t>(message.type));
         
-        // Copy message body
-        std::memcpy(buffer.data() + sizeof(header), serializedMsg.data(), serializedMsg.size());
+        // Add sender ID length (1 byte)
+        buffer.push_back(static_cast<uint8_t>(message.senderId.size()));
         
-        // std::cout << "[Network] Sending message type: " << static_cast<int>(message.type) 
-        //           << ", size: " << serializedMsg.size() 
-        //           << ", sender: " << message.senderId << std::endl;
+        // Add sender ID content
+        buffer.insert(buffer.end(), message.senderId.begin(), message.senderId.end());
+        
+        // Add data length (4 bytes)
+        uint32_t dataSize = static_cast<uint32_t>(message.data.size());
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(dataSize & 0xFF));
+        
+        // Add message data
+        buffer.insert(buffer.end(), message.data.begin(), message.data.end());
+        
+        // Create the message header
+        MessageHeader header;
+        header.size = static_cast<uint32_t>(buffer.size());
+        
+        // Create the complete message (header + body)
+        std::vector<uint8_t> completeMessage;
+        completeMessage.resize(sizeof(header) + buffer.size());
+        
+        // Copy the header
+        std::memcpy(completeMessage.data(), &header, sizeof(header));
+        
+        // Copy the message body
+        std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+
+        // Debug output for CONNECT messages
+        if (message.type == MessageType::CONNECT) {
+            std::cout << "[AsioNetworkClient] Sending CONNECT message:" << std::endl;
+            std::cout << "  - Sender ID: " << message.senderId << std::endl;
+            std::cout << "  - Data size: " << message.data.size() << " bytes" << std::endl;
+            std::cout << "  - Total message size: " << completeMessage.size() << " bytes" << std::endl;
+            
+            if (!message.data.empty()) {
+                std::string playerInfo(message.data.begin(), message.data.end());
+                std::cout << "  - Player info: " << playerInfo << std::endl;
+            }
+        }
         
         // Send the message asynchronously
-        boost::asio::async_write(socket_, 
-            boost::asio::buffer(buffer, buffer.size()),
-            [this](const boost::system::error_code& error, std::size_t) {
-                handleWrite(error);
+        boost::asio::async_write(socket_,
+            boost::asio::buffer(completeMessage),
+            [this](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                if (error) {
+                    std::cerr << "[AsioNetworkClient] Error sending message: " << error.message() << std::endl;
+                    connected_ = false;
+                }
             });
         
         return true;
     } catch (const std::exception& e) {
-        std::cerr << "[Network] Error sending message: " << e.what() << std::endl;
+        std::cerr << "[AsioNetworkClient] Error preparing message: " << e.what() << std::endl;
         return false;
     }
 }

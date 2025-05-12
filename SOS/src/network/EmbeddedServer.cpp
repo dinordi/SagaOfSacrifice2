@@ -321,30 +321,88 @@ void EmbeddedServer::handleAccept(const boost::system::error_code& error,
 }
 
 void EmbeddedServer::handleClientConnection(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
-    // Generate a client ID based on the remote endpoint
-    std::string clientId = socket->remote_endpoint().address().to_string() + 
+    // Generate a temporary client ID based on the remote endpoint (just for socket tracking)
+    std::string tempClientId = socket->remote_endpoint().address().to_string() + 
                            ":" + std::to_string(socket->remote_endpoint().port());
     
-    // Store the socket
+    std::cout << "[EmbeddedServer] New connection from: " << tempClientId << std::endl;
+    std::cout << "[EmbeddedServer] Waiting for client's CONNECT message to get real player ID..." << std::endl;
+    
+    // Store the socket using the temporary ID
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-        clientSockets_[clientId] = socket;
+        clientSockets_[tempClientId] = socket;
     }
     
-    // Start reading from the socket
-    auto buffer = std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
-    socket->async_read_some(boost::asio::buffer(*buffer),
-        [this, socket, buffer, clientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
-            handleRead(socket, error, bytes_transferred);
+    // Start the proper async read sequence to get a complete message
+    // First read just the message header
+    auto headerBuffer = std::make_shared<std::array<char, sizeof(MessageHeader)>>();
+    boost::asio::async_read(*socket, 
+        boost::asio::buffer(*headerBuffer, sizeof(MessageHeader)),
+        [this, socket, headerBuffer, tempClientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+            if (!error && bytes_transferred == sizeof(MessageHeader)) {
+                // Extract the message size from the header
+                MessageHeader* header = reinterpret_cast<MessageHeader*>(headerBuffer->data());
+                uint32_t headerSize = header->size;
+                std::cout << "[EmbeddedServer] Received message header with size: " << header->size << " bytes" << std::endl;
+                
+                // Validate header size
+                if (header->size > MAX_MESSAGE_SIZE) {
+                    std::cerr << "[EmbeddedServer] Message size exceeds maximum limit" << std::endl;
+                    boost::system::error_code ec;
+                    socket->shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+                    socket->close(ec);
+                    return;
+                }
+                std::cout << "[EmbeddedServer] Valid header size, proceeding to read message body..." << std::endl;
+                // Now read the message body
+                auto bodyBuffer = std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
+                boost::asio::async_read(*socket,
+                    boost::asio::buffer(bodyBuffer->data(), header->size),
+                    [this, socket, bodyBuffer, headerSize, tempClientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                        std::cout << "[EmbeddedServer] Received message body with size: " << bytes_transferred << " bytes" << std::endl;
+                        std::cout << "[EmbeddedServer] Header size: " << headerSize << std::endl;
+                        if (!error && bytes_transferred == headerSize) {
+                            // Process the complete message
+                            std::vector<uint8_t> messageData(
+                                bodyBuffer->data(),
+                                bodyBuffer->data() + headerSize
+                            );
+                            
+                            // Deserialize the message
+                            NetworkMessage message = deserializeMessage(messageData, tempClientId);
+                            
+                            // Debug log - always log CONNECT messages
+                            std::cout << "[EmbeddedServer] Received first message from client - Type: " << static_cast<int>(message.type)
+                                     << " from " << message.senderId << " with data size: " << message.data.size() << " bytes" << std::endl;
+                            
+                            if (!message.data.empty()) {
+                                try {
+                                    std::string playerInfo(message.data.begin(), message.data.end());
+                                    std::cout << "[EmbeddedServer] Message data: " << playerInfo << std::endl;
+                                } catch (const std::exception& e) {
+                                    std::cerr << "[EmbeddedServer] Error extracting message data: " << e.what() << std::endl;
+                                }
+                            }
+                            
+                            // Process the message
+                            processMessage(message);
+                            
+                            std::cout << "[EmbeddedServer] First message processed, now waiting for more messages..." << std::endl;
+                            // Now start the normal read loop
+                            handleRead(socket, boost::system::error_code(), 0);
+                        } else {
+                            if (error) {
+                                std::cerr << "[EmbeddedServer] Error reading message body: " << error.message() << std::endl;
+                            }
+                        }
+                    });
+            } else {
+                if (error) {
+                    std::cerr << "[EmbeddedServer] Error reading initial message header: " << error.message() << std::endl;
+                }
+            }
         });
-    
-    // Create a connect message for this client
-    NetworkMessage connectMsg;
-    connectMsg.type = MessageType::CONNECT;
-    connectMsg.senderId = clientId;
-    
-    // Process the connection
-    processMessage(connectMsg);
 }
 
 void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> socket,
@@ -361,16 +419,53 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
             return;
         }
         
-        // Process the message
-        // In a real implementation, we would deserialize the binary message here
-        // For simplicity, we'll assume a very basic message format
-        // ...
+        std::shared_ptr<std::array<char, MAX_MESSAGE_SIZE>> buffer = 
+            std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
         
-        // Continue reading
-        auto buffer = std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
-        socket->async_read_some(boost::asio::buffer(*buffer),
-            [this, socket, buffer](const boost::system::error_code& error, std::size_t bytes_transferred) {
-                handleRead(socket, error, bytes_transferred);
+        // First read the message header to determine the size
+        boost::asio::async_read(*socket, 
+            boost::asio::buffer(buffer->data(), sizeof(MessageHeader)),
+            [this, socket, buffer, clientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                if (!error && bytes_transferred == sizeof(MessageHeader)) {
+                    // Extract the message size from the header
+                    MessageHeader* header = reinterpret_cast<MessageHeader*>(buffer->data());
+                    // std::cout << "[EmbeddedServer] Received message header with size: " << header->size << " bytes" << std::endl;
+                    // Read the message body
+                    boost::asio::async_read(*socket,
+                        boost::asio::buffer(buffer->data() + sizeof(MessageHeader), header->size),
+                        [this, socket, buffer, header, clientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                            if (!error && bytes_transferred == header->size) {
+                                // Process the complete message
+                                std::vector<uint8_t> messageData(
+                                    buffer->data() + sizeof(MessageHeader),
+                                    buffer->data() + sizeof(MessageHeader) + header->size
+                                );
+                                
+                                // Deserialize the message
+                                NetworkMessage message = deserializeMessage(messageData, clientId);
+                                // std::cout << "[EmbeddedServer] Received message type: " << static_cast<int>(message.type)
+                                //           << " from " << clientId << " with data size: " << message.data.size() << " bytes" << std::endl;
+                                // if(message.type == MessageType::CONNECT) {
+                                //     std::cout << "[EmbeddedServer] Received message type: " << static_cast<int>(message.type)
+                                //               << " from " << clientId << " with data size: " << message.data.size() << " bytes, type: " << static_cast<int>(message.type) << std::endl;
+                                // }
+                                
+                                // Process the message
+                                processMessage(message);
+                                
+                                // Continue reading
+                                handleRead(socket, boost::system::error_code(), 0);
+                            } else {
+                                if (error) {
+                                    std::cerr << "[EmbeddedServer] Error reading message body: " << error.message() << std::endl;
+                                }
+                            }
+                        });
+                } else {
+                    if (error && error != boost::asio::error::operation_aborted) {
+                        std::cerr << "[EmbeddedServer] Error reading message header: " << error.message() << std::endl;
+                    }
+                }
             });
     } else if (error == boost::asio::error::eof || 
               error == boost::asio::error::connection_reset) {
@@ -583,9 +678,50 @@ void EmbeddedServer::removePlayer(const std::string& playerId) {
 void EmbeddedServer::processMessage(const NetworkMessage& message) {
     // Process based on message type
     switch (message.type) {
-        case MessageType::CONNECT:
+        case MessageType::CONNECT: {
+            std::cout << "[EmbeddedServer] Processing connect message from " << message.senderId << std::endl;
+            
+            // Find the socket using the temp clientId from the network endpoint
+            std::string tempClientId;
+            std::shared_ptr<boost::asio::ip::tcp::socket> clientSocket;
+            
+            {
+                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+                // Find the socket by checking all entries
+                for (auto& entry : clientSockets_) {
+                    try {
+                        if (entry.second && entry.second->is_open()) {
+                            std::string socketId = entry.second->remote_endpoint().address().to_string() + 
+                                                 ":" + std::to_string(entry.second->remote_endpoint().port());
+                            
+                            if (entry.first.find(socketId) != std::string::npos) {
+                                tempClientId = entry.first;
+                                clientSocket = entry.second;
+                                break;
+                            }
+                        }
+                    } catch (const std::exception& e) {
+                        std::cerr << "[EmbeddedServer] Error checking socket: " << e.what() << std::endl;
+                    }
+                }
+                
+                // If we found the socket with a temporary ID, update the mapping
+                if (!tempClientId.empty() && clientSocket && tempClientId != message.senderId) {
+                    std::cout << "[EmbeddedServer] Updating socket mapping from " << tempClientId 
+                              << " to " << message.senderId << std::endl;
+                    
+                    // Remove the old temp ID mapping
+                    clientSockets_.erase(tempClientId);
+                    
+                    // Add the new mapping with the proper player ID
+                    clientSockets_[message.senderId] = clientSocket;
+                }
+            }
+            
+            // Add the player to the game
             addPlayer(message.senderId);
             break;
+        }
             
         case MessageType::DISCONNECT:
             removePlayer(message.senderId);
@@ -640,27 +776,37 @@ void EmbeddedServer::createInitialGameObjects() {
     
     // Create a default player - this will ensure there's always at least one player 
     // in the game world, even before any clients connect
-    std::string defaultPlayerId = "server_player";
-    auto defaultPlayer = std::make_shared<Player>(Vec2(400, 100), 
-                                          new SpriteData(std::string("playermap"), 128, 128, 5), 
-                                          defaultPlayerId);
-    TempInput* input = new TempInput();
-    input->setInputs(false, false, false, false); // Initialize inputs to false
-    defaultPlayer->setInput(input);
+    // std::string defaultPlayerId = "server_player";
+    // auto defaultPlayer = std::make_shared<Player>(Vec2(400, 100), 
+    //                                       new SpriteData(std::string("playermap"), 128, 128, 5), 
+    //                                       defaultPlayerId);
+    // TempInput* input = new TempInput();
+    // input->setInputs(false, false, false, false); // Initialize inputs to false
+    // defaultPlayer->setInput(input);
     
-    // Add default player to the game
-    players_[defaultPlayerId] = defaultPlayer;
-    gameObjects_.push_back(defaultPlayer);
+    // // Add default player to the game
+    // players_[defaultPlayerId] = defaultPlayer;
+    // gameObjects_.push_back(defaultPlayer);
     
-    std::cout << "[EmbeddedServer] Created initial game objects including " << gameObjects_.size() 
-              << " objects with default player: " << defaultPlayerId << std::endl;
+    // std::cout << "[EmbeddedServer] Created initial game objects including " << gameObjects_.size() 
+    //           << " objects with default player: " << defaultPlayerId << std::endl;
 }
 
 void EmbeddedServer::updateGameState(uint64_t deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
+        static uint64_t timems = 0;
+        timems += deltaTime;
+        bool print = false;
+        if(timems > 1000) {
+            print = true;
+            timems = 0;
+        }
         // Update all game objects
         for (auto& object : gameObjects_) {
+            if (print) {
+                // std::cout << "[EmbeddedServer] Updating object: " << object->getObjID() << std::endl;
+            }
             object->update(deltaTime);
         }
         
@@ -815,6 +961,8 @@ void EmbeddedServer::sendGameStateToClients() {
 void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     
+    // std::cout << "[EmbeddedServer] Processing player input for player: " << playerId << std::endl;
+
     // Find the player
     auto playerIt = players_.find(playerId);
     if (playerIt == players_.end()) {
@@ -824,20 +972,31 @@ void EmbeddedServer::processPlayerInput(const std::string& playerId, const Netwo
     
     auto player = playerIt->second;
     
-    // Deserialize input data
-    // Format is expected to be: jump|left|right|attack
-    if (message.data.size() < 7) {
-        std::cerr << "[EmbeddedServer] Invalid input data size" << std::endl;
+    // Check if we have enough data (at least 1 byte for input state)
+    if (message.data.size() < 1) {
+        std::cerr << "[EmbeddedServer] Invalid input data size: " << message.data.size() << " bytes" << std::endl;
         return;
     }
     
-    // Extract input values (this is a simplified example)
-    bool jump = message.data[0] == '1';
-    bool left = message.data[2] == '1';
-    bool right = message.data[4] == '1';
-    bool attack = message.data[6] == '1';
+    // Extract input values from the binary format sent by MultiplayerManager
+    uint8_t inputState = message.data[0];
     
+    // Extract individual input flags (matches MultiplayerManager::serializePlayerInput)
+    bool left = (inputState & 1) != 0;
+    bool right = (inputState & 2) != 0;
+    bool jump = (inputState & 4) != 0;
+    bool attack = (inputState & 8) != 0;
     
+    // bool left = false;
+    // bool right = false;
+    // bool jump = false;
+    // bool attack = false;
+
+
+    // std::cout << "[EmbeddedServer] Player input: jump=" << jump << ", left=" << left 
+    //           << ", right=" << right << ", attack=" << attack << std::endl;
+    
+    // Create input handler and apply to player
     auto input = std::make_unique<TempInput>();
     input->setInputs(jump, left, right, attack);
     player->setInput(input.get());
@@ -846,4 +1005,53 @@ void EmbeddedServer::processPlayerInput(const std::string& playerId, const Netwo
     player->handleInput(input.get(), 16); // Assume ~60fps
     
     // The player's update function will be called in the updateGameState method
+}
+
+NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
+    NetworkMessage message;
+    size_t offset = 0;
+    
+    if (data.empty()) {
+        message.senderId = clientId;  // Default to the client ID if we can't read it from the data
+        return message;
+    }
+    
+    // 1. Message type (1 byte)
+    message.type = static_cast<MessageType>(data[offset++]);
+    
+    if (offset >= data.size()) {
+        message.senderId = clientId;
+        return message;
+    }
+    
+    // 2. Sender ID length (1 byte)
+    uint8_t senderIdLength = data[offset++];
+    
+    // 3. Sender ID content
+    if (offset + senderIdLength <= data.size()) {
+        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
+        offset += senderIdLength;
+    } else {
+        message.senderId = clientId;  // Use client ID if sender ID is invalid
+    }
+    
+    // If we've reached the end of the data, return what we have
+    if (offset + 4 > data.size()) {
+        return message;
+    }
+    
+    // 4. Data length (4 bytes)
+    uint32_t dataSize = 
+        (static_cast<uint32_t>(data[offset]) << 24) |
+        (static_cast<uint32_t>(data[offset + 1]) << 16) |
+        (static_cast<uint32_t>(data[offset + 2]) << 8) |
+        static_cast<uint32_t>(data[offset + 3]);
+    offset += 4;
+    
+    // 5. Data content
+    if (offset + dataSize <= data.size()) {
+        message.data.assign(data.begin() + offset, data.begin() + offset + dataSize);
+    }
+    
+    return message;
 }
