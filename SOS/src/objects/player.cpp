@@ -5,9 +5,9 @@
 Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << spriteData->getid_() << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
     setisOnGround(false);
-    
+    setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
 }
@@ -65,7 +65,7 @@ void Player::accept(CollisionVisitor& visitor) {
 
 void Player::update(uint64_t deltaTime) {
     // Update player-specific logic here
-    handleInput(input, deltaTime); // Handle input
+    // handleInput(input, deltaTime); // Handle input
 
     Vec2 pos = getposition();
     Vec2 vel = getvelocity();
@@ -92,7 +92,10 @@ void Player::update(uint64_t deltaTime) {
     {
         vel.y = MAX_VELOCITY; // Cap the velocity
     }
-
+    // if(vel.x > 0)
+    // {
+    //     std::cout << "vel.x: " << vel.x << std::endl;
+    // }
     pos.x += vel.x * deltaTimeF;
     pos.y += vel.y * deltaTimeF;
 
@@ -140,11 +143,14 @@ void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
         isJumping = true;
     }
     
+    std::cout << "[Player] left: " << input->get_left() << " right: " << input->get_right() << std::endl;
+
     if (input->get_left()) {
         vel.x = -0.3f; // Move left
         facingRight = false;
     }
     if (input->get_right()) {
+        // std::cout << "get_right" << std::endl;
         vel.x = 0.3f; // Move right
         facingRight = true;
     }

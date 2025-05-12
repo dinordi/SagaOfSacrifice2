@@ -105,7 +105,7 @@ void Game::update(uint64_t deltaTime) {
         predictLocalPlayerMovement(deltaTime);
         
         // Update remote players based on server data
-        // updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
 }
 
@@ -233,7 +233,7 @@ void Game::drawWord(const std::string& word, int x, int y) {
 void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
-    player->handleInput(input, deltaTime);
+    // player->handleInput(input, deltaTime);
     // player->update(deltaTime);
 }
 

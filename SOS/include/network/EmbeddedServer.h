@@ -66,6 +66,8 @@ private:
                     size_t bytes_transferred);
     void sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket, 
                      const NetworkMessage& message);
+    // Deserialize message from binary data
+    NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId);
 
     // Game logic methods
     void createInitialGameObjects();
