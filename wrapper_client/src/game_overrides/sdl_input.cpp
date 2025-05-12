@@ -4,8 +4,10 @@
 SDLInput::SDLInput(SDL_Gamepad* gamepad) : dualsense(gamepad)
 {
     // Initialize all button states
-    set_jump(false);
-    set_last_jump(false);
+    set_up(false);
+    set_last_up(false);
+    set_down(false);
+    set_last_down(false);
     set_left(false);
     set_last_left(false);
     set_right(false);
@@ -18,7 +20,8 @@ void SDLInput::readInput() {
     SDL_PumpEvents();
     
     // Current button states
-    bool jump_pressed = false;
+    bool up_pressed = false;
+    bool down_pressed = false;
     bool left_pressed = false;
     bool right_pressed = false;
     bool attack_pressed = false;
@@ -26,7 +29,10 @@ void SDLInput::readInput() {
     // Read inputs from either gamepad or keyboard
     if(dualsense) {
         // Gamepad controls
-        jump_pressed = SDL_GetGamepadButton(dualsense, SDL_GAMEPAD_BUTTON_SOUTH);
+        up_pressed = SDL_GetGamepadAxis(dualsense, SDL_GAMEPAD_AXIS_LEFTY) < -8000 || 
+                    SDL_GetGamepadButton(dualsense, SDL_GAMEPAD_BUTTON_DPAD_UP);
+        down_pressed = SDL_GetGamepadAxis(dualsense, SDL_GAMEPAD_AXIS_LEFTY) > 8000 || 
+                      SDL_GetGamepadButton(dualsense, SDL_GAMEPAD_BUTTON_DPAD_DOWN);
         left_pressed = SDL_GetGamepadAxis(dualsense, SDL_GAMEPAD_AXIS_LEFTX) < -8000 || 
                       SDL_GetGamepadButton(dualsense, SDL_GAMEPAD_BUTTON_DPAD_LEFT);
         right_pressed = SDL_GetGamepadAxis(dualsense, SDL_GAMEPAD_AXIS_LEFTX) > 8000 || 
@@ -36,20 +42,13 @@ void SDLInput::readInput() {
     else {
         // Keyboard controls
         const bool* state = SDL_GetKeyboardState(NULL);
-        jump_pressed = state[SDL_SCANCODE_SPACE];
-        left_pressed = state[SDL_SCANCODE_A] || state[SDL_SCANCODE_LEFT];
-        right_pressed = state[SDL_SCANCODE_D] || state[SDL_SCANCODE_RIGHT];
+        up_pressed = state[SDL_SCANCODE_W];
+        down_pressed = state[SDL_SCANCODE_S];
+        left_pressed = state[SDL_SCANCODE_A];
+        right_pressed = state[SDL_SCANCODE_D];
         attack_pressed = state[SDL_SCANCODE_K];
     }
     
-    // Handle jump (triggered only on press, not hold)
-    if(jump_pressed && !get_last_jump()) {
-        Logger::getInstance()->log("Jump pressed");
-        set_jump(true);
-    } else {
-        set_jump(false);
-    }
-    set_last_jump(jump_pressed);
     
     // Handle directional movement (continuous while held)
     set_left(left_pressed);
