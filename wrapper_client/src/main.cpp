@@ -29,7 +29,6 @@ struct AppContext {
     SDL_Renderer* renderer;
     SDL_Texture* messageTex, *backgroundTex;
     SDL_Rect imageDest;
-    SDL_AudioDeviceID audioDevice;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Game* game;
     std::filesystem::path basePathSOS;
@@ -206,8 +205,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     // Initialize AudioManager
     AudioManager* audio = new SDL3AudioManager();
-    audio->initialize(basePathSOS.string());
+    
 
+    if(audio->initialize(basePathSOS.string())){
+        SDL_Log("AudioManager initialized successfully!");
+        audio->loadMusic("SOS/assets/music/menu/001.mp3");
+        audio->playMusic();
+    }
+    else
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize AudioManager.");
+        return SDL_APP_FAILURE;
+    }
     //Load game
     Game* game = new Game(input, playerId);
     // --- Initialize Multiplayer ---
@@ -309,6 +318,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
+        
         if (!entity || !entity->spriteData) continue; // Basic safety check
         SDL_Texture* sprite_tex = nullptr;
         // if(printID)
