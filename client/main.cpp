@@ -109,38 +109,46 @@ int main(int argc, char *argv[]) {
     Renderer renderer(path + imageName);
     PlayerInput* controller = new EvdevController();
     Game game(controller, playerId);
+    AudioManager* audio = new SDL2AudioManager();
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2";
+    if(!audio->initialize(basePathSOS)) {
+        std::cerr << "Failed to initialize AudioManager." << std::endl;
+        return -1;
+    }
+    audio->loadMusic("title.wav");
+    audio->playMusic();
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     
-    // Initialize network features based on mode
-    if (enableRemoteMultiplayer) {
-        // Connect to remote server for multiplayer
-        if (!game.initializeMultiplayer(serverAddress, serverPort, playerId)) {
-            std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
-        } else {
-            std::cout << "Multiplayer initialized successfully!" << std::endl;
-        }
-    } else if (!localOnlyMode) {
-        if (useEmbeddedServer) {
-            // Initialize single player with embedded server (new recommended approach)
-            if (!game.initializeSinglePlayerEmbedded()) {
-                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
-            } else {
-                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
-            }
-        } else {
-            // Initialize single player with external server executable (legacy approach)
-            std::filesystem::path serverPath = "../server/build/SagaServer.exe";
-            if (!game.initializeSinglePlayer(serverPath)) {
-                std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
-            } else {
-                std::cout << "Single player with external server initialized successfully!" << std::endl;
-            }
-        }
-    } else {
-        // Local-only mode (no server) for development/debugging
-        std::cout << "Running in local-only mode without server." << std::endl;
-    }
+    // // Initialize network features based on mode
+    // if (enableRemoteMultiplayer) {
+    //     // Connect to remote server for multiplayer
+    //     if (!game.initializeMultiplayer(serverAddress, serverPort, playerId)) {
+    //         std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
+    //     } else {
+    //         std::cout << "Multiplayer initialized successfully!" << std::endl;
+    //     }
+    // } else if (!localOnlyMode) {
+    //     if (useEmbeddedServer) {
+    //         // Initialize single player with embedded server (new recommended approach)
+    //         if (!game.initializeSinglePlayerEmbedded()) {
+    //             std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
+    //         } else {
+    //             std::cout << "Single player with embedded server initialized successfully!" << std::endl;
+    //         }
+    //     } else {
+    //         // Initialize single player with external server executable (legacy approach)
+    //         std::filesystem::path serverPath = "../server/build/SagaServer.exe";
+    //         if (!game.initializeSinglePlayer(serverPath)) {
+    //             std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
+    //         } else {
+    //             std::cout << "Single player with external server initialized successfully!" << std::endl;
+    //         }
+    //     }
+    // } else {
+    //     // Local-only mode (no server) for development/debugging
+    //     std::cout << "Running in local-only mode without server." << std::endl;
+    // }
 
     auto lastTime = get_ticks();
     auto lastRenderTime = lastTime;
@@ -166,20 +174,20 @@ int main(int argc, char *argv[]) {
         game.update(deltaTime);
         
         // Render game state at appropriate intervals
-        uint32_t renderElapsedTime = currentTime - lastRenderTime;
-        if (renderElapsedTime > 1000.0f / FPS) {
-            renderer.render(game.getObjects());
-            lastRenderTime = currentTime;
-        }
+        // uint32_t renderElapsedTime = currentTime - lastRenderTime;
+        // if (renderElapsedTime > 1000.0f / FPS) {
+        //     renderer.render(game.getObjects());
+        //     lastRenderTime = currentTime;
+        // }
         
         // Add small sleep to prevent CPU hogging
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     
-    // Clean up
-    if (game.isMultiplayerActive()) {
-        game.shutdownMultiplayer();
-    }
+    // // Clean up
+    // if (game.isMultiplayerActive()) {
+    //     game.shutdownMultiplayer();
+    // }
     
     return 0;
 }
