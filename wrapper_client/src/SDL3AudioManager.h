@@ -11,17 +11,17 @@ public:
     SDL3AudioManager();
     ~SDL3AudioManager() override;
 
-    void initialize(const std::string& basePath) override;
-    void loadSound(const std::string& filePath) override;
-    void playSound(const std::string& soundName) override;
-    void stopSound(const std::string& soundName) override;
-    void setVolume(float volume) override;
+    bool initialize(const std::string& basePath) override;
+    bool loadSound(const std::string& filePath) override;
+    bool playSound(const std::string& soundName) override;
+    bool stopSound(const std::string& soundName) override;
+    bool setVolume(float volume) override;
 
-    void loadMusic(const std::string& filePath) override;
-    void playMusic() override;
-    void pauseMusic() override;
-    void stopMusic() override;
-    void setMusicVolume(float volume) override;
+    bool loadMusic(const std::string& filePath) override;
+    bool playMusic() override;
+    bool pauseMusic() override;
+    bool stopMusic() override;
+    bool setMusicVolume(float volume) override;
 
 private:
     std::string mBasePath;
