@@ -54,7 +54,7 @@ void RemotePlayer::setOrientation(float orientation) {
     orientation_ = orientation;
 }
 
-void RemotePlayer::setState(int state) {
+void RemotePlayer::setState(AnimationState state) {
     state_ = state;
 }
 
@@ -327,17 +327,10 @@ void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message
     
     // Process action
     if (message.data.size() >= 1) {
-        int actionType = message.data[0];
+        AnimationState actionType = static_cast<AnimationState>(message.data[0]);
         // Handle different action types
-        switch (actionType) {
-            case 1: // Jump
-                it->second->setState(1); // Set jumping state
-                break;
-            case 2: // Attack
-                it->second->setState(2); // Set attacking state
-                break;
-            // Add more action types as needed
-        }
+        it->second->setState(actionType);
+        it->second->setAnimationState(actionType);
     }
 }
 

@@ -112,7 +112,7 @@ public:
     
     // Setters
     void setOrientation(float orientation);
-    void setState(int state);
+    void setState(AnimationState state);
     void setTargetPosition(const Vec2& position);
     void setTargetVelocity(const Vec2& velocity);
     void resetInterpolation();
@@ -121,14 +121,14 @@ public:
 
     // Getters
     float getOrientation() const { return orientation_; }
-    int getState() const { return state_; }
+    AnimationState getState() const { return state_; }
     const Vec2& getTargetPosition() const { return targetPosition_; }
     const Vec2& getTargetVelocity() const { return targetVelocity_; }
     float getInterpolationTime() const { return interpolationTime_; }
     
 private:
     float orientation_;
-    int state_;
+    AnimationState state_;
     const std::string id_;
     
     // Client-side interpolation variables
