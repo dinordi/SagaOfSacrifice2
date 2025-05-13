@@ -222,9 +222,6 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
     }
 }
 
-void Game::handleNetworkMessages() {
-    // This method is no longer needed as the MultiplayerManager handles message processing internally
-}
 
 void Game::drawWord(const std::string& word, int x, int y) {
     // This method can be implemented later if needed
@@ -277,15 +274,6 @@ void Game::reconcileWithServerState() {
             player->setposition(newPosition);
         }
     }
-}
-
-void Game::handleServerStateUpdate(const std::vector<uint8_t>& stateData) {
-    // Process the server's authoritative state update
-    // This would update all game objects including the player
-    // In a full implementation, this would include entity creation/deletion, positions, etc.
-    
-    // For now, just log that we received a state update
-    std::cout << "[Game] Received server state update (" << stateData.size() << " bytes)" << std::endl;
 }
 
 // New method to add objects to the game

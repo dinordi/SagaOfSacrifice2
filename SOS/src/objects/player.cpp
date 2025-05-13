@@ -6,7 +6,6 @@ Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, s
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
-    setisOnGround(false);
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -17,46 +16,26 @@ void Player::setupAnimations() {
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
     
     // Example animation setup - adjust these based on your actual sprite sheet
-    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 150, true);        // Idle animation (4 frames)
-    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 100, true);      // Walking animation (6 frames)
-    // addAnimation(AnimationState::JUMPING, 10, 2, spriteData->columns, 200, false);    // Jumping animation (2 frames)
-    // addAnimation(AnimationState::FALLING, 12, 2, spriteData->columns, 150, true);     // Falling animation (2 frames)
-    // addAnimation(AnimationState::ATTACKING, 14, 3, spriteData->columns, 80, false);   // Attack animation (3 frames)
+    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 150, true);        // Idle animation (2 frames)
+    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 100, true);      // Walking animation (3 frames)
     
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
 
 void Player::updateAnimationState() {
-    Vec2 vel = getvelocity();
     
-    // Determine the appropriate animation state based on player's current condition
-    // if (isAttacking) {
-    //     setAnimationState(AnimationState::ATTACKING);
-    //     return;
-    // }
-    
-    if (!getisOnGround()) {
-        if (vel.y < 0) {
-            // Moving upward
-            // setAnimationState(AnimationState::JUMPING);
-        } else {
-            // Falling down
-            // setAnimationState(AnimationState::FALLING);
-        }
+    if (isMoving()) {
+        setAnimationState(AnimationState::WALKING);
     } else {
-        // On ground
-        if (isMoving()) {
-            setAnimationState(AnimationState::WALKING);
-        } else {
-            setAnimationState(AnimationState::IDLE);
-        }
+        setAnimationState(AnimationState::IDLE);
     }
+    
 }
 
 bool Player::isMoving() const {
-    // Check if player is moving horizontally
-    return getvelocity().x != 0;
+    // Check if the player is moving based on velocity
+    return getvelocity().x != 0 || getvelocity().y != 0;
 }
 
 void Player::accept(CollisionVisitor& visitor) {
@@ -108,6 +87,7 @@ void Player::update(uint64_t deltaTime) {
     
     // Update animation state based on player state
     updateAnimationState();
+    
     // Update the animation controller
     updateAnimation(deltaTime);
 
@@ -116,11 +96,6 @@ void Player::update(uint64_t deltaTime) {
     
     setvelocity(vel); // Update velocity
     setposition(pos); // Update position
-    if(getisOnGround() == true && timems > 20)
-    {
-        setisOnGround(false); // Reset ground state
-        timems = 0;
-    }
 }
 
 void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
