@@ -57,8 +57,6 @@ private:
     void drawWord(const std::string& word, int x, int y);
     void mapCharacters();
     
-    // Handle server-driven state updates
-    void handleServerStateUpdate(const std::vector<uint8_t>& stateData);
     
     // Local client-side prediction methods
     void predictLocalPlayerMovement(uint64_t deltaTime);
@@ -80,8 +78,6 @@ private:
     std::unique_ptr<MultiplayerManager> multiplayerManager;
     bool multiplayerActive;
     
-    // Handle messages from remote players
-    void handleNetworkMessages();
     
     // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);

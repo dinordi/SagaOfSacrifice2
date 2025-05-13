@@ -17,7 +17,6 @@ RemotePlayer::RemotePlayer(const std::string& id)
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
-    // Note: we're using a default sprite ID of 0 since we can't directly convert strings to sprite IDs
 }
 
 void RemotePlayer::update(uint64_t deltaTime) {
@@ -102,7 +101,6 @@ MultiplayerManager::~MultiplayerManager() {
 bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
     // Store player ID
     playerId_ = playerId;
-    std::cout << "[Client] MultiplayerManager::initialize() called with player ID: " << playerId_ << std::endl;
     
     // Set message handler
     network_->setMessageHandler([this](const NetworkMessage& msg) {
@@ -126,7 +124,6 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
         
         std::cout << "[Client] Sending CONNECT message with player ID: " << playerId_ << std::endl;
         // Sleep for a short time to ensure server is ready
-        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         network_->sendMessage(connectMsg);
     } else {
         std::cerr << "[Client] Failed to connect to multiplayer server" << std::endl;
@@ -136,9 +133,6 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
 }
 
 void MultiplayerManager::shutdown() {
-    std::cout << "[Client DEBUG] MultiplayerManager::shutdown() called" << std::endl;
-    std::cout << "[Client DEBUG] Stack trace/debugging info would be useful here" << std::endl;
-    
     if (network_ && network_->isConnected()) {
         // Notify server about disconnection
         NetworkMessage disconnectMsg;
@@ -184,12 +178,11 @@ void MultiplayerManager::update(uint64_t deltaTime) {
 
 void MultiplayerManager::setLocalPlayer(Player* player) {
     localPlayer_ = player;
-    std::cout << "[Client] Local player set: " << (player ? "yes" : "no") << std::endl;
+    // remotePlayers_[playerId_] = std::make_unique<RemotePlayer>(playerId_);
 }
 
 void MultiplayerManager::setPlayerInput(PlayerInput* input) {
     playerInput_ = input;
-    // std::cout << "[Client] Player input set: " << (input ? "yes" : "no") << std::endl;
 }
 
 void MultiplayerManager::sendPlayerState() {
@@ -213,7 +206,6 @@ void MultiplayerManager::sendPlayerInput() {
     if (!playerInput_ || !network_ || !network_->isConnected()) {
         return;
     }
-    // std::cout << "[Client] Sending player input" << std::endl;
     // Serialize player input state
     NetworkMessage inputMsg;
     inputMsg.type = MessageType::PLAYER_INPUT;
@@ -268,8 +260,6 @@ void MultiplayerManager::setChatMessageHandler(std::function<void(const std::str
 }
 
 void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
-    // std::cout << "[Client] Received message type: " << static_cast<int>(message.type) 
-    //           << " from sender: " << message.senderId << std::endl;
     
     switch (message.type) {
         case MessageType::PLAYER_POSITION:
@@ -355,10 +345,6 @@ void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
     // Process game state updates from the server
     // This now contains authoritative position/physics data from the server
     
-    // Add debug logging
-    // std::cout << "[Client] Received game state message from " << message.senderId 
-    //           << " with data size: " << message.data.size() << " bytes" << std::endl;
-    
     if (message.data.size() < 2) {
         std::cerr << "[Client] Game state data is too small: " << message.data.size() << " bytes" << std::endl;
         return;
@@ -377,8 +363,6 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     // The first 2 bytes contain the object count
     uint16_t objectCount = (static_cast<uint16_t>(gameStateData[0]) << 8) | 
                            static_cast<uint16_t>(gameStateData[1]);
-    
-    // std::cout << "[Client] Processing game state with " << objectCount << " objects" << std::endl;
     
     // Current position in the data stream
     size_t pos = 2;
@@ -419,8 +403,8 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         objectsSeen[objectId] = true;
         
         // Process based on object type
-        switch (objectType) {
-            case 1: { // Player
+        switch (static_cast<ObjectType>(objectType)) {
+            case ObjectType::PLAYER: { // Player
                 // Skip if this is our local player
                 if (objectId == playerId_) {
                     // Position and velocity are already handled by the local player and reconciliation
@@ -442,7 +426,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 player->resetInterpolation();
                 break;
             }
-            case 2: { // Platform
+            case ObjectType::PLATFORM: { // Platform
                 // Read platform width and height (2 floats, 8 bytes total)
                 if (pos + 8 > gameStateData.size()) break;
                 

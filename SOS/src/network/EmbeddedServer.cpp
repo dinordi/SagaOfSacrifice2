@@ -91,8 +91,6 @@ void EmbeddedServer::stop() {
         return;
     }
     
-    // std::cout << "[EmbeddedServer] Stopping... (Step 1: Setting flags and preparing shutdown)" << std::endl;
-    
     // Set flags first to ensure loops break
     running_ = false;
     gameLoopRunning_ = false;
@@ -102,7 +100,6 @@ void EmbeddedServer::stop() {
     
     // Stop network operations first
     if (acceptor_ && acceptor_->is_open()) {
-        // std::cout << "[EmbeddedServer] Stopping... (Step 2: Canceling and closing acceptor)" << std::endl;
         try {
             boost::system::error_code ec;
             acceptor_->cancel(ec); // Cancel any pending async operations
@@ -121,16 +118,13 @@ void EmbeddedServer::stop() {
     
     // Close all client connections
     {
-        // std::cout << "[EmbeddedServer] Stopping... (Step 3: Closing client connections)" << std::endl;
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
         for (auto& client : clientSockets_) {
             try {
                 if (client.second && client.second->is_open()) {
                     boost::system::error_code ec;
                     client.second->cancel(ec); // Cancel any pending async operations
-                    // std::cout << "[EmbeddedServer] Cancelling socket for client: " << client.first << std::endl;
                     client.second->close(ec);
-                    // std::cout << "[EmbeddedServer] Closed socket for client: " << client.first << std::endl;
                 }
             } catch (const std::exception& e) {
                 std::cerr << "[EmbeddedServer] Error closing client socket: " << e.what() << std::endl;
@@ -141,28 +135,21 @@ void EmbeddedServer::stop() {
     }
     
     // Cancel all pending operations and stop the io_context
-    // std::cout << "[EmbeddedServer] Stopping... (Step 4: Stopping io_context)" << std::endl;
     io_context_.stop();
-    // std::cout << "[EmbeddedServer] io_context stopped" << std::endl;
     
     // Join the io_thread with a simple timeout approach
     if (io_thread_ && io_thread_->joinable()) {
-        // std::cout << "[EmbeddedServer] Stopping... (Step 5: Joining IO thread, joinable=" 
-                //   << (io_thread_->joinable() ? "true" : "false") << ")" << std::endl;
         
         // Check if thread ID is valid and thread is actually running
         std::thread::id thread_id = io_thread_->get_id();
-        // std::cout << "[EmbeddedServer] IO thread ID: " << thread_id << std::endl;
         
         // Try a direct join first with short timeout
         bool joined = false;
         {
-            // std::cout << "[EmbeddedServer] Attempting immediate join of IO thread..." << std::endl;
             
             try {
                 if (io_thread_->joinable()) {
                     io_thread_->join();
-                    // std::cout << "[EmbeddedServer] IO thread joined successfully on first attempt" << std::endl;
                     joined = true;
                 } else {
                     std::cout << "[EmbeddedServer] IO thread not joinable (despite earlier check), skipping join" << std::endl;
@@ -187,13 +174,9 @@ void EmbeddedServer::stop() {
                 while (thread_ptr->joinable()) {
                     // Try to join with a small timeout to keep checking if we should give up
                     if (std::chrono::steady_clock::now() - start_time > timeout) {
-                        // std::cerr << "[EmbeddedServer] IO thread join timed out after " << timeout.count() 
-                        //         << " seconds. Forcibly detaching thread." << std::endl;
                         thread_ptr->detach();  // Detach explicitly instead of leaking
                         break; // Give up after timeout
                     }
-                    
-                    // std::cout << "[EmbeddedServer] Attempting join with timeout..." << std::endl;
                     
                     // Try to join with a very short timeout
                     try {
@@ -216,22 +199,17 @@ void EmbeddedServer::stop() {
     
     // Wait for game loop thread to finish with timeout
     if (gameLoopThread_ && gameLoopThread_->joinable()) {
-        // std::cout << "[EmbeddedServer] Stopping... (Step 6: Joining game loop thread, joinable=" 
-        //           << (gameLoopThread_->joinable() ? "true" : "false") << ")" << std::endl;
         
         // Check if thread ID is valid
         std::thread::id thread_id = gameLoopThread_->get_id();
-        // std::cout << "[EmbeddedServer] Game loop thread ID: " << thread_id << std::endl;
         
         // Try a direct join first with short timeout
         bool joined = false;
         {
-            // std::cout << "[EmbeddedServer] Attempting immediate join of game loop thread..." << std::endl;
             
             try {
                 if (gameLoopThread_->joinable()) {
                     gameLoopThread_->join();
-                    // std::cout << "[EmbeddedServer] Game loop thread joined successfully on first attempt" << std::endl;
                     joined = true;
                 } else {
                     std::cout << "[EmbeddedServer] Game loop thread not joinable (despite earlier check), skipping join" << std::endl;
@@ -256,13 +234,9 @@ void EmbeddedServer::stop() {
                 while (thread_ptr->joinable()) {
                     // Try to join with a small timeout to keep checking if we should give up
                     if (std::chrono::steady_clock::now() - start_time > timeout) {
-                        // std::cerr << "[EmbeddedServer] Game loop thread join timed out after " << timeout.count() 
-                        //         << " seconds. Forcibly detaching thread." << std::endl;
                         thread_ptr->detach();  // Detach explicitly instead of leaking
                         break; // Give up after timeout
                     }
-                    
-                    // std::cout << "[EmbeddedServer] Attempting game loop join with timeout..." << std::endl;
                     
                     // Try to join with a very short timeout
                     try {
@@ -284,7 +258,6 @@ void EmbeddedServer::stop() {
     
     // Clear game state
     {
-        // std::cout << "[EmbeddedServer] Stopping... (Step 7: Clearing game state)" << std::endl;
         std::lock_guard<std::mutex> lock(gameStateMutex_);
         gameObjects_.clear();
         players_.clear();
@@ -432,7 +405,6 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
                 if (!error && bytes_transferred == sizeof(MessageHeader)) {
                     // Extract the message size from the header
                     MessageHeader* header = reinterpret_cast<MessageHeader*>(buffer->data());
-                    // std::cout << "[EmbeddedServer] Received message header with size: " << header->size << " bytes" << std::endl;
                     // Read the message body
                     boost::asio::async_read(*socket,
                         boost::asio::buffer(buffer->data() + sizeof(MessageHeader), header->size),
@@ -446,12 +418,6 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
                                 
                                 // Deserialize the message
                                 NetworkMessage message = deserializeMessage(messageData, clientId);
-                                // std::cout << "[EmbeddedServer] Received message type: " << static_cast<int>(message.type)
-                                //           << " from " << clientId << " with data size: " << message.data.size() << " bytes" << std::endl;
-                                // if(message.type == MessageType::CONNECT) {
-                                //     std::cout << "[EmbeddedServer] Received message type: " << static_cast<int>(message.type)
-                                //               << " from " << clientId << " with data size: " << message.data.size() << " bytes, type: " << static_cast<int>(message.type) << std::endl;
-                                // }
                                 
                                 // Process the message
                                 processMessage(message);
@@ -504,7 +470,8 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
 }
 
 bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket,
-                                 const NetworkMessage& message) {
+                                 const NetworkMessage& message) 
+{
     try {
         // Create a shared_ptr to manage the message buffer lifetime
         auto buffer_ptr = std::make_shared<std::vector<uint8_t>>();
@@ -584,27 +551,13 @@ void EmbeddedServer::run() {
     unsigned int loopCounter = 0;
 
     while (gameLoopRunning_) {
-        // Print debug info every 300 frames (roughly once per 5 seconds at 60Hz)
-        // This reduces log spam that might be affecting thread shutdown
-        // if (++loopCounter % 300 == 0) {
-        //     std::cout << "[EmbeddedServer] Game loop running (iteration " << loopCounter << ")" << std::endl;
-        // }
         
         auto now = std::chrono::high_resolution_clock::now();
         auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime_).count();
         lastUpdateTime_ = now;
         
         try {
-            // Update game state - only log at 1/60th frequency to reduce spam
-            // if (loopCounter % 60 == 0) {
-            //     std::cout << "[EmbeddedServer] Updating game state..." << std::endl;
-            // }
-            
             updateGameState(deltaTime);
-            
-            // if (loopCounter % 60 == 0) {
-            //     std::cout << "[EmbeddedServer] Game state updated" << std::endl;
-            // }
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception in game update: " << e.what() << std::endl;
@@ -801,23 +754,6 @@ void EmbeddedServer::createInitialGameObjects() {
                                               new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_2");
     gameObjects_.push_back(platform3);
-    
-    // Create a default player - this will ensure there's always at least one player 
-    // in the game world, even before any clients connect
-    // std::string defaultPlayerId = "server_player";
-    // auto defaultPlayer = std::make_shared<Player>(Vec2(400, 100), 
-    //                                       new SpriteData(std::string("playermap"), 128, 128, 5), 
-    //                                       defaultPlayerId);
-    // TempInput* input = new TempInput();
-    // input->setInputs(false, false, false, false); // Initialize inputs to false
-    // defaultPlayer->setInput(input);
-    
-    // // Add default player to the game
-    // players_[defaultPlayerId] = defaultPlayer;
-    // gameObjects_.push_back(defaultPlayer);
-    
-    // std::cout << "[EmbeddedServer] Created initial game objects including " << gameObjects_.size() 
-    //           << " objects with default player: " << defaultPlayerId << std::endl;
 }
 
 void EmbeddedServer::updateGameState(uint64_t deltaTime) {
@@ -856,9 +792,6 @@ void EmbeddedServer::sendGameStateToClients() {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
         
-        // Debug log for objects being sent
-        // std::cout << "[EmbeddedServer] Sending game state with " << gameObjects_.size() << " objects" << std::endl;
-        
         // First, add the count of objects we're sending
         uint16_t objectCount = gameObjects_.size();
         stateMsg.data.push_back(static_cast<uint8_t>((objectCount >> 8) & 0xFF)); // High byte
@@ -873,13 +806,13 @@ void EmbeddedServer::sendGameStateToClients() {
             }
             
             // Add object type identifier (1 byte)
-            // 1 = player, 2 = platform, etc.
             uint8_t objectType = 0;
             
+            
             if (dynamic_cast<Player*>(object.get())) {
-                objectType = 1; // Player
+                objectType = static_cast<uint8_t>(ObjectType::PLAYER); // Player
             } else if (dynamic_cast<Platform*>(object.get())) {
-                objectType = 2; // Platform
+                objectType = static_cast<uint8_t>(ObjectType::PLATFORM); // Platform
             } else {
                 objectType = 99; // Unknown/Other
             }
@@ -921,7 +854,7 @@ void EmbeddedServer::sendGameStateToClients() {
             }
             
             // For platforms, add width and height
-            if (objectType == 2) {
+            if (objectType == static_cast<uint8_t>(ObjectType::PLATFORM)) {
                 Platform* platform = dynamic_cast<Platform*>(object.get());
                 if (platform) {
                     // Add platform width and height
@@ -940,10 +873,6 @@ void EmbeddedServer::sendGameStateToClients() {
                 }
             }
         }
-        
-        // Debug log for data size
-        // std::cout << "[EmbeddedServer] Game state serialized to " << stateMsg.data.size() 
-        //           << " bytes (" << gameObjects_.size() << " objects)" << std::endl;
     }
 
     // Send to each connected client
@@ -985,8 +914,6 @@ void EmbeddedServer::sendGameStateToClients() {
 
 void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-    
-    // std::cout << "[EmbeddedServer] Processing player input for player: " << playerId << std::endl;
 
     // Find the player
     auto playerIt = players_.find(playerId);
