@@ -14,12 +14,12 @@ class Platform;
 constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
+    PLAYER = 0x1,
     ENTITY,
     PLATFORM,
     ITEM,
     BULLET,
-    ENEMY,
-    PLAYER
+    ENEMY
 };
 
 enum class FacingDirection {
