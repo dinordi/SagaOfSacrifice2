@@ -1,15 +1,12 @@
 #include "SDL3AudioManager.h"
 #include <SDL3_mixer/SDL_mixer.h> 
 #include <iostream> // For std::cerr
+#include <filesystem> // For path manipulation if needed for getSoundName
 
 // Helper function to extract sound name from file path
 static std::string getSoundName(const std::string& filePath) {
-    size_t lastSlash = filePath.find_last_of("/\\");
-    std::string name = (lastSlash == std::string::npos) ? filePath : filePath.substr(lastSlash + 1);
-    size_t lastDot = name.find_last_of('.');
-    if (lastDot != std::string::npos) {
-        name = name.substr(0, lastDot);
-    }
+    std::filesystem::path p(filePath);
+    std::string name = p.stem().string(); // Gets filename without extension
     return name;
 }
 
@@ -85,13 +82,19 @@ bool SDL3AudioManager::loadSound(const std::string& filePath) {
     std::string fullPath = mBasePath + "/" + filePath;
     Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str());
     if (!sound) {
-        std::cerr << "Failed to load sound effect (SDL3)! Path: " << fullPath << " SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "Failed to load sound effect (SDL3 - wrapper_client)! Path: " << fullPath << " SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
-    std::string soundName = getSoundName(filePath);
+    std::string soundName = getSoundName(filePath); // Derive soundName from filePath
+    
+    // Free existing sound if any, before replacing
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        Mix_FreeChunk(it->second);
+    }
     mSoundEffects[soundName] = sound;
     std::cout << "Loaded sound (SDL3 - wrapper_client): " << soundName << " from " << fullPath << std::endl;
-    return true;    
+    return true;
 }
 
 bool SDL3AudioManager::playSound(const std::string& soundName) {
