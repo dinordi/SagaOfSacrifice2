@@ -117,6 +117,8 @@ int main(int argc, char *argv[]) {
     }
     audio->loadMusic("title.wav");
     audio->playMusic();
+    audio->playSound("001.wav");
+    audio->playSound("jump.wav");
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     
@@ -160,7 +162,7 @@ int main(int argc, char *argv[]) {
     // Load sounds and music
     audioManager->loadMusic("music/menu/title.wav");
     audioManager->loadSound("sfx/jump.wav");
-
+    audioManager->loadSound("sfx/001.wav");
     // Play music
     audioManager->setMusicVolume(0.9f);
     
