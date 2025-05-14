@@ -30,7 +30,7 @@ file(GLOB_RECURSE SOS_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../SOS/src/*.cpp")
 file(GLOB_RECURSE CLIENT_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
 
 # Create the executable target with sources
-add_executable(SOS ${SOS_LIB_SOURCES} ${CLIENT_SOURCES})
+add_executable(SOS ${SOS_LIB_SOURCES} ${CLIENT_SOURCES} "${CMAKE_CURRENT_LIST_DIR}/main.cpp")
 
 # Add include directories
 target_include_directories(SOS PRIVATE
