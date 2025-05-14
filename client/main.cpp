@@ -27,7 +27,7 @@ void printUsage(const char* programName) {
     std::cout << "  -p, --port <port>             Specify server port (default: 8080)" << std::endl;
     std::cout << "  -id, --playerid <id>          Specify player ID (default: random)" << std::endl;
     std::cout << "  -l, --local                   Run in local-only mode without server (for development)" << std::endl;
-    std::cout << "  -e, --embedded               Use embedded server (default) instead of external server" << std::endl;
+    std::cout << "  -d, --debug                   Just load in an image and quit. For debugging purposes" << std::endl;
 }
 
 std::string generateRandomPlayerId() {
@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
     std::string imageName = "Solid_blue";
     bool enableRemoteMultiplayer = false;
     bool localOnlyMode = false;
+    bool debugMode = false;
     bool useEmbeddedServer = true; // Default to embedded server
     std::string serverAddress = "localhost";
     int serverPort = 8080;
@@ -85,6 +86,13 @@ int main(int argc, char *argv[]) {
             if (i + 1 < argc) {
                 playerId = argv[++i];
             }
+        } else if (arg == "-d" || arg == "--debug") {
+            debugMode = true;
+            std::cout << "Debug mode enabled. Loading image and quitting." << std::endl;
+        } else {
+            std::cerr << "Unknown option: " << arg << std::endl;
+            printUsage(argv[0]);
+            return 1;
         }
     }
     
@@ -106,10 +114,13 @@ int main(int argc, char *argv[]) {
     imageName = imageName + ".png";
 
     Renderer renderer(path + imageName);
+    if(debugMode) {
+        std::cout << "Debug mode: Loaded image." << std::endl;
+        return 0;
+    }
     PlayerInput* controller = new EvdevController();
     Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
-    renderer.init();
     
     // Initialize network features based on mode
     if (enableRemoteMultiplayer) {
