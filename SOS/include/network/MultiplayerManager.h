@@ -97,9 +97,6 @@ private:
     // Last time we sent a player update
     uint64_t lastUpdateTime_;
     
-    // How often to send updates (in ms)
-    static constexpr uint64_t UpdateInterval = 50;  // 20 updates per second
-    
     // Client-side prediction state
     float lastSentInputTime_;
     uint32_t inputSequenceNumber_;
@@ -138,5 +135,4 @@ private:
     Vec2 targetPosition_;
     Vec2 targetVelocity_;
     float interpolationTime_;
-    static constexpr float InterpolationPeriod = 0.1f; // 100ms interpolation
 };

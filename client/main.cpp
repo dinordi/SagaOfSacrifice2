@@ -9,10 +9,10 @@
 #include <cstdlib>
 #include <filesystem>
 
-#include "include/input_pl.h"
-#include "include/SDL2AudioManager.h"
-#include "include/Renderer.h"
-#include "include/SDL2AudioManager.h"
+#include "input_pl.h"
+#include "SDL2AudioManager.h"
+#include "Renderer.h"
+#include "SDL2AudioManager.h"
 
 float FPS = 60.0f;
 
@@ -122,35 +122,27 @@ int main(int argc, char *argv[]) {
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     
-    // // Initialize network features based on mode
-    // if (enableRemoteMultiplayer) {
-    //     // Connect to remote server for multiplayer
-    //     if (!game.initializeMultiplayer(serverAddress, serverPort, playerId)) {
-    //         std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
-    //     } else {
-    //         std::cout << "Multiplayer initialized successfully!" << std::endl;
-    //     }
-    // } else if (!localOnlyMode) {
-    //     if (useEmbeddedServer) {
-    //         // Initialize single player with embedded server (new recommended approach)
-    //         if (!game.initializeSinglePlayerEmbedded()) {
-    //             std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
-    //         } else {
-    //             std::cout << "Single player with embedded server initialized successfully!" << std::endl;
-    //         }
-    //     } else {
-    //         // Initialize single player with external server executable (legacy approach)
-    //         std::filesystem::path serverPath = "../server/build/SagaServer.exe";
-    //         if (!game.initializeSinglePlayer(serverPath)) {
-    //             std::cerr << "Failed to initialize local server. Falling back to local-only mode." << std::endl;
-    //         } else {
-    //             std::cout << "Single player with external server initialized successfully!" << std::endl;
-    //         }
-    //     }
-    // } else {
-    //     // Local-only mode (no server) for development/debugging
-    //     std::cout << "Running in local-only mode without server." << std::endl;
-    // }
+    // Initialize network features based on mode
+    if (enableRemoteMultiplayer) {
+        // Connect to remote server for multiplayer
+        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
+            std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
+        } else {
+            std::cout << "Multiplayer initialized successfully!" << std::endl;
+        }
+    } else if (!localOnlyMode) {
+        if (useEmbeddedServer) {
+            // Initialize single player with embedded server (new recommended approach)
+            if (!game.initializeSinglePlayerEmbeddedServer()) {
+                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
+            } else {
+                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
+            }
+        }
+    } else {
+        // Local-only mode (no server) for development/debugging
+        std::cout << "Running in local-only mode without server." << std::endl;
+    }
 
     auto lastTime = get_ticks();
     auto lastRenderTime = lastTime;
@@ -186,10 +178,10 @@ int main(int argc, char *argv[]) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     
-    // // Clean up
-    // if (game.isMultiplayerActive()) {
-    //     game.shutdownMultiplayer();
-    // }
+    // Clean up
+    if (game.isServerConnection()) {
+        game.shutdownServerConnection();
+    }
     
     return 0;
 }
