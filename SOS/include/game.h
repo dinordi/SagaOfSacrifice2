@@ -60,7 +60,7 @@ private:
     
     // Local client-side prediction methods
     void predictLocalPlayerMovement(uint64_t deltaTime);
-    void reconcileWithServerState();
+    void reconcileWithServerState(uint64_t deltaTime);
 
     bool running;
     bool isPaused = false;

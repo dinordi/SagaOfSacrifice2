@@ -104,7 +104,7 @@ void Game::update(uint64_t deltaTime) {
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
 
-        reconcileWithServerState();
+        reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
         updateRemotePlayers(multiplayerManager->getRemotePlayers());
@@ -236,7 +236,7 @@ void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
     player->update(deltaTime);
 }
 
-void Game::reconcileWithServerState() {
+void Game::reconcileWithServerState(uint64_t deltaTime) {
     // Compare the server's authoritative state with our predicted state
     // and correct any discrepancies
     
@@ -248,8 +248,15 @@ void Game::reconcileWithServerState() {
 
         const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
+        static uint64_t lastUpdateTime = 0;
+        lastUpdateTime += deltaTime;
+
         if (it == remotePlayers.end()) {
-            std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
+            if(lastUpdateTime > 1000)
+            {
+                std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
+                lastUpdateTime = 0;
+            }
             return;
         }
         RemotePlayer* remotePlayer = it->second.get();
