@@ -59,7 +59,7 @@ file(GLOB_RECURSE SOURCES
 )
 
 file(GLOB_RECURSE SOS_SOURCES
-    "${PROJECT_SOURCE_DIR}/SOS/src/*.cpp"
+    "${PROJECT_SOURCE_DIR}/../SOS/src/*.cpp"
 )
 
 # Add executable
