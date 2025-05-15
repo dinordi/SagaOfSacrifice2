@@ -10,7 +10,7 @@
 #include <filesystem>
 
 #include "input_pl.h"
-#include "SDL2AudioManager.h"
+#include "SDL2Input.h"
 #include "Renderer.h"
 #include "SDL2AudioManager.h"
 
@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
     audio->playSound("jump");
 
     Renderer renderer(path + imageName);
-    PlayerInput* controller = new EvdevController();
+    PlayerInput* controller = new SDL2Input();
     Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
