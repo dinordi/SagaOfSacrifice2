@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <poll.h>
+#include <memory>
 #include "object.h"
 #include "fpga/dma.h"
 #include "fpga/spriteloader.h"
@@ -24,7 +25,7 @@ public:
     ~Renderer();
 
     void init();
-    void render(std::vector<Object*> objects);
+    void render(std::vector<std::shared_ptr<Object>>& objects);
 private:
     void handleIRQ();
     void irqHandlerThread();
