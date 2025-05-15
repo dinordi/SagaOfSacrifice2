@@ -1,18 +1,36 @@
 #include "SDL2Input.h"
 #include "logger.h"
 #include <SDL2/SDL.h>
+#include <iostream>
+#include <SDL2/SDL_scancode.h>
 
 SDL2Input::SDL2Input()
 {
+    SDL_Init(SDL_INIT_GAMECONTROLLER);
+    this->gameController = nullptr;
     if (SDL_NumJoysticks() > 0) {
+        std::cout << "Controllers found: " << SDL_NumJoysticks() << std::endl;
         for (int i = 0; i < SDL_NumJoysticks(); ++i) {
             if (SDL_IsGameController(i)) {
+                const char* name = SDL_GameControllerNameForIndex(i);
+                std::cout << "Detected controller at index " << i << ": " << (name ? name : "Unknown") << std::endl;
                 gameController = SDL_GameControllerOpen(i);
                 if (gameController) {
+                    std::cout << "Game controller " << i << " opened: " << (name ? name : "Unknown") << std::endl;
                     break;
                 }
             }
         }
+    }
+    else
+    {
+        std::cout << "No game controller found." << std::endl;
+    }
+    if (!gameController) {
+        std::cout << "No game controller found, using keyboard input." << std::endl;
+    }
+    else {
+        std::cout << "Game controller found, using gamepad input." << std::endl;
     }
     set_up(false);
     set_last_up(false);
@@ -24,6 +42,14 @@ SDL2Input::SDL2Input()
     set_last_right(false);
     set_attack(false);
     set_last_attack(false);
+}
+
+SDL2Input::~SDL2Input() {
+    if (gameController) {
+        SDL_GameControllerClose(gameController);
+        gameController = nullptr;
+    }
+    SDL_Quit();
 }
 
 void SDL2Input::readInput() {

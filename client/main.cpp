@@ -7,6 +7,7 @@
 #include <thread>
 #include <string>
 #include <cstdlib>
+#include <csignal>
 #include <filesystem>
 
 #include "input_pl.h"
@@ -15,7 +16,13 @@
 #include "SDL2AudioManager.h"
 
 float FPS = 60.0f;
+volatile bool running = true;
 
+
+void handle_sigint(int) {
+    std::cout << "SIGINT received. Exiting..." << std::endl;
+    running = false;
+}
 // Note: get_ticks() is now defined in TimeUtils.cpp
 
 void printUsage(const char* programName) {
@@ -45,6 +52,7 @@ std::string generateRandomPlayerId() {
 }
 
 int main(int argc, char *argv[]) {
+    std::signal(SIGINT, handle_sigint); // Register signal handler for Ctrl+C
     // Parse command line arguments
     std::string imageName = "Solid_blue";
     bool enableRemoteMultiplayer = false;
