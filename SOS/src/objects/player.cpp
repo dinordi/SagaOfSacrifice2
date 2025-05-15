@@ -16,8 +16,8 @@ void Player::setupAnimations() {
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
     
     // Example animation setup - adjust these based on your actual sprite sheet
-    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 150, true);        // Idle animation (2 frames)
-    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 100, true);      // Walking animation (3 frames)
+    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 250, true);        // Idle animation (2 frames)
+    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 150, true);      // Walking animation (3 frames)
     
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -42,22 +42,19 @@ void Player::accept(CollisionVisitor& visitor) {
     visitor.visit(this);
 }
 
-void Player::update(uint64_t deltaTime) {
+void Player::update(float deltaTime) {
     // Update player-specific logic here
     // handleInput(input, deltaTime); // Handle input
 
     Vec2 pos = getposition();
     Vec2 vel = getvelocity();
 
-    // float deltaTimeSeconds = static_cast<float>(deltaTime) / 1000.0f;
-    float deltaTimeF = static_cast<float>(deltaTime);
     // Prints velocity.y every second
     static uint64_t timems = 0.0f;
     timems += deltaTime;
 
-
-    pos.x += vel.x * deltaTimeF;
-    pos.y += vel.y * deltaTimeF;
+    pos.x += vel.x * deltaTime;
+    pos.y += vel.y * deltaTime;
 
     
     // Set direction based on horizontal velocity
@@ -89,7 +86,7 @@ void Player::update(uint64_t deltaTime) {
     updateAnimationState();
     
     // Update the animation controller
-    updateAnimation(deltaTime);
+    updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
 
     vel.x = 0; // Reset horizontal velocity
     vel.y = 0; // Reset vertical velocity
@@ -98,23 +95,25 @@ void Player::update(uint64_t deltaTime) {
     setposition(pos); // Update position
 }
 
-void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
+void Player::handleInput(PlayerInput* input, float deltaTime) {
     
     // Handle player input here
     Vec2 vel = getvelocity();
     
+    float movementSpeed = 200.0f; // Set movement speed
+
     if (input->get_left()) {
-        vel.x = -0.3f; // Move left
+        vel.x = -movementSpeed; // Move left
     }
     if (input->get_right()) {
         // std::cout << "get_right" << std::endl;
-        vel.x = 0.3f; // Move right
+        vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
-        vel.y = 0.3f; // Move down
+        vel.y = movementSpeed; // Move down
     }
     if (input->get_up()) {
-        vel.y = -0.3f; // Move up
+        vel.y = -movementSpeed; // Move up
     }
     
     // Handle attack input

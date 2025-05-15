@@ -30,6 +30,10 @@ struct AppContext {
     SDL_Texture* messageTex, *backgroundTex;
     SDL_Rect imageDest;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
+    Uint64 fixed_timestep_us = 16666; // For ~60 updates per second (1,000,000 microseconds / 60)
+                                      // You can adjust this (e.g., 33333 for 30 UPS)
+    Uint64 accumulator_us = 0;
+    Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
     Game* game;
     std::filesystem::path basePathSOS;
 };
@@ -63,7 +67,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId(); // Generate default random ID
-
     // Parse command line arguments
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -136,12 +139,15 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     if (not window){
         return SDL_Fail();
     }
+    SDL_SetWindowSize(window, windowStartWidth, windowStartHeight);
+
 
     // create a renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
     if (not renderer){
         return SDL_Fail();
     }
+    SDL_SetRenderLogicalPresentation(renderer, 1920, 1080, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
     // Get base path
 #if __ANDROID__
@@ -287,6 +293,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // --- End Initialize Multiplayer ---
 
 
+    SDL_SetWindowSize(window, 1920, 1080);
     // print some information about the window
     SDL_ShowWindow(window);
     {
@@ -325,7 +332,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .basePathSOS = basePathSOS,
     };
 
-    SDL_SetRenderVSync(renderer, -1);   // enable vysnc
+    SDL_SetRenderVSync(renderer, 0);   // enable vysnc
 
     SDL_Log("Application started successfully!");
 
@@ -349,18 +356,53 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
 
+    // --- Timing ---
+    Uint64 current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    Uint64 frame_time_us;
+
+    if (app->last_time_us == 0) { // First frame initialization
+        app->last_time_us = current_time_us;
+        frame_time_us = app->fixed_timestep_us; // Assume one fixed step for the first frame to avoid large initial deltaTime
+    } else {
+        frame_time_us = current_time_us - app->last_time_us;
+    }
+    app->last_time_us = current_time_us;
+
+    // Prevent "spiral of death" by capping frame_time_us if game freezes for too long
+    // This prevents the game from trying to simulate too many steps at once after a major lag spike.
+    // 250,000 microseconds = 0.25 seconds. Adjust as needed.
+    const Uint64 max_allowed_frame_time_us = 250000; 
+    if (frame_time_us > max_allowed_frame_time_us) {
+        frame_time_us = max_allowed_frame_time_us;
+    }
+
+    app->accumulator_us += frame_time_us;
+
+    // --- Event Handling (Crucial - ensure you have this somewhere!) ---
+    // SDL_Event event;
+    // while (SDL_PollEvent(&event)) {
+    //     if (event.type == SDL_EVENT_QUIT) {
+    //         app->app_quit = SDL_APPTERMINATE; // Or however you signal quit
+    //     }
+    //     // Pass event to your game for input processing, etc.
+    //     // app->game->handleEvent(event); 
+    // }
+
+
+    // --- Game Logic Updates (Fixed Timestep) ---
+    while (app->accumulator_us >= app->fixed_timestep_us) {
+        if (app->game) {
+            // Pass the fixed timestep in SECONDS to your update function
+            float fixed_delta_seconds = static_cast<float>(app->fixed_timestep_us) / 1000000.0f;
+            app->game->update(fixed_delta_seconds); 
+        }
+        app->accumulator_us -= app->fixed_timestep_us;
+    }
+
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
     SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
-
-    // static Uint64 lastIDPrint = 0;
-    // bool printID = false;
-    // Uint64 printtime = SDL_GetTicks();
-    // if (printtime - lastIDPrint > 1000) {
-    //     printID = true;
-    //     lastIDPrint = printtime;
-    // }
 
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
@@ -442,25 +484,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
     }
 
-    // If 16ms has passed since the last update, update the game
-    static Uint64 lastUpdate = 0;
-
-    Uint64 currentTime = SDL_GetTicks();
-    Uint64 deltaTime = currentTime - lastUpdate;
-
-    // Simple delta time clamping
-    const Uint64 maxDeltaTime = 33; // ~30 FPS minimum update rate
-    if (deltaTime > maxDeltaTime) {
-        // SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Large delta time detected: %llu ms. Clamping to %llu ms.", deltaTime, maxDeltaTime);
-        deltaTime = maxDeltaTime;
-    }
-
-
-    if (app->game) {
-        app->game->update(deltaTime); // Update game logic
-    }
-    lastUpdate = currentTime;
-    
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;

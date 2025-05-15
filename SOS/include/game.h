@@ -25,7 +25,7 @@ public:
     Game(PlayerInput* input, std::string playerID);
     ~Game();
 
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     bool isRunning() const;
     std::string generateRandomPlayerId();
     
@@ -59,8 +59,8 @@ private:
     
     
     // Local client-side prediction methods
-    void predictLocalPlayerMovement(uint64_t deltaTime);
-    void reconcileWithServerState(uint64_t deltaTime);
+    void predictLocalPlayerMovement(float deltaTime);
+    void reconcileWithServerState(float deltaTime);
 
     bool running;
     bool isPaused = false;

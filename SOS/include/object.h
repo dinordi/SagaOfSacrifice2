@@ -38,11 +38,11 @@ public:
     Object(Vec2 pos, ObjectType type, SpriteData* spData, std::string ID);
     virtual ~Object() = default;
 
-    virtual void update(uint64_t deltaTime) = 0;
+    virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
     
     // Animation methods
-    void updateAnimation(uint64_t deltaTime);
+    void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
     int getCurrentSpriteIndex() const;
     void addAnimation(AnimationState state, int startFrame, int frameCount, 

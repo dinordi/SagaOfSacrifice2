@@ -19,12 +19,11 @@ RemotePlayer::RemotePlayer(const std::string& id)
       targetVelocity_(Vec2(0, 0)) {
 }
 
-void RemotePlayer::update(uint64_t deltaTime) {
+void RemotePlayer::update(float deltaTime) {
     // Smooth interpolation between current position and target position
-    float dt = deltaTime / 1000.0f;  // Convert to seconds
     
     // Update interpolation timer
-    interpolationTime_ += dt;
+    interpolationTime_ += deltaTime;
     float t = std::min(interpolationTime_ / NetworkConfig::Client::InterpolationPeriod, 1.0f);
 
     Vec2 velocity_ = getvelocity();
@@ -41,8 +40,8 @@ void RemotePlayer::update(uint64_t deltaTime) {
         velocity_.y = velocity_.y + (targetVelocity_.y - velocity_.y) * t;
     } else {
         // We've reached the target or never started interpolating, apply velocity directly
-        position_.x += velocity_.x * dt;
-        position_.y += velocity_.y * dt;
+        position_.x += velocity_.x * deltaTime;
+        position_.y += velocity_.y * deltaTime;
     }
 
     // Update the object's position
@@ -152,7 +151,7 @@ void MultiplayerManager::shutdown() {
     remotePlayers_.clear();
 }
 
-void MultiplayerManager::update(uint64_t deltaTime) {
+void MultiplayerManager::update(float deltaTime) {
     if (!network_ || !network_->isConnected()) {
         std::cout << "No network in MPManager update" << std::endl;
         return;
@@ -162,7 +161,7 @@ void MultiplayerManager::update(uint64_t deltaTime) {
     network_->update();
     
     static uint64_t lastUpdateTime = 0;
-    lastUpdateTime += deltaTime;
+    lastUpdateTime += deltaTime*1000;  // Convert to milliseconds
 
     // Update all remote players
     for (auto& pair : remotePlayers_) {

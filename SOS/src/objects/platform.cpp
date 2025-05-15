@@ -9,7 +9,7 @@ Platform::Platform(int x, int y, SpriteData* spData, std::string objID) : Object
 //     return false; // Placeholder
 // }
 
-void Platform::update(uint64_t deltaTime) {
+void Platform::update(float deltaTime) {
 
 }
 

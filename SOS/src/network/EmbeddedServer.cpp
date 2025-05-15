@@ -48,9 +48,6 @@ void EmbeddedServer::start() {
         acceptor_->listen();
         std::cout << "[EmbeddedServer] Now listening on port " << port_ << std::endl;
         
-        // Start accepting connections
-        startAccept();
-        
         // Start io_context in a separate thread
         io_thread_ = std::make_unique<std::thread>([this]() {
             try {
@@ -62,6 +59,9 @@ void EmbeddedServer::start() {
             }
         });
         
+        
+        // Start accepting connections
+        startAccept();
         running_ = true;
         std::cout << "[EmbeddedServer] Started" << std::endl;
         
@@ -267,18 +267,20 @@ void EmbeddedServer::stop() {
 }
 
 void EmbeddedServer::startAccept() {
-    // Create a new socket for the incoming connection
-    auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context_);
-    
-    // Set up an asynchronous accept operation to wait for a new connection
-    acceptor_->async_accept(*socket,
-        [this, socket](const boost::system::error_code& error) {
-            handleAccept(error, socket);
-        });
+    try {
+        auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context_);
+        acceptor_->async_accept(*socket,
+            [this, socket](const boost::system::error_code& error) {
+                handleAccept(error, socket);
+            });
+    } catch (const std::exception& e) {
+        std::cerr << "[EmbeddedServer] Exception in startAccept: " << e.what() << std::endl;
+    }
 }
 
 void EmbeddedServer::handleAccept(const boost::system::error_code& error, 
                                   std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
+    std::cout << "[EmbeddedServer] handleAccept called, error:" << error.message() << std::endl;
     if (!error) {
         std::cout << "[EmbeddedServer] New client connected: " 
                   << socket->remote_endpoint().address().to_string() << ":"
@@ -709,6 +711,7 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
             break;
             
         case MessageType::PLAYER_INPUT:
+            std::cout << "[EmbeddedServer] Processing player input message from " << message.senderId << std::endl;
             processPlayerInput(message.senderId, message);
             break;
             

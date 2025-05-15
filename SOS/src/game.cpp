@@ -87,7 +87,7 @@ void Game::mapCharacters()
     }
 }
 
-void Game::update(uint64_t deltaTime) {
+void Game::update(float deltaTime) {
     // Process local input
     input->readInput();
     
@@ -229,14 +229,14 @@ void Game::drawWord(const std::string& word, int x, int y) {
 
 // New methods for server-authoritative gameplay
 
-void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
+void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
 }
 
-void Game::reconcileWithServerState(uint64_t deltaTime) {
+void Game::reconcileWithServerState(float deltaTime) {
     // Compare the server's authoritative state with our predicted state
     // and correct any discrepancies
     
@@ -252,7 +252,7 @@ void Game::reconcileWithServerState(uint64_t deltaTime) {
         lastUpdateTime += deltaTime;
 
         if (it == remotePlayers.end()) {
-            if(lastUpdateTime > 1000)
+            if(lastUpdateTime > 1.0)
             {
                 std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
                 lastUpdateTime = 0;
