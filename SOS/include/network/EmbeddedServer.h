@@ -71,7 +71,7 @@ private:
 
     // Game logic methods
     void createInitialGameObjects();
-    void updateGameState(uint64_t deltaTime);
+    void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
     

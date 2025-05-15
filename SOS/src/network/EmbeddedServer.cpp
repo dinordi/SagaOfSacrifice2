@@ -48,6 +48,9 @@ void EmbeddedServer::start() {
         acceptor_->listen();
         std::cout << "[EmbeddedServer] Now listening on port " << port_ << std::endl;
         
+        // Start accepting connections
+        startAccept();
+        
         // Start io_context in a separate thread
         io_thread_ = std::make_unique<std::thread>([this]() {
             try {
@@ -59,9 +62,6 @@ void EmbeddedServer::start() {
             }
         });
         
-        
-        // Start accepting connections
-        startAccept();
         running_ = true;
         std::cout << "[EmbeddedServer] Started" << std::endl;
         
@@ -267,20 +267,18 @@ void EmbeddedServer::stop() {
 }
 
 void EmbeddedServer::startAccept() {
-    try {
-        auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context_);
-        acceptor_->async_accept(*socket,
-            [this, socket](const boost::system::error_code& error) {
-                handleAccept(error, socket);
-            });
-    } catch (const std::exception& e) {
-        std::cerr << "[EmbeddedServer] Exception in startAccept: " << e.what() << std::endl;
-    }
+    // Create a new socket for the incoming connection
+    auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context_);
+    
+    // Set up an asynchronous accept operation to wait for a new connection
+    acceptor_->async_accept(*socket,
+        [this, socket](const boost::system::error_code& error) {
+            handleAccept(error, socket);
+        });
 }
 
 void EmbeddedServer::handleAccept(const boost::system::error_code& error, 
                                   std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
-    std::cout << "[EmbeddedServer] handleAccept called, error:" << error.message() << std::endl;
     if (!error) {
         std::cout << "[EmbeddedServer] New client connected: " 
                   << socket->remote_endpoint().address().to_string() << ":"
@@ -549,39 +547,35 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
 void EmbeddedServer::run() {
     std::cout << "[EmbeddedServer] Game loop started" << std::endl;
     
-    const auto tickDuration = std::chrono::milliseconds(1000 / NetworkConfig::Server::TickRate);
+    const float fixedDeltaSeconds = 1.0 / NetworkConfig::Server::TickRate;
+    std::cout << "[EmbeddedServer] Fixed delta time: " << fixedDeltaSeconds << " seconds" << std::endl;
+    const uint64_t fixedDeltaMilliseconds = static_cast<uint64_t>(fixedDeltaSeconds * 1000);
     unsigned int loopCounter = 0;
 
     while (gameLoopRunning_) {
-        
-        auto now = std::chrono::high_resolution_clock::now();
-        auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime_).count();
-        lastUpdateTime_ = now;
-        
         try {
-            updateGameState(deltaTime);
+            updateGameState(fixedDeltaSeconds); // Always use fixed delta
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception in game update: " << e.what() << std::endl;
         }
-        
+
         // Check flag again before sleeping to respond faster to shutdown requests
         if (!gameLoopRunning_) {
             std::cout << "[EmbeddedServer] Game loop flag set to false, exiting loop" << std::endl;
             break;
         }
-        
+
         // Sleep until next tick
         try {
-            std::this_thread::sleep_for(tickDuration);
+            std::this_thread::sleep_for(std::chrono::milliseconds(fixedDeltaMilliseconds));
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception during game loop sleep: " << e.what() << std::endl;
-            // Brief pause to avoid spinning if something is wrong with sleep
             std::this_thread::yield();
         }
     }
-    
+
     std::cout << "[EmbeddedServer] Game loop stopped after " << loopCounter << " iterations" << std::endl;
 }
 
@@ -711,7 +705,6 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
             break;
             
         case MessageType::PLAYER_INPUT:
-            std::cout << "[EmbeddedServer] Processing player input message from " << message.senderId << std::endl;
             processPlayerInput(message.senderId, message);
             break;
             
@@ -759,7 +752,7 @@ void EmbeddedServer::createInitialGameObjects() {
     gameObjects_.push_back(platform3);
 }
 
-void EmbeddedServer::updateGameState(uint64_t deltaTime) {
+void EmbeddedServer::updateGameState(float deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
         
@@ -772,10 +765,10 @@ void EmbeddedServer::updateGameState(uint64_t deltaTime) {
         detectAndResolveCollisions();
     }
     // Send game state to clients periodically
-    static uint64_t updateTimer = 0;
-    updateTimer += deltaTime;
+    static float updateTimer = 0;
+    updateTimer += deltaTime*1000;
     
-    if (updateTimer >= NetworkConfig::Server::StateUpdateInterval) {
+    if (updateTimer*1000 >= NetworkConfig::Server::StateUpdateInterval) {
         updateTimer = 0;
         sendGameStateToClients();
     }

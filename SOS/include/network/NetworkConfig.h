@@ -5,7 +5,7 @@
 namespace NetworkConfig 
 {
     namespace Client {
-        constexpr float InterpolationPeriod = 0.1f; // 100ms
+        constexpr float InterpolationPeriod = 0.05f; // 100ms
 
         constexpr uint64_t UpdateInterval = 20;  // 50 updates per second
         
