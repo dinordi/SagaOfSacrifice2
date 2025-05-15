@@ -2,9 +2,18 @@
 #include "logger.h"
 #include <SDL2/SDL.h>
 
-SDL2Input::SDL2Input(SDL_GameController* controller)
-    : gameController(controller)
+SDL2Input::SDL2Input()
 {
+    if (SDL_NumJoysticks() > 0) {
+        for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+            if (SDL_IsGameController(i)) {
+                gameController = SDL_GameControllerOpen(i);
+                if (gameController) {
+                    break;
+                }
+            }
+        }
+    }
     set_up(false);
     set_last_up(false);
     set_down(false);
@@ -17,7 +26,7 @@ SDL2Input::SDL2Input(SDL_GameController* controller)
     set_last_attack(false);
 }
 
-void SDLInput::readInput() {
+void SDL2Input::readInput() {
     SDL_PumpEvents();
 
     bool up_pressed = false;

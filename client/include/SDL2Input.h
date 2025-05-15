@@ -7,7 +7,7 @@
 
 class SDL2Input : public PlayerInput {
 public:
-    SDLInput(SDL_GameController* gameController);
+    SDL2Input();
     void readInput() override;
 private:
     SDL_GameController* gameController;
