@@ -56,8 +56,6 @@ void CollisionHandler::handleInteraction(Player* player) {
             // Coming from above
             pos.y -= info.penetrationVector.y;
             vel.y = 0;
-            // Set the player as being on ground
-            player->setisOnGround(true);
         } else if (info.penetrationVector.x != 0) {
             // Side collision
             pos.x += info.penetrationVector.x;

@@ -8,7 +8,7 @@ project(SOS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-
+# Set CMAKE_MODULE_PATH to find custom Find*.cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 # Find the PNG package
@@ -27,15 +27,15 @@ include_directories(${Boost_INCLUDE_DIRS})
 # Add include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/interfaces)
-include_directories(${PROJECT_SOURCE_DIR}/include/petalinux)
+include_directories(${PROJECT_SOURCE_DIR}/include/fpga)
 include_directories(${PROJECT_SOURCE_DIR}/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/include/network)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-# Echo the include directories
-message("Include directories: ${PROJECT_SOURCE_DIR}/include")
-message("Include directories: ${PROJECT_SOURCE_DIR}/src")
+# Echo the include directories for debugging
+message(STATUS "Include directories: ${PROJECT_SOURCE_DIR}/include")
+message(STATUS "Include directories: ${PROJECT_SOURCE_DIR}/src")
 
 # Add source files
 set(SOS_SOURCES
@@ -49,11 +49,20 @@ set(SOS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/objects/enemy.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/network/AsioNetworkClient.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/network/MultiplayerManager.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtils.cpp  # Added new TimeUtils file
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtils.cpp
+    # Add more source files as needed
 )
 
 # Add executable
 add_executable(SOS ${SOS_SOURCES})
 
-# Link libraries (moved after add_executable)
-target_link_libraries(SOS ${PNG_LIBRARIES} ${SDL2_LIBRARIES} SDL2_mixer ${Boost_LIBRARIES})
+# Link libraries (after add_executable)
+target_link_libraries(SOS 
+    ${PNG_LIBRARIES} 
+    ${SDL2_LIBRARIES} 
+    SDL2_mixer 
+    ${Boost_LIBRARIES}
+)
+
+# Add installation targets
+install(TARGETS SOS DESTINATION bin)

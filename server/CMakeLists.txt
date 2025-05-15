@@ -24,25 +24,54 @@ set(BOOST_INCLUDEDIR "${BOOST_ROOT}" CACHE PATH "Boost include directory")
 set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib64-msvc-14.3" CACHE PATH "Boost library directory")
 
 # Find Boost libraries
-find_package(Boost COMPONENTS system thread REQUIRED)
+find_package(Boost COMPONENTS system thread chrono REQUIRED)
 
 # Print debug info
 message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 
-# Add include directories
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/src)
+# If docker build
+if(DEFINED ENV{DOCKER_BUILD})
+    message(STATUS "Building in Docker")
+    # Add include directories
+    include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/network)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/objects)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/interfaces)
+    include_directories(${PROJECT_SOURCE_DIR}/SOS/include/logging)
+else()
+    # Add include directories
+    include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/network)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/objects)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/interfaces)
+    include_directories(${PROJECT_SOURCE_DIR}/../SOS/include/logging)
+    # include_directories(${PROJECT_SOURCE_DIR}/src)
+endif()
+
 
 # Add source files
 file(GLOB_RECURSE SOURCES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
+if(DEFINED ENV{DOCKER_BUILD})
+    # Add source files for Docker build
+    file(GLOB_RECURSE SOS_SOURCES
+        "${PROJECT_SOURCE_DIR}/SOS/src/*.cpp"
+    )
+else()
+    # Add source files for non-Docker build
+    file(GLOB_RECURSE SOS_SOURCES
+        "${PROJECT_SOURCE_DIR}/../SOS/src/*.cpp"
+    )
+endif()
+
 # Add executable
-add_executable(SagaServer ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
+add_executable(SagaServer ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES} ${SOS_SOURCES})
 
 # Link libraries
 target_link_libraries(SagaServer PRIVATE ${Boost_LIBRARIES})

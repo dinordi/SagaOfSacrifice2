@@ -3,7 +3,7 @@
 #include "platform.h"
 
 Object::Object( Vec2 pos, ObjectType type, SpriteData* spData, std::string ID)
-    : position(pos), type(type), spriteData(spData), facingRight(true), ObjID(ID)
+    : position(pos), type(type), spriteData(spData), dir(FacingDirection::RIGHT), ObjID(ID)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;

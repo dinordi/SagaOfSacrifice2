@@ -11,16 +11,22 @@
 
 class Platform;
 
-constexpr float GRAVITY = 9.8f;
 constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
+    PLAYER = 0x1,
     ENTITY,
     PLATFORM,
     ITEM,
     BULLET,
-    ENEMY,
-    PLAYER
+    ENEMY
+};
+
+enum class FacingDirection {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
 };
 
 class Object {
@@ -30,6 +36,7 @@ public:
     const ObjectType type;
     const SpriteData* spriteData;
     Object(Vec2 pos, ObjectType type, SpriteData* spData, std::string ID);
+    virtual ~Object() = default;
 
     virtual void update(uint64_t deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
@@ -40,10 +47,10 @@ public:
     int getCurrentSpriteIndex() const;
     void addAnimation(AnimationState state, int startFrame, int frameCount, 
                      int framesPerRow, uint32_t frameTime = 100, bool loop = true);
-    bool isFacingRight() const { return facingRight; }
+    FacingDirection getDir() const { return dir; }
 protected:
     AnimationController animController;
-    bool facingRight;
+    FacingDirection dir;
     
 private:
     DEFINE_GETTER_SETTER(Vec2, position);

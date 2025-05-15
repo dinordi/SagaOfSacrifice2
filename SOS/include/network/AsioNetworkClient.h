@@ -2,10 +2,13 @@
 
 #include "NetworkInterface.h"
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <queue>
 #include <mutex>
+#include <optional>
+
+#include <boost/bind/bind.hpp>
+using namespace boost::placeholders;
 
 class AsioNetworkClient : public NetworkInterface {
 public:
@@ -32,10 +35,18 @@ private:
     std::vector<uint8_t> serializeMessage(const NetworkMessage& message);
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data);
 
+    
+private:
+    std::mutex outgoing_messages_mutex_;
+    std::vector<std::shared_ptr<std::vector<uint8_t>>> outgoing_messages_;
+    
     // Asio io_context and socket
     boost::asio::io_context io_context_;
     boost::asio::ip::tcp::socket socket_;
     boost::thread io_thread_;
+
+    // Work guard to keep io_context running
+    std::optional<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> work_guard_;
     
     // Connection state
     bool connected_;

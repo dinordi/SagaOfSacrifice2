@@ -1,14 +1,14 @@
 #include "collision/CollisionManager.h"
 #include <iostream>
 
-std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(const std::vector<Object*>& gameObjects)
+std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects)
 {
     std::vector<std::pair<Object*, Object*>> collisions;
 
     for (size_t i = 0; i < gameObjects.size(); ++i) {
         for (size_t j = i + 1; j < gameObjects.size(); ++j) {
-            Object* objA = gameObjects[i];
-            Object* objB = gameObjects[j];
+            Object* objA = gameObjects[i].get();
+            Object* objB = gameObjects[j].get();
 
             // Get the sprite dimensions for collision detection
             const SpriteRect spriteA = objA->spriteData->getSpriteRect(1);
@@ -60,6 +60,11 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
                 info.contactPoint.x = (std::max(leftA, leftB) + std::min(rightA, rightB)) / 2;
                 info.contactPoint.y = (std::max(topA, topB) + std::min(bottomA, bottomB)) / 2;
                 
+                // if(objA->getObjID() == "petalinux" || objB->getObjID() == "petalinux")
+                // {
+                //     std::cout << "Collision detected between " << objA->getObjID() << " and " << objB->getObjID() << std::endl;
+                // }
+
                 // Resolve the collision
                 resolveCollision(objA, objB, info);
                 // Add to the collision list
