@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
     uint64_t accumulator_us = 0;
     
     std::cout << "Entering gameloop..." << std::endl;
-    while (game.isRunning()) {
+    while (running && game.isRunning()) {
         uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
         uint64_t frame_time_us = current_time_us - last_time_us;

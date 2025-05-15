@@ -11,6 +11,7 @@ SDL2Input::SDL2Input()
     if (SDL_NumJoysticks() > 0) {
         std::cout << "Controllers found: " << SDL_NumJoysticks() << std::endl;
         for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+            std::cout << "Joystick " << i << " name: " << SDL_JoystickNameForIndex(i) << std::endl;
             if (SDL_IsGameController(i)) {
                 const char* name = SDL_GameControllerNameForIndex(i);
                 std::cout << "Detected controller at index " << i << ": " << (name ? name : "Unknown") << std::endl;
@@ -19,6 +20,9 @@ SDL2Input::SDL2Input()
                     std::cout << "Game controller " << i << " opened: " << (name ? name : "Unknown") << std::endl;
                     break;
                 }
+            }
+            else {
+                std::cout << "Joystick at index " << i << " is not a game controller." << std::endl;
             }
         }
     }
