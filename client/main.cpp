@@ -12,6 +12,7 @@
 #include "input_pl.h"
 #include "SDL2AudioManager.h"
 #include "Renderer.h"
+#include "SDL2AudioManager.h"
 
 float FPS = 60.0f;
 
@@ -105,6 +106,20 @@ int main(int argc, char *argv[]) {
     std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
     imageName = imageName + ".png";
 
+    AudioManager* audio = new SDL2AudioManager();
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
+    if(!audio->initialize(basePathSOS)) {
+        std::cerr << "Failed to initialize AudioManager." << std::endl;
+        return -1;
+    }
+    std::cout << "AudioManager initialized successfully." << std::endl;
+    audio->loadMusic("music/menu/menu.wav");
+    audio->loadSound("sfx/001.wav");
+    audio->loadSound("sfx/jump.wav");
+    audio->playMusic();
+    audio->playSound("001");
+    audio->playSound("jump");
+
     Renderer renderer(path + imageName);
     PlayerInput* controller = new EvdevController();
     Game game(controller, playerId);
@@ -137,15 +152,15 @@ int main(int argc, char *argv[]) {
     auto lastRenderTime = lastTime;
     
     // In your game initialization code
-    std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
-    audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
+    // std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
+    // audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
     
-    // Load sounds and music
-    audioManager->loadMusic("music/menu/menu.wav");
-    audioManager->loadSound("sfx/jump.wav");
-
-    // Play music
-    audioManager->setMusicVolume(0.9f);
+    // // Load sounds and music
+    // audioManager->loadMusic("music/menu/title.wav");
+    // audioManager->loadSound("sfx/jump.wav");
+    // audioManager->loadSound("sfx/001.wav");
+    // // Play music
+    // audioManager->setMusicVolume(0.9f);
     
     std::cout << "Entering gameloop..." << std::endl;
     while (game.isRunning()) {
@@ -157,11 +172,11 @@ int main(int argc, char *argv[]) {
         game.update(deltaTime);
         
         // Render game state at appropriate intervals
-        uint32_t renderElapsedTime = currentTime - lastRenderTime;
-        if (renderElapsedTime > 1000.0f / FPS) {
-            renderer.render(game.getObjects());
-            lastRenderTime = currentTime;
-        }
+        // uint32_t renderElapsedTime = currentTime - lastRenderTime;
+        // if (renderElapsedTime > 1000.0f / FPS) {
+        //     renderer.render(game.getObjects());
+        //     lastRenderTime = currentTime;
+        // }
         
         // Add small sleep to prevent CPU hogging
         std::this_thread::sleep_for(std::chrono::milliseconds(1));

@@ -2,40 +2,32 @@
 #define SDL2_AUDIO_MANAGER_H
 
 #include "interfaces/AudioManager.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-#include <unordered_map>
+#include <SDL2/SDL_mixer.h> 
 #include <string>
-#include <memory>
+#include <map>
 
 class SDL2AudioManager : public AudioManager {
-private:
-    std::unordered_map<std::string, Mix_Chunk*> soundEffects;
-    Mix_Music* backgroundMusic;
-    bool isInitialized;
-    float masterVolume;
-    float musicVolume;
-    
 public:
     SDL2AudioManager();
     ~SDL2AudioManager() override;
 
-    void initialize(const std::string& basePath) override;
-    void loadSound(const std::string& filePath) override;
-    void playSound(const std::string& soundName) override;
-    void stopSound(const std::string& soundName) override;
-    void setVolume(float volume) override;
+    bool initialize(const std::string& basePath) override;
+    bool loadSound(const std::string& filePath) override;
+    bool playSound(const std::string& soundName) override;
+    bool stopSound(const std::string& soundName) override;
+    bool setVolume(float volume) override;
 
-    void loadMusic(const std::string& filePath) override;
-    void playMusic() override;
-    void pauseMusic() override;
-    void stopMusic() override;
-    void setMusicVolume(float volume) override;
-    
+    bool loadMusic(const std::string& filePath) override;
+    bool playMusic() override;
+    bool pauseMusic() override;
+    bool stopMusic() override;
+    bool setMusicVolume(float volume) override;
+
 private:
-    std::string getFilenameFromPath(const std::string& filePath);
-    void cleanup();
-    std::string basePath;
+    std::string mBasePath;
+    std::map<std::string, Mix_Chunk*> mSoundEffects;
+    Mix_Music* mMusic;
+    bool mInitialized;
 };
 
 #endif // SDL2_AUDIO_MANAGER_H
