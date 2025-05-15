@@ -1,186 +1,221 @@
-#include "SDL2AudioManager.h"
-#include <iostream>
-#include <filesystem>
+#include "SDL2AudioManager.h" 
+#include <SDL2/SDL.h> // Added for SDL_Init, SDL_QuitSubSystem, etc.
+#include <SDL2/SDL_mixer.h>
+#include <iostream> 
 
-SDL2AudioManager::SDL2AudioManager() 
-    : backgroundMusic(nullptr), isInitialized(false), masterVolume(1.0f), musicVolume(1.0f) {
+// Helper function to extract sound name from file path
+static std::string getSoundName(const std::string& filePath) {
+    size_t lastSlash = filePath.find_last_of("/\\");
+    std::string name = (lastSlash == std::string::npos) ? filePath : filePath.substr(lastSlash + 1);
+    size_t lastDot = name.find_last_of('.');
+    if (lastDot != std::string::npos) {
+        name = name.substr(0, lastDot);
+    }
+    return name;
+}
+
+SDL2AudioManager::SDL2AudioManager() : mMusic(nullptr), mInitialized(false) {
+    // Constructor
 }
 
 SDL2AudioManager::~SDL2AudioManager() {
-    cleanup();
+    if (mInitialized) {
+        // Free all sound effects
+        for (auto& pair : mSoundEffects) {
+            if (pair.second) {
+                Mix_FreeChunk(pair.second);
+            }
+        }
+        mSoundEffects.clear();
+
+        // Free music
+        if (mMusic) {
+            Mix_FreeMusic(mMusic);
+            mMusic = nullptr;
+        }
+
+        Mix_CloseAudio();
+        Mix_Quit(); // Quit SDL_mixer subsystems
+        SDL_QuitSubSystem(SDL_INIT_AUDIO); // Quit SDL audio subsystem
+    }
 }
 
-void SDL2AudioManager::initialize(const std::string& basePath)
-{
-    // Force SDL to use ALSA directly if on Linux
-    #ifdef __linux__
-    setenv("SDL_AUDIODRIVER", "alsa", 1);
-    setenv("ALSA_CARD", "Generic", 1);
-    setenv("AUDIODEV", "hw:0,0", 1);
-    #endif
-    
+bool SDL2AudioManager::initialize(const std::string& basePath) {
+    mBasePath = basePath;
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        std::cerr << "SDL audio could not initialize! SDL Error: " << SDL_GetError() << std::endl;
-        return;
+        std::cerr << "SDL (version 2) audio subsystem could not initialize! SDL Error: " << SDL_GetError() << std::endl;
+        mInitialized = false;
+        return false;
     }
-    
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
-    }
-    
-    this->basePath = basePath;
 
-    std::cout << "Audio initialized successfully. Driver in use: " << SDL_GetCurrentAudioDriver() << std::endl;
-    isInitialized = true;
+    // Initialize SDL_mixer for MP3 and OGG support
+    int mixFlags = MIX_INIT_MP3 | MIX_INIT_OGG;
+    int initializedMixFlags = Mix_Init(mixFlags);
+    if ((initializedMixFlags & mixFlags) != mixFlags) {
+        std::cerr << "Failed to initialize SDL2_mixer with all requested flags (MP3, OGG)! Mix_Error: " << Mix_GetError() << std::endl;
+        if (initializedMixFlags == 0) {
+            std::cerr << "SDL2_mixer basic support also failed! Mix_Error: " << Mix_GetError() << std::endl;
+            SDL_QuitSubSystem(SDL_INIT_AUDIO);
+            mInitialized = false;
+            return false;
+        }
+        std::cerr << "SDL2_mixer initialized with partial format support." << std::endl;
+    }
+    
+    // Open audio device
+    if (Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "SDL2_mixer could not open audio! Mix_Error: " << Mix_GetError() << std::endl;
+        Mix_Quit();
+        SDL_QuitSubSystem(SDL_INIT_AUDIO);
+        mInitialized = false;
+        return false;
+    }
+
+    mInitialized = true;
+    std::cout << "SDL2AudioManager initialized successfully." << std::endl;
+    return true;
 }
 
-void SDL2AudioManager::loadSound(const std::string& filePath) {
-    if (!isInitialized) {
-        std::cerr << "Audio system not initialized!" << std::endl;
-        return;
+bool SDL2AudioManager::loadSound(const std::string& filePath) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot load sound." << std::endl;
+        return false;
     }
-    std::string fullPath = this->basePath + filePath;
-
-    std::string soundName = getFilenameFromPath(fullPath);
+    std::string fullPath = mBasePath + "/" + filePath;
     Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str());
-    
     if (!sound) {
-        std::cerr << "Failed to load sound effect: " << fullPath << std::endl;
-        std::cerr << "SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
+        std::cerr << "Failed to load sound effect (SDL2)! Path: " << fullPath << " Mix_Error: " << Mix_GetError() << std::endl;
+        return false;
     }
-    
-    // Store the sound with its name as the key
-    soundEffects[soundName] = sound;
-    std::cout << "Loaded sound: " << soundName << std::endl;
+    std::string soundName = getSoundName(filePath);
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        Mix_FreeChunk(it->second);
+    }
+    mSoundEffects[soundName] = sound;
+    std::cout << "Loaded sound (SDL2): " << soundName << " from " << fullPath << std::endl;
+    return true;
 }
 
-void SDL2AudioManager::playSound(const std::string& soundName) {
-    if (!isInitialized) return;
-    
-    auto it = soundEffects.find(soundName);
-    if (it != soundEffects.end()) {
-        int channel = Mix_PlayChannel(-1, it->second, 0);
-        if (channel == -1) {
-            std::cerr << "Could not play sound effect: " << Mix_GetError() << std::endl;
-        } else {
-            int volumeValue = static_cast<int>(MIX_MAX_VOLUME * masterVolume);
-            Mix_Volume(channel, volumeValue);
+bool SDL2AudioManager::playSound(const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot play sound." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        if (Mix_PlayChannel(-1, it->second, 0) == -1) {
+            std::cerr << "Failed to play sound (SDL2): " << soundName << " Mix_Error: " << Mix_GetError() << std::endl;
+            return false;
         }
+        return true;
     } else {
-        std::cerr << "Sound not found: " << soundName << std::endl;
+        std::cerr << "Sound not found (SDL2): " << soundName << std::endl;
+        return false;
     }
 }
 
-void SDL2AudioManager::stopSound(const std::string& soundName) {
-    if (!isInitialized) return;
-    
-    // Stop all channels playing this sound
-    for (int i = 0; i < Mix_AllocateChannels(-1); i++) {
-        if (Mix_GetChunk(i) == soundEffects[soundName]) {
-            Mix_HaltChannel(i);
+bool SDL2AudioManager::stopSound(const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot stop sound." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        bool soundActiveOnChannel = false;
+        for (int i = 0; i < Mix_AllocateChannels(-1); ++i) {
+            if (Mix_Playing(i) && Mix_GetChunk(i) == it->second) {
+                Mix_HaltChannel(i);
+                soundActiveOnChannel = true; 
+            }
         }
-    }
-}
-
-void SDL2AudioManager::setVolume(float volume) {
-    masterVolume = volume;
-    // Clamp volume between 0 and 1
-    if (masterVolume < 0.0f) masterVolume = 0.0f;
-    if (masterVolume > 1.0f) masterVolume = 1.0f;
-
-    // Update all currently playing sound effects
-    for (int i = 0; i < Mix_AllocateChannels(-1); i++) {
-        if (Mix_Playing(i) == 1) {
-            Mix_Volume(i, static_cast<int>(MIX_MAX_VOLUME * masterVolume));
-        }
-    }
-}
-
-void SDL2AudioManager::loadMusic(const std::string& filePath) {
-    if (!isInitialized) return;
-    
-    std::string fullPath = this->basePath + filePath;
-
-    // Free previous music if it exists
-    if (backgroundMusic != nullptr) {
-        Mix_FreeMusic(backgroundMusic);
-        backgroundMusic = nullptr;
-    }
-    
-    backgroundMusic = Mix_LoadMUS(fullPath.c_str());
-    if (!backgroundMusic) {
-        std::cerr << "Failed to load music: " << fullPath << std::endl;
-        std::cerr << "SDL_mixer Error: " << Mix_GetError() << std::endl;
+        return true; 
     } else {
-        std::cout << "Music loaded: " << fullPath << std::endl;
+        std::cerr << "Sound not found (SDL2), cannot stop: " << soundName << std::endl;
+        return false;
     }
 }
 
-void SDL2AudioManager::playMusic() {
-    if (!isInitialized || !backgroundMusic) return;
-    
-    if (Mix_PlayingMusic() == 0) {
-        // -1 means loop indefinitely
-        if (Mix_PlayMusic(backgroundMusic, -1) == -1) {
-            std::cerr << "Failed to play music: " << Mix_GetError() << std::endl;
+bool SDL2AudioManager::setVolume(float volume) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot set volume." << std::endl;
+        return false;
+    }
+    int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);
+    sdlVolume = std::max(0, std::min(sdlVolume, MIX_MAX_VOLUME));
+    Mix_Volume(-1, sdlVolume);
+    return true;
+}
+
+bool SDL2AudioManager::loadMusic(const std::string& filePath) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot load music." << std::endl;
+        return false;
+    }
+    std::string fullPath = mBasePath + "/" + filePath;
+    if (mMusic) {
+        Mix_HaltMusic();
+        Mix_FreeMusic(mMusic);
+        mMusic = nullptr;
+    }
+    mMusic = Mix_LoadMUS(fullPath.c_str());
+    if (!mMusic) {
+        std::cerr << "Failed to load music (SDL2)! Path: " << fullPath << " Mix_Error: " << Mix_GetError() << std::endl;
+        return false;
+    } else {
+        std::cout << "Loaded music (SDL2): " << filePath << std::endl;
+        return true;
+    }
+}
+
+bool SDL2AudioManager::playMusic() {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot play music." << std::endl;
+        return false;
+    }
+    if (mMusic) {
+        if (Mix_PlayingMusic() == 0) {
+            if (Mix_PlayMusic(mMusic, -1) == -1) {
+                std::cerr << "Failed to play music (SDL2)! Mix_Error: " << Mix_GetError() << std::endl;
+                return false;
+            }
+        } else if (Mix_PausedMusic() == 1) {
+            Mix_ResumeMusic();
         }
-    } else if (Mix_PausedMusic() == 1) {
-        // Resume paused music
-        Mix_ResumeMusic();
+        return true;
+    } else {
+        std::cerr << "No music loaded to play (SDL2)." << std::endl;
+        return false;
     }
-    
-    setMusicVolume(musicVolume);
 }
 
-void SDL2AudioManager::pauseMusic() {
-    if (isInitialized && Mix_PlayingMusic() == 1 && Mix_PausedMusic() == 0) {
+bool SDL2AudioManager::pauseMusic() {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot pause music." << std::endl;
+        return false;
+    }
+    if (Mix_PlayingMusic() == 1 && Mix_PausedMusic() == 0) {
         Mix_PauseMusic();
     }
+    return true;
 }
 
-void SDL2AudioManager::stopMusic() {
-    if (isInitialized && Mix_PlayingMusic() == 1) {
-        Mix_HaltMusic();
+bool SDL2AudioManager::stopMusic() {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot stop music." << std::endl;
+        return false;
     }
+    Mix_HaltMusic();
+    return true;
 }
 
-void SDL2AudioManager::setMusicVolume(float volume) {
-    musicVolume = volume;
-    // Clamp volume between 0 and 1
-    if (musicVolume < 0.0f) musicVolume = 0.0f;
-    if (musicVolume > 1.0f) musicVolume = 1.0f;
-    
-    if (isInitialized) {
-        Mix_VolumeMusic(static_cast<int>(MIX_MAX_VOLUME * musicVolume));
+bool SDL2AudioManager::setMusicVolume(float volume) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot set music volume." << std::endl;
+        return false;
     }
-}
-
-std::string SDL2AudioManager::getFilenameFromPath(const std::string& filePath) {
-    std::filesystem::path path(filePath);
-    return path.stem().string();
-}
-
-void SDL2AudioManager::cleanup() {
-    if (!isInitialized) return;
-    
-    // Free all loaded sounds
-    for (auto& pair : soundEffects) {
-        if (pair.second != nullptr) {
-            Mix_FreeChunk(pair.second);
-        }
-    }
-    soundEffects.clear();
-    
-    // Free music
-    if (backgroundMusic != nullptr) {
-        Mix_FreeMusic(backgroundMusic);
-        backgroundMusic = nullptr;
-    }
-    
-    // Close SDL_mixer and SDL audio
-    Mix_CloseAudio();
-    SDL_QuitSubSystem(SDL_INIT_AUDIO);
-    isInitialized = false;
+    int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);
+    sdlVolume = std::max(0, std::min(sdlVolume, MIX_MAX_VOLUME));
+    Mix_VolumeMusic(sdlVolume);
+    return true;
 }
