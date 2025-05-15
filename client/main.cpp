@@ -148,15 +148,15 @@ int main(int argc, char *argv[]) {
     auto lastRenderTime = lastTime;
     
     // In your game initialization code
-    std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
-    audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
+    // std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
+    // audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
     
-    // Load sounds and music
-    audioManager->loadMusic("music/menu/title.wav");
-    audioManager->loadSound("sfx/jump.wav");
-    audioManager->loadSound("sfx/001.wav");
-    // Play music
-    audioManager->setMusicVolume(0.9f);
+    // // Load sounds and music
+    // audioManager->loadMusic("music/menu/title.wav");
+    // audioManager->loadSound("sfx/jump.wav");
+    // audioManager->loadSound("sfx/001.wav");
+    // // Play music
+    // audioManager->setMusicVolume(0.9f);
     
     std::cout << "Entering gameloop..." << std::endl;
     while (game.isRunning()) {
