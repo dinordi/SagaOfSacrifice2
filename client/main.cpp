@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     bool enableRemoteMultiplayer = false;
     bool localOnlyMode = false;
     bool debugMode = false;
+    bool devMode = false;
     bool useEmbeddedServer = true; // Default to embedded server
     std::string serverAddress = "localhost";
     int serverPort = 8080;
@@ -90,7 +91,11 @@ int main(int argc, char *argv[]) {
         } else if (arg == "-d" || arg == "--debug") {
             debugMode = true;
             std::cout << "Debug mode enabled. Loading image and quitting." << std::endl;
-        } else {
+        } else if (arg == "-dev" || arg == "--dev") {
+            devMode = true;
+            std::cout << "Development mode enabled. Running headless" << std::endl;
+        }
+        else {
             std::cerr << "Unknown option: " << arg << std::endl;
             printUsage(argv[0]);
             return 1;
@@ -116,6 +121,7 @@ int main(int argc, char *argv[]) {
     // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
     // Want to go to /SagaOfSacrifice2/SOS
     path = path.substr(0, path.find("/client/build"));
+    path = path + "/SOS";
 
     std::string path_sprites = path + "/assets/sprites/";
     imageName = imageName + ".png";
@@ -135,10 +141,13 @@ int main(int argc, char *argv[]) {
         audio->playSound("jump");
     }
 
-    Renderer renderer(path_sprites + imageName);
-    if(debugMode) {
-        std::cout << "Debug mode: Loaded image." << std::endl;
-        return 0;
+    if(!devMode)
+    {
+        Renderer renderer(path_sprites + imageName);
+        if(debugMode) {
+            std::cout << "Debug mode: Loaded image." << std::endl;
+            return 0;
+        }
     }
     PlayerInput* controller = new SDL2Input();
     Game game(controller, playerId);
