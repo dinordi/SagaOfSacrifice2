@@ -106,19 +106,25 @@ int main(int argc, char *argv[]) {
     std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
     imageName = imageName + ".png";
 
-    Renderer renderer(path + imageName);
-    PlayerInput* controller = new EvdevController();
-    Game game(controller, playerId);
     AudioManager* audio = new SDL2AudioManager();
     std::string basePathSOS = "/home/root/SagaOfSacrifice2";
     if(audio->initialize(basePathSOS) == false) {
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
+    if(!audio->initialize(basePathSOS)) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
         return -1;
     }
-    audio->loadMusic("title.wav");
+    std::cout << "AudioManager initialized successfully." << std::endl;
+    audio->loadMusic("music/menu/menu.wav");
+    audio->loadSound("sfx/001.wav");
+    audio->loadSound("sfx/jump.wav");
     audio->playMusic();
-    audio->playSound("001.wav");
-    audio->playSound("jump.wav");
+    audio->playSound("001");
+    audio->playSound("jump");
+
+    Renderer renderer(path + imageName);
+    PlayerInput* controller = new EvdevController();
+    Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     renderer.init();
     
