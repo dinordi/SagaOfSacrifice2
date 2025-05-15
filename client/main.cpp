@@ -107,18 +107,18 @@ int main(int argc, char *argv[]) {
     imageName = imageName + ".png";
 
     AudioManager* audio = new SDL2AudioManager();
-    std::string basePathSOS = "/home/root/SagaOfSacrifice2";
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
     if(!audio->initialize(basePathSOS)) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
         return -1;
     }
     std::cout << "AudioManager initialized successfully." << std::endl;
-    audio->loadMusic("menu/menu.wav");
+    audio->loadMusic("music/menu/menu.wav");
     audio->loadSound("sfx/001.wav");
     audio->loadSound("sfx/jump.wav");
     audio->playMusic();
-    audio->playSound("001.wav");
-    audio->playSound("jump.wav");
+    audio->playSound("001");
+    audio->playSound("jump");
 
     Renderer renderer(path + imageName);
     PlayerInput* controller = new EvdevController();
