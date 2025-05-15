@@ -230,7 +230,7 @@
                     // ev.value: 0 = losgelaten, 1 = ingedrukt, 2 = auto-repeat
                     currentKeyStates_[ev.code] = (ev.value != 0); // Behandel 1 en 2 als ingedrukt
                     // Debug output (optioneel)
-                    // if (ev.value == 1) std::cout << "Key/Button " << ev.code << " Pressed\n";
+                    if (ev.value == 1) std::cout << "Key/Button " << ev.code << " Pressed\n";
                     // if (ev.value == 0) std::cout << "Key/Button " << ev.code << " Released\n";
                     
                 }
