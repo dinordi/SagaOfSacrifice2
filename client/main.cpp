@@ -111,12 +111,18 @@ int main(int argc, char *argv[]) {
         std::cout << "Local-only mode (no server) enabled for development." << std::endl;
     }
     
-    std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
+    // Get path from where the executable is running
+    std::string path = std::filesystem::current_path().string();
+    // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
+    // Want to go to /SagaOfSacrifice2/SOS
+    path = path.substr(0, path.find("/client/build"));
+
+    std::string path_sprites = path + "/assets/sprites/";
     imageName = imageName + ".png";
 
     AudioManager* audio = new SDL2AudioManager();
-    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
-    if(!audio->initialize(basePathSOS)) {
+    std::string path_assets = path + "/assets";
+    if(!audio->initialize(path_assets)) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
     }
     if(audio)
@@ -129,7 +135,7 @@ int main(int argc, char *argv[]) {
         audio->playSound("jump");
     }
 
-    Renderer renderer(path + imageName);
+    Renderer renderer(path_sprites + imageName);
     if(debugMode) {
         std::cout << "Debug mode: Loaded image." << std::endl;
         return 0;
