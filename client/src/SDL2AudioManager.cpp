@@ -45,7 +45,7 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "SDL (version 2) audio subsystem could not initialize! SDL Error: " << SDL_GetError() << std::endl;
         mInitialized = false;
-        return false;
+        return mInitialized;
     }
 
     // Initialize SDL_mixer for MP3 and OGG support
@@ -57,7 +57,7 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
             std::cerr << "SDL2_mixer basic support also failed! Mix_Error: " << Mix_GetError() << std::endl;
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
             mInitialized = false;
-            return false;
+            return mInitialized;
         }
         std::cerr << "SDL2_mixer initialized with partial format support." << std::endl;
     }
@@ -68,12 +68,12 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
         Mix_Quit();
         SDL_QuitSubSystem(SDL_INIT_AUDIO);
         mInitialized = false;
-        return false;
+        return mInitialized;
     }
 
     mInitialized = true;
     std::cout << "SDL2AudioManager initialized successfully." << std::endl;
-    return true;
+    return mInitialized;
 }
 
 bool SDL2AudioManager::loadSound(const std::string& filePath) {

@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     Game game(controller, playerId);
     AudioManager* audio = new SDL2AudioManager();
     std::string basePathSOS = "/home/root/SagaOfSacrifice2";
-    if(!audio->initialize(basePathSOS)) {
+    if(audio->initialize(basePathSOS) == false) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
         return -1;
     }
