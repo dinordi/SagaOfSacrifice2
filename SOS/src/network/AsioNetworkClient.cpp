@@ -51,6 +51,9 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
         connected_ = true;
         std::cout << "[Network] Connected to " << host << ":" << port << std::endl;
 
+        // work_guard keeps the io_context running even if there are no handlers
+        work_guard_.emplace(boost::asio::make_work_guard(io_context_));
+
         // Start the ASIO io_context in a separate thread
         io_thread_ = boost::thread([this]() {
             try {
@@ -88,6 +91,13 @@ void AsioNetworkClient::disconnect() {
         io_context_.stop();
         if (io_thread_.joinable()) {
             io_thread_.join();
+        }
+
+        // Reset the work guard
+        if(work_guard_)
+        {
+            work_guard_->reset();
+            work_guard_.reset();
         }
 
         connected_ = false;
