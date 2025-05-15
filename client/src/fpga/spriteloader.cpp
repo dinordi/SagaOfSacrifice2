@@ -1,4 +1,4 @@
-#include "petalinux/fpga/spriteloader.h"
+#include "fpga/spriteloader.h"
 #include <iostream>
 
 

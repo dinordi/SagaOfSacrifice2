@@ -1,4 +1,4 @@
-#include "../include/SDL2AudioManager.h" 
+#include "SDL2AudioManager.h" 
 #include <SDL2/SDL.h> // Added for SDL_Init, SDL_QuitSubSystem, etc.
 #include <SDL2/SDL_mixer.h>
 #include <iostream> 
