@@ -4,14 +4,15 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-// Physical memory base address for the BRAM
-#define BRAM_PHYS_ADDR 0x40000000          // Physical BRAM starts at address 0
-#define LOOKUP_TABLE_OFFSET 0x0000         // 0x0000-0x3FFF (16KB)
-#define FRAME_INFO_OFFSET 0x4000           // 0x4000-0x5FFF (8KB)
-#define TOTAL_BRAM_SIZE 0x8000             // 32KB total size
+// Physical memory base addresses for the BRAMs
+#define LOOKUP_TABLE_ADDR 0x42000000       // Lookup table BRAM - 8KB
+#define FRAME_INFO_ADDR 0x40000000         // Frame info BRAM - 16KB
+
+#define LOOKUP_TABLE_SIZE 0x2000           // 8KB
+#define FRAME_INFO_SIZE 0x4000             // 16KB
 
 // Sprite data base address
-#define SPRITE_DATA_BASE 0xE000000         // Base address for sprite data
+#define SPRITE_DATA_BASE 0x0E000000        // Base address for sprite data (fixed to include leading 0)
 
 int main() {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
@@ -20,18 +21,29 @@ int main() {
         return -1;
     }
 
-    // Map the BRAM at physical address 0x00000000
-    void *bram_void_ptr = mmap(NULL, TOTAL_BRAM_SIZE, PROT_READ | PROT_WRITE,
-                              MAP_SHARED, fd, BRAM_PHYS_ADDR);
-    if (bram_void_ptr == MAP_FAILED) {
-        perror("mmap");
+    // Map each BRAM separately with their own physical addresses
+    // First map the lookup table BRAM
+    void *lookup_table_ptr = mmap(NULL, LOOKUP_TABLE_SIZE, PROT_READ | PROT_WRITE,
+                                 MAP_SHARED, fd, LOOKUP_TABLE_ADDR);
+    if (lookup_table_ptr == MAP_FAILED) {
+        perror("mmap lookup table");
+        close(fd);
+        return -1;
+    }
+
+    // Then map the frame info BRAM
+    void *frame_info_ptr = mmap(NULL, FRAME_INFO_SIZE, PROT_READ | PROT_WRITE,
+                               MAP_SHARED, fd, FRAME_INFO_ADDR);
+    if (frame_info_ptr == MAP_FAILED) {
+        perror("mmap frame info");
+        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
         close(fd);
         return -1;
     }
 
     // Get pointers to the separate BRAMs - using 64-bit words
-    volatile uint64_t *lookup_table = (volatile uint64_t *)bram_void_ptr;
-    volatile uint64_t *frame_info = (volatile uint64_t *)((uint8_t*)bram_void_ptr + FRAME_INFO_OFFSET);
+    volatile uint64_t *lookup_table = (volatile uint64_t *)lookup_table_ptr;
+    volatile uint64_t *frame_info = (volatile uint64_t *)frame_info_ptr;
 
     const int NUM_SPRITES = 8;
     const uint16_t SPRITE_WIDTH = 400;
@@ -40,10 +52,11 @@ int main() {
     uint16_t current_y = 0;
 
     printf("Writing sprite data with 64-bit words:\n");
-    printf("- Lookup table: 0x%08X-0x%08X\n", BRAM_PHYS_ADDR, BRAM_PHYS_ADDR + 0x3FFF);
-    printf("- Frame info: 0x%08X-0x%08X\n", BRAM_PHYS_ADDR + 0x4000, BRAM_PHYS_ADDR + 0x5FFF);
+    printf("- Lookup table: 0x%08X - 0x%08X (8KB)\n", LOOKUP_TABLE_ADDR, LOOKUP_TABLE_ADDR + LOOKUP_TABLE_SIZE - 1);
+    printf("- Frame info: 0x%08X - 0x%08X (16KB)\n", FRAME_INFO_ADDR, FRAME_INFO_ADDR + FRAME_INFO_SIZE - 1);
     printf("- Sprite data base: 0x%08X\n", SPRITE_DATA_BASE);
 
+    // Write frame info entries
     for (int i = 1; i <= NUM_SPRITES; ++i) {
         uint32_t sprite_id = 1;
 
@@ -51,15 +64,14 @@ int main() {
         // Format: X position and Y position in lower bits
         uint64_t frame_info_value = (current_x << 22) | (current_y << 11) | sprite_id;
         frame_info[i] = frame_info_value;
-
-
+        printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", i, current_x, current_y, sprite_id);
 
         // Update for next sprite (diagonal pattern)
         current_x += 100;
         current_y += 80;
     }
 
-    // Create lookup table with proper alignment & error checking
+    // Create lookup table entry with proper alignment
     printf("Writing to lookup table at index 1\n");
     
     // Ensure sprite data base is properly aligned for memory access
@@ -67,28 +79,20 @@ int main() {
     
     // Create lookup table entry with correct field placement
     uint64_t lookup_value = (((uint64_t)aligned_sprite_base) << 24) | // Base address in upper bits
-                           ((uint64_t)(SPRITE_HEIGHT & 0x7FF) << 12) | // Height (11 bits)
-                           (SPRITE_WIDTH & 0xFFF);                    // Width (12 bits)
+                            ((uint64_t)(SPRITE_HEIGHT & 0x7FF) << 12) | // Height (11 bits)
+                            (SPRITE_WIDTH & 0xFFF);                     // Width (12 bits)
     
-    // Make sure we're within memory bounds before writing
-    if (1 < (FRAME_INFO_OFFSET / sizeof(uint64_t))) {
-        lookup_table[1] = lookup_value;
-        printf("Wrote lookup entry: base=0x%08X, height=%u, width=%u\n", 
-               aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
-    } else {
-        printf("ERROR: Index 1 would be out of bounds for lookup table\n");
-    }
+    lookup_table[1] = lookup_value;
+    printf("Wrote lookup entry: base=0x%08X, height=%u, width=%u\n", 
+            aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
     
-    // Add termination marker safely
-    if (8 < ((TOTAL_BRAM_SIZE - FRAME_INFO_OFFSET) / sizeof(uint64_t))) {
-        // Add termination marker in frame_info BRAM
-        frame_info[8] = 0xFFFFFFFFFFFFFFFF;  // All 1s as termination marker
-        printf("Added termination marker at frame_info[8]\n");
-    } else {
-        printf("ERROR: Index 8 would be out of bounds for frame_info\n");
-    }
+    // Add termination marker
+    frame_info[NUM_SPRITES + 1] = 0xFFFFFFFFFFFFFFFF;  // All 1s as termination marker
+    printf("Added termination marker at frame_info[%d]\n", NUM_SPRITES + 1);
 
-    munmap(bram_void_ptr, TOTAL_BRAM_SIZE);
+    // Unmap both regions
+    munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
+    munmap(frame_info_ptr, FRAME_INFO_SIZE);
     close(fd);
     printf("Successfully wrote sprite data using 64-bit words\n");
     return 0;
