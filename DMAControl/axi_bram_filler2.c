@@ -58,14 +58,35 @@ int main() {
         current_x += 100;
         current_y += 80;
     }
-    uint64_t lookup_value = (((uint64_t)SPRITE_DATA_BASE) << 24) | // Put address in upper bits
-                               ((uint64_t)SPRITE_HEIGHT << 12) | // Height in bits 22:12
-                               SPRITE_WIDTH;           // Width in bits 11:0
 
+    // Create lookup table with proper alignment & error checking
+    printf("Writing to lookup table at index 1\n");
+    
+    // Ensure sprite data base is properly aligned for memory access
+    uint32_t aligned_sprite_base = SPRITE_DATA_BASE & 0xFFFFFF00; // Ensure alignment
+    
+    // Create lookup table entry with correct field placement
+    uint64_t lookup_value = (((uint64_t)aligned_sprite_base) << 24) | // Base address in upper bits
+                           ((uint64_t)(SPRITE_HEIGHT & 0x7FF) << 12) | // Height (11 bits)
+                           (SPRITE_WIDTH & 0xFFF);                    // Width (12 bits)
+    
+    // Make sure we're within memory bounds before writing
+    if (1 < (FRAME_INFO_OFFSET / sizeof(uint64_t))) {
         lookup_table[1] = lookup_value;
-    // Add termination marker in frame_info BRAM
-    frame_info[8] = 0xFFFFFFFFFFFFFFFF;  // All 1s as termination marker
-    printf("Added termination marker at frame_info[8]\n");
+        printf("Wrote lookup entry: base=0x%08X, height=%u, width=%u\n", 
+               aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
+    } else {
+        printf("ERROR: Index 1 would be out of bounds for lookup table\n");
+    }
+    
+    // Add termination marker safely
+    if (8 < ((TOTAL_BRAM_SIZE - FRAME_INFO_OFFSET) / sizeof(uint64_t))) {
+        // Add termination marker in frame_info BRAM
+        frame_info[8] = 0xFFFFFFFFFFFFFFFF;  // All 1s as termination marker
+        printf("Added termination marker at frame_info[8]\n");
+    } else {
+        printf("ERROR: Index 8 would be out of bounds for frame_info\n");
+    }
 
     munmap(bram_void_ptr, TOTAL_BRAM_SIZE);
     close(fd);
