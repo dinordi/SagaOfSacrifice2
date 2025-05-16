@@ -58,8 +58,8 @@ int main() {
         current_x += 100;
         current_y += 80;
     }
-    uint64_t lookup_value = (SPRITE_DATA_BASE << 24) | // Put address in upper bits
-                               (SPRITE_HEIGHT << 12) | // Height in bits 22:12
+    uint64_t lookup_value = (((uint64_t)SPRITE_DATA_BASE) << 24) | // Put address in upper bits
+                               ((uint64_t)SPRITE_HEIGHT << 12) | // Height in bits 22:12
                                SPRITE_WIDTH;           // Width in bits 11:0
 
         lookup_table[1] = lookup_value;
