@@ -86,7 +86,7 @@ private:
     std::map<char, int> characterMap;
 
     // Default ports
-    static const int LOCAL_SERVER_PORT = 8081;
+    static const int LOCAL_SERVER_PORT = 8080;
     
     // Static instance for singleton pattern
     static Game* instance_;
