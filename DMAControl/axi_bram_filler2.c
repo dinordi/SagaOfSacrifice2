@@ -5,11 +5,11 @@
 #include <unistd.h>
 
 // Physical memory base addresses for the BRAMs
-#define LOOKUP_TABLE_ADDR 0x42000000       // Lookup table BRAM - 8KB
-#define FRAME_INFO_ADDR 0x40000000         // Frame info BRAM - 16KB
+#define FRAME_INFO_ADDR   0x42000000         // Frame info BRAM - 8KB
+#define LOOKUP_TABLE_ADDR 0x40000000       // Lookup table BRAM - 16KB
 
-#define LOOKUP_TABLE_SIZE 0x2000           // 8KB
-#define FRAME_INFO_SIZE 0x4000             // 16KB
+#define FRAME_INFO_SIZE 0x2000             // 8KB
+#define LOOKUP_TABLE_SIZE 0x4000           // 16KB
 
 // Sprite data base address
 #define SPRITE_DATA_BASE 0x0E000000        // Base address for sprite data (fixed to include leading 0)
