@@ -204,59 +204,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     PlayerInput* input = new SDLInput(getGamepad());
 
     // Initialize AudioManager
-    AudioManager* audio = new SDL3AudioManager(); // Pass basePathSOS to constructor
+    AudioManager& audio = SDL3AudioManager::Instance();
     
 
-    if(audio->initialize(basePathSOS.string())){
+    if(audio.initialize(basePathSOS.string())){
         SDL_Log("AudioManager initialized successfully!");
-        if (audio->loadMusic("SOS/assets/music/menu/001.mp3")) {
-            SDL_Log("Music SOS/assets/music/menu/001.mp3 loaded.");
-            if (audio->playMusic()) {
-                SDL_Log("Music playback started.");
-            } else {
-                SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to play music.");
-            }
-        } else {
-            SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to load music SOS/assets/music/menu/001.mp3.");
-        }
-
-        // Test playing multiple SFX
-        SDL_Log("Attempting to load and play multiple SFX...");
-
-        // Load the first sound
-        bool jumpLoaded = audio->loadSound("SOS/assets/sfx/jump.wav");
-        if (jumpLoaded) {
-            SDL_Log("Loaded SFX: SOS/assets/sfx/jump.wav (internally named 'jump')");
-        } else {
-            SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to load SFX: SOS/assets/sfx/jump.wav");
-        }
-
-        // Load a second, DIFFERENT sound for a clearer concurrency test
-        bool shootLoaded = audio->loadSound("SOS/assets/sfx/001.wav"); 
-        if (shootLoaded) {
-            SDL_Log("Loaded SFX: SOS/assets/sfx/shoot.wav (internally named 'shoot')");
-        } else {
-            SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to load SFX: SOS/assets/sfx/shoot.wav");
-        }
-
-        // Play the sounds. They should play concurrently if loaded successfully.
-        if (jumpLoaded) {
-            if (audio->playSound("jump")) { // Use the correct derived name
-                SDL_Log("Playing SFX: jump");
-            } else {
-                SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to play SFX: jump");
-            }
-        }
-
-        if (shootLoaded) {
-            if (audio->playSound("001")) { // Use the correct derived name
-                SDL_Log("Playing SFX: shoot");
-            } else {
-                SDL_LogWarn(SDL_LOG_CATEGORY_AUDIO, "Failed to play SFX: shoot");
-            }
-        }
-        SDL_Log("SFX test complete. Check audio output.");
-
+        audio.loadMusic("SOS/assets/music/menu/001.mp3");
+        audio.playMusic();
     }
     else
     {

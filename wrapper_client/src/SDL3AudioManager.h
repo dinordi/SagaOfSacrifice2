@@ -8,8 +8,15 @@
 
 class SDL3AudioManager : public AudioManager {
 public:
-    SDL3AudioManager();
-    ~SDL3AudioManager() override;
+    // Singleton accessor
+    static SDL3AudioManager& Instance() {
+        static SDL3AudioManager instance;
+        return instance;
+    }
+
+    // Delete copy/move constructors and assignment operators
+    SDL3AudioManager(const SDL3AudioManager&) = delete;
+    SDL3AudioManager& operator=(const SDL3AudioManager&) = delete;
 
     bool initialize(const std::string& basePath) override;
     bool loadSound(const std::string& filePath) override;
@@ -24,6 +31,9 @@ public:
     bool setMusicVolume(float volume) override;
 
 private:
+    SDL3AudioManager();
+    ~SDL3AudioManager() override;
+
     std::string mBasePath;
     std::map<std::string, Mix_Chunk*> mSoundEffects;
     Mix_Music* mMusic;
