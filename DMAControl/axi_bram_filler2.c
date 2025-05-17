@@ -48,14 +48,21 @@ int main() {
     const int NUM_SPRITES = 1;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
-    uint16_t current_x = 0;
-    uint16_t current_y = 0;
+    uint16_t current_x = 400;
+    uint16_t current_y = 400;
 
     printf("Writing sprite data with 64-bit words:\n");
     printf("- Lookup table: 0x%08X - 0x%08X (8KB)\n", LOOKUP_TABLE_ADDR, LOOKUP_TABLE_ADDR + LOOKUP_TABLE_SIZE - 1);
     printf("- Frame info: 0x%08X - 0x%08X (16KB)\n", FRAME_INFO_ADDR, FRAME_INFO_ADDR + FRAME_INFO_SIZE - 1);
     printf("- Sprite data base: 0x%08X\n", SPRITE_DATA_BASE);
-
+    // Create lookup table entry with correct field placement
+    // Ensure sprite data base is properly aligned for memory access
+    uint32_t aligned_sprite_base = SPRITE_DATA_BASE & 0xFFFFFF00; // Ensure alignment
+    uint64_t lookup_value = (((uint64_t)aligned_sprite_base) << 24) | // Base address in upper bits
+                            ((uint64_t)(SPRITE_HEIGHT) << 12) | // Height (11 bits)
+                            (SPRITE_WIDTH);                     // Width (12 bits)
+    
+    lookup_table[0] = lookup_value;
     // Write frame info entries
     for (int i = 1; i <= NUM_SPRITES; ++i) {
         uint32_t sprite_id = 0;
@@ -74,15 +81,7 @@ int main() {
     // Create lookup table entry with proper alignment
     printf("Writing to lookup table at index 0\n");
     
-    // Ensure sprite data base is properly aligned for memory access
-    uint32_t aligned_sprite_base = SPRITE_DATA_BASE & 0xFFFFFF00; // Ensure alignment
     
-    // Create lookup table entry with correct field placement
-    uint64_t lookup_value = (((uint64_t)aligned_sprite_base) << 24) | // Base address in upper bits
-                            ((uint64_t)(SPRITE_HEIGHT & 0x7FF) << 12) | // Height (11 bits)
-                            (SPRITE_WIDTH & 0xFFF);                     // Width (12 bits)
-    
-    lookup_table[0] = lookup_value;
     
     // Print in multiple formats for better visibility
     printf("*** LOOKUP VALUE (64-bit) ***\n");
