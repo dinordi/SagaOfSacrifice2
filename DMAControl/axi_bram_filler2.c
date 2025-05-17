@@ -60,11 +60,11 @@ int main() {
     for (int i = 1; i <= NUM_SPRITES; ++i) {
         uint32_t sprite_id = 0;
 
-        // Write to frame_info BRAM (64-bit word)
         // Format: X position and Y position in lower bits
         uint64_t frame_info_value = (current_x << 22) | (current_y << 11) | sprite_id;
         frame_info[i] = frame_info_value;
-        printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", i, current_x, current_y, sprite_id);
+        printf("Frame info [%d]: X=%u, Y=%u, ID=%u (hex: 0x%016llX)\n", 
+               i, current_x, current_y, sprite_id, frame_info_value);
 
         // Update for next sprite (diagonal pattern)
         current_x += 100;
@@ -72,7 +72,7 @@ int main() {
     }
 
     // Create lookup table entry with proper alignment
-    printf("Writing to lookup table at index 1\n");
+    printf("Writing to lookup table at index 0\n");
     
     // Ensure sprite data base is properly aligned for memory access
     uint32_t aligned_sprite_base = SPRITE_DATA_BASE & 0xFFFFFF00; // Ensure alignment
@@ -83,13 +83,24 @@ int main() {
                             (SPRITE_WIDTH & 0xFFF);                     // Width (12 bits)
     
     lookup_table[0] = lookup_value;
-    printf("Wrote lookup entry: base=0x%08X, height=%u, width=%u\n", 
+    
+    // Print in multiple formats for better visibility
+    printf("*** LOOKUP VALUE (64-bit) ***\n");
+    printf("  HEX: 0x%016llX\n", lookup_value);
+    printf("  Components: base=0x%08X, height=%u, width=%u\n", 
             aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
     
-    // Add termination marker
-    // Combine frame data (bits 0..33) with termination marker (bits 34..66)
-    frame_info[0] = frame_info[0] & 0x3FFFFFFFF; // lower 34 bits (frame data)
-    printf("Added termination marker at frame_info[%d]\n", NUM_SPRITES + 1);
+    // Add termination marker properly
+    // Set frame_info[0] to all 1s (64 bits)
+    frame_info[0] |= 0xFFFFFFFFFFFFFFFF;
+    
+    // Set only the 3 most significant bits of frame_info[1] to 1s
+    // while preserving the rest of the bits (the valid sprite data)
+    frame_info[1] |= 0xE000000000000000; // 0xE = 0b1110 (3 most significant bits)
+    
+    printf("*** FRAME INFO VALUES (64-bit) ***\n");
+    printf("  frame_info[0]=0x%016llX\n", frame_info[0]);
+    printf("  frame_info[1]=0x%016llX\n", frame_info[1]);
 
     // Unmap both regions
     munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
