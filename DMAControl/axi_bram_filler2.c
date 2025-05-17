@@ -66,7 +66,7 @@ int main() {
     
     // Now shift left by 9 bits to align with the MSB of the 64-bit word
     // (64 - 55 = 9 bits of shift needed)
-    uint64_t lookup_value = base_lookup_value << 9;
+    uint64_t lookup_value = base_lookup_value << 8;
     
     lookup_table[0] = lookup_value;
     printf("Lookup table: original=0x%016llX, shifted=0x%016llX (shifted left by 9 bits)\n",
@@ -86,7 +86,7 @@ int main() {
         
         // Then shift it by 30 bits to align with the MSB of the 64-bit word
         // (64 - 34 = 30 bits of shift needed)
-        uint64_t frame_info_value = base_value << 30;
+        uint64_t frame_info_value = base_value << 29;
         
         frame_info[i] = frame_info_value;
         printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", i, current_x, current_y, sprite_id);
