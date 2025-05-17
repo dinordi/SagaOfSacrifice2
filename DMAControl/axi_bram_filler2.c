@@ -60,13 +60,13 @@ int main() {
     uint32_t aligned_sprite_base = SPRITE_DATA_BASE & 0xFFFFFF00; // Ensure alignment
     
     // First create the lookup value without shifting (55 bits total)
-    uint64_t base_lookup_value = (((uint64_t)aligned_sprite_base) << 24) | // Base address in upper bits
+    uint64_t base_lookup_value = (((uint64_t)aligned_sprite_base) << 23) | // Base address in upper bits
                                 ((uint64_t)(SPRITE_HEIGHT) << 12) | // Height (11 bits)
                                 (SPRITE_WIDTH);                     // Width (12 bits)
     
     // Now shift left by 9 bits to align with the MSB of the 64-bit word
     // (64 - 55 = 9 bits of shift needed)
-    uint64_t lookup_value = base_lookup_value << 8;
+    uint64_t lookup_value = base_lookup_value << 9;
     
     lookup_table[0] = lookup_value;
     printf("Lookup table: original=0x%016llX, shifted=0x%016llX (shifted left by 9 bits)\n",
@@ -86,7 +86,7 @@ int main() {
         
         // Then shift it by 30 bits to align with the MSB of the 64-bit word
         // (64 - 34 = 30 bits of shift needed)
-        uint64_t frame_info_value = base_value << 29;
+        uint64_t frame_info_value = base_value << 30;
         
         frame_info[i] = frame_info_value;
         printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", i, current_x, current_y, sprite_id);
