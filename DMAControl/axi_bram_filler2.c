@@ -45,9 +45,9 @@ int main() {
     volatile uint64_t *lookup_table = (volatile uint64_t *)lookup_table_ptr;
     volatile uint64_t *frame_info = (volatile uint64_t *)frame_info_ptr;
 
-    const int NUM_SPRITES = 8;
+    const int NUM_SPRITES = 1;
     const uint16_t SPRITE_WIDTH = 400;
-    const uint16_t SPRITE_HEIGHT = 100;
+    const uint16_t SPRITE_HEIGHT = 400;
     uint16_t current_x = 0;
     uint16_t current_y = 0;
 
@@ -58,7 +58,7 @@ int main() {
 
     // Write frame info entries
     for (int i = 1; i <= NUM_SPRITES; ++i) {
-        uint32_t sprite_id = 1;
+        uint32_t sprite_id = 0;
 
         // Write to frame_info BRAM (64-bit word)
         // Format: X position and Y position in lower bits
@@ -82,12 +82,13 @@ int main() {
                             ((uint64_t)(SPRITE_HEIGHT & 0x7FF) << 12) | // Height (11 bits)
                             (SPRITE_WIDTH & 0xFFF);                     // Width (12 bits)
     
-    lookup_table[1] = lookup_value;
+    lookup_table[0] = lookup_value;
     printf("Wrote lookup entry: base=0x%08X, height=%u, width=%u\n", 
             aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
     
     // Add termination marker
-    frame_info[NUM_SPRITES + 1] = 0xFFFFFFFFFFFFFFFF;  // All 1s as termination marker
+    // Combine frame data (bits 0..33) with termination marker (bits 34..66)
+    frame_info[0] = frame_info[0] & 0x3FFFFFFFF; // lower 34 bits (frame data)
     printf("Added termination marker at frame_info[%d]\n", NUM_SPRITES + 1);
 
     // Unmap both regions
