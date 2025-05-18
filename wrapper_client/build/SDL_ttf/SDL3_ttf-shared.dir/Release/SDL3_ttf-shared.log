@@ -1,9 +1,0 @@
-﻿  Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_ttf/CMakeLists.txt
-  SDL_hashtable.c
-  SDL_hashtable_ttf.c
-  SDL_gpu_textengine.c
-  SDL_renderer_textengine.c
-  SDL_surface_textengine.c
-  SDL_ttf.c
-     Creating library D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_ttf/Release/SDL3_ttf.lib and object D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_ttf/Release/SDL3_ttf.exp
-  SDL3_ttf-shared.vcxproj -> D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SDL3_ttf.dll
