@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\x64\Release\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SDL3.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\tiff.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SDL3_image.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SDL3_mixer.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SDL3_ttf.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\github\SagaOfSacrifice2\wrapper_client\build\Release\SagaOfSacrifice2.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

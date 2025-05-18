@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\4e3bcdc6fffa822f92f7d69de8182535\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C7F7479A-8F02-31AA-B1F0-BA71FE9FF8DB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

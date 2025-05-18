@@ -1,0 +1,15 @@
+# CMake generation dependency list for this directory.
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakeDependentOption.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakeParseArguments.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakePushCheckState.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCCompilerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/GNUInstallDirs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/CMakeLists.txt
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/cmake/GetGitRevisionDescription.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/cmake/PrivateSdlFunctions.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/cmake/sdlcpu.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/cmake/sdlmanpages.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL_image/cmake/sdlplatform.cmake

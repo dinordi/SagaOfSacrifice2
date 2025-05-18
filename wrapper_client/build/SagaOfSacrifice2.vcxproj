@@ -1,0 +1,3114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5144FE7D-5191-3D40-BB42-53C9E2417FE8}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>SagaOfSacrifice2</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SagaOfSacrifice2.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SagaOfSacrifice2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SagaOfSacrifice2.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SagaOfSacrifice2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">SagaOfSacrifice2.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">SagaOfSacrifice2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">SagaOfSacrifice2.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">SagaOfSacrifice2</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/boost_1_88_0/boost_1_88_0"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <Message>Creating SOS/assets directory	Creating directory SOS/assets/backgrounds	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/backgrounds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>																																	</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/src/Inter-VariableFont.ttf D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/Inter-VariableFont.ttf
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/backgrounds/background.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/backgrounds/background.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/02/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/03/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/04/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/menu.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/music/menu/menu.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/jump.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/jump.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/walking.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sfx/walking.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/1.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/1.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/11.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/11.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/12.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/12.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/5.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/5.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/Orange_white_lines.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/Orange_white_lines.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/Solid_blue.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/Solid_blue.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/bullet.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/bullet.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/fatbat.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/fatbat.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/gradient_test.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/gradient_test.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/grid.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/grid.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/letters.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/letters.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/player.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/player.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/playerBig.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/playerBig.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/playermap.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/playermap.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/pride.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/pride.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/samurai.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/samurai.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/teleporter.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/teleporter.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/tiles.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/tiles.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/tung.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/tung.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/werewolfman.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SOS/assets/sprites/werewolfman.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>SDL_ttf\Debug\SDL3_ttf.lib;SDL_mixer\Debug\SDL3_mixer.lib;SDL_image\Debug\SDL3_image.lib;SDL\Debug\SDL3.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_system-vc143-mt-gd-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_thread-vc143-mt-gd-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_chrono-vc143-mt-gd-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_atomic-vc143-mt-gd-x64-1_88.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SagaOfSacrifice2.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SagaOfSacrifice2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/boost_1_88_0/boost_1_88_0"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <Message>Creating SOS/assets directory	Creating directory SOS/assets/backgrounds	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/backgrounds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>																																	</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/src/Inter-VariableFont.ttf D:/github/SagaOfSacrifice2/wrapper_client/build/Release/Inter-VariableFont.ttf
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/backgrounds/background.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/backgrounds/background.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/02/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/03/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/04/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/menu.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/music/menu/menu.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/jump.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/jump.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/walking.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sfx/walking.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/1.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/1.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/11.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/11.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/12.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/12.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/5.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/5.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/Orange_white_lines.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/Orange_white_lines.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/Solid_blue.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/Solid_blue.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/bullet.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/bullet.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/fatbat.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/fatbat.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/gradient_test.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/gradient_test.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/grid.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/grid.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/letters.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/letters.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/player.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/player.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/playerBig.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/playerBig.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/playermap.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/playermap.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/pride.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/pride.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/samurai.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/samurai.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/teleporter.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/teleporter.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/tiles.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/tiles.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/tung.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/tung.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png to D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/werewolfman.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SOS/assets/sprites/werewolfman.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>SDL_ttf\Release\SDL3_ttf.lib;SDL_mixer\Release\SDL3_mixer.lib;SDL_image\Release\SDL3_image.lib;SDL\Release\SDL3.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_system-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_thread-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_chrono-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_atomic-vc143-mt-x64-1_88.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SagaOfSacrifice2.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SagaOfSacrifice2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/boost_1_88_0/boost_1_88_0"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <Message>Creating SOS/assets directory	Creating directory SOS/assets/backgrounds	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/backgrounds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>																																	</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/src/Inter-VariableFont.ttf D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/Inter-VariableFont.ttf
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/backgrounds/background.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/backgrounds/background.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/02/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/03/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/04/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/menu.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/music/menu/menu.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/jump.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/jump.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/walking.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sfx/walking.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/1.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/1.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/11.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/11.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/12.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/12.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/5.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/5.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/Orange_white_lines.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/Orange_white_lines.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/Solid_blue.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/Solid_blue.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/bullet.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/bullet.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/fatbat.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/fatbat.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/gradient_test.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/gradient_test.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/grid.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/grid.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/letters.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/letters.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/player.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/player.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/playerBig.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/playerBig.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/playermap.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/playermap.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/pride.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/pride.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/samurai.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/samurai.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/teleporter.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/teleporter.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/tiles.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/tiles.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/tung.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/tung.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png to D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/werewolfman.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SOS/assets/sprites/werewolfman.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>SDL_ttf\MinSizeRel\SDL3_ttf.lib;SDL_mixer\MinSizeRel\SDL3_mixer.lib;SDL_image\MinSizeRel\SDL3_image.lib;SDL\MinSizeRel\SDL3.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_system-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_thread-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_chrono-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_atomic-vc143-mt-x64-1_88.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SagaOfSacrifice2.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SagaOfSacrifice2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/boost_1_88_0/boost_1_88_0"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SDL_MAIN_USE_CALLBACKS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\src\collision;D:\github\SagaOfSacrifice2\wrapper_client\src;D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides;D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\include;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_image\include;D:\boost_1_88_0\boost_1_88_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <Message>Creating SOS/assets directory	Creating directory SOS/assets/backgrounds	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/02	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/03	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/04	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/music/menu	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sfx	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites	Creating directory SOS/assets/sprites</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/backgrounds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E make_directory D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Message>																																	</Message>
+      <Command>setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/src/Inter-VariableFont.ttf D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/Inter-VariableFont.ttf
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/backgrounds/background.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/backgrounds/background.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/backgrounds/background.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/02/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/02/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/03/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/03/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04/002.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/04/002.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/04/002.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/001.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/001.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/menu.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/music/menu/menu.wav D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/music/menu/menu.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/001.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/001.wav D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/001.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/jump.wav"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/jump.wav D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/jump.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/walking.mp3"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sfx/walking.mp3 D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sfx/walking.mp3
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/1.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/1.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/1.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/11.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/11.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/11.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/12.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/12.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/12.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/5.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/5.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/5.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/Orange_white_lines.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Orange_white_lines.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/Orange_white_lines.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/Solid_blue.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/Solid_blue.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/Solid_blue.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/bullet.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/bullet.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/bullet.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/fatbat.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/fatbat.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/fatbat.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/gradient_test.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/gradient_test.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/gradient_test.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/grid.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/grid.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/grid.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/letters.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/letters.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/letters.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/player.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/player.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/player.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/playerBig.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playerBig.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/playerBig.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/playermap.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/playermap.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/playermap.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/pride.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/pride.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/pride.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/samurai.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/samurai.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/samurai.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/teleporter.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/teleporter.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/teleporter.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/tiles.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tiles.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/tiles.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/tung.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/tung.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/tung.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E echo "Copying D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png to D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/werewolfman.png"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different D:/github/SagaOfSacrifice2/wrapper_client/../SOS/assets/sprites/werewolfman.png D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SOS/assets/sprites/werewolfman.png
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>SDL_ttf\RelWithDebInfo\SDL3_ttf.lib;SDL_mixer\RelWithDebInfo\SDL3_mixer.lib;SDL_image\RelWithDebInfo\SDL3_image.lib;SDL\RelWithDebInfo\SDL3.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_system-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_thread-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_chrono-vc143-mt-x64-1_88.lib;D:\boost_1_88_0\boost_1_88_0\stage\lib\libboost_atomic-vc143-mt-x64-1_88.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SagaOfSacrifice2.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SagaOfSacrifice2.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\github\SagaOfSacrifice2\wrapper_client\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeInitializeConfigs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeLanguageInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckLibraryExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindBoost.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindThreads.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-Initialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\WindowsPaths.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCXXCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeRCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeInitializeConfigs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeLanguageInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckLibraryExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindBoost.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindThreads.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-Initialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\WindowsPaths.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCXXCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeRCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeInitializeConfigs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeLanguageInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckLibraryExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindBoost.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindThreads.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-Initialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\WindowsPaths.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCXXCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeRCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeInitializeConfigs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeLanguageInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckLibraryExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Compiler\MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindBoost.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\FindThreads.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-Initialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\Platform\WindowsPaths.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeCXXCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeRCCompiler.cmake;D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\3.28.1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\LocalServerManager.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\Object.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\animation.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\collision\CollisionHandler.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\collision\CollisionManager.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\game.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\interfaces\AudioManager.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\logging\logger.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\network\AsioNetworkClient.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\network\EmbeddedServer.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\network\MultiplayerManager.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\objects\enemy.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\objects\entity.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\objects\platform.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\objects\player.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\sprite_data.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\SOS\src\utils\TimeUtils.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\src\SDL3AudioManager.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides\logger_sdl.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\src\game_overrides\sdl_input.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\src\main.cpp" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\src\sprites_sdl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\ZERO_CHECK.vcxproj">
+      <Project>{DC5F3EA9-0A9B-30CF-B441-FA3FC9FF5D84}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\SDL3-shared.vcxproj">
+      <Project>{758C309A-75F2-3B1C-9B5D-43DD242594D7}</Project>
+      <Name>SDL3-shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_image\SDL3_image-shared.vcxproj">
+      <Project>{20A00472-99D2-31A3-97D8-FDD9B0543BA1}</Project>
+      <Name>SDL3_image-shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_mixer\SDL3_mixer-shared.vcxproj">
+      <Project>{FC196D8D-5236-348E-8905-5CF0A5A4AAD3}</Project>
+      <Name>SDL3_mixer-shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_ttf\SDL3_ttf-shared.vcxproj">
+      <Project>{448F2F3F-1FCA-3A9B-A081-B6DC3901B57B}</Project>
+      <Name>SDL3_ttf-shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

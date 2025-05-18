@@ -1,0 +1,6 @@
+﻿  Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_ttf/external/harfbuzz/CMakeLists.txt
+  harfbuzz.cc
+D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\external\harfbuzz\src\hb-ms-feature-ranges.hh(156,34): warning C4312: 'reinterpret_cast': conversion from 'unsigned int' to 'hb_ms_feature_t *' of greater size
+  (compiling source file '../../../../SDL_ttf/external/harfbuzz/src/harfbuzz.cc')
+  
+  harfbuzz.vcxproj -> D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_ttf\external\harfbuzz-build\Release\harfbuzz.lib

@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FC196D8D-5236-348E-8905-5CF0A5A4AAD3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>SDL3_mixer-shared</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SDL3_mixer-shared.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">SDL3_mixer</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SDL3_mixer-shared.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SDL3_mixer</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">SDL3_mixer-shared.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">SDL3_mixer</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">SDL3_mixer-shared.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">SDL3_mixer</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR="Debug";DLL_EXPORT</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR=\"Debug\";DLL_EXPORT</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\SDL\Debug\SDL3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/Debug/SDL3_mixer.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/Debug/SDL3_mixer.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR="Release";DLL_EXPORT</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR=\"Release\";DLL_EXPORT</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\SDL\Release\SDL3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/Release/SDL3_mixer.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/Release/SDL3_mixer.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR="MinSizeRel";DLL_EXPORT</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR=\"MinSizeRel\";DLL_EXPORT</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\SDL\MinSizeRel\SDL3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/MinSizeRel/SDL3_mixer.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/MinSizeRel/SDL3_mixer.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR="RelWithDebInfo";DLL_EXPORT</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BUILD_SDL;SDL_BUILD_MAJOR_VERSION=3;SDL_BUILD_MINOR_VERSION=0;SDL_BUILD_MICRO_VERSION=0;MUSIC_OGG;OGG_USE_STB;MUSIC_FLAC_DRFLAC;MUSIC_MP3_DRMP3;MUSIC_MID_TIMIDITY;MUSIC_WAV;CMAKE_INTDIR=\"RelWithDebInfo\";DLL_EXPORT</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\logging;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\interfaces;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\collision;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\objects;D:\github\SagaOfSacrifice2\wrapper_client\..\SOS\include\utils;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\include;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs;D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\include-revision;D:\github\SagaOfSacrifice2\wrapper_client\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\SDL\RelWithDebInfo\SDL3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/RelWithDebInfo/SDL3_mixer.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/github/SagaOfSacrifice2/wrapper_client/build/RelWithDebInfo/SDL3_mixer.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_mixer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeDependentOption.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePushCheckState.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCCompilerFlag.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckSymbolExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\GNUInstallDirs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\WriteBasicConfigVersionFile.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\GetGitRevisionDescription.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PkgConfigHelper.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PrivateSdlFunctions.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlcpu.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlmanpages.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlplatform.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_mixer\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_mixer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeDependentOption.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePushCheckState.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCCompilerFlag.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckSymbolExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\GNUInstallDirs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\WriteBasicConfigVersionFile.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\GetGitRevisionDescription.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PkgConfigHelper.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PrivateSdlFunctions.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlcpu.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlmanpages.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlplatform.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_mixer\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_mixer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeDependentOption.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePushCheckState.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCCompilerFlag.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckSymbolExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\GNUInstallDirs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\WriteBasicConfigVersionFile.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\GetGitRevisionDescription.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PkgConfigHelper.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PrivateSdlFunctions.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlcpu.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlmanpages.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlplatform.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_mixer\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_mixer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -SD:/github/SagaOfSacrifice2/wrapper_client -BD:/github/SagaOfSacrifice2/wrapper_client/build --check-stamp-file D:/github/SagaOfSacrifice2/wrapper_client/build/SDL_mixer/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeDependentOption.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CMakePushCheckState.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCCompilerFlag.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckCSourceCompiles.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\CheckSymbolExists.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\GNUInstallDirs.cmake;C:\Program Files (x86)\CMake\share\cmake-3.28\Modules\WriteBasicConfigVersionFile.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\GetGitRevisionDescription.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PkgConfigHelper.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\PrivateSdlFunctions.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlcpu.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlmanpages.cmake;D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\cmake\sdlplatform.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_mixer\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\load_aiff.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\load_voc.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\load_sndfile.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\mp3utils.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_drflac.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_drmp3.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_flac.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_fluidsynth.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_gme.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_mpg123.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_nativemidi.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_ogg.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_ogg_stb.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_opus.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_timidity.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_wav.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_wavpack.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\music_xmp.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\effect_position.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\effect_stereoreverse.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\effects_internal.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\mixer.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\music.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\utils.c" />
+    <ResourceCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\version.rc" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\common.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\instrum.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\mix.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\output.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\playmidi.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\readmidi.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\resample.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\tables.c" />
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_mixer\src\codecs\timidity\timidity.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\ZERO_CHECK.vcxproj">
+      <Project>{DC5F3EA9-0A9B-30CF-B441-FA3FC9FF5D84}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\github\SagaOfSacrifice2\wrapper_client\build\SDL\SDL3-shared.vcxproj">
+      <Project>{758C309A-75F2-3B1C-9B5D-43DD242594D7}</Project>
+      <Name>SDL3-shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

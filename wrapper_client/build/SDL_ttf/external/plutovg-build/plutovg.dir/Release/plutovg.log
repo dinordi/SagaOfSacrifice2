@@ -1,0 +1,13 @@
+﻿  Building Custom Rule D:/github/SagaOfSacrifice2/wrapper_client/SDL_ttf/external/plutovg/CMakeLists.txt
+  plutovg-blend.c
+  plutovg-canvas.c
+  plutovg-font.c
+  plutovg-matrix.c
+  plutovg-paint.c
+  plutovg-path.c
+  plutovg-rasterize.c
+  plutovg-surface.c
+  plutovg-ft-math.c
+  plutovg-ft-raster.c
+  plutovg-ft-stroker.c
+  plutovg.vcxproj -> D:\github\SagaOfSacrifice2\wrapper_client\build\SDL_ttf\external\plutovg-build\Release\plutovg.lib

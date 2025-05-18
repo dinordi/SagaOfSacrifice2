@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_hashtable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_hashtable_ttf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_gpu_textengine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_renderer_textengine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_surface_textengine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\SDL_ttf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\github\SagaOfSacrifice2\wrapper_client\SDL_ttf\src\version.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{76BCADEF-170A-3F38-B0B5-759CD3F533E3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

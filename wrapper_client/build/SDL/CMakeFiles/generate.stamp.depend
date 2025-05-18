@@ -1,0 +1,51 @@
+# CMake generation dependency list for this directory.
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakeDependentOption.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakeParseArguments.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CMakePushCheckState.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCCompilerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCSourceRuns.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCXXCompilerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckCXXSourceCompiles.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckIncludeFile.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckLanguage.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckLibraryExists.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckLinkerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckSourceCompiles.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckStructHasMember.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/CheckSymbolExists.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/FindGit.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/FindPackageMessage.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/FindPkgConfig.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/GNUInstallDirs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/Internal/CheckCompilerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/Internal/CheckFlagCommonConfig.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/Internal/CheckLinkerFlag.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/Internal/CheckSourceRuns.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake
+D:/github/SagaOfSacrifice2/.git/HEAD
+D:/github/SagaOfSacrifice2/.git/modules/wrapper_client/SDL/HEAD
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/CMakeLists.txt
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/3rdparty.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/FindLibUSB.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/GetGitRevisionDescription.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/GetGitRevisionDescription.cmake.in
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/PreseedEmscriptenCache.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/PreseedMSVCCache.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/SDL3Config.cmake.in
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/macros.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlchecks.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlcommands.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlcompilers.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlcpu.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlmanpages.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/cmake/sdlplatform.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/include/build_config/SDL_build_config.h.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/SDL/include/build_config/SDL_revision.h.cmake
+D:/github/SagaOfSacrifice2/wrapper_client/build/SDL/CMakeFiles/SDL_build_config.h.intermediate
+D:/github/SagaOfSacrifice2/wrapper_client/build/SDL/CMakeFiles/git-data/grabRef.cmake
