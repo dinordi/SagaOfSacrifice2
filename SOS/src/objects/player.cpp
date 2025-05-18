@@ -100,7 +100,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
     // Handle player input here
     Vec2 vel = getvelocity();
     
-    float movementSpeed = 200.0f; // Set movement speed
+    float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
         vel.x = -movementSpeed; // Move left

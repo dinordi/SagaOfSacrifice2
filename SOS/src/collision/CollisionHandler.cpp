@@ -52,17 +52,17 @@ void CollisionHandler::handleInteraction(Player* player) {
         // Player landed on platform
         Vec2 pos = player->getposition();
         Vec2 vel = player->getvelocity();
-        if (info.penetrationVector.y > 0) {
+        // Static cast to Platform to access platform-specific properties
+        Platform* platform = static_cast<Platform*>(initiator);
+
+
+        // Check flags for platform collision
+        if (platform->hasFlag(Platform::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
             // Coming from above
             pos.y -= info.penetrationVector.y;
-            vel.y = 0;
-        } else if (info.penetrationVector.x != 0) {
+        } else if (platform->hasFlag(Platform::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
             // Side collision
-            pos.x += info.penetrationVector.x;
-        } else if (info.penetrationVector.y < 0) {
-            // Hitting head on platform
-            // player->position.y += info.penetrationVector.y;
-            // player->velocity.y = 0;
+            pos.x -= info.penetrationVector.x;
         }
 
         player->setposition(pos);

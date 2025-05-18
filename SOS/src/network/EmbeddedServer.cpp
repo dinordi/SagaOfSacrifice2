@@ -738,17 +738,20 @@ void EmbeddedServer::createInitialGameObjects() {
     auto platform = std::make_shared<Platform>(400, 500, 
                                              new SpriteData(std::string("tiles"), 128, 128, 1),
                                              "platform_ground");
+    platform->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform);
     
     // Add more platforms as needed
     auto platform2 = std::make_shared<Platform>(200, 500, 
                                               new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_1");
+    platform2->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform2);
     
     auto platform3 = std::make_shared<Platform>(600, 500, 
                                               new SpriteData(std::string("tiles"), 128, 128, 1),
                                               "platform_2");
+    platform3->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform3);
 }
 
