@@ -29,4 +29,5 @@ private:
     bool isAttacking;
     bool isJumping;
     uint32_t attackTimer;
+    bool wasMoving = false; // Track previous movement state for modular audio
 };

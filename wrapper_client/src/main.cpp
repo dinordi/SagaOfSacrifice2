@@ -201,16 +201,17 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     Logger::getInstance()->log("Logger started successfully!");
 
-    PlayerInput* input = new SDLInput(getGamepad());
-
-    // Initialize AudioManager
+    PlayerInput* input = new SDLInput(getGamepad());    // Initialize AudioManager
     AudioManager& audio = SDL3AudioManager::Instance();
+    // Set the global AudioManager instance to point to our SDL3AudioManager implementation
+    AudioManager::SetInstance(&audio);
     
-
     if(audio.initialize(basePathSOS.string())){
         SDL_Log("AudioManager initialized successfully!");
         audio.loadMusic("SOS/assets/music/menu/001.mp3");
+        audio.loadSound("SOS/assets/sfx/walking.mp3");
         audio.playMusic();
+
     }
     else
     {

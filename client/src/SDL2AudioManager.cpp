@@ -97,6 +97,23 @@ bool SDL2AudioManager::loadSound(const std::string& filePath) {
     return true;
 }
 
+bool SDL2AudioManager::unloadSound(const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot unload sound." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        Mix_FreeChunk(it->second);
+        mSoundEffects.erase(it);
+        std::cout << "Unloaded sound (SDL2): " << soundName << std::endl;
+        return true;
+    } else {
+        std::cerr << "Sound not found (SDL2): " << soundName << std::endl;
+        return false;
+    }
+}
+
 bool SDL2AudioManager::playSound(const std::string& soundName) {
     if (!mInitialized) {
         std::cerr << "AudioManager (SDL2) not initialized. Cannot play sound." << std::endl;
