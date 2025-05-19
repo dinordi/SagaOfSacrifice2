@@ -31,6 +31,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include/fpga)
 include_directories(${PROJECT_SOURCE_DIR}/include/objects)
 include_directories(${PROJECT_SOURCE_DIR}/include/logging)
 include_directories(${PROJECT_SOURCE_DIR}/include/network)
+include_directories(${PROJECT_SOURCE_DIR}/include/level)
+include_directories(${PROJECT_SOURCE_DIR}/include/level_manager)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Echo the include directories for debugging

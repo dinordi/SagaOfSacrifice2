@@ -1,4 +1,4 @@
-#include "objects/Enemy.h"
+#include "objects/enemy.h"
 #include <iostream>
 
 Enemy::Enemy( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID) {
