@@ -1,8 +1,9 @@
 #include "objects/platform.h"
 
-Platform::Platform(int x, int y, SpriteData* spData, std::string objID) : Object(Vec2(x, y), ObjectType::PLATFORM, spData, objID) {
+Platform::Platform(int x, int y, std::string objID) : Object(Vec2(x, y), ObjectType::PLATFORM, objID) {
     // Initialize platform-specific attributes here
     // platformType = PlatformType::GROUND; // Default type
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("tiles", 128, 128, 1));
 }
 
 // bool Platform::collisionWith(Object* other) {

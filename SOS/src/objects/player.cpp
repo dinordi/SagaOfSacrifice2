@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
+Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID), 
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
@@ -16,8 +16,20 @@ void Player::setupAnimations() {
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
     
     // Example animation setup - adjust these based on your actual sprite sheet
-    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 250, true);        // Idle animation (2 frames)
-    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 150, true);      // Walking animation (3 frames)
+    
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1));
+    addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+    
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9));
+    addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
     
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -59,17 +71,17 @@ void Player::update(float deltaTime) {
     
     // Set direction based on horizontal velocity
     if (vel.x > 0) {
-        dir = FacingDirection::RIGHT;
+        dir = FacingDirection::EAST;
     } 
     else if (vel.x < 0) {
-        dir = FacingDirection::LEFT;
+        dir = FacingDirection::WEST;
     }
 
     if (vel.y < 0) {
-        dir = FacingDirection::UP;
+        dir = FacingDirection:: NORTH;
     } 
     else if (vel.y > 0) {
-        dir = FacingDirection::DOWN;
+        dir = FacingDirection::SOUTH;
     }
     
     // Handle attack timer

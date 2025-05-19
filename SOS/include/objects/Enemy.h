@@ -5,7 +5,7 @@
 
 class Enemy : public Entity {
 public:
-    Enemy(Vec2 pos, SpriteData* spData, std::string objID);
+    Enemy(Vec2 pos, std::string objID);
 
     int health;
 

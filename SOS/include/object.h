@@ -22,25 +22,18 @@ enum class ObjectType {
     ENEMY
 };
 
-enum class FacingDirection {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
-
 class Object {
 public:
-    // Vec2 position;
-    // Vec2 velocity;
     const ObjectType type;
-    const SpriteData* spriteData;
-    Object(Vec2 pos, ObjectType type, SpriteData* spData, std::string ID);
+    Object(Vec2 pos, ObjectType type, std::string ID);
     virtual ~Object() = default;
 
     virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
     
+    void addSpriteSheet(AnimationState state, SpriteData* spData);
+    const SpriteData* getCurrentSpriteData() const;
+
     // Animation methods
     void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
@@ -52,6 +45,7 @@ protected:
     AnimationController animController;
     FacingDirection dir;
     
+    std::unordered_map<AnimationState, SpriteData*> spriteSheets;
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
     DEFINE_GETTER_SETTER(Vec2, velocity);

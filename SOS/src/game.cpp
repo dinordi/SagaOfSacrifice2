@@ -35,7 +35,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // Initialize game objects
     // Note: in server-authoritative mode, object creation will be managed by the server
     // but we still need to initialize the local player for input and rendering
-    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), playerID);
+    player = new Player(Vec2(500,100), playerID);
     player->setInput(input);
     objects.push_back(std::shared_ptr<Player>(player));
 }

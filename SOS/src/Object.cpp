@@ -2,8 +2,10 @@
 #include "sprite_data.h"
 #include "platform.h"
 
-Object::Object( Vec2 pos, ObjectType type, SpriteData* spData, std::string ID)
-    : position(pos), type(type), spriteData(spData), dir(FacingDirection::RIGHT), ObjID(ID)
+#include <iostream>
+
+Object::Object( Vec2 pos, ObjectType type, std::string ID)
+    : position(pos), type(type), dir(FacingDirection::EAST), ObjID(ID)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;
@@ -15,7 +17,7 @@ Object::Object( Vec2 pos, ObjectType type, SpriteData* spData, std::string ID)
 
 // Animation methods implementation
 void Object::updateAnimation(float deltaTime) {
-    animController.update(deltaTime);
+    animController.update(deltaTime, dir);
 }
 
 void Object::setAnimationState(AnimationState state) {
@@ -23,7 +25,11 @@ void Object::setAnimationState(AnimationState state) {
 }
 
 int Object::getCurrentSpriteIndex() const {
-    return animController.getCurrentFrame();
+    int index = animController.getCurrentFrame(dir);
+    if(getCurrentSpriteData()->getid_() == "player_walking")
+        std::cout << "Current sprite index: " << dir 
+                  << "\nState: " << animController.getCurrentState() << std::endl;
+    return index;
 }
 
 /*
@@ -43,9 +49,22 @@ void Object::addAnimation(AnimationState state, int startFrame, int frameCount,
     animController.addAnimation(state, def);
 }
 
-// void Object::handlePlatformCollision(Platform* platform) {
-    // virtual Method 
-// }
+void Object::addSpriteSheet(AnimationState state, SpriteData* spData) {
+    spriteSheets[state] = spData;
+}
+
+const SpriteData* Object::getCurrentSpriteData() const {
+    auto it = spriteSheets.find(animController.getCurrentState());
+    if (it != spriteSheets.end()) {
+        return it->second;
+    }
+    auto defaultIt = spriteSheets.find(AnimationState::IDLE);
+    if (defaultIt != spriteSheets.end()) {
+        return defaultIt->second;
+    }
+    std::cout << "No sprite data found for the current state: " << static_cast<int>(animController.getCurrentState()) << std::endl;
+    return nullptr; // No sprite data found for the current state
+}
 
 
 Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteIndex(spriteIndex)

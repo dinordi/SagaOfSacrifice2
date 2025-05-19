@@ -12,7 +12,7 @@ extern uint32_t get_ticks();
 
 // RemotePlayer implementation
 RemotePlayer::RemotePlayer(const std::string& id) 
-    : Object(Vec2(0,0), ObjectType::ENTITY, new SpriteData(std::string("playermap"), 128, 128, 5), id), 
+    : Object(Vec2(0,0), ObjectType::ENTITY, id), 
       id_(id),
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
@@ -455,8 +455,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     if (!found) {
                         // Create new platform
                         std::shared_ptr<Platform> platform = std::make_shared<Platform>(
-                            posX, posY, 
-                            new SpriteData(std::string("tiles"), width, height, 4),
+                            posX, posY,
                             objectId
                         );
                         newObjects.push_back(platform);

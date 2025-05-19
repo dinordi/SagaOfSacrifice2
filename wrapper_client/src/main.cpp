@@ -407,16 +407,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
         
-        if (!entity || !entity->spriteData) continue; // Basic safety check
+        if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
         SDL_Texture* sprite_tex = nullptr;
         // if(printID)
         // {
         //     SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
         // }
         // Get the pre-loaded sprite info from the map
-        auto it = spriteMap2.find(entity->spriteData->getid_());
+        auto it = spriteMap2.find(entity->getCurrentSpriteData()->getid_());
         if (it == spriteMap2.end()) {
-             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->spriteData->getid_().c_str());
+             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Object", entity->getCurrentSpriteData()->getid_().c_str());
             //  continue; // Skip rendering if sprite not found
             sprite_tex = spriteMap2["fatbat.png"];
         }
@@ -427,7 +427,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
-        const SpriteRect& currentSpriteRect = entity->spriteData->getSpriteRect(spriteIndex);
+        const SpriteRect& currentSpriteRect = entity->getCurrentSpriteData()->getSpriteRect(spriteIndex);
         
         SDL_FRect srcRect = {
             static_cast<float>(currentSpriteRect.x),
@@ -436,16 +436,28 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(currentSpriteRect.h)
         };
 
-        bool isFacingRight = entity->getDir() == FacingDirection::RIGHT;
+        bool swap = false;
+        switch(entity->getDir())
+        {
+            case FacingDirection::EAST:
+                // swap = true;
+                break;
+            case FacingDirection::SOUTH_WEST:
+                // swap = true;
+                break;
+            default:
+                break;
+        }
+
         SDL_FRect destRect{
             .x = static_cast<float>(entity->getposition().x),
             .y = static_cast<float>(entity->getposition().y),
-            .w = static_cast<float>(currentSpriteRect.w * (isFacingRight ? 1.0f : -1.0f)),
+            .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };
 
         // Adjust the dest rect's position when flipped
-        if (!isFacingRight) {
+        if (swap) {
             destRect.x -= destRect.w; // Adjust x position when flipped
         }
 

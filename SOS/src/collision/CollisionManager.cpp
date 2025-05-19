@@ -11,8 +11,8 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             Object* objB = gameObjects[j].get();
 
             // Get the sprite dimensions for collision detection
-            const SpriteRect spriteA = objA->spriteData->getSpriteRect(1);
-            const SpriteRect spriteB = objB->spriteData->getSpriteRect(1);
+            const SpriteRect spriteA = objA->getCurrentSpriteData()->getSpriteRect(1);
+            const SpriteRect spriteB = objB->getCurrentSpriteData()->getSpriteRect(1);
 
             // if (!spriteA || !spriteB) 
             // {

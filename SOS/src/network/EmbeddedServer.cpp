@@ -595,7 +595,6 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     
     // Create a new player object
     auto player = std::make_shared<Player>(Vec2(500, 100), 
-                                           new SpriteData(std::string("playermap"), 128, 128, 5), 
                                            playerId);
     TempInput* input = new TempInput();
     input->setInputs(false, false, false, false, false); // Initialize inputs to false
@@ -735,21 +734,18 @@ void EmbeddedServer::createInitialGameObjects() {
     players_.clear();
     
     // Create platform at the bottom of the screen
-    auto platform = std::make_shared<Platform>(400, 500, 
-                                             new SpriteData(std::string("tiles"), 128, 128, 1),
+    auto platform = std::make_shared<Platform>(400, 500,
                                              "platform_ground");
     platform->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform);
     
     // Add more platforms as needed
-    auto platform2 = std::make_shared<Platform>(200, 500, 
-                                              new SpriteData(std::string("tiles"), 128, 128, 1),
+    auto platform2 = std::make_shared<Platform>(200, 500,
                                               "platform_1");
     platform2->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform2);
     
-    auto platform3 = std::make_shared<Platform>(600, 500, 
-                                              new SpriteData(std::string("tiles"), 128, 128, 1),
+    auto platform3 = std::make_shared<Platform>(600, 500,
                                               "platform_2");
     platform3->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform3);
@@ -857,8 +853,8 @@ void EmbeddedServer::sendGameStateToClients() {
                 Platform* platform = dynamic_cast<Platform*>(object.get());
                 if (platform) {
                     // Add platform width and height
-                    float width = platform->spriteData->width;
-                    float height = platform->spriteData->height;
+                    float width = platform->getCurrentSpriteData()->width;
+                    float height = platform->getCurrentSpriteData()->height;
                     
                     uint8_t* widthBytes = reinterpret_cast<uint8_t*>(&width);
                     uint8_t* heightBytes = reinterpret_cast<uint8_t*>(&height);
