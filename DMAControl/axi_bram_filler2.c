@@ -63,17 +63,12 @@ int main() {
     uint64_t base_lookup_value = (((uint64_t)aligned_sprite_base) << 23) | // Base address in upper bits
                                 ((uint64_t)(SPRITE_HEIGHT) << 12) | // Height (11 bits)
                                 (SPRITE_WIDTH);                     // Width (12 bits)
-    
-    // Now shift left by 9 bits to align with the MSB of the 64-bit word
-    // (64 - 55 = 9 bits of shift needed)
-    uint64_t lookup_value = base_lookup_value << 9;
-    
-    lookup_table[0] = lookup_value;
-    printf("Lookup table: original=0x%016llX, shifted=0x%016llX (shifted left by 9 bits)\n",
-           base_lookup_value, lookup_value);
-    
+
+    lookup_table[0] = base_lookup_value;
+    printf("Lookup table: original=0x%016llX\n", base_lookup_value);
+
     // Write frame info entries
-    for (int i = 1; i <= NUM_SPRITES; ++i) {
+    for (int i = 0; i < NUM_SPRITES; i++) {
         uint32_t sprite_id = 0;
 
         // Ensure values fit within their intended bit fields
@@ -83,15 +78,10 @@ int main() {
         
         // First construct the 34-bit value (without shifting)
         uint64_t base_value = (x_pos << 22) | (y_pos << 11) | id;
-        
-        // Then shift it by 30 bits to align with the MSB of the 64-bit word
-        // (64 - 34 = 30 bits of shift needed)
-        uint64_t frame_info_value = base_value << 30;
-        
-        frame_info[i] = frame_info_value;
+
+        frame_info[i] = base_value;
         printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", i, current_x, current_y, sprite_id);
         printf("  Original value (hex): 0x%016llX\n", base_value);
-        printf("  Shifted value (hex): 0x%016llX (shifted left by 30 bits)\n", frame_info_value);
 
         // Update for next sprite (diagonal pattern)
         current_x += 100;
@@ -110,12 +100,9 @@ int main() {
             aligned_sprite_base, SPRITE_HEIGHT, SPRITE_WIDTH);
     
     // Add termination marker properly
-    // Set frame_info[0] to all 1s (64 bits)
-    frame_info[0] |= 0xFFFFFFFFFFFFFFFF;
+    // Set frame_info[1] to all 1s (64 bits)
+    frame_info[1] = 0xFFFFFFFFFFFFFFFF;
     
-    // Set only the 3 most significant bits of frame_info[1] to 1s
-    // while preserving the rest of the bits (the valid sprite data)
-    frame_info[1] |= 0xE000000000000000; // 0xE = 0b1110 (3 most significant bits)
     
     printf("*** FRAME INFO VALUES (64-bit) ***\n");
     printf("  frame_info[0]=0x%016llX\n", frame_info[0]);
