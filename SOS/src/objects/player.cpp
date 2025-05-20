@@ -3,7 +3,7 @@
 
 
 Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID),
-    health(100), isAttacking(false), isJumping(false), attackTimer(0) {
+    health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
@@ -17,19 +17,26 @@ void Player::setupAnimations() {
 
     // Example animation setup - adjust these based on your actual sprite sheet
 
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1), 250, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 100, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9), 150, true);
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -37,11 +44,16 @@ void Player::setupAnimations() {
 
 void Player::updateAnimationState() {
 
+    if(isAttacking) {
+        setAnimationState(AnimationState::ATTACKING);
+        return;
+    }
     if (isMoving()) {
         setAnimationState(AnimationState::WALKING);
     } else {
         setAnimationState(AnimationState::IDLE);
     }
+
 
 }
 
@@ -75,27 +87,31 @@ void Player::update(float deltaTime) {
     pos.y += vel.y * deltaTime;
 
 
-    // Set direction based on horizontal velocity
+    // Set direction based on horizontal and vertical velocity
     if (vel.x > 0) {
         dir = FacingDirection::EAST;
-    }
-    else if (vel.x < 0) {
+    } else if (vel.x < 0) {
         dir = FacingDirection::WEST;
-    }
-
-    if (vel.y < 0) {
-        dir = FacingDirection:: NORTH;
-    }
-    else if (vel.y > 0) {
+    } else if (vel.y > 0) {
         dir = FacingDirection::SOUTH;
+    } else if (vel.y < 0) {
+        dir = FacingDirection::NORTH;
+    } else if (vel.x < 0 && vel.y < 0) {
+        dir = FacingDirection::NORTH_WEST;
+    } else if (vel.x > 0 && vel.y < 0) {
+        dir = FacingDirection::NORTH_EAST;
+    } else if (vel.x < 0 && vel.y > 0) {
+        dir = FacingDirection::SOUTH_WEST;
+    } else if (vel.x > 0 && vel.y > 0) {
+        dir = FacingDirection::SOUTH_EAST;
     }
 
     // Handle attack timer
     if (isAttacking) {
         attackTimer += deltaTime;
-        if (attackTimer >= 400) { // Attack animation time (ms)
+        if (attackTimer >= 0.4f) { // Attack animation time (ms)
             isAttacking = false;
-            attackTimer = 0;
+            attackTimer = 0.0f;
         }
     }
 

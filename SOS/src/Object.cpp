@@ -26,7 +26,6 @@ void Object::setAnimationState(AnimationState state) {
 
 int Object::getCurrentSpriteIndex() const {
     int index = animController.getCurrentFrame(dir);
-    if(getCurrentSpriteData()->getid_() == "player_walking")
     return index;
 }
 

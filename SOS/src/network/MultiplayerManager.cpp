@@ -18,7 +18,7 @@ RemotePlayer::RemotePlayer(const std::string& id)
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
     
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1), 250, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("Idle_fem", 96, 128, 8), 250, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);

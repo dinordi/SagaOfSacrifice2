@@ -28,5 +28,5 @@ private:
     int health;
     bool isAttacking;
     bool isJumping;
-    uint32_t attackTimer;
+    float attackTimer;
 };
