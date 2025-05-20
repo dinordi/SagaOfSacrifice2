@@ -17,6 +17,23 @@ RemotePlayer::RemotePlayer(const std::string& id)
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
+    
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1), 250, true);
+    // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9), 150, true);
+    // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+
+    // Set initial state
+    setAnimationState(AnimationState::IDLE);
 }
 
 void RemotePlayer::update(float deltaTime) {
