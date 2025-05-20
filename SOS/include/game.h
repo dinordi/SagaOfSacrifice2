@@ -15,7 +15,7 @@
 #include "object.h"
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 #include "collision/CollisionManager.h"
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"

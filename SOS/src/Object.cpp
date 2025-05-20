@@ -1,6 +1,6 @@
 #include "object.h"
 #include "sprite_data.h"
-#include "platform.h"
+#include "tile.h"
 
 #include <iostream>
 
@@ -47,8 +47,10 @@ void Object::addAnimation(AnimationState state, int startFrame, int frameCount,
     animController.addAnimation(state, def);
 }
 
-void Object::addSpriteSheet(AnimationState state, SpriteData* spData) {
+void Object::addSpriteSheet(AnimationState state, SpriteData* spData, uint32_t frameTime, bool loop, int startFrame) {
     spriteSheets[state] = spData;
+    AnimationDef def(0, spData->columns, spData->columns, frameTime, loop);
+    animController.addAnimation(state, def);
 }
 
 const SpriteData* Object::getCurrentSpriteData() const {

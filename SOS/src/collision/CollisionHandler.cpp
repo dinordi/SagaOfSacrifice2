@@ -1,7 +1,7 @@
 #include "collision/CollisionHandler.h"
 #include "objects/player.h"  // Include specific object headers
 #include "Enemy.h"
-#include "platform.h"
+#include "tile.h"
 
 #include <iostream>
 
@@ -10,7 +10,7 @@ CollisionHandler::CollisionHandler(Object* initiator, const CollisionInfo& info)
 
 void CollisionHandler::visit(Player* player) {
     // Handle collision between initiator and player
-    if (initiator->type == ObjectType::PLATFORM) {
+    if (initiator->type == ObjectType::TILE) {
         // Player collided with platform
         handleInteraction(player);
     } else if (initiator->type == ObjectType::ENEMY) {
@@ -21,7 +21,7 @@ void CollisionHandler::visit(Player* player) {
 
 void CollisionHandler::visit(Enemy* enemy) {
     // Handle collision between initiator and enemy
-    if (initiator->type == ObjectType::PLATFORM) {
+    if (initiator->type == ObjectType::TILE) {
         // Enemy collided with platform
         handleInteraction(enemy);
     } else if (initiator->type == ObjectType::PLAYER) {
@@ -30,7 +30,7 @@ void CollisionHandler::visit(Enemy* enemy) {
     }
 }
 
-void CollisionHandler::visit(Platform* platform) {
+void CollisionHandler::visit(Tile* platform) {
     // Platforms generally don't need to respond to collisions 
     // They are usually static, but might have special behaviors
     handleInteraction(platform);
@@ -48,19 +48,19 @@ void CollisionHandler::visit(RemotePlayer* remotePlayer) {
 }
 
 void CollisionHandler::handleInteraction(Player* player) {
-    if (initiator->type == ObjectType::PLATFORM) {
+    if (initiator->type == ObjectType::TILE) {
         // Player landed on platform
         Vec2 pos = player->getposition();
         Vec2 vel = player->getvelocity();
         // Static cast to Platform to access platform-specific properties
-        Platform* platform = static_cast<Platform*>(initiator);
+        Tile* platform = static_cast<Tile*>(initiator);
 
 
         // Check flags for platform collision
-        if (platform->hasFlag(Platform::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
+        if (platform->hasFlag(Tile::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
             // Coming from above
             pos.y -= info.penetrationVector.y;
-        } else if (platform->hasFlag(Platform::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
+        } else if (platform->hasFlag(Tile::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
             // Side collision
             pos.x -= info.penetrationVector.x;
         }
@@ -74,7 +74,7 @@ void CollisionHandler::handleInteraction(Player* player) {
 }
 
 void CollisionHandler::handleInteraction(Enemy* enemy) {
-    if (initiator->type == ObjectType::PLATFORM) {
+    if (initiator->type == ObjectType::TILE) {
         // Enemy landed on platform
         if (info.penetrationVector.y < 0) {
             Vec2 pos = enemy->getposition();
@@ -92,7 +92,7 @@ void CollisionHandler::handleInteraction(Enemy* enemy) {
     }
 }
 
-void CollisionHandler::handleInteraction(Platform* platform) {
+void CollisionHandler::handleInteraction(Tile* platform) {
     // Usually platforms don't need to respond to collisions
     // but may have special behaviors like breaking
     // if (platform->isBreakable()) {

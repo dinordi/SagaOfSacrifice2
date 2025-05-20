@@ -3,23 +3,23 @@
 #include "object.h"
 #include "sprite_data.h"
 
-enum class PlatformType {
+enum class TileType {
     GROUND,
     WALL,
     STAIRS,
     OBSTACLE
 };
 
-class Platform : public Object {
+class Tile : public Object {
 public:
-    Platform(int x, int y, std::string objID);
-    // Platform(int ID, int x, int y);
+    Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns);
+    // Tile(int ID, int x, int y);
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;
     bool isBreakable() const;
     
-    PlatformType getPlatformType() const;
-    void setPlatformType(PlatformType type);
+    TileType getTileType() const;
+    void setTileType(TileType type);
     
     bool hasFlag(uint32_t flag) const { return (collisionFlags & flag) != 0; }
     void setFlag(uint32_t flag) { collisionFlags |= flag; }
@@ -34,6 +34,6 @@ public:
 
 
 private:
-    PlatformType platformType;
+    TileType tileType;
     uint32_t collisionFlags = 0;
 };

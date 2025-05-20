@@ -2,7 +2,7 @@
 
 #include "objects/entity.h"
 #include "sprite_data.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 #include "playerInput.h"
 #include "animation.h"
 

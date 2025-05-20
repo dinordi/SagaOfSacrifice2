@@ -9,14 +9,14 @@
 #include "animation.h"
 
 
-class Platform;
+class Tile;
 
 constexpr float MAX_VELOCITY = 15.0f;
 
 enum class ObjectType {
     PLAYER = 0x1,
     ENTITY,
-    PLATFORM,
+    TILE,
     ITEM,
     BULLET,
     ENEMY
@@ -31,7 +31,7 @@ public:
     virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
     
-    void addSpriteSheet(AnimationState state, SpriteData* spData);
+    void addSpriteSheet(AnimationState state, SpriteData* spData, uint32_t frameTime, bool loop, int startFrame = 0);
     const SpriteData* getCurrentSpriteData() const;
 
     // Animation methods

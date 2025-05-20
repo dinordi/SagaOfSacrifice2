@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID), 
+Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID),
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
@@ -14,44 +14,44 @@ Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID),
 void Player::setupAnimations() {
     // Define player animations based on sprite sheet layout
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
-    
+
     // Example animation setup - adjust these based on your actual sprite sheet
-    
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1));
-    addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
+
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("player_walking", 128, 128, 1), 250, true);
+    // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
-    
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9));
-    addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
+
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9), 150, true);
+    // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
-    
+
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
 
 void Player::updateAnimationState() {
-    
+
     if (isMoving()) {
         setAnimationState(AnimationState::WALKING);
     } else {
         setAnimationState(AnimationState::IDLE);
     }
-    
+
 }
 
 bool Player::isMoving() const {
     // Check if the player is moving based on velocity
     Vec2 vel = getvelocity();
-    
+
     // Define an epsilon for floating point comparison
     const float EPSILON = 0.001f;
-    
+
     // Compare with epsilon to handle floating-point precision issues
     return (std::abs(vel.x) > EPSILON || std::abs(vel.y) > EPSILON);
 }
@@ -74,22 +74,22 @@ void Player::update(float deltaTime) {
     pos.x += vel.x * deltaTime;
     pos.y += vel.y * deltaTime;
 
-    
+
     // Set direction based on horizontal velocity
     if (vel.x > 0) {
         dir = FacingDirection::EAST;
-    } 
+    }
     else if (vel.x < 0) {
         dir = FacingDirection::WEST;
     }
 
     if (vel.y < 0) {
         dir = FacingDirection:: NORTH;
-    } 
+    }
     else if (vel.y > 0) {
         dir = FacingDirection::SOUTH;
     }
-    
+
     // Handle attack timer
     if (isAttacking) {
         attackTimer += deltaTime;
@@ -98,26 +98,26 @@ void Player::update(float deltaTime) {
             attackTimer = 0;
         }
     }
-    
-    
+
+
     // Update animation state based on player state
     updateAnimationState();
-    
+
     // Update the animation controller
     updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
 
     vel.x = 0; // Reset horizontal velocity
     vel.y = 0; // Reset vertical velocity
-    
+
     setvelocity(vel); // Update velocity
     setposition(pos); // Update position
 }
 
 void Player::handleInput(PlayerInput* input, float deltaTime) {
-    
+
     // Handle player input here
     Vec2 vel = getvelocity();
-    
+
     float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
@@ -133,13 +133,13 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
     if (input->get_up()) {
         vel.y = -movementSpeed; // Move up
     }
-    
+
     // Handle attack input
     if (input->get_attack() && !isAttacking) {
         isAttacking = true;
         attackTimer = 0;
     }
-    
+
     setvelocity(vel);
 }
 

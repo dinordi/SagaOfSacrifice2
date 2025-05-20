@@ -1,5 +1,5 @@
 #include "objects/entity.h"
-#include "platform.h"
+#include "tile.h"
 
 Entity::Entity( Vec2 pos, std::string objID) : Object( pos, ObjectType::ENTITY, objID) {}
 

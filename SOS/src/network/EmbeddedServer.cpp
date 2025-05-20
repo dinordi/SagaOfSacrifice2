@@ -9,7 +9,7 @@
 #include "network/NetworkConfig.h"
 #include "collision/CollisionManager.h"
 #include "objects/player.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
@@ -734,20 +734,23 @@ void EmbeddedServer::createInitialGameObjects() {
     players_.clear();
     
     // Create platform at the bottom of the screen
-    auto platform = std::make_shared<Platform>(400, 500,
-                                             "platform_ground");
-    platform->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
-    gameObjects_.push_back(platform);
+    auto tile = std::make_shared<Tile>(400, 500,
+                                             "platform_ground", 
+                                             "Tilemap_Flat", 0, 64, 64, 12);
+    tile->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
+    gameObjects_.push_back(tile);
     
     // Add more platforms as needed
-    auto platform2 = std::make_shared<Platform>(200, 500,
-                                              "platform_1");
-    platform2->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
-    gameObjects_.push_back(platform2);
+    auto tile2 = std::make_shared<Tile>(200, 500,
+                                              "platform_1", 
+                                             "Tilemap_Flat", 0, 64, 64, 12);
+    tile2->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
+    gameObjects_.push_back(tile2);
     
-    auto platform3 = std::make_shared<Platform>(600, 500,
-                                              "platform_2");
-    platform3->setFlag(Platform::BLOCKS_HORIZONTAL | Platform::BLOCKS_VERTICAL);
+    auto platform3 = std::make_shared<Tile>(600, 500,
+                                              "platform_2", 
+                                             "Tilemap_Flat", 0, 64, 64, 12);
+    platform3->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
     gameObjects_.push_back(platform3);
 }
 
@@ -806,8 +809,8 @@ void EmbeddedServer::sendGameStateToClients() {
             
             if (dynamic_cast<Player*>(object.get())) {
                 objectType = static_cast<uint8_t>(ObjectType::PLAYER); // Player
-            } else if (dynamic_cast<Platform*>(object.get())) {
-                objectType = static_cast<uint8_t>(ObjectType::PLATFORM); // Platform
+            } else if (dynamic_cast<Tile*>(object.get())) {
+                objectType = static_cast<uint8_t>(ObjectType::TILE); // Tile
             } else {
                 objectType = 99; // Unknown/Other
             }
@@ -849,8 +852,8 @@ void EmbeddedServer::sendGameStateToClients() {
             }
             
             // For platforms, add width and height
-            if (objectType == static_cast<uint8_t>(ObjectType::PLATFORM)) {
-                Platform* platform = dynamic_cast<Platform*>(object.get());
+            if (objectType == static_cast<uint8_t>(ObjectType::TILE)) {
+                Tile* platform = dynamic_cast<Tile*>(object.get());
                 if (platform) {
                     // Add platform width and height
                     float width = platform->getCurrentSpriteData()->width;

@@ -425,7 +425,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 player->resetInterpolation();
                 break;
             }
-            case ObjectType::PLATFORM: { // Platform
+            case ObjectType::TILE: { // Platform
                 // Read platform width and height (2 floats, 8 bytes total)
                 if (pos + 8 > gameStateData.size()) break;
                 
@@ -454,9 +454,10 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     
                     if (!found) {
                         // Create new platform
-                        std::shared_ptr<Platform> platform = std::make_shared<Platform>(
+                        std::shared_ptr<Tile> platform = std::make_shared<Tile>(
                             posX, posY,
-                            objectId
+                            objectId,
+                            "Tilemap_Flat", 0, 64, 64, 12
                         );
                         newObjects.push_back(platform);
                         std::cout << "[Client] Created new platform: " << objectId << " at " 
