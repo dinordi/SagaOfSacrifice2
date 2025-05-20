@@ -47,7 +47,13 @@ void Player::updateAnimationState() {
 
 bool Player::isMoving() const {
     // Check if the player is moving based on velocity
-    return getvelocity().x != 0 || getvelocity().y != 0;
+    Vec2 vel = getvelocity();
+    
+    // Define an epsilon for floating point comparison
+    const float EPSILON = 0.001f;
+    
+    // Compare with epsilon to handle floating-point precision issues
+    return (std::abs(vel.x) > EPSILON || std::abs(vel.y) > EPSILON);
 }
 
 void Player::accept(CollisionVisitor& visitor) {
