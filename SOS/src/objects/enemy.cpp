@@ -1,4 +1,4 @@
-#include "objects/Enemy.h"
+#include "objects/enemy.h"
 #include <iostream>
 
 Enemy::Enemy( BoxCollider collider, std::string objID) : Entity(collider, objID) {

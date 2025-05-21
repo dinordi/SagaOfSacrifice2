@@ -1,6 +1,6 @@
 #include "collision/CollisionHandler.h"
 #include "objects/player.h"  // Include specific object headers
-#include "Enemy.h"
+#include "enemy.h"
 #include "tile.h"
 
 #include <iostream>
