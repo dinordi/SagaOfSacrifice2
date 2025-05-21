@@ -20,29 +20,6 @@ int main() {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd < 0) {
         perror("open");
-root@Petalinux-2022:~/SagaOfSacrifice2/DMAControl# cat axi_bram_filler2.c
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <sys/mman.h>
-#include <unistd.h>
-
-// Physical memory base addresses for the BRAMs
-#define FRAME_INFO_ADDR   0x42000000         // Frame info BRAM - 8KB
-#define LOOKUP_TABLE_ADDR 0x40000000       // Lookup table BRAM - 16KB
-
-#define FRAME_INFO_SIZE 0x2000             // 8KB
-#define LOOKUP_TABLE_SIZE 0x4000           // 16KB
-
-// Sprite data base address
-#define SPRITE_DATA_BASE 0x0E000000        // Base address for sprite data (fixed to include leading 0)
-
-
-
-int main() {
-    int fd = open("/dev/mem", O_RDWR | O_SYNC);
-    if (fd < 0) {
-        perror("open");
         return -1;
     }
 
