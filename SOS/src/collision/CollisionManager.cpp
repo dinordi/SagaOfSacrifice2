@@ -11,8 +11,8 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             Object* objB = gameObjects[j].get();
 
             // Get the sprite dimensions for collision detection
-            const SpriteRect spriteA = objA->spriteData->getSpriteRect(1);
-            const SpriteRect spriteB = objB->spriteData->getSpriteRect(1);
+            const SpriteRect spriteA = objA->getCurrentSpriteData()->getSpriteRect(1);
+            const SpriteRect spriteB = objB->getCurrentSpriteData()->getSpriteRect(1);
 
             // if (!spriteA || !spriteB) 
             // {
@@ -20,19 +20,21 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             //     std::cout << "No sprite data for one of the objects." << std::endl;
             //     continue;
             // }
-            Vec2 posA = objA->getposition();
-            Vec2 posB = objB->getposition();
+            BoxCollider* pColliderA = &objA->getcollider();
+            BoxCollider* pColliderB = &objB->getcollider();
+            Vec2 posA = pColliderA->position;
+            Vec2 posB = pColliderB->position;
 
             // Simple AABB collision detection
             float leftA = posA.x;
-            float rightA = posA.x + spriteA.w;
+            float rightA = posA.x + pColliderA->size.x;
             float topA = posA.y;
-            float bottomA = posA.y + spriteA.h;
+            float bottomA = posA.y + pColliderA->size.y;
 
             float leftB = posB.x;
-            float rightB = posB.x + spriteB.w;
+            float rightB = posB.x + pColliderB->size.x;
             float topB = posB.y;
-            float bottomB = posB.y + spriteB.h;
+            float bottomB = posB.y + pColliderB->size.y;
 
             // Check if the two AABBs intersect
             if (leftA <= rightB && rightA >= leftB && topA <= bottomB && bottomA >= topB) {
@@ -60,10 +62,6 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
                 info.contactPoint.x = (std::max(leftA, leftB) + std::min(rightA, rightB)) / 2;
                 info.contactPoint.y = (std::max(topA, topB) + std::min(bottomA, bottomB)) / 2;
                 
-                // if(objA->getObjID() == "petalinux" || objB->getObjID() == "petalinux")
-                // {
-                //     std::cout << "Collision detected between " << objA->getObjID() << " and " << objB->getObjID() << std::endl;
-                // }
 
                 // Resolve the collision
                 resolveCollision(objA, objB, info);

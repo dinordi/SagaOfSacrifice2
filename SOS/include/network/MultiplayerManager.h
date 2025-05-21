@@ -25,7 +25,7 @@ public:
     void shutdown();
     
     // Update network state - should be called once per frame
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     
     // Set the local player
     void setLocalPlayer(Player* player);
@@ -108,7 +108,7 @@ class RemotePlayer : public Object
 public:
     RemotePlayer(const std::string& id);
     
-    void update(uint64_t deltaTime) override;
+    void update(float deltaTime) override;
     
     // Setters
     void setOrientation(float orientation);
