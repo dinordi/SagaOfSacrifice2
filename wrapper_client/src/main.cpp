@@ -495,6 +495,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         };
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
     }
+    // app->game->clearActors(); // Clear actors after rendering
 
     SDL_RenderPresent(app->renderer);
 

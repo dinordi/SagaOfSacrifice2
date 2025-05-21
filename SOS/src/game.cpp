@@ -37,7 +37,10 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // but we still need to initialize the local player for input and rendering
     player = new Player(BoxCollider(Vec2(500,100), Vec2(64,64)), playerID);
     player->setInput(input);
-    objects.push_back(std::shared_ptr<Player>(player));
+    // objects.push_back(std::shared_ptr<Player>(player));
+
+    mapCharacters();
+    state = GameState::MENU;
 }
 
 Game::~Game() {
@@ -85,12 +88,29 @@ void Game::mapCharacters()
     for(char c : letters) {
         characterMap[c] = index++;
     }
+    // Print the mapping
+    for (const auto& pair : characterMap) {
+        std::cout << pair.first << " -> " << pair.second << std::endl;
+    }
 }
 
 void Game::update(float deltaTime) {
     // Process local input
     input->readInput();
     
+    switch(state)
+    {
+        case GameState::RUNNING:
+            break;
+        case GameState::MENU:
+            // Handle menu state
+            drawMenu(deltaTime);
+            return;
+        default:
+            std::cerr << "[Game] Unknown game state" << std::endl;
+            return;
+    }
+
     // If multiplayer is active, update network state
     if (multiplayerActive && multiplayerManager) {
         // Update the network state
@@ -183,8 +203,15 @@ bool Game::isServerConnection() const {
     return multiplayerActive && multiplayerManager && multiplayerManager->isConnected();
 }
 
-std::vector<Actor*>& Game::getActors() {
+std::vector<Actor*> Game::getActors() {
     return actors;
+}
+
+void Game::clearActors() {
+    for(auto& actor : actors) {
+        delete actor; // Clean up each actor
+    }
+    actors.clear();
 }
 
 void Game::sendChatMessage(const std::string& message) {
@@ -220,11 +247,6 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             (*it)->setvelocity(pair.second->getvelocity());
         }
     }
-}
-
-
-void Game::drawWord(const std::string& word, int x, int y) {
-    // This method can be implemented later if needed
 }
 
 // New methods for server-authoritative gameplay
@@ -300,6 +322,54 @@ void Game::addObject(std::shared_ptr<Object> object) {
             std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
         } else {
             std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
+        }
+    }
+}
+
+void Game::drawMenu(float deltaTime) {
+    bool print = false;
+    static float lastTime = 0;
+    lastTime += deltaTime;
+    if(lastTime > 1.0f)
+    {
+        if(lastTime > 2.0f)
+        {
+            lastTime = 0;
+        }
+        print = true;
+    }
+    if(actors.size() != 0)
+        return;
+
+    // Draw the menu screen
+    drawWord("Saga of sacrifice 2", 250, 100);
+
+    drawWord("Singleplayer", 300, 200);
+    drawWord("Multiplayer", 300, 300);
+    drawWord("Exit", 300, 400);
+    drawWord("Credits", 300, 500);
+
+    if(print)
+        drawWord("Press Enter to start", 300, 600);
+
+}
+
+void Game::drawWord(const std::string& word, int x, int y) {
+    // lowercase the word
+    std::string lowerWord = word;
+    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
+    // Draw the word at the specified position
+    for (char c : lowerWord) {
+        auto it = characterMap.find(c);
+        if (it != characterMap.end()) {
+            int index = it->second;
+            Actor* character = new Actor(Vec2(x,y), new SpriteData("letters", 64, 64, 3), index);
+            actors.push_back(character);
+            x += 64; // Move to the right for the next character
+        }
+        else
+        {
+            x += 64; // Space
         }
     }
 }

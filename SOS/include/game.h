@@ -20,6 +20,11 @@
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
 
+enum class GameState {
+    RUNNING,
+    MENU
+};
+
 class Game {
 public:
     Game(PlayerInput* input, std::string playerID);
@@ -44,8 +49,9 @@ public:
     void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
 
     std::vector<std::shared_ptr<Object>>& getObjects();
-    std::vector<Actor*>& getActors();
-    
+    std::vector<Actor*> getActors();
+    void clearActors();
+
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
@@ -56,12 +62,14 @@ public:
 private:
     void drawWord(const std::string& word, int x, int y);
     void mapCharacters();
+    void drawMenu(float deltaTime);
     
     
     // Local client-side prediction methods
     void predictLocalPlayerMovement(float deltaTime);
     void reconcileWithServerState(float deltaTime);
 
+    GameState state;
     bool running;
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
