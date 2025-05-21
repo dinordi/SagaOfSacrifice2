@@ -795,13 +795,7 @@ void EmbeddedServer::sendGameStateToClients() {
             }
 
             // a) Type
-            uint8_t objectType = 99;
-            if (dynamic_cast<Player*>(obj.get())) {
-                objectType = uint8_t(ObjectType::PLAYER);
-            } else if (dynamic_cast<Platform*>(obj.get())) {
-                objectType = uint8_t(ObjectType::PLATFORM);
-            }
-            stateMsg.data.push_back(objectType);
+            stateMsg.data.push_back(static_cast<uint8_t>(obj->type));
 
             // b) ID
             const std::string& id = obj->getObjID();
@@ -823,10 +817,10 @@ void EmbeddedServer::sendGameStateToClients() {
             writeFloat(v.y);
 
             // d) Platform extra fields
-            if (objectType == uint8_t(ObjectType::PLATFORM)) {
-                auto* plat = static_cast<Platform*>(obj.get());
-                writeFloat(plat->spriteData->width);
-                writeFloat(plat->spriteData->height);
+            if (obj->type == ObjectType::TILE) {
+                auto* plat = static_cast<Tile*>(obj.get());
+                writeFloat(plat->getCurrentSpriteData()->width);
+                writeFloat(plat->getCurrentSpriteData()->height);
             }
         }
     }

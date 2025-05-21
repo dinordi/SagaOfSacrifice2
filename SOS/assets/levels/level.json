@@ -66,7 +66,7 @@
     }
   ],
 
-  "playerStart": { "x": 1080, "y": 1920 },
+  "playerStart": { "x": 700, "y": 500 },
 
   "enemies": [
     { "id": "e1", "type": "android_scout",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },

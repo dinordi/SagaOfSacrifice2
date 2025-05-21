@@ -51,6 +51,9 @@ public:
                      int framesPerRow, uint32_t frameTime = 100, bool loop = true);
     FacingDirection getDir() const { return dir; }
 
+    Vec2 getposition() const { return collider.position; }
+    void setposition(const Vec2& pos) { collider.position = pos; }
+
 protected:
     AnimationController animController;
     FacingDirection dir;

@@ -32,9 +32,9 @@ public:
         const Vec2& position = Vec2{500, 100}
     ) {
         // Create sprite data
-        auto sprite = new SpriteData("playermap", 128, 128, /*spriteId=*/5);
+        // auto sprite = new SpriteData("playermap", 128, 128, /*spriteId=*/5);
         // Create player
-        auto player = std::make_shared<Player>(position, sprite, playerId);
+        auto player = std::make_shared<Player>(BoxCollider(position, Vec2(64,64)), playerId);
 
         // Initialize player input
         auto* input = new TempInput();
@@ -55,9 +55,9 @@ public:
         const Vec2& position = Vec2{500, 100}
     ) {
         // Create sprite data with the given sheet & frame
-        auto sprite = new SpriteData(spriteSheet, width, height, spriteId);
+        // auto sprite = new SpriteData(spriteSheet, width, height, spriteId);
         // Create player
-        auto player = std::make_shared<Player>(position, sprite, playerId);
+        auto player = std::make_shared<Player>(BoxCollider(position, Vec2(64,64)), playerId);
 
         // Initialize player input (all false by default)
         auto* input = new TempInput();

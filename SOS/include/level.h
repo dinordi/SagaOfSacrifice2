@@ -5,7 +5,7 @@
 #include <map>
 #include "object.h"
 #include "collision/CollisionManager.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 #include "objects/enemy.h"
 #include "objects/player.h"
 #include "factories/player_factory.h"

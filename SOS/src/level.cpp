@@ -42,8 +42,9 @@ bool Level::load(json& levelData ) {
             std::string objID = obj["id"];
             
             // Create platform object
-            auto object = std::make_shared<Platform>(x, y, 
-                new SpriteData("objects", spriteId, 32, 32), objID);
+            auto object = std::make_shared<Tile>(x, y, objID, 
+                "Tilemap_Flat", 0, 64, 64, 5);
+            object->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
             levelObjects.push_back(object);
         }
     }
