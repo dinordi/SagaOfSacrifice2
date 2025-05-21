@@ -50,7 +50,8 @@ void CollisionHandler::visit(RemotePlayer* remotePlayer) {
 void CollisionHandler::handleInteraction(Player* player) {
     if (initiator->type == ObjectType::TILE) {
         // Player landed on platform
-        Vec2 pos = player->getposition();
+        BoxCollider* pCollider = &player->getcollider();
+        Vec2* pos = &pCollider->position;
         Vec2 vel = player->getvelocity();
         // Static cast to Platform to access platform-specific properties
         Tile* platform = static_cast<Tile*>(initiator);
@@ -59,13 +60,13 @@ void CollisionHandler::handleInteraction(Player* player) {
         // Check flags for platform collision
         if (platform->hasFlag(Tile::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
             // Coming from above
-            pos.y -= info.penetrationVector.y;
+            pos->y -= info.penetrationVector.y;
         } else if (platform->hasFlag(Tile::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
             // Side collision
-            pos.x -= info.penetrationVector.x;
+            pos->x -= info.penetrationVector.x;
         }
 
-        player->setposition(pos);
+        player->setcollider(*pCollider);
         player->setvelocity(vel);
     } else if (initiator->type == ObjectType::ENEMY) {
         // Player collided with enemy - cause damage
@@ -77,12 +78,13 @@ void CollisionHandler::handleInteraction(Enemy* enemy) {
     if (initiator->type == ObjectType::TILE) {
         // Enemy landed on platform
         if (info.penetrationVector.y < 0) {
-            Vec2 pos = enemy->getposition();
-            Vec2 vel = enemy->getvelocity();
-            pos.y += info.penetrationVector.y;
-            vel.y = 0;
-            enemy->setposition(pos);
-            enemy->setvelocity(vel);
+            BoxCollider* pCollider = &enemy->getcollider();
+            Vec2* pos = &pCollider->position;
+            Vec2* vel = &enemy->getvelocity();
+            pos->y += info.penetrationVector.y;
+            vel->y = 0;
+            enemy->setcollider(*pCollider);
+            enemy->setvelocity(*vel);
         } else if (info.penetrationVector.x != 0) {
             // Side collision - reverse direction
             // enemy->reverseDirection();

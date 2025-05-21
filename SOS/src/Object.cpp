@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-Object::Object( Vec2 pos, ObjectType type, std::string ID)
-    : position(pos), type(type), dir(FacingDirection::EAST), ObjID(ID)
+Object::Object(BoxCollider collider, ObjectType type, std::string ID)
+    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;
@@ -71,3 +71,7 @@ Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteI
     this->position = pos;
     this->spriteData = spData;
 }
+
+BoxCollider::BoxCollider(Vec2 pos, Vec2 size) : position(pos), size(size) {}
+BoxCollider::BoxCollider(float x, float y, float width, float height) 
+    : position(x, y), size(width, height) {}

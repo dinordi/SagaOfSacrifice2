@@ -594,7 +594,7 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     std::cout << "[EmbeddedServer] Adding player " << playerId << std::endl;
     
     // Create a new player object
-    auto player = std::make_shared<Player>(Vec2(500, 100), 
+    auto player = std::make_shared<Player>(BoxCollider(500, 100, 64, 64),
                                            playerId);
     TempInput* input = new TempInput();
     input->setInputs(false, false, false, false, false); // Initialize inputs to false
@@ -824,7 +824,7 @@ void EmbeddedServer::sendGameStateToClients() {
             stateMsg.data.insert(stateMsg.data.end(), objId.begin(), objId.end());
             
             // Add position and velocity for all objects
-            const Vec2& pos = object->getposition();
+            const Vec2& pos = object->getcollider().position;
             const Vec2& vel = object->getvelocity();
             
             // Position X, Y (each 4 bytes)

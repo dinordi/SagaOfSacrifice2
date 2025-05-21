@@ -5,7 +5,7 @@
 
 class Enemy : public Entity {
 public:
-    Enemy(Vec2 pos, std::string objID);
+    Enemy(BoxCollider collider, std::string objID);
 
     int health;
 

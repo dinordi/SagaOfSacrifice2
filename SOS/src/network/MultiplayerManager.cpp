@@ -12,7 +12,7 @@ extern uint32_t get_ticks();
 
 // RemotePlayer implementation
 RemotePlayer::RemotePlayer(const std::string& id) 
-    : Object(Vec2(0,0), ObjectType::ENTITY, id), 
+    : Object(BoxCollider(0,0,128,128), ObjectType::ENTITY, id), 
       id_(id),
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
@@ -44,25 +44,25 @@ void RemotePlayer::update(float deltaTime) {
     float t = std::min(interpolationTime_ / NetworkConfig::Client::InterpolationPeriod, 1.0f);
 
     Vec2 velocity_ = getvelocity();
-    Vec2 position_ = getposition();
+    Vec2* position_ = &getcollider().position;
     
     // Only interpolate if we have a different target position
-    if ((targetPosition_.x != position_.x || targetPosition_.y != position_.y) && t < 1.0f) {
+    if ((targetPosition_.x != position_->x || targetPosition_.y != position_->y) && t < 1.0f) {
         // Linear interpolation
-        position_.x = position_.x + (targetPosition_.x - position_.x) * t;
-        position_.y = position_.y + (targetPosition_.y - position_.y) * t;
+        position_->x = position_->x + (targetPosition_.x - position_->x) * t;
+        position_->y = position_->y + (targetPosition_.y - position_->y) * t;
         
         // Update velocity based on target velocity
         velocity_.x = velocity_.x + (targetVelocity_.x - velocity_.x) * t;
         velocity_.y = velocity_.y + (targetVelocity_.y - velocity_.y) * t;
     } else {
         // We've reached the target or never started interpolating, apply velocity directly
-        position_.x += velocity_.x * deltaTime;
-        position_.y += velocity_.y * deltaTime;
+        position_->x += velocity_.x * deltaTime;
+        position_->y += velocity_.y * deltaTime;
     }
 
     // Update the object's position
-    setposition(position_);
+    setcollider(BoxCollider(*position_, getcollider().size));
     setvelocity(velocity_);
 }
 
@@ -325,7 +325,7 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
     remotePlayer->resetInterpolation();
     
     // Store the target position and velocity for interpolation
-    remotePlayer->setTargetPosition(remotePlayer->getposition());
+    remotePlayer->setTargetPosition(remotePlayer->getcollider().position);
     remotePlayer->setTargetVelocity(remotePlayer->getvelocity());
 }
 
@@ -462,7 +462,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     for (auto& obj : objects) {
                         if (obj->getObjID() == objectId) {
                             // Update existing platform
-                            obj->setposition(Vec2(posX, posY));
+                            obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
                             obj->setvelocity(Vec2(velX, velY));
                             found = true;
                             break;
@@ -501,7 +501,7 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     std::vector<uint8_t> data;
     
     // Get player position and velocity
-    const Vec2& pos = player->getposition();
+    const Vec2& pos = player->getcollider().position;
     const Vec2& vel = player->getvelocity();
     
     // Allocate space for the data (2 Vec2s = 4 floats = 16 bytes)
@@ -535,7 +535,7 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     std::memcpy(&vel.y, &data[12], sizeof(float));
     
     // Update player state
-    player->setposition(pos);
+    player->setcollider(BoxCollider(pos, player->getcollider().size));
     player->setvelocity(vel);
 }
 

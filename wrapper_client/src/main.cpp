@@ -450,8 +450,8 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         }
 
         SDL_FRect destRect{
-            .x = static_cast<float>(entity->getposition().x - (currentSpriteRect.w / 2)),
-            .y = static_cast<float>(entity->getposition().y - (currentSpriteRect.h / 2)),
+            .x = static_cast<float>(entity->getcollider().position.x - (currentSpriteRect.w / 2)),
+            .y = static_cast<float>(entity->getcollider().position.y - (currentSpriteRect.h / 2)),
             .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };

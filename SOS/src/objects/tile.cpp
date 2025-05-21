@@ -1,6 +1,6 @@
 #include "objects/tile.h"
 
-Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(Vec2(x, y), ObjectType::TILE, objID) {
+Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, objID) {
     // Initialize Tile-specific attributes here
     SpriteData* spriteData = new SpriteData(tileMap, tileWidth, tileHeight, columns);
     addSpriteSheet(AnimationState::IDLE, spriteData, 250, true, tileIndex);

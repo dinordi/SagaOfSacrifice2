@@ -23,10 +23,18 @@ enum class ObjectType {
     ENEMY
 };
 
+class BoxCollider {
+public:
+BoxCollider(Vec2 pos, Vec2 size);
+BoxCollider(float x, float y, float width, float height);
+    Vec2 position;
+    Vec2 size;
+};
+
 class Object {
 public:
     const ObjectType type;
-    Object(Vec2 pos, ObjectType type, std::string ID);
+    Object(BoxCollider collider, ObjectType type, std::string ID);
     virtual ~Object() = default;
 
     virtual void update(float deltaTime) = 0;
@@ -42,13 +50,14 @@ public:
     void addAnimation(AnimationState state, int startFrame, int frameCount, 
                      int framesPerRow, uint32_t frameTime = 100, bool loop = true);
     FacingDirection getDir() const { return dir; }
+
 protected:
     AnimationController animController;
     FacingDirection dir;
     
     std::unordered_map<AnimationState, SpriteData*> spriteSheets;
 private:
-    DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
     DEFINE_CONST_GETTER_SETTER(std::string, ObjID); // ID of the object, for multiplayer to indicate between players and objects
 };

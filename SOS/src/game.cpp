@@ -35,7 +35,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // Initialize game objects
     // Note: in server-authoritative mode, object creation will be managed by the server
     // but we still need to initialize the local player for input and rendering
-    player = new Player(Vec2(500,100), playerID);
+    player = new Player(BoxCollider(Vec2(500,100), Vec2(64,64)), playerID);
     player->setInput(input);
     objects.push_back(std::shared_ptr<Player>(player));
 }
@@ -211,12 +211,12 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             // Create a new remote player
             std::cout << "[Game] Creating new remote player: " << pair.first << std::endl;
             RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
-            remotePlayer->setposition(pair.second->getposition());
+            remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
             objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
             // Update existing remote player
-            (*it)->setposition(pair.second->getposition());
+            (*it)->setcollider(pair.second->getcollider());
             (*it)->setvelocity(pair.second->getvelocity());
         }
     }
@@ -260,8 +260,10 @@ void Game::reconcileWithServerState(float deltaTime) {
             return;
         }
         RemotePlayer* remotePlayer = it->second.get();
-        Vec2 serverPosition = remotePlayer->getposition();
-        Vec2 clientPosition = player->getposition();
+        BoxCollider serverCollider = remotePlayer->getcollider();
+        BoxCollider clientCollider = player->getcollider();
+        Vec2 serverPosition = serverCollider.position;
+        Vec2 clientPosition = clientCollider.position;
         
         // Calculate position difference
         float dx = serverPosition.x - clientPosition.x;
@@ -278,7 +280,7 @@ void Game::reconcileWithServerState(float deltaTime) {
             newPosition.y += dy * 0.2f;
             
             // Update player position
-            player->setposition(newPosition);
+            player->setcollider(BoxCollider(newPosition, clientCollider.size));
         }
     }
 }

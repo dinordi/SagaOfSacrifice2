@@ -2,10 +2,10 @@
 #include <iostream>
 
 
-Player::Player( Vec2 pos, std::string objID) : Entity(pos, objID),
+Player::Player( BoxCollider collider, std::string objID) : Entity(collider, objID),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << collider.position.x << ", " << collider.position.y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -76,15 +76,16 @@ void Player::update(float deltaTime) {
     // Update player-specific logic here
     // handleInput(input, deltaTime); // Handle input
 
-    Vec2 pos = getposition();
+    BoxCollider* pColl = &getcollider();
+    Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
     // Prints velocity.y every second
     static uint64_t timems = 0.0f;
     timems += deltaTime;
 
-    pos.x += vel.x * deltaTime;
-    pos.y += vel.y * deltaTime;
+    pos->x += vel.x * deltaTime;
+    pos->y += vel.y * deltaTime;
 
 
     // Set direction based on horizontal and vertical velocity
@@ -126,7 +127,7 @@ void Player::update(float deltaTime) {
     vel.y = 0; // Reset vertical velocity
 
     setvelocity(vel); // Update velocity
-    setposition(pos); // Update position
+    setcollider(*pColl); // Update position
 }
 
 void Player::handleInput(PlayerInput* input, float deltaTime) {
