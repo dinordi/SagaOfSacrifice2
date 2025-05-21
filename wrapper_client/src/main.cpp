@@ -355,7 +355,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-
+    if(!app->game->isRunning())
+    {
+        app->app_quit = SDL_APP_SUCCESS;
+        return app->app_quit;
+    }
     // --- Timing ---
     Uint64 current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     Uint64 frame_time_us;

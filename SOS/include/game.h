@@ -25,6 +25,14 @@ enum class GameState {
     MENU
 };
 
+enum class MenuOption {
+    SINGLEPLAYER = 0,
+    MULTIPLAYER = 1,
+    EXIT = 2,
+    CREDITS = 3,
+    COUNT // Used to get the number of menu options
+};
+
 class Game {
 public:
     Game(PlayerInput* input, std::string playerID);
@@ -49,7 +57,7 @@ public:
     void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
 
     std::vector<std::shared_ptr<Object>>& getObjects();
-    std::vector<Actor*> getActors();
+    std::vector<Actor*>& getActors();
     void clearActors();
 
     // Method to add a game object dynamically
@@ -61,9 +69,15 @@ public:
 
 private:
     void drawWord(const std::string& word, int x, int y);
+    void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);
+    void handleMenuInput(float deltaTime);
     
+    MenuOption selectedOption = MenuOption::SINGLEPLAYER;
+    bool menuOptionChanged = true;
+    float menuInputCooldown = 0.0f;
+    const float MENU_INPUT_DELAY = 0.2f; // Cooldown in seconds to prevent rapid selection changes
     
     // Local client-side prediction methods
     void predictLocalPlayerMovement(float deltaTime);

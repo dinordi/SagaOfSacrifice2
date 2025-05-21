@@ -18,7 +18,7 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8081;
 
-Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false) {
+Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     // Set this as the active instance
     instance_ = this;
     
@@ -92,6 +92,8 @@ void Game::mapCharacters()
     for (const auto& pair : characterMap) {
         std::cout << pair.first << " -> " << pair.second << std::endl;
     }
+
+    characterMap['>'] = 36;
 }
 
 void Game::update(float deltaTime) {
@@ -105,6 +107,7 @@ void Game::update(float deltaTime) {
         case GameState::MENU:
             // Handle menu state
             drawMenu(deltaTime);
+            handleMenuInput(deltaTime);
             return;
         default:
             std::cerr << "[Game] Unknown game state" << std::endl;
@@ -203,7 +206,7 @@ bool Game::isServerConnection() const {
     return multiplayerActive && multiplayerManager && multiplayerManager->isConnected();
 }
 
-std::vector<Actor*> Game::getActors() {
+std::vector<Actor*>& Game::getActors() {
     return actors;
 }
 
@@ -338,20 +341,27 @@ void Game::drawMenu(float deltaTime) {
         }
         print = true;
     }
-    if(actors.size() != 0)
+    
+    if(actors.size() != 0 && !menuOptionChanged)
         return;
+    
+    // Clear previous actors if selection changed
+    if (menuOptionChanged) {
+        clearActors();
+        menuOptionChanged = false;
+    }
 
     // Draw the menu screen
     drawWord("Saga of sacrifice 2", 250, 100);
 
-    drawWord("Singleplayer", 300, 200);
-    drawWord("Multiplayer", 300, 300);
-    drawWord("Exit", 300, 400);
-    drawWord("Credits", 300, 500);
+    // Draw menu options with highlighting for the selected option
+    drawWordWithHighlight("Singleplayer", 300, 200, selectedOption == MenuOption::SINGLEPLAYER);
+    drawWordWithHighlight("Multiplayer", 300, 300, selectedOption == MenuOption::MULTIPLAYER);
+    drawWordWithHighlight("Exit", 300, 400, selectedOption == MenuOption::EXIT);
+    drawWordWithHighlight("Credits", 300, 500, selectedOption == MenuOption::CREDITS);
 
     if(print)
-        drawWord("Press Enter to start", 300, 600);
-
+        drawWord("Use UP/DOWN to select, B/Square to confirm", 200, 600);
 }
 
 void Game::drawWord(const std::string& word, int x, int y) {
@@ -371,5 +381,79 @@ void Game::drawWord(const std::string& word, int x, int y) {
         {
             x += 64; // Space
         }
+    }
+}
+
+void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected) {
+    // Clear any existing actors at this position (to refresh selection highlight)
+    if (isSelected) {
+        // Add a simple visual indicator for the selected item
+        Actor* selector = new Actor(Vec2(x - 40, y), new SpriteData("letters", 64, 64, 3), 36);
+        std::cout << "[Game] Added selector actor for menu option" << std::endl;
+        actors.push_back(selector);
+    }
+    
+    // Draw the actual word
+    drawWord(word, x, y);
+}
+
+void Game::handleMenuInput(float deltaTime) {
+    // Update cooldown timer
+    if (menuInputCooldown > 0) {
+        menuInputCooldown -= deltaTime;
+        return;
+    }
+    
+    // Check for up/down input
+    bool inputDetected = false;
+    
+    // Using virtual key codes for UP and DOWN
+    if (input->get_up()) {
+        // Move selection up
+        int newOption = static_cast<int>(selectedOption) - 1;
+        if (newOption < 0) {
+            newOption = static_cast<int>(MenuOption::COUNT) - 1;
+        }
+        selectedOption = static_cast<MenuOption>(newOption);
+        inputDetected = true;
+    } else if (input->get_down()) {
+        // Move selection down
+        int newOption = static_cast<int>(selectedOption) + 1;
+        if (newOption >= static_cast<int>(MenuOption::COUNT)) {
+            newOption = 0;
+        }
+        selectedOption = static_cast<MenuOption>(newOption);
+        inputDetected = true;
+    } else if (input->get_attack()) {
+        // Select current option
+        switch(selectedOption) {
+            case MenuOption::SINGLEPLAYER:
+                // Start single player game
+                state = GameState::RUNNING;
+                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                clearActors(); // Clear the menu
+                break;
+            case MenuOption::MULTIPLAYER:
+                // Start multiplayer game
+                state = GameState::RUNNING;
+                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                clearActors(); // Clear the menu
+                break;
+            case MenuOption::EXIT:
+                // Exit game
+                running = false;
+                break;
+            case MenuOption::CREDITS:
+                // Show credits (not implemented)
+                break;
+            default:
+                break;
+        }
+        inputDetected = true;
+    }
+    
+    if (inputDetected) {
+        menuInputCooldown = MENU_INPUT_DELAY;
+        menuOptionChanged = true;
     }
 }
