@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <filesystem>
+#include <fstream>
 #include "level.h"
 #include "collision/CollisionManager.h"
 
