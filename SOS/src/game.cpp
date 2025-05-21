@@ -355,13 +355,16 @@ void Game::drawMenu(float deltaTime) {
     drawWord("Saga of sacrifice 2", 250, 100);
 
     // Draw menu options with highlighting for the selected option
-    drawWordWithHighlight("Singleplayer", 300, 200, selectedOption == MenuOption::SINGLEPLAYER);
-    drawWordWithHighlight("Multiplayer", 300, 300, selectedOption == MenuOption::MULTIPLAYER);
-    drawWordWithHighlight("Exit", 300, 400, selectedOption == MenuOption::EXIT);
-    drawWordWithHighlight("Credits", 300, 500, selectedOption == MenuOption::CREDITS);
+    drawWordWithHighlight("Singleplayer", 400, 200, selectedOption == MenuOption::SINGLEPLAYER);
+    drawWordWithHighlight("Multiplayer", 400, 300, selectedOption == MenuOption::MULTIPLAYER);
+    drawWordWithHighlight("Exit", 400, 400, selectedOption == MenuOption::EXIT);
+    drawWordWithHighlight("Credits", 400, 500, selectedOption == MenuOption::CREDITS);
 
     if(print)
-        drawWord("Use UP/DOWN to select, B/Square to confirm", 200, 600);
+    {
+        drawWord("Use UP/DOWN to select", 200, 600); 
+        drawWord("Square to confirm", 200, 680);
+    }
 }
 
 void Game::drawWord(const std::string& word, int x, int y) {
@@ -388,8 +391,7 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     // Clear any existing actors at this position (to refresh selection highlight)
     if (isSelected) {
         // Add a simple visual indicator for the selected item
-        Actor* selector = new Actor(Vec2(x - 40, y), new SpriteData("letters", 64, 64, 3), 36);
-        std::cout << "[Game] Added selector actor for menu option" << std::endl;
+        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData("letters", 64, 64, 3), 36);
         actors.push_back(selector);
     }
     
