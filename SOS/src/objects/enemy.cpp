@@ -1,9 +1,9 @@
-#include "objects/Enemy.h"
+#include "objects/enemy.h"
 #include <iostream>
 
-Enemy::Enemy( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID) {
+Enemy::Enemy( BoxCollider collider, std::string objID) : Entity(collider, objID) {
     // Initialize Enemy-specific attributes here
-    std::cout << "Enemy created with ID: " << spriteData->getid_() << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
+    std::cout << "Enemy created with ID: " << getCurrentSpriteData()->getid_() << " at position (" << getcollider().position.x << ", " << getcollider().position.y << ")" << std::endl;
 }
 
 void Enemy::accept(CollisionVisitor& visitor) {

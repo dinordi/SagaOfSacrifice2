@@ -5,6 +5,6 @@
 class Entity : public Object
 {
 public:
-    Entity( Vec2 pos, SpriteData* spData, std::string objID);
+    Entity( BoxCollider collider, std::string objID);
 
 };

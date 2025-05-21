@@ -7,6 +7,7 @@
 #include <thread>
 #include <string>
 #include <cstdlib>
+#include <csignal>
 #include <filesystem>
 
 #include "input_pl.h"
@@ -15,7 +16,13 @@
 #include "SDL2AudioManager.h"
 
 float FPS = 60.0f;
+volatile bool running = true;
 
+
+void handle_sigint(int) {
+    std::cout << "SIGINT received. Exiting..." << std::endl;
+    running = false;
+}
 // Note: get_ticks() is now defined in TimeUtils.cpp
 
 void printUsage(const char* programName) {
@@ -45,6 +52,7 @@ std::string generateRandomPlayerId() {
 }
 
 int main(int argc, char *argv[]) {
+    std::signal(SIGINT, handle_sigint); // Register signal handler for Ctrl+C
     // Parse command line arguments
     std::string imageName = "Solid_blue";
     bool enableRemoteMultiplayer = false;
@@ -189,23 +197,38 @@ int main(int argc, char *argv[]) {
     // // Play music
     // audioManager->setMusicVolume(0.9f);
     
+    
+    // Timing setup
+    const uint64_t fixed_timestep_us = 16666; // ~60 updates/sec (1,000,000 / 60)
+    const uint64_t max_allowed_frame_time_us = 250000; // Cap to avoid spiral of death
+    
+    uint64_t last_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count();
+    uint64_t accumulator_us = 0;
+    
     std::cout << "Entering gameloop..." << std::endl;
-    while (game.isRunning()) {
-        auto currentTime = get_ticks();
-        uint32_t deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        
-        // Update game logic
-        game.update(deltaTime);
-        
-        // Render game state at appropriate intervals
-        // uint32_t renderElapsedTime = currentTime - lastRenderTime;
-        // if (renderElapsedTime > 1000.0f / FPS) {
-        //     renderer.render(game.getObjects());
-        //     lastRenderTime = currentTime;
-        // }
-        
-        // Add small sleep to prevent CPU hogging
+    while (running && game.isRunning()) {
+        uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::steady_clock::now().time_since_epoch()).count();
+        uint64_t frame_time_us = current_time_us - last_time_us;
+        last_time_us = current_time_us;
+    
+        // Cap frame time to avoid spiral of death
+        if (frame_time_us > max_allowed_frame_time_us) {
+            frame_time_us = max_allowed_frame_time_us;
+        }
+    
+        accumulator_us += frame_time_us;
+    
+        // Fixed timestep update
+        while (accumulator_us >= fixed_timestep_us) {
+            float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
+            game.update(fixed_delta_seconds);
+            accumulator_us -= fixed_timestep_us;
+        }
+    
+        // Optionally: render here if you want to decouple rendering from update
+    
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     

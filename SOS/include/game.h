@@ -15,17 +15,32 @@
 #include "object.h"
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 #include "collision/CollisionManager.h"
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
+#include "player_manager.h"
+#include "level_manager.h"
+
+enum class GameState {
+    RUNNING,
+    MENU
+};
+
+enum class MenuOption {
+    SINGLEPLAYER = 0,
+    MULTIPLAYER = 1,
+    EXIT = 2,
+    CREDITS = 3,
+    COUNT // Used to get the number of menu options
+};
 
 class Game {
 public:
     Game(PlayerInput* input, std::string playerID);
     ~Game();
 
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     bool isRunning() const;
     std::string generateRandomPlayerId();
     
@@ -45,9 +60,13 @@ public:
 
     std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
-    
+    void clearActors();
+
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
+    
+    // Level management
+    bool initializeLevel(const std::string& levelId);
     
     // Static instance getter for singleton access
     static Game* getInstance() { return instance_; }
@@ -55,13 +74,21 @@ public:
 
 private:
     void drawWord(const std::string& word, int x, int y);
+    void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
+    void drawMenu(float deltaTime);
+    void handleMenuInput(float deltaTime);
     
+    MenuOption selectedOption = MenuOption::SINGLEPLAYER;
+    bool menuOptionChanged = true;
+    float menuInputCooldown = 0.0f;
+    const float MENU_INPUT_DELAY = 0.2f; // Cooldown in seconds to prevent rapid selection changes
     
     // Local client-side prediction methods
-    void predictLocalPlayerMovement(uint64_t deltaTime);
-    void reconcileWithServerState(uint64_t deltaTime);
+    void predictLocalPlayerMovement(float deltaTime);
+    void reconcileWithServerState(float deltaTime);
 
+    GameState state;
     bool running;
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
@@ -69,6 +96,9 @@ private:
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
+    
+    // Level management
+    std::unique_ptr<LevelManager> levelManager;
     
     // Local server management
     std::unique_ptr<LocalServerManager> localServerManager;
