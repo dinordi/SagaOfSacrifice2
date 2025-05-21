@@ -9,10 +9,14 @@ public:
 
     int health;
 
-    void accept(CollisionVisitor& visitor) override;
-    // void takeDamage(int amount);
-    // void reverseDirection();
-    // void applyPhysicsResponse(const Vec2& resolutionVector);
+    // Enemy AI methods that control the behavior of the enemy
+
+
+    // Virtual methods to be overridden by derived classes
+    virtual void move() = 0; // Move the enemy
+    virtual void attack() = 0; // Attack the player
+    virtual void die() = 0; // Handle enemy death
+    virtual void update(float deltaTime) override; // Update the enemy's state
 };
 
 #endif // ENEMY_H
