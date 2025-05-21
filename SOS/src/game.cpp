@@ -32,12 +32,18 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     CollisionManager* collisionManager = new CollisionManager();
     this->collisionManager = collisionManager;
     
-    // Initialize game objects
-    // Note: in server-authoritative mode, object creation will be managed by the server
-    // but we still need to initialize the local player for input and rendering
-    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), playerID);
+    // Initialize LevelManager
+    levelManager = std::make_unique<LevelManager>(this, collisionManager);
+    
+    // Create player using PlayerManager
+    auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
+    
+    // Set player's input handler
+    player = playerSharedPtr.get();
     player->setInput(input);
-    objects.push_back(std::shared_ptr<Player>(player));
+    
+    // Add to objects list
+    //objects.push_back(playerSharedPtr);
 }
 
 Game::~Game() {
@@ -109,6 +115,16 @@ void Game::update(uint64_t deltaTime) {
         // Update remote players based on server data
         updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
+    else {
+        // In single player mode, update the level directly
+        if (levelManager) {
+            // Process player input directly without server
+            player->handleInput(input, deltaTime);
+            
+            // Update the current level (which updates all objects)
+            levelManager->update(deltaTime);
+        }
+    }
 }
 
 bool Game::isRunning() const {
@@ -128,7 +144,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     std::cout << "[Game] Setting up single player with embedded server" << std::endl;
     
     // Start the embedded server
-    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT)) {
+    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT, levelManager.get(), collisionManager)) {
         std::cerr << "[Game] Failed to start embedded server" << std::endl;
         return false;
     }
@@ -140,6 +156,17 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
         localServerManager->stopEmbeddedServer();
         return false;
     }
+    
+    // Initialize the first level for single player mode
+    // This will be skipped in multiplayer mode since levels are managed by the server
+    if (!multiplayerActive) {
+        // Initialize the default level (level1)
+        if (!initializeLevel("level1")) {
+            std::cerr << "[Game] Failed to initialize level in single player mode" << std::endl;
+            // Continue anyway, as this might be recoverable
+        }
+    }
+    
     usingSinglePlayerServer = true;
     std::cout << "[Game] Single player mode with embedded server initialized" << std::endl;
     
@@ -249,16 +276,30 @@ void Game::reconcileWithServerState(uint64_t deltaTime) {
         const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
         static uint64_t lastUpdateTime = 0;
+        static uint64_t remotePlayerWaitTime = 0;
         lastUpdateTime += deltaTime;
+        remotePlayerWaitTime += deltaTime;
 
         if (it == remotePlayers.end()) {
-            if(lastUpdateTime > 1000)
-            {
-                std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
+            // If we've been waiting too long for the server to recognize our player, 
+            // let's try resending our player information
+            if (remotePlayerWaitTime > 5000) { // 5 seconds
+                std::cout << "[Game] Resynchronizing player with server: " << player->getObjID() << std::endl;
+                // Force resend of player info
+                multiplayerManager->sendPlayerState();
+                remotePlayerWaitTime = 0;
+            }
+            
+            // Only log the error occasionally to avoid console spam
+            if (lastUpdateTime > 5000) { // Every 5 seconds
+                std::cout << "[Game] Waiting for server to synchronize player ID: " << player->getObjID() << std::endl;
                 lastUpdateTime = 0;
             }
             return;
         }
+        
+        // Reset the wait timer once we find our player
+        remotePlayerWaitTime = 0;
         RemotePlayer* remotePlayer = it->second.get();
         Vec2 serverPosition = remotePlayer->getposition();
         Vec2 clientPosition = player->getposition();
@@ -300,4 +341,34 @@ void Game::addObject(std::shared_ptr<Object> object) {
             std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
         }
     }
+}
+
+// Initialize and load a level
+bool Game::initializeLevel(const std::string& levelId) {
+    if (!levelManager) {
+        std::cerr << "[Game] LevelManager not initialized" << std::endl;
+        return false;
+    }
+    
+    // Initialize level manager if not done already
+    if (!levelManager->initialize()) {
+        std::cerr << "[Game] Failed to initialize LevelManager" << std::endl;
+        return false;
+    }
+    
+    // Load the specified level
+    if (!levelManager->loadLevel(levelId)) {
+        std::cerr << "[Game] Failed to load level: " << levelId << std::endl;
+        return false;
+    }
+    
+    // Add the player to the level
+    std::string playerId = player->getObjID();
+    if (!levelManager->addPlayerToCurrentLevel(playerId)) {
+        std::cerr << "[Game] Failed to add player to level" << std::endl;
+        return false;
+    }
+    
+    std::cout << "[Game] Successfully initialized level: " << levelId << std::endl;
+    return true;
 }

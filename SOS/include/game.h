@@ -19,6 +19,8 @@
 #include "collision/CollisionManager.h"
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
+#include "player_manager.h"
+#include "level_manager.h"
 
 class Game {
 public:
@@ -49,6 +51,9 @@ public:
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
+    // Level management
+    bool initializeLevel(const std::string& levelId);
+    
     // Static instance getter for singleton access
     static Game* getInstance() { return instance_; }
     static void setInstance(Game* instance) { instance_ = instance; }
@@ -69,6 +74,9 @@ private:
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
+    
+    // Level management
+    std::unique_ptr<LevelManager> levelManager;
     
     // Local server management
     std::unique_ptr<LocalServerManager> localServerManager;

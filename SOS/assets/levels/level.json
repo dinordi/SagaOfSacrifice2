@@ -66,7 +66,7 @@
     }
   ],
 
-  "playerStart": { "x": 160, "y": 224 },
+  "playerStart": { "x": 1080, "y": 1920 },
 
   "enemies": [
     { "id": "e1", "type": "android_scout",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
@@ -78,12 +78,12 @@
   ],
 
   "objects": [
-    { "id": "crate1",   "spriteId": 18, "x":  64, "y":  96 },
-    { "id": "barrel1",  "spriteId": 19, "x": 192, "y":  64 },
-    { "id": "console1", "spriteId": 20, "x": 320, "y": 160 },
-    { "id": "antenna1", "spriteId": 21, "x": 256, "y":  64 },
-    { "id": "holo_tree","spriteId": 22, "x": 160, "y":  96 },
-    { "id": "vault1",   "spriteId": 23, "x": 416, "y": 128 }
+    { "id": "crate1",   "spriteId": 18, "x":  10, "y":  96 },
+    { "id": "barrel1",  "spriteId": 19, "x":  2, "y":  64 },
+    { "id": "console1", "spriteId": 20, "x":  300, "y": 160 },
+    { "id": "antenna1", "spriteId": 21, "x":  4, "y":  64 },
+    { "id": "holo_tree","spriteId": 22, "x":  50, "y":  96 },
+    { "id": "vault1",   "spriteId": 23, "x":  6, "y": 128 }
   ],
 
   "items": [

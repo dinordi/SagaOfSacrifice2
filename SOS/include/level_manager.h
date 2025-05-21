@@ -6,11 +6,12 @@
 #include <memory>
 #include "level.h"
 #include "collision/CollisionManager.h"
-#include "game.h"
+
+class Game;
 
 class LevelManager {
 public:
-    LevelManager(Game* game, CollisionManager* collisionManager);
+    LevelManager(Game* game, CollisionManager* collisionManager) : game(game), collisionManager(collisionManager){};
     ~LevelManager();
 
     // Initialize the level manager and load all level metadata
@@ -27,6 +28,9 @@ public:
     
     // Move to the next level in sequence
     bool loadNextLevel();
+
+    // Move to the previous level in sequence
+    bool loadPreviousLevel();
     
     // Reset the current level
     void resetCurrentLevel();
@@ -39,6 +43,21 @@ public:
     
     // Get list of all level IDs
     std::vector<std::string> getAllLevelIds() const;
+    
+    // Add a player to the current level
+    bool addPlayerToCurrentLevel(const std::string& playerId);
+    bool removePlayerFromCurrentLevel(const std::string& playerId);
+    bool removeAllPlayersFromCurrentLevel();
+    bool removeAllObjectsFromCurrentLevel();
+
+private:
+    Game* game;
+    CollisionManager* collisionManager;
+private:
+    std::unordered_map<std::string, std::shared_ptr<Level>> levels_;
+    std::shared_ptr<Level> currentLevel_;
+    std::string currentJsonFilePath_;
+    std::unordered_map<std::string, std::filesystem::path> levelFilePaths_;
 
 
 };

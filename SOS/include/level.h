@@ -7,6 +7,8 @@
 #include "collision/CollisionManager.h"
 #include "objects/platform.h"
 #include "objects/enemy.h"
+#include "objects/player.h"
+#include "factories/player_factory.h"
 #include "nlohmann/json.hpp" // Include the JSON library
 #include <mutex>
 class Level {
@@ -34,21 +36,41 @@ class Level {
         
         // Add an object to the level
         void addObject(std::shared_ptr<Object> object);
+        void removeObject(std::shared_ptr<Object> object);
         
         // Check if level is completed
         bool isCompleted() const { return completed; }
         void setCompleted(bool value) { completed = value; }
         
+        bool removeAllObjects();
         // Reset the level to its initial state
         void reset();
         
         // Add methods for tiles
         bool isCollidableTile(int tileIndex, const std::string& tileset);
         //std::shared_ptr<TileLayer> getTileLayer(const std::string& layerId);
+    public:
+        /**
+         * Create and add a player to the level at the player start position
+         * 
+         * @param playerId Unique identifier for the player
+         * @return Shared pointer to the created player
+         */
+        std::shared_ptr<Player> createAndAddPlayer(const std::string& playerId);
+        
+        /**
+         * Get a player object by ID if it exists in this level
+         * 
+         * @param playerId The player's unique identifier
+         * @return Shared pointer to the player or nullptr if not found
+         */
+        std::shared_ptr<Player> getPlayer(const std::string& playerId);
+        
     private:
         // Helper methods for loading various level components
         void loadPlatforms();
         void loadEnemies();
+        void loadPlayers(nlohmann::json& levelData);
         void detectAndResolveCollisions();
         //void loadCollectibles();
         
