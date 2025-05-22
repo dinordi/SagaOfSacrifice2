@@ -4,6 +4,8 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+#include <poll.h>
+
 // Physical memory base addresses for the BRAMs
 #define FRAME_INFO_ADDR   0x42000000         // Frame info BRAM - 8KB
 #define LOOKUP_TABLE_ADDR 0x40000000       // Lookup table BRAM - 16KB
@@ -13,6 +15,12 @@
 
 // Sprite data base address
 #define SPRITE_DATA_BASE 0x0E000000        // Base address for sprite data (fixed to include leading 0)
+
+int uio_fd;
+uint32_t irq_count;
+uint32_t clear_value = 1;
+int stop_thread = 0;
+
 
 // Function to write a single sprite's information to the frame_info BRAM
 void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
@@ -57,6 +65,41 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
             s_sprite_x++;
         } else {
             s_sprite_x--;
+        }
+    }
+}
+
+void handleIRQ()
+{
+    uint32_t irq_count;
+    if (read(uio_fd, &irq_count, sizeof(irq_count)) != sizeof(irq_count)) {
+        perror("read");
+        return;
+    }
+    // Clear the interrupt flag by writing to the UIO device
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear interrupt");
+    }
+
+    printf("Interrupt received! IRQ count: %d\n", irq_count);
+
+}
+
+void irqHandlerThread()
+{
+    struct pollfd fds;
+    fds.fd = uio_fd;
+    fds.events = POLLIN;
+
+    while (!stop_thread) {
+        int ret = poll(&fds, 1, -1); // Wait indefinitely for an event
+        if (ret > 0 && (fds.revents & POLLIN)) {
+            if (fds.revents & POLLIN) {
+                handleIRQ();
+            }
+        } else if (ret < 0) {
+            perror("poll");
+            break;
         }
     }
 }
@@ -118,7 +161,18 @@ int main() {
     // The loop runs NUM_SPRITES times to show NUM_SPRITES steps of animation.
     
     //update_and_write_animated_sprite(frame_info, sprite_id_to_animate);
+    uio_fd = open("/dev/uio0", O_RDWR);
+    if (uio_fd < 0) {
+        perror("Failed to open UIO device");
+    }
+
+    // Clear any pending interrupts at the start by writing to the UIO device
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear pending interrupt");
+        close(uio_fd);
+    }
     
+    irqHandlerThread();
 
     // Create lookup table entry with proper alignment
     printf("Writing to lookup table at index 0\n"); // This line was present after the user's selection. Kept as is.
