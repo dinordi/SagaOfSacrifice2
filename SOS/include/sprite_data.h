@@ -1,6 +1,9 @@
 // filepath: /Users/dinordi/Documents/GitHub/SagaOfSacrifice2/SOS/include/sprite_data.h
 #pragma once
 #include <string>
+#include <nlohmann/json.hpp>
+#include <filesystem>
+#include <fstream>
 
 #define DEFINE_GETTER_SETTER(type, member) \
 private:                                   \
@@ -38,6 +41,8 @@ public:
     int width;  // Width of the sprite, consistent in a single sprite sheet
     int height; // Height of the sprite, consistent in a single sprite sheet
     int columns; // Number of columns in the sprite sheet
+private:
+    std::string atlasPath;  // Path to the atlas file
 private:
     DEFINE_CONST_GETTER_SETTER(std::string, id_);
 };

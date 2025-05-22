@@ -38,7 +38,6 @@ bool Level::load(json& levelData ) {
             // Extract values from JSON
             int x = obj["x"];
             int y = obj["y"];
-            int spriteId = obj["spriteId"];
             std::string objID = obj["id"];
             
             // Create platform object
@@ -55,7 +54,6 @@ bool Level::load(json& levelData ) {
             // Extract common enemy values
             int x = obj["x"];
             int y = obj["y"];
-            int spriteId = obj["spriteId"];
             std::string objID = obj["id"];
             std::string type = obj["type"];
             int hp = obj["hp"];
