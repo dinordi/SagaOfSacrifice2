@@ -13,18 +13,18 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
                            bram_ptr(NULL)
 {
     // Open the UIO device
-    // uio_fd = open("/dev/uio0", O_RDWR);
-    // if (uio_fd < 0) {
-    //     perror("Failed to open UIO device");
-    //     throw std::runtime_error("Failed to open UIO device");
-    // }
+    uio_fd = open("/dev/uio0", O_RDWR);
+    if (uio_fd < 0) {
+        perror("Failed to open UIO device");
+        throw std::runtime_error("Failed to open UIO device");
+    }
 
     // Clear any pending interrupts at the start by writing to the UIO device
-    // if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
-    //     perror("Failed to clear pending interrupt");
-    //     close(uio_fd);
-    //     throw std::runtime_error("Failed to clear pending interrupt");
-    // }
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear pending interrupt");
+        close(uio_fd);
+        throw std::runtime_error("Failed to clear pending interrupt");
+    }
 
     
     // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
@@ -106,7 +106,7 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     // }
 
     // Create a thread to handle interrupts
-    // irq_thread = std::thread(&Renderer::irqHandlerThread, this);
+    irq_thread = std::thread(&Renderer::irqHandlerThread, this);
 }
 
 
@@ -211,7 +211,8 @@ void Renderer::handleIRQ()
     // }
     //printf("Interrupt received! IRQ count: %u\n", irq_count);
     //Start DMA transfer
-    dmaTransfer();
+    // dmaTransfer();
+    std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
 
 
 }
