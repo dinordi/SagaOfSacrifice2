@@ -1,7 +1,7 @@
 #include "objects/entity.h"
-#include "platform.h"
+#include "tile.h"
 
-Entity::Entity( Vec2 pos, SpriteData* spData, std::string objID) : Object( pos, ObjectType::ENTITY, spData, objID) {}
+Entity::Entity( BoxCollider collider, std::string objID) : Object( collider, ObjectType::ENTITY, objID) {}
 
 // void Entity::handlePlatformCollision(Platform* platform)
 // {

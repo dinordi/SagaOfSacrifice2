@@ -7,15 +7,22 @@
 #include <thread>
 #include <string>
 #include <cstdlib>
+#include <csignal>
 #include <filesystem>
 
 #include "input_pl.h"
-#include "SDL2AudioManager.h"
+#include "SDL2Input.h"
 #include "Renderer.h"
 #include "SDL2AudioManager.h"
 
 float FPS = 60.0f;
+volatile bool running = true;
 
+
+void handle_sigint(int) {
+    std::cout << "SIGINT received. Exiting..." << std::endl;
+    running = false;
+}
 // Note: get_ticks() is now defined in TimeUtils.cpp
 
 void printUsage(const char* programName) {
@@ -28,7 +35,7 @@ void printUsage(const char* programName) {
     std::cout << "  -p, --port <port>             Specify server port (default: 8080)" << std::endl;
     std::cout << "  -id, --playerid <id>          Specify player ID (default: random)" << std::endl;
     std::cout << "  -l, --local                   Run in local-only mode without server (for development)" << std::endl;
-    std::cout << "  -e, --embedded               Use embedded server (default) instead of external server" << std::endl;
+    std::cout << "  -d, --debug                   Just load in an image and quit. For debugging purposes" << std::endl;
 }
 
 std::string generateRandomPlayerId() {
@@ -45,10 +52,13 @@ std::string generateRandomPlayerId() {
 }
 
 int main(int argc, char *argv[]) {
+    std::signal(SIGINT, handle_sigint); // Register signal handler for Ctrl+C
     // Parse command line arguments
     std::string imageName = "Solid_blue";
     bool enableRemoteMultiplayer = false;
     bool localOnlyMode = false;
+    bool debugMode = false;
+    bool devMode = false;
     bool useEmbeddedServer = true; // Default to embedded server
     std::string serverAddress = "localhost";
     int serverPort = 8080;
@@ -86,6 +96,17 @@ int main(int argc, char *argv[]) {
             if (i + 1 < argc) {
                 playerId = argv[++i];
             }
+        } else if (arg == "-d" || arg == "--debug") {
+            debugMode = true;
+            std::cout << "Debug mode enabled. Loading image and quitting." << std::endl;
+        } else if (arg == "-dev" || arg == "--dev") {
+            devMode = true;
+            std::cout << "Development mode enabled. Running headless" << std::endl;
+        }
+        else {
+            std::cerr << "Unknown option: " << arg << std::endl;
+            printUsage(argv[0]);
+            return 1;
         }
     }
     
@@ -103,7 +124,14 @@ int main(int argc, char *argv[]) {
         std::cout << "Local-only mode (no server) enabled for development." << std::endl;
     }
     
-    std::string path = "/home/root/SagaOfSacrifice2/SOS/assets/sprites/";
+    // Get path from where the executable is running
+    std::string path = std::filesystem::current_path().string();
+    // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
+    // Want to go to /SagaOfSacrifice2/SOS
+    path = path.substr(0, path.find("/client/build"));
+    path = path + "/SOS";
+
+    std::string path_sprites = path + "/assets/sprites/";
     imageName = imageName + ".png";
 
     AudioManager& audio = SDL2AudioManager::Instance();
@@ -112,7 +140,6 @@ int main(int argc, char *argv[]) {
     std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
     if(!audio.initialize(basePathSOS)) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
-        return -1;
     }
     std::cout << "AudioManager initialized successfully." << std::endl;
     audio.loadMusic("music/menu/menu.wav");
@@ -122,11 +149,17 @@ int main(int argc, char *argv[]) {
     audio.playSound("001");
     audio.playSound("jump");
 
-    Renderer renderer(path + imageName);
-    PlayerInput* controller = new EvdevController();
+    if(!devMode)
+    {
+        Renderer renderer(path_sprites + imageName);
+        if(debugMode) {
+            std::cout << "Debug mode: Loaded image." << std::endl;
+            return 0;
+        }
+    }
+    PlayerInput* controller = new SDL2Input();
     Game game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
-    renderer.init();
     
     // Initialize network features based on mode
     if (enableRemoteMultiplayer) {
@@ -164,23 +197,38 @@ int main(int argc, char *argv[]) {
     // // Play music
     // audioManager->setMusicVolume(0.9f);
     
+    
+    // Timing setup
+    const uint64_t fixed_timestep_us = 16666; // ~60 updates/sec (1,000,000 / 60)
+    const uint64_t max_allowed_frame_time_us = 250000; // Cap to avoid spiral of death
+    
+    uint64_t last_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count();
+    uint64_t accumulator_us = 0;
+    
     std::cout << "Entering gameloop..." << std::endl;
-    while (game.isRunning()) {
-        auto currentTime = get_ticks();
-        uint32_t deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        
-        // Update game logic
-        game.update(deltaTime);
-        
-        // Render game state at appropriate intervals
-        // uint32_t renderElapsedTime = currentTime - lastRenderTime;
-        // if (renderElapsedTime > 1000.0f / FPS) {
-        //     renderer.render(game.getObjects());
-        //     lastRenderTime = currentTime;
-        // }
-        
-        // Add small sleep to prevent CPU hogging
+    while (running && game.isRunning()) {
+        uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::steady_clock::now().time_since_epoch()).count();
+        uint64_t frame_time_us = current_time_us - last_time_us;
+        last_time_us = current_time_us;
+    
+        // Cap frame time to avoid spiral of death
+        if (frame_time_us > max_allowed_frame_time_us) {
+            frame_time_us = max_allowed_frame_time_us;
+        }
+    
+        accumulator_us += frame_time_us;
+    
+        // Fixed timestep update
+        while (accumulator_us >= fixed_timestep_us) {
+            float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
+            game.update(fixed_delta_seconds);
+            accumulator_us -= fixed_timestep_us;
+        }
+    
+        // Optionally: render here if you want to decouple rendering from update
+    
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     

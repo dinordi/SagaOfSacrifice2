@@ -58,9 +58,17 @@ file(GLOB_RECURSE SOURCES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
-file(GLOB_RECURSE SOS_SOURCES
-    "${PROJECT_SOURCE_DIR}/SOS/src/*.cpp"
-)
+if(DEFINED ENV{DOCKER_BUILD})
+    # Add source files for Docker build
+    file(GLOB_RECURSE SOS_SOURCES
+        "${PROJECT_SOURCE_DIR}/SOS/src/*.cpp"
+    )
+else()
+    # Add source files for non-Docker build
+    file(GLOB_RECURSE SOS_SOURCES
+        "${PROJECT_SOURCE_DIR}/../SOS/src/*.cpp"
+    )
+endif()
 
 # Add executable
 add_executable(SagaServer ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES} ${SOS_SOURCES})

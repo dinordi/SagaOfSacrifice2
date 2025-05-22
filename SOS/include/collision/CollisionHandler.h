@@ -12,7 +12,7 @@ private:
 
     void handleInteraction(Player* player);
     void handleInteraction(Enemy* enemy);
-    void handleInteraction(Platform* platform);
+    void handleInteraction(Tile* platform);
     void handleInteraction(RemotePlayer* remotePlayer);
 
 public:
@@ -20,7 +20,7 @@ public:
 
     void visit(Player* player) override;
     void visit(Enemy* enemy) override;
-    void visit(Platform* platform) override;
+    void visit(Tile* platform) override;
     void visit(RemotePlayer* remotePlayer) override;
 };
 

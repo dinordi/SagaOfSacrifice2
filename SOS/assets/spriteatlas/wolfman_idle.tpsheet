@@ -1,0 +1,138 @@
+{
+	"textures": [
+		{
+			"image": "wolfman_idle-0.png",
+			"size": {
+				"w": 752,
+				"h": 97
+			},
+			"sprites": [
+				{
+					"filename": "wolfman_idle-3.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 90,
+						"h": 95
+					},
+					"margin": {
+						"x": 13,
+						"y": 33,
+						"w": 38,
+						"h": 33
+					}
+				},
+				{
+					"filename": "wolfman_idle-7.png",
+					"region": {
+						"x": 93,
+						"y": 1,
+						"w": 90,
+						"h": 95
+					},
+					"margin": {
+						"x": 25,
+						"y": 33,
+						"w": 38,
+						"h": 33
+					}
+				},
+				{
+					"filename": "wolfman_idle-1.png",
+					"region": {
+						"x": 185,
+						"y": 1,
+						"w": 94,
+						"h": 93
+					},
+					"margin": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 35
+					}
+				},
+				{
+					"filename": "wolfman_idle-5.png",
+					"region": {
+						"x": 281,
+						"y": 1,
+						"w": 94,
+						"h": 93
+					},
+					"margin": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 35
+					}
+				},
+				{
+					"filename": "wolfman_idle-2.png",
+					"region": {
+						"x": 377,
+						"y": 1,
+						"w": 90,
+						"h": 93
+					},
+					"margin": {
+						"x": 13,
+						"y": 35,
+						"w": 38,
+						"h": 35
+					}
+				},
+				{
+					"filename": "wolfman_idle-6.png",
+					"region": {
+						"x": 469,
+						"y": 1,
+						"w": 90,
+						"h": 93
+					},
+					"margin": {
+						"x": 25,
+						"y": 35,
+						"w": 38,
+						"h": 35
+					}
+				},
+				{
+					"filename": "wolfman_idle-0.png",
+					"region": {
+						"x": 561,
+						"y": 1,
+						"w": 94,
+						"h": 91
+					},
+					"margin": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 37
+					}
+				},
+				{
+					"filename": "wolfman_idle-4.png",
+					"region": {
+						"x": 657,
+						"y": 1,
+						"w": 94,
+						"h": 91
+					},
+					"margin": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 37
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:84294199a263bf9a05da178e5a2a0c8d:de8c964e75e916a7d1fd296661a11bfd:8f3fef8243ccb723e3ab016ae2c2bec8$"
+	}
+}

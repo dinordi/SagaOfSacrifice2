@@ -5,6 +5,7 @@
 #include <boost/thread.hpp>
 #include <queue>
 #include <mutex>
+#include <optional>
 
 #include <boost/bind/bind.hpp>
 using namespace boost::placeholders;
@@ -43,6 +44,9 @@ private:
     boost::asio::io_context io_context_;
     boost::asio::ip::tcp::socket socket_;
     boost::thread io_thread_;
+
+    // Work guard to keep io_context running
+    std::optional<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> work_guard_;
     
     // Connection state
     bool connected_;

@@ -1,0 +1,1218 @@
+{
+	"textures": [
+		{
+			"image": "slime2_idle-0.png",
+			"size": {
+				"w": 128,
+				"h": 221
+			},
+			"sprites": [
+				{
+					"filename": "Slime2_Idle_body-4.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 25,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 39,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-5.png",
+					"region": {
+						"x": 1,
+						"y": 31,
+						"w": 25,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 39,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-10.png",
+					"region": {
+						"x": 28,
+						"y": 1,
+						"w": 25,
+						"h": 28
+					},
+					"margin": {
+						"x": 19,
+						"y": 13,
+						"w": 39,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-11.png",
+					"region": {
+						"x": 1,
+						"y": 61,
+						"w": 25,
+						"h": 28
+					},
+					"margin": {
+						"x": 19,
+						"y": 13,
+						"w": 39,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-3.png",
+					"region": {
+						"x": 28,
+						"y": 31,
+						"w": 25,
+						"h": 27
+					},
+					"margin": {
+						"x": 21,
+						"y": 14,
+						"w": 39,
+						"h": 37
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-9.png",
+					"region": {
+						"x": 55,
+						"y": 1,
+						"w": 25,
+						"h": 27
+					},
+					"margin": {
+						"x": 19,
+						"y": 14,
+						"w": 39,
+						"h": 37
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-16.png",
+					"region": {
+						"x": 1,
+						"y": 91,
+						"w": 22,
+						"h": 29
+					},
+					"margin": {
+						"x": 23,
+						"y": 12,
+						"w": 42,
+						"h": 35
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-22.png",
+					"region": {
+						"x": 28,
+						"y": 60,
+						"w": 22,
+						"h": 29
+					},
+					"margin": {
+						"x": 20,
+						"y": 12,
+						"w": 42,
+						"h": 35
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-14.png",
+					"region": {
+						"x": 55,
+						"y": 30,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 22,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-20.png",
+					"region": {
+						"x": 25,
+						"y": 91,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 20,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-2.png",
+					"region": {
+						"x": 82,
+						"y": 1,
+						"w": 25,
+						"h": 26
+					},
+					"margin": {
+						"x": 21,
+						"y": 15,
+						"w": 39,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-8.png",
+					"region": {
+						"x": 52,
+						"y": 60,
+						"w": 25,
+						"h": 26
+					},
+					"margin": {
+						"x": 19,
+						"y": 15,
+						"w": 39,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-17.png",
+					"region": {
+						"x": 1,
+						"y": 122,
+						"w": 21,
+						"h": 29
+					},
+					"margin": {
+						"x": 24,
+						"y": 12,
+						"w": 43,
+						"h": 35
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-23.png",
+					"region": {
+						"x": 1,
+						"y": 153,
+						"w": 21,
+						"h": 29
+					},
+					"margin": {
+						"x": 20,
+						"y": 12,
+						"w": 43,
+						"h": 35
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-15.png",
+					"region": {
+						"x": 1,
+						"y": 184,
+						"w": 21,
+						"h": 28
+					},
+					"margin": {
+						"x": 23,
+						"y": 13,
+						"w": 43,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-36.png",
+					"region": {
+						"x": 109,
+						"y": 1,
+						"w": 17,
+						"h": 15
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-21.png",
+					"region": {
+						"x": 80,
+						"y": 30,
+						"w": 21,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 43,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-13.png",
+					"region": {
+						"x": 79,
+						"y": 60,
+						"w": 22,
+						"h": 27
+					},
+					"margin": {
+						"x": 23,
+						"y": 14,
+						"w": 42,
+						"h": 37
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-19.png",
+					"region": {
+						"x": 103,
+						"y": 29,
+						"w": 22,
+						"h": 27
+					},
+					"margin": {
+						"x": 20,
+						"y": 14,
+						"w": 42,
+						"h": 37
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-12.png",
+					"region": {
+						"x": 103,
+						"y": 58,
+						"w": 22,
+						"h": 23
+					},
+					"margin": {
+						"x": 23,
+						"y": 18,
+						"w": 42,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-1.png",
+					"region": {
+						"x": 52,
+						"y": 88,
+						"w": 25,
+						"h": 25
+					},
+					"margin": {
+						"x": 21,
+						"y": 16,
+						"w": 39,
+						"h": 39
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-7.png",
+					"region": {
+						"x": 79,
+						"y": 89,
+						"w": 25,
+						"h": 25
+					},
+					"margin": {
+						"x": 19,
+						"y": 16,
+						"w": 39,
+						"h": 39
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-32.png",
+					"region": {
+						"x": 106,
+						"y": 83,
+						"w": 21,
+						"h": 20
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-46.png",
+					"region": {
+						"x": 106,
+						"y": 105,
+						"w": 21,
+						"h": 20
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-8.png",
+					"region": {
+						"x": 50,
+						"y": 115,
+						"w": 27,
+						"h": 17
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-0.png",
+					"region": {
+						"x": 79,
+						"y": 116,
+						"w": 25,
+						"h": 23
+					},
+					"margin": {
+						"x": 21,
+						"y": 18,
+						"w": 39,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-9.png",
+					"region": {
+						"x": 25,
+						"y": 121,
+						"w": 23,
+						"h": 16
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-6.png",
+					"region": {
+						"x": 24,
+						"y": 139,
+						"w": 25,
+						"h": 23
+					},
+					"margin": {
+						"x": 19,
+						"y": 18,
+						"w": 39,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-6.png",
+					"region": {
+						"x": 51,
+						"y": 134,
+						"w": 26,
+						"h": 19
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Idle_body-18.png",
+					"region": {
+						"x": 24,
+						"y": 164,
+						"w": 22,
+						"h": 23
+					},
+					"margin": {
+						"x": 20,
+						"y": 18,
+						"w": 42,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-18.png",
+					"region": {
+						"x": 24,
+						"y": 189,
+						"w": 26,
+						"h": 19
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-11.png",
+					"region": {
+						"x": 79,
+						"y": 141,
+						"w": 28,
+						"h": 16
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-38.png",
+					"region": {
+						"x": 51,
+						"y": 155,
+						"w": 25,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-21.png",
+					"region": {
+						"x": 48,
+						"y": 170,
+						"w": 27,
+						"h": 17
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-24.png",
+					"region": {
+						"x": 52,
+						"y": 189,
+						"w": 28,
+						"h": 16
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-12.png",
+					"region": {
+						"x": 78,
+						"y": 159,
+						"w": 28,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-25.png",
+					"region": {
+						"x": 77,
+						"y": 174,
+						"w": 28,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-22.png",
+					"region": {
+						"x": 82,
+						"y": 189,
+						"w": 23,
+						"h": 16
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-37.png",
+					"region": {
+						"x": 108,
+						"y": 159,
+						"w": 19,
+						"h": 15
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-52.png",
+					"region": {
+						"x": 107,
+						"y": 176,
+						"w": 19,
+						"h": 15
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-40.png",
+					"region": {
+						"x": 107,
+						"y": 193,
+						"w": 19,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-53.png",
+					"region": {
+						"x": 52,
+						"y": 207,
+						"w": 25,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-54.png",
+					"region": {
+						"x": 79,
+						"y": 207,
+						"w": 19,
+						"h": 13
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-51.png",
+					"region": {
+						"x": 109,
+						"y": 127,
+						"w": 17,
+						"h": 15
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-2.png",
+					"region": {
+						"x": 109,
+						"y": 18,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-43.png",
+					"region": {
+						"x": 109,
+						"y": 18,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-15.png",
+					"region": {
+						"x": 109,
+						"y": 144,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-28.png",
+					"region": {
+						"x": 109,
+						"y": 144,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-39.png",
+					"region": {
+						"x": 118,
+						"y": 18,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-55.png",
+					"region": {
+						"x": 118,
+						"y": 144,
+						"w": 7,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-0.png",
+					"region": {
+						"x": 109,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-13.png",
+					"region": {
+						"x": 109,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-26.png",
+					"region": {
+						"x": 109,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-41.png",
+					"region": {
+						"x": 109,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-4.png",
+					"region": {
+						"x": 114,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-17.png",
+					"region": {
+						"x": 114,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-30.png",
+					"region": {
+						"x": 114,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-45.png",
+					"region": {
+						"x": 114,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-10.png",
+					"region": {
+						"x": 119,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-23.png",
+					"region": {
+						"x": 119,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-33.png",
+					"region": {
+						"x": 119,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-48.png",
+					"region": {
+						"x": 119,
+						"y": 154,
+						"w": 3,
+						"h": 3
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-3.png",
+					"region": {
+						"x": 1,
+						"y": 214,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-29.png",
+					"region": {
+						"x": 1,
+						"y": 214,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-34.png",
+					"region": {
+						"x": 1,
+						"y": 214,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-16.png",
+					"region": {
+						"x": 100,
+						"y": 207,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-44.png",
+					"region": {
+						"x": 100,
+						"y": 207,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-49.png",
+					"region": {
+						"x": 100,
+						"y": 207,
+						"w": 4,
+						"h": 4
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-1.png",
+					"region": {
+						"x": 103,
+						"y": 83,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-14.png",
+					"region": {
+						"x": 103,
+						"y": 83,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-27.png",
+					"region": {
+						"x": 103,
+						"y": 83,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-42.png",
+					"region": {
+						"x": 103,
+						"y": 83,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-5.png",
+					"region": {
+						"x": 103,
+						"y": 86,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-19.png",
+					"region": {
+						"x": 103,
+						"y": 86,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-31.png",
+					"region": {
+						"x": 103,
+						"y": 86,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-47.png",
+					"region": {
+						"x": 103,
+						"y": 86,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-7.png",
+					"region": {
+						"x": 48,
+						"y": 164,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-20.png",
+					"region": {
+						"x": 48,
+						"y": 164,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-35.png",
+					"region": {
+						"x": 48,
+						"y": 164,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Slime2_Hurt_body-50.png",
+					"region": {
+						"x": 48,
+						"y": 164,
+						"w": 1,
+						"h": 1
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:7935e2839ab4ea4c8baa5314142067dc:788500045c9aefe0cd42e28a32766b1c:12d07954f045d7c7329a119cf710e03c$"
+	}
+}

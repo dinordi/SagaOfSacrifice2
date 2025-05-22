@@ -9,17 +9,20 @@
 #include "network/NetworkConfig.h"
 #include "collision/CollisionManager.h"
 #include "objects/player.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
+#include "player_manager.h"
 
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
 
-EmbeddedServer::EmbeddedServer(int port)
+EmbeddedServer::EmbeddedServer(int port, LevelManager* levelManager)
     : port_(port), 
       running_(false),
       gameLoopRunning_(false),
+      levelManager_(levelManager),
       collisionManager_(std::make_shared<CollisionManager>()) {
     std::cout << "[EmbeddedServer] Created on port " << port << std::endl;
+  
     
     // Initialize the acceptor but don't start listening until start() is called
     acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_);
@@ -259,8 +262,9 @@ void EmbeddedServer::stop() {
     // Clear game state
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        gameObjects_.clear();
-        players_.clear();
+        // Clear game objects and players
+        levelManager_->removeAllPlayersFromCurrentLevel();
+        levelManager_->removeAllObjectsFromCurrentLevel();
     }
     
     std::cout << "[EmbeddedServer] Stopped" << std::endl;
@@ -541,45 +545,43 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         return true;
     } catch (const std::exception& e) {
         std::cerr << "[EmbeddedServer] Error sending message to client: " << e.what() << std::endl;
+     return false;
     }
+    
 }
 
 void EmbeddedServer::run() {
     std::cout << "[EmbeddedServer] Game loop started" << std::endl;
     
-    const auto tickDuration = std::chrono::milliseconds(1000 / NetworkConfig::Server::TickRate);
+    const float fixedDeltaSeconds = 1.0 / NetworkConfig::Server::TickRate;
+    std::cout << "[EmbeddedServer] Fixed delta time: " << fixedDeltaSeconds << " seconds" << std::endl;
+    const uint64_t fixedDeltaMilliseconds = static_cast<uint64_t>(fixedDeltaSeconds * 1000);
     unsigned int loopCounter = 0;
 
     while (gameLoopRunning_) {
-        
-        auto now = std::chrono::high_resolution_clock::now();
-        auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastUpdateTime_).count();
-        lastUpdateTime_ = now;
-        
         try {
-            updateGameState(deltaTime);
+            updateGameState(fixedDeltaSeconds); // Always use fixed delta
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception in game update: " << e.what() << std::endl;
         }
-        
+
         // Check flag again before sleeping to respond faster to shutdown requests
         if (!gameLoopRunning_) {
             std::cout << "[EmbeddedServer] Game loop flag set to false, exiting loop" << std::endl;
             break;
         }
-        
+
         // Sleep until next tick
         try {
-            std::this_thread::sleep_for(tickDuration);
+            std::this_thread::sleep_for(std::chrono::milliseconds(fixedDeltaMilliseconds));
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception during game loop sleep: " << e.what() << std::endl;
-            // Brief pause to avoid spinning if something is wrong with sleep
             std::this_thread::yield();
         }
     }
-    
+
     std::cout << "[EmbeddedServer] Game loop stopped after " << loopCounter << " iterations" << std::endl;
 }
 
@@ -590,23 +592,19 @@ bool EmbeddedServer::isRunning() const {
 void EmbeddedServer::addPlayer(const std::string& playerId) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     
-    if (players_.find(playerId) != players_.end()) {
-        std::cerr << "[EmbeddedServer] Player " << playerId << " already exists" << std::endl;
-        return;
+    // 1) Create (or fetch) the player in the global manager:
+    auto& pm = PlayerManager::getInstance();
+    
+    std::shared_ptr<Player> player;
+    if (pm.getPlayer(playerId) != nullptr) {
+        std::cout << "[EmbeddedServer] Player " << playerId << " already exists, using existing player" << std::endl;
+        player = pm.getPlayer(playerId);
+    } else {
+        // Create a new player using the PlayerManager singleton
+        player = pm.createPlayer(playerId, Vec2{100, 100});
+        std::cout << "[EmbeddedServer] Created new player " << playerId << std::endl;
     }
     
-    std::cout << "[EmbeddedServer] Adding player " << playerId << std::endl;
-    
-    // Create a new player object
-    auto player = std::make_shared<Player>(Vec2(500, 100), 
-                                           new SpriteData(std::string("playermap"), 128, 128, 5), 
-                                           playerId);
-    TempInput* input = new TempInput();
-    input->setInputs(false, false, false, false, false); // Initialize inputs to false
-    player->setInput(input);
-    // Add player to the game
-    players_[playerId] = player;
-    gameObjects_.push_back(player);
     
     // Send a player joined message to all clients
     NetworkMessage joinMsg;
@@ -620,9 +618,9 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
 
 void EmbeddedServer::removePlayer(const std::string& playerId) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-    
-    auto playerIt = players_.find(playerId);
-    if (playerIt == players_.end()) {
+    auto& pm = PlayerManager::getInstance();
+    auto playerIt = pm.getPlayer(playerId);
+    if (playerIt == nullptr) {
         std::cerr << "[EmbeddedServer] Player " << playerId << " not found" << std::endl;
         return;
     }
@@ -630,14 +628,15 @@ void EmbeddedServer::removePlayer(const std::string& playerId) {
     std::cout << "[EmbeddedServer] Removing player " << playerId << std::endl;
     
     // Remove player from game objects
-    auto player = playerIt->second;
-    auto objIt = std::find(gameObjects_.begin(), gameObjects_.end(), player);
-    if (objIt != gameObjects_.end()) {
-        gameObjects_.erase(objIt);
-    }
+    //auto player = playerIt;
+    pm.removePlayer(playerId);
+    //auto objIt = std::find(gameObjects_.begin(), gameObjects_.end(), player);
+    // if (objIt != gameObjects_.end()) {
+    //     gameObjects_.erase(objIt);
+    // }
     
     // Remove from players map
-    players_.erase(playerIt);
+    //players_.erase(playerIt);
     
     // Send a player left message to all clients
     NetworkMessage leaveMsg;
@@ -733,222 +732,162 @@ void EmbeddedServer::createInitialGameObjects() {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     
     std::cout << "[EmbeddedServer] Creating initial game objects" << std::endl;
-    
-    // Clear any existing objects
-    gameObjects_.clear();
-    players_.clear();
-    
-    // Create platform at the bottom of the screen
-    auto platform = std::make_shared<Platform>(400, 500, 
-                                             new SpriteData(std::string("tiles"), 128, 128, 1),
-                                             "platform_ground");
-    gameObjects_.push_back(platform);
-    
-    // Add more platforms as needed
-    auto platform2 = std::make_shared<Platform>(200, 500, 
-                                              new SpriteData(std::string("tiles"), 128, 128, 1),
-                                              "platform_1");
-    gameObjects_.push_back(platform2);
-    
-    auto platform3 = std::make_shared<Platform>(600, 500, 
-                                              new SpriteData(std::string("tiles"), 128, 128, 1),
-                                              "platform_2");
-    gameObjects_.push_back(platform3);
+    // initialize the level 
+    if(levelManager_->initialize()){
+    if(!levelManager_->loadLevel("level1")){
+        std::cerr << "[EmbeddedServer] Failed to load level1" << std::endl;
+        
+    }
+    } else {
+        std::cerr << "[EmbeddedServer] Failed to initialize level manager" << std::endl;
+        
+    }
+
 }
 
-void EmbeddedServer::updateGameState(uint64_t deltaTime) {
+void EmbeddedServer::updateGameState(float deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
         
-        // Update all game objects
-        for (auto& object : gameObjects_) {
-            object->update(deltaTime);
-        }
+        levelManager_->update(deltaTime);
+        // Update all players
         
-        // Detect and resolve collisions
-        detectAndResolveCollisions();
+
     }
     // Send game state to clients periodically
-    static uint64_t updateTimer = 0;
-    updateTimer += deltaTime;
+    static float updateTimer = 0;
+    updateTimer += deltaTime*1000;
     
-    if (updateTimer >= NetworkConfig::Server::StateUpdateInterval) {
+    if (updateTimer*1000 >= NetworkConfig::Server::StateUpdateInterval) {
         updateTimer = 0;
         sendGameStateToClients();
     }
 }
 
-void EmbeddedServer::detectAndResolveCollisions() {
-    collisionManager_->detectCollisions(gameObjects_);
-}
-
 void EmbeddedServer::sendGameStateToClients() {
-    // Create state update message
+    // 1) Build the header
     NetworkMessage stateMsg;
-    stateMsg.type = MessageType::GAME_STATE;
+    stateMsg.type     = MessageType::GAME_STATE;
     stateMsg.senderId = "server";
+    stateMsg.data.clear();
 
-    // Serialize game state into binary format
+    // 2) Get objects from the active level
+    Level* lvl = levelManager_->getCurrentLevel();
+
+    if (!lvl) {
+        return; // nothing to send if no level loaded
+    }
+    auto objects = lvl->getObjects();
+
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        
-        // First, add the count of objects we're sending
-        uint16_t objectCount = gameObjects_.size();
-        stateMsg.data.push_back(static_cast<uint8_t>((objectCount >> 8) & 0xFF)); // High byte
-        stateMsg.data.push_back(static_cast<uint8_t>(objectCount & 0xFF));        // Low byte
-        
-        // Add all game objects to the state update
-        for (const auto& object : gameObjects_) {
-            // Skip null objects
-            if (!object) {
-                std::cerr << "[EmbeddedServer] Warning: Null object in gameObjects_" << std::endl;
+
+        // 3) Serialize object count (2 bytes)
+        uint16_t count = static_cast<uint16_t>(objects.size());
+        stateMsg.data.push_back(uint8_t(count >> 8));
+        stateMsg.data.push_back(uint8_t(count & 0xFF));
+
+        // 4) Serialize each object
+        for (auto& obj : objects) {
+            if (!obj) {
+                std::cerr << "[EmbeddedServer] Warning: null object in level\n";
                 continue;
             }
-            
-            // Add object type identifier (1 byte)
-            uint8_t objectType = 0;
-            
-            
-            if (dynamic_cast<Player*>(object.get())) {
-                objectType = static_cast<uint8_t>(ObjectType::PLAYER); // Player
-            } else if (dynamic_cast<Platform*>(object.get())) {
-                objectType = static_cast<uint8_t>(ObjectType::PLATFORM); // Platform
-            } else {
-                objectType = 99; // Unknown/Other
-            }
-            
-            stateMsg.data.push_back(objectType);
-            
-            // Add object ID
-            const std::string& objId = object->getObjID();
-            uint8_t idLength = static_cast<uint8_t>(objId.size());
-            stateMsg.data.push_back(idLength);
-            stateMsg.data.insert(stateMsg.data.end(), objId.begin(), objId.end());
-            
-            // Add position and velocity for all objects
-            const Vec2& pos = object->getposition();
-            const Vec2& vel = object->getvelocity();
-            
-            // Position X, Y (each 4 bytes)
-            float posX = pos.x;
-            float posY = pos.y;
-            uint8_t* posXBytes = reinterpret_cast<uint8_t*>(&posX);
-            uint8_t* posYBytes = reinterpret_cast<uint8_t*>(&posY);
-            for (size_t i = 0; i < sizeof(float); i++) {
-                stateMsg.data.push_back(posXBytes[i]);
-            }
-            for (size_t i = 0; i < sizeof(float); i++) {
-                stateMsg.data.push_back(posYBytes[i]);
-            }
-            
-            // Velocity X, Y (each 4 bytes)
-            float velX = vel.x;
-            float velY = vel.y;
-            uint8_t* velXBytes = reinterpret_cast<uint8_t*>(&velX);
-            uint8_t* velYBytes = reinterpret_cast<uint8_t*>(&velY);
-            for (size_t i = 0; i < sizeof(float); i++) {
-                stateMsg.data.push_back(velXBytes[i]);
-            }
-            for (size_t i = 0; i < sizeof(float); i++) {
-                stateMsg.data.push_back(velYBytes[i]);
-            }
-            
-            // For platforms, add width and height
-            if (objectType == static_cast<uint8_t>(ObjectType::PLATFORM)) {
-                Platform* platform = dynamic_cast<Platform*>(object.get());
-                if (platform) {
-                    // Add platform width and height
-                    float width = platform->spriteData->width;
-                    float height = platform->spriteData->height;
-                    
-                    uint8_t* widthBytes = reinterpret_cast<uint8_t*>(&width);
-                    uint8_t* heightBytes = reinterpret_cast<uint8_t*>(&height);
-                    
-                    for (size_t i = 0; i < sizeof(float); i++) {
-                        stateMsg.data.push_back(widthBytes[i]);
-                    }
-                    for (size_t i = 0; i < sizeof(float); i++) {
-                        stateMsg.data.push_back(heightBytes[i]);
-                    }
-                }
+
+            // a) Type
+            stateMsg.data.push_back(static_cast<uint8_t>(obj->type));
+
+            // b) ID
+            const std::string& id = obj->getObjID();
+            stateMsg.data.push_back(uint8_t(id.size()));
+            stateMsg.data.insert(stateMsg.data.end(), id.begin(), id.end());
+
+            // c) Position & Velocity
+            auto writeFloat = [&](float v) {
+                uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
+                for (size_t i = 0; i < sizeof(float); ++i)
+                    stateMsg.data.push_back(bytes[i]);
+            };
+
+            const Vec2& p = obj->getposition();
+            const Vec2& v = obj->getvelocity();
+            writeFloat(p.x);
+            writeFloat(p.y);
+            writeFloat(v.x);
+            writeFloat(v.y);
+
+            // d) Platform extra fields
+            if (obj->type == ObjectType::TILE) {
+                auto* plat = static_cast<Tile*>(obj.get());
+                writeFloat(plat->getCurrentSpriteData()->width);
+                writeFloat(plat->getCurrentSpriteData()->height);
             }
         }
     }
 
-    // Send to each connected client
+    // 5) Broadcast to all clients
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-        
-        // Check if we have any clients to send to
         if (clientSockets_.empty()) {
-            // Print every 5 seconds to avoid spam
-            static auto lastPrintTime = std::chrono::steady_clock::now();
+            static auto last = std::chrono::steady_clock::now();
             auto now = std::chrono::steady_clock::now();
-            if (now - lastPrintTime > std::chrono::seconds(5)) {
-                lastPrintTime = now;
-                std::cout << "[EmbeddedServer] No clients connected, skipping game state update" << std::endl;
+            if (now - last > std::chrono::seconds(5)) {
+                last = now;
+                std::cout << "[EmbeddedServer] No clients connected, skipping update\n";
             }
             return;
         }
-        
-        for (const auto& clientPair : clientSockets_) {
-            try {
-                if (!clientPair.second || !clientPair.second->is_open()) {
-                    std::cerr << "[EmbeddedServer] Client socket is null or closed: " << clientPair.first << std::endl;
-                    continue;
-                }
-                
-                bool success = sendToClient(clientPair.second, stateMsg);
-            } catch (const std::exception& e) {
-                std::cerr << "[EmbeddedServer] Error sending game state to client " 
-                          << clientPair.first << ": " << e.what() << std::endl;
+
+        for (auto& [id, sock] : clientSockets_) {
+            if (sock && sock->is_open()) {
+                sendToClient(sock, stateMsg);
             }
         }
     }
 
-    // Call the message callback if it exists
+    // 6) Finally, still fire your callback if needed
     if (messageCallback_) {
         messageCallback_(stateMsg);
     }
 }
 
-void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {
+
+void EmbeddedServer::processPlayerInput(
+    const std::string& playerId,
+    const NetworkMessage& message
+) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
 
-    // Find the player
-    auto playerIt = players_.find(playerId);
-    if (playerIt == players_.end()) {
-        std::cerr << "[EmbeddedServer] Player not found for input: " << playerId << std::endl;
+    // 1) Lookup the player
+    auto player = PlayerManager::getInstance().getPlayer(playerId);
+    if (!player) {
+        std::cerr << "[EmbeddedServer] Player not found for input: "
+                  << playerId << std::endl;
         return;
     }
-    
-    auto player = playerIt->second;
-    
-    // Check if we have enough data (at least 1 byte for input state)
-    if (message.data.size() < 1) {
-        std::cerr << "[EmbeddedServer] Invalid input data size: " << message.data.size() << " bytes" << std::endl;
-        return;
-    }
-    
-    // Extract input values from the binary format sent by MultiplayerManager
-    uint8_t inputState = message.data[0];
-    
-    // Extract individual input flags (matches MultiplayerManager::serializePlayerInput)
-    bool left = (inputState & 1) != 0;
-    bool right = (inputState & 2) != 0;
-    bool up = (inputState & 4) != 0;
-    bool down = (inputState & 8) != 0;
-    bool attack = (inputState & 16) != 0;
 
-    // Create input handler and apply to player
+    // 2) Validate payload
+    if (message.data.size() < 1) {
+        std::cerr << "[EmbeddedServer] Invalid input data size: "
+                  << message.data.size() << " bytes" << std::endl;
+        return;
+    }
+
+    // 3) Unpack the bitflags
+    uint8_t bits  = message.data[0];
+    bool    left  = (bits & 1) != 0;
+    bool    right = (bits & 2) != 0;
+    bool    up    = (bits & 4) != 0;
+    bool    down  = (bits & 8) != 0;
+    bool    atk   = (bits & 16) != 0;
+
+    // 4) Feed into a TempInput and give it to the Player
     auto input = std::make_unique<TempInput>();
-    input->setInputs(up, down, left, right, attack);
+    input->setInputs(up, down, left, right, atk);
     player->setInput(input.get());
-    
-    // Let the player process the input
-    player->handleInput(input.get(), 16); // Assume ~60fps
-    
-    // The player's update function will be called in the updateGameState method
+
+    // 5) Immediately invoke the player’s handleInput (or let your game loop do it)
+    player->handleInput(input.get(), /*dtFrames=*/16);
 }
 
 NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
