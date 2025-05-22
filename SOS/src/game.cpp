@@ -111,7 +111,7 @@ void Game::update(float deltaTime) {
                         continue; // Skip updating the local player
                     }
                     // Update the player object
-                    obj->update(deltaTime);
+                    obj->updateAnimation(deltaTime * 1000);
                 }
             }
             break;

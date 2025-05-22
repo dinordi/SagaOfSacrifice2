@@ -816,12 +816,27 @@ void EmbeddedServer::sendGameStateToClients() {
             writeFloat(v.x);
             writeFloat(v.y);
 
-            // d) Platform extra fields
-            if (obj->type == ObjectType::TILE) {
-                auto* plat = static_cast<Tile*>(obj.get());
-                writeFloat(plat->getCurrentSpriteData()->width);
-                writeFloat(plat->getCurrentSpriteData()->height);
+            // Extra fields for specific object types
+            switch(obj->type) {
+                case ObjectType::TILE: {
+                    auto* plat = static_cast<Tile*>(obj.get());
+                    writeFloat(plat->getCurrentSpriteData()->width);
+                    writeFloat(plat->getCurrentSpriteData()->height);
+                    break;
+                }
+                case ObjectType::MINOTAUR: 
+                {
+                    auto* mino = static_cast<Minotaur*>(obj.get());
+                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
+                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
+                    break;
+                }
+                
+                default:
+                    break;
             }
+
+
         }
     }
 

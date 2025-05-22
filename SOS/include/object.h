@@ -45,10 +45,12 @@ public:
     // Animation methods
     void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
+    AnimationState getAnimationState() const { return animController.getCurrentState(); }
     int getCurrentSpriteIndex() const;
     void addAnimation(AnimationState state, int startFrame, int frameCount, 
                      int framesPerRow, uint32_t frameTime = 100, bool loop = true);
     FacingDirection getDir() const { return dir; }
+    void setDir(FacingDirection direction) { dir = direction; }
 
     Vec2 getposition() const { return collider.position; }
     void setposition(const Vec2& pos) { collider.position = pos; }

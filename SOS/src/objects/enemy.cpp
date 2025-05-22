@@ -37,8 +37,9 @@ void Enemy::update(float deltaTime) {
     switch (currentState) {
         case EnemyState::IDLE:
             // Transition to wandering after some time
+            setvelocity(Vec2(0, 0)); // Stop moving
             wanderTimer += deltaTime;
-            if (wanderTimer > 2.0f) { // Stay idle for 2 seconds
+            if (wanderTimer > 3.0f) { // Stay idle for 2 seconds
                 wanderTimer = 0.0f;
                 currentState = EnemyState::WANDERING;
                 

@@ -28,7 +28,7 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
 
-    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("minotaurus_slash", 384, 384, 5), 80, false);
+    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("minotaurus_slash", 192, 192, 5), 80, false);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
@@ -59,9 +59,9 @@ void Minotaur::move() {
         } else {
             // Vertical movement is dominant
             if (velocity.y > 0) {
-                dir = FacingDirection::SOUTH;
+                // dir = FacingDirection::SOUTH;
             } else {
-                dir = FacingDirection::NORTH;
+                // dir = FacingDirection::NORTH;
             }
         }
     }

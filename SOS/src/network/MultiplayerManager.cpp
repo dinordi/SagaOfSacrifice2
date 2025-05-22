@@ -491,11 +491,23 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     // std::cout << "[Client] Minotaur object received: " << objectId 
                     //     << " at " << posX << "," << posY
                     //     << " with velocity: " << velX << "," << velY << std::endl; 
-                    if (!updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY))) {
+                    AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
+                    FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
+
+                    std::shared_ptr<Object> existingObject = updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY));
+                    if (existingObject == nullptr) {
                         // Create new platform
                         auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
+                        newEntity->setDir(dir);
+                        newEntity->setAnimationState(state);
                         newEntity->setvelocity(Vec2(velX, velY));
                         newObjects.push_back(newEntity);
+                    }
+                    else
+                    {
+                        Minotaur* existingMinotaur = static_cast<Minotaur*>(existingObject.get());
+                        existingMinotaur->setDir(dir);
+                        existingMinotaur->setAnimationState(state);
                     }
                     break;
                 }
@@ -513,12 +525,12 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
 }
 
 // Returns true if the position was updated successfully, false if the object was not found
-bool MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
+std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
     // Update the position of a specific entity
     Game* game = Game::getInstance();
     if (!game) {
         std::cerr << "[Client] Game instance not found" << std::endl;
-        return true;
+        return nullptr;
     }
     auto& objects = game->getObjects();
     for (auto& obj : objects) {
@@ -529,10 +541,10 @@ bool MultiplayerManager::updateEntityPosition(const std::string& objectId, const
             // Update the object's position and velocity
             obj->setcollider(BoxCollider(position, obj->getcollider().size));
             obj->setvelocity(velocity);
-            return true; // Successfully updated
+            return obj; // Successfully updated
         }
     }
-    return false;
+    return nullptr;
 }
 
 std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* player) {
