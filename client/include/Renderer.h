@@ -32,6 +32,10 @@ private:
     bool stop_thread;
     std::thread irq_thread;
 
+    // New bram management
+    void write_sprite_to_frame_info(int index, uint16_t x, uint16_t y, uint32_t sprite_id);
+    void update_and_write_animated_sprite(uint32_t sprite_id_to_use);
+
     void dmaTransfer();
     BRAMDATA readBRAM();
 
@@ -60,4 +64,28 @@ private:
     size_t line_offset;
 
     void* bram_ptr;
+
+    // New BRAM management
+private:
+    // BRAM management
+    static constexpr uint32_t FRAME_INFO_ADDR = 0x42000000;
+    static constexpr uint32_t LOOKUP_TABLE_ADDR = 0x40000000;
+    static constexpr uint32_t FRAME_INFO_SIZE = 0x2000;     // 8KB
+    static constexpr uint32_t LOOKUP_TABLE_SIZE = 0x4000;   // 16KB
+    static constexpr uint32_t SPRITE_DATA_BASE = 0x0E000000;
+    
+    // BRAM pointers
+    void* lookup_table_ptr;
+    void* frame_info_ptr;
+    volatile uint64_t* lookup_table;
+    volatile uint64_t* frame_info;
+    
+    // Sprite animation state
+    uint16_t sprite_x;
+    uint16_t sprite_y;
+    int sprite_direction;
+    
+    // Helper methods
+    void write_sprite_to_frame_info(int index, uint16_t x, uint16_t y, uint32_t sprite_id);
+    void update_and_write_animated_sprite(uint32_t sprite_id_to_use);
 };

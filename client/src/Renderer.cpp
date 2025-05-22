@@ -26,23 +26,39 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
         throw std::runtime_error("Failed to clear pending interrupt");
     }
 
+    // Open /dev/mem for BRAM and memory access
+    ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
+    if (ddr_memory < 0) {
+        perror("Failed to open /dev/mem");
+        close(uio_fd);
+        throw std::runtime_error("Failed to open /dev/mem");
+    }
     
-    // Memory map the address of the DMA AXI IP via its AXI lite control interface register block
-    // ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
-    // if (ddr_memory < 0) {
-    //     perror("Failed to open /dev/mem");
-    //     close(uio_fd);
-    //     throw std::runtime_error("Failed to open /dev/mem");
-    // }
+    // Map lookup table BRAM
+    lookup_table_ptr = mmap(NULL, LOOKUP_TABLE_SIZE, PROT_READ | PROT_WRITE,
+                           MAP_SHARED, ddr_memory, LOOKUP_TABLE_ADDR);
+    if (lookup_table_ptr == MAP_FAILED) {
+        perror("Failed to map lookup table BRAM");
+        close(ddr_memory);
+        close(uio_fd);
+        throw std::runtime_error("Failed to map lookup table BRAM");
+    }
     
-    // Map DMA control registers
-    // dma_virtual_addr = (unsigned int*)mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, MM2S_DMA_BASE_ADDR);
-    // if (dma_virtual_addr == MAP_FAILED) {
-    //     perror("Failed to map DMA registers");
-    //     close(ddr_memory);
-    //     close(uio_fd);
-    //     throw std::runtime_error("Failed to map DMA registers");
-    // }
+    // Map frame info BRAM
+    frame_info_ptr = mmap(NULL, FRAME_INFO_SIZE, PROT_READ | PROT_WRITE,
+                         MAP_SHARED, ddr_memory, FRAME_INFO_ADDR);
+    if (frame_info_ptr == MAP_FAILED) {
+        perror("Failed to map frame info BRAM");
+        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
+        close(ddr_memory);
+        close(uio_fd);
+        throw std::runtime_error("Failed to map frame info BRAM");
+    }
+    
+    // Get pointers to the BRAMs as 64-bit words
+    lookup_table = static_cast<volatile uint64_t*>(lookup_table_ptr);
+    frame_info = static_cast<volatile uint64_t*>(frame_info_ptr);
+    
     
     // Use a properly page-aligned physical address
     uint32_t phys_addr = 0x0e000000;  // Ensure this is page-aligned (multiple of 0x1000)
@@ -98,12 +114,19 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     offset = brData.y * line_offset; // Calculate the offset for the second line
     bytes_to_transfer = line_offset; // Transfer the entire line
 
-    // void *bram_ptr = mmap(NULL, BRAM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, BRAM_BASE_ADDR);
-    // if (bram_ptr == MAP_FAILED) {
-    //     perror("mmap mislukt");
-	//     close(ddr_memory);
-    //     throw std::runtime_error("Failed to mmap BRAM");
-    // }
+    // After loading sprite data, set up the lookup table entry
+    const uint16_t SPRITE_WIDTH = 400;  // Use your actual sprite width
+    const uint16_t SPRITE_HEIGHT = 400; // Use your actual sprite height
+    
+    // Create lookup table entry with correct field placement
+    uint64_t base_lookup_value = ((uint64_t)SPRITE_DATA_BASE << 23) | 
+                                 (SPRITE_HEIGHT << 12) | 
+                                 (SPRITE_WIDTH);
+                                 
+    lookup_table[1] = base_lookup_value;  // Using sprite ID 1
+    
+    // Add termination marker
+    frame_info[1] = 0xFFFFFFFFFFFFFFFF;
 
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
@@ -124,7 +147,17 @@ Renderer::~Renderer()
     if (irq_thread.joinable()) {
         irq_thread.join();
     }
-    // close(ddr_memory);
+
+    // Unmap memory regions
+    if (lookup_table_ptr != MAP_FAILED) {
+        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
+    }
+    if (frame_info_ptr != MAP_FAILED) {
+        munmap(frame_info_ptr, FRAME_INFO_SIZE);
+    }
+
+
+    close(ddr_memory);
     close(uio_fd);
 
 }
@@ -213,7 +246,7 @@ void Renderer::handleIRQ()
     //Start DMA transfer
     // dmaTransfer();
     std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
-
+    update_and_write_animated_sprite(1);
 
 }
 
@@ -232,6 +265,40 @@ void Renderer::irqHandlerThread()
         } else if (ret < 0) {
             perror("poll");
             break;
+        }
+    }
+}
+
+
+void Renderer::write_sprite_to_frame_info(int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
+    // Construct the 64-bit value
+    // X: bits 33-22 (12 bits), Y: bits 21-11 (11 bits), Sprite ID: bits 10-0 (11 bits)
+    uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
+    frame_info[index] = base_value;
+    
+    std::cout << "Frame info [" << index << "]: X=" << x << ", Y=" << y 
+              << ", ID=" << sprite_id << std::endl;
+    std::cout << "  Value (hex): 0x" << std::hex << base_value << std::dec << std::endl;
+}
+
+void Renderer::update_and_write_animated_sprite(uint32_t sprite_id_to_use) {
+    // Write current sprite state to index 0
+    write_sprite_to_frame_info(0, sprite_x, sprite_y, sprite_id_to_use);
+
+    // Update X position for next frame
+    if (sprite_direction == 1) {
+        if (sprite_x == 2050) {
+            sprite_direction = -1;
+            sprite_x--;
+        } else {
+            sprite_x++;
+        }
+    } else { // sprite_direction == -1
+        if (sprite_x == 120) {
+            sprite_direction = 1;
+            sprite_x++;
+        } else {
+            sprite_x--;
         }
     }
 }
