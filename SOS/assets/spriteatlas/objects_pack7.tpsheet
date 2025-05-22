@@ -1,0 +1,228 @@
+{
+	"textures": [
+		{
+			"image": "objects_pack7-0.png",
+			"size": {
+				"w": 62,
+				"h": 768
+			},
+			"sprites": [
+				{
+					"filename": "Blue-green_crystal_dark_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 60,
+						"h": 58
+					},
+					"margin": {
+						"x": 2,
+						"y": 2,
+						"w": 4,
+						"h": 6
+					}
+				},
+				{
+					"filename": "Blue-green_crystal_light_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 61,
+						"w": 60,
+						"h": 58
+					},
+					"margin": {
+						"x": 2,
+						"y": 2,
+						"w": 4,
+						"h": 6
+					}
+				},
+				{
+					"filename": "white_crystal_dark_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 121,
+						"w": 56,
+						"h": 52
+					},
+					"margin": {
+						"x": 4,
+						"y": 6,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "white_crystal_light_shadow3-1.png",
+					"region": {
+						"x": 1,
+						"y": 175,
+						"w": 56,
+						"h": 52
+					},
+					"margin": {
+						"x": 4,
+						"y": 6,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Human_skeleton_dark_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 229,
+						"w": 56,
+						"h": 48
+					},
+					"margin": {
+						"x": 4,
+						"y": 8,
+						"w": 8,
+						"h": 16
+					}
+				},
+				{
+					"filename": "Human_skeleton_light_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 279,
+						"w": 56,
+						"h": 48
+					},
+					"margin": {
+						"x": 4,
+						"y": 8,
+						"w": 8,
+						"h": 16
+					}
+				},
+				{
+					"filename": "mushroom1_dark_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 329,
+						"w": 54,
+						"h": 64
+					},
+					"margin": {
+						"x": 4,
+						"y": 0,
+						"w": 10,
+						"h": 0
+					}
+				},
+				{
+					"filename": "mushroom1_light_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 395,
+						"w": 54,
+						"h": 64
+					},
+					"margin": {
+						"x": 4,
+						"y": 0,
+						"w": 10,
+						"h": 0
+					}
+				},
+				{
+					"filename": "white_crystal_vertical2.png",
+					"region": {
+						"x": 1,
+						"y": 461,
+						"w": 52,
+						"h": 46
+					},
+					"margin": {
+						"x": 6,
+						"y": 8,
+						"w": 12,
+						"h": 18
+					}
+				},
+				{
+					"filename": "white_crystal_vertical4.png",
+					"region": {
+						"x": 1,
+						"y": 509,
+						"w": 52,
+						"h": 46
+					},
+					"margin": {
+						"x": 6,
+						"y": 8,
+						"w": 12,
+						"h": 18
+					}
+				},
+				{
+					"filename": "mushroom4_dark_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 557,
+						"w": 46,
+						"h": 54
+					},
+					"margin": {
+						"x": 8,
+						"y": 4,
+						"w": 18,
+						"h": 10
+					}
+				},
+				{
+					"filename": "mushroom4_light_shadow3.png",
+					"region": {
+						"x": 1,
+						"y": 613,
+						"w": 46,
+						"h": 54
+					},
+					"margin": {
+						"x": 8,
+						"y": 4,
+						"w": 18,
+						"h": 10
+					}
+				},
+				{
+					"filename": "crystal_blue-green_vertical2.png",
+					"region": {
+						"x": 1,
+						"y": 669,
+						"w": 46,
+						"h": 48
+					},
+					"margin": {
+						"x": 8,
+						"y": 8,
+						"w": 18,
+						"h": 16
+					}
+				},
+				{
+					"filename": "crystal_blue-green_vertical4.png",
+					"region": {
+						"x": 1,
+						"y": 719,
+						"w": 46,
+						"h": 48
+					},
+					"margin": {
+						"x": 8,
+						"y": 8,
+						"w": 18,
+						"h": 16
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:4b0bc0c78f1f1db7cfda1db1d784325e:bc703533ceefe15fb8a97e46e15f7f93:7b6c4a1c2757fd09ca68f23df8b4c86e$"
+	}
+}

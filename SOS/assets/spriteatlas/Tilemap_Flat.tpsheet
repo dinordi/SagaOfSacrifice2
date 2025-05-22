@@ -1,0 +1,528 @@
+{
+	"textures": [
+		{
+			"image": "Tilemap_Flat-0.png",
+			"size": {
+				"w": 198,
+				"h": 726
+			},
+			"sprites": [
+				{
+					"filename": "Tilemap_Flat-0.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-1.png",
+					"region": {
+						"x": 67,
+						"y": 1,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-2.png",
+					"region": {
+						"x": 133,
+						"y": 1,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-3.png",
+					"region": {
+						"x": 1,
+						"y": 67,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-5.png",
+					"region": {
+						"x": 67,
+						"y": 67,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-6.png",
+					"region": {
+						"x": 133,
+						"y": 67,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-7.png",
+					"region": {
+						"x": 1,
+						"y": 133,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-8.png",
+					"region": {
+						"x": 67,
+						"y": 133,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-10.png",
+					"region": {
+						"x": 133,
+						"y": 133,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-11.png",
+					"region": {
+						"x": 1,
+						"y": 199,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-12.png",
+					"region": {
+						"x": 67,
+						"y": 199,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-13.png",
+					"region": {
+						"x": 133,
+						"y": 199,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-14.png",
+					"region": {
+						"x": 1,
+						"y": 265,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-15.png",
+					"region": {
+						"x": 67,
+						"y": 265,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-16.png",
+					"region": {
+						"x": 133,
+						"y": 265,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-17.png",
+					"region": {
+						"x": 1,
+						"y": 331,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-18.png",
+					"region": {
+						"x": 67,
+						"y": 331,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-19.png",
+					"region": {
+						"x": 133,
+						"y": 331,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-20.png",
+					"region": {
+						"x": 1,
+						"y": 397,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-21.png",
+					"region": {
+						"x": 67,
+						"y": 397,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-22.png",
+					"region": {
+						"x": 133,
+						"y": 397,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-23.png",
+					"region": {
+						"x": 1,
+						"y": 463,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-24.png",
+					"region": {
+						"x": 67,
+						"y": 463,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-25.png",
+					"region": {
+						"x": 133,
+						"y": 463,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-26.png",
+					"region": {
+						"x": 1,
+						"y": 529,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-27.png",
+					"region": {
+						"x": 67,
+						"y": 529,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-28.png",
+					"region": {
+						"x": 133,
+						"y": 529,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-29.png",
+					"region": {
+						"x": 1,
+						"y": 595,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-30.png",
+					"region": {
+						"x": 67,
+						"y": 595,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-31.png",
+					"region": {
+						"x": 133,
+						"y": 595,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-32.png",
+					"region": {
+						"x": 1,
+						"y": 661,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-33.png",
+					"region": {
+						"x": 67,
+						"y": 661,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-9.png",
+					"region": {
+						"x": 133,
+						"y": 661,
+						"w": 61,
+						"h": 15
+					},
+					"margin": {
+						"x": 1,
+						"y": 49,
+						"w": 3,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Tilemap_Flat-4.png",
+					"region": {
+						"x": 133,
+						"y": 678,
+						"w": 60,
+						"h": 22
+					},
+					"margin": {
+						"x": 1,
+						"y": 42,
+						"w": 4,
+						"h": 42
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:5935e33a696659bb3d03d0b853cb28e0:1fbc3703d77ba3c6522fe08ab4eb4394:867e59954801db18966fdca4d8c9de76$"
+	}
+}

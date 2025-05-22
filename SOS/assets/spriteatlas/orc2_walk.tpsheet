@@ -1,0 +1,378 @@
+{
+	"textures": [
+		{
+			"image": "orc2_walk-0.png",
+			"size": {
+				"w": 248,
+				"h": 1676
+			},
+			"sprites": [
+				{
+					"filename": "orc2_walk_full-1.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 146,
+						"h": 142
+					},
+					"margin": {
+						"x": 39,
+						"y": 43,
+						"w": 110,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-14.png",
+					"region": {
+						"x": 149,
+						"y": 1,
+						"w": 98,
+						"h": 138
+					},
+					"margin": {
+						"x": 75,
+						"y": 47,
+						"w": 158,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-21.png",
+					"region": {
+						"x": 149,
+						"y": 141,
+						"w": 98,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 158,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-4.png",
+					"region": {
+						"x": 1,
+						"y": 145,
+						"w": 146,
+						"h": 142
+					},
+					"margin": {
+						"x": 43,
+						"y": 43,
+						"w": 110,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-15.png",
+					"region": {
+						"x": 149,
+						"y": 281,
+						"w": 98,
+						"h": 134
+					},
+					"margin": {
+						"x": 75,
+						"y": 51,
+						"w": 158,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_walk_full-7.png",
+					"region": {
+						"x": 1,
+						"y": 289,
+						"w": 146,
+						"h": 142
+					},
+					"margin": {
+						"x": 71,
+						"y": 43,
+						"w": 110,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-13.png",
+					"region": {
+						"x": 149,
+						"y": 417,
+						"w": 94,
+						"h": 138
+					},
+					"margin": {
+						"x": 79,
+						"y": 47,
+						"w": 162,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-10.png",
+					"region": {
+						"x": 1,
+						"y": 433,
+						"w": 146,
+						"h": 142
+					},
+					"margin": {
+						"x": 67,
+						"y": 43,
+						"w": 110,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-16.png",
+					"region": {
+						"x": 149,
+						"y": 557,
+						"w": 94,
+						"h": 138
+					},
+					"margin": {
+						"x": 79,
+						"y": 47,
+						"w": 162,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-2.png",
+					"region": {
+						"x": 1,
+						"y": 577,
+						"w": 146,
+						"h": 138
+					},
+					"margin": {
+						"x": 39,
+						"y": 47,
+						"w": 110,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-20.png",
+					"region": {
+						"x": 149,
+						"y": 697,
+						"w": 94,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 162,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-8.png",
+					"region": {
+						"x": 1,
+						"y": 717,
+						"w": 146,
+						"h": 138
+					},
+					"margin": {
+						"x": 71,
+						"y": 47,
+						"w": 110,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-22.png",
+					"region": {
+						"x": 149,
+						"y": 837,
+						"w": 90,
+						"h": 142
+					},
+					"margin": {
+						"x": 83,
+						"y": 43,
+						"w": 166,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-11.png",
+					"region": {
+						"x": 1,
+						"y": 857,
+						"w": 146,
+						"h": 138
+					},
+					"margin": {
+						"x": 67,
+						"y": 47,
+						"w": 110,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-17.png",
+					"region": {
+						"x": 149,
+						"y": 981,
+						"w": 90,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 166,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-3.png",
+					"region": {
+						"x": 1,
+						"y": 997,
+						"w": 146,
+						"h": 130
+					},
+					"margin": {
+						"x": 43,
+						"y": 55,
+						"w": 110,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc2_walk_full-19.png",
+					"region": {
+						"x": 149,
+						"y": 1121,
+						"w": 90,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 166,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-6.png",
+					"region": {
+						"x": 1,
+						"y": 1129,
+						"w": 146,
+						"h": 130
+					},
+					"margin": {
+						"x": 71,
+						"y": 55,
+						"w": 110,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc2_walk_full-9.png",
+					"region": {
+						"x": 1,
+						"y": 1261,
+						"w": 146,
+						"h": 130
+					},
+					"margin": {
+						"x": 67,
+						"y": 55,
+						"w": 110,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc2_walk_full-23.png",
+					"region": {
+						"x": 149,
+						"y": 1261,
+						"w": 86,
+						"h": 142
+					},
+					"margin": {
+						"x": 83,
+						"y": 43,
+						"w": 170,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc2_walk_full-5.png",
+					"region": {
+						"x": 1,
+						"y": 1393,
+						"w": 142,
+						"h": 138
+					},
+					"margin": {
+						"x": 43,
+						"y": 47,
+						"w": 114,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_walk_full-12.png",
+					"region": {
+						"x": 145,
+						"y": 1405,
+						"w": 86,
+						"h": 134
+					},
+					"margin": {
+						"x": 87,
+						"y": 51,
+						"w": 170,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_walk_full-0.png",
+					"region": {
+						"x": 1,
+						"y": 1533,
+						"w": 142,
+						"h": 130
+					},
+					"margin": {
+						"x": 39,
+						"y": 55,
+						"w": 114,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc2_walk_full-18.png",
+					"region": {
+						"x": 145,
+						"y": 1541,
+						"w": 86,
+						"h": 134
+					},
+					"margin": {
+						"x": 83,
+						"y": 51,
+						"w": 170,
+						"h": 122
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:80a6cfc2d72c964b8eb098134a3a1de7:3b32f72edb1f1783c60bf24fb149b178:2edaba0a7788a262cf0d5bb5ce6f131d$"
+	}
+}

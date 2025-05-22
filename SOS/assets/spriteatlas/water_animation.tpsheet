@@ -1,0 +1,348 @@
+{
+	"textures": [
+		{
+			"image": "water_animation-0.png",
+			"size": {
+				"w": 1690,
+				"h": 1588
+			},
+			"sprites": [
+				{
+					"filename": "water_details_animation-6.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 564,
+						"h": 304
+					},
+					"margin": {
+						"x": 22,
+						"y": 44,
+						"w": 22,
+						"h": 110
+					}
+				},
+				{
+					"filename": "water_details_animation-8.png",
+					"region": {
+						"x": 1,
+						"y": 307,
+						"w": 564,
+						"h": 304
+					},
+					"margin": {
+						"x": 22,
+						"y": 46,
+						"w": 22,
+						"h": 110
+					}
+				},
+				{
+					"filename": "water_details_animation-4.png",
+					"region": {
+						"x": 567,
+						"y": 1,
+						"w": 562,
+						"h": 302
+					},
+					"margin": {
+						"x": 24,
+						"y": 44,
+						"w": 24,
+						"h": 112
+					}
+				},
+				{
+					"filename": "water_details_animation-0.png",
+					"region": {
+						"x": 1131,
+						"y": 1,
+						"w": 558,
+						"h": 304
+					},
+					"margin": {
+						"x": 28,
+						"y": 38,
+						"w": 28,
+						"h": 110
+					}
+				},
+				{
+					"filename": "water_details_animation-10.png",
+					"region": {
+						"x": 567,
+						"y": 305,
+						"w": 562,
+						"h": 302
+					},
+					"margin": {
+						"x": 24,
+						"y": 48,
+						"w": 24,
+						"h": 112
+					}
+				},
+				{
+					"filename": "water_details_animation-1.png",
+					"region": {
+						"x": 1131,
+						"y": 307,
+						"w": 558,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 44,
+						"w": 28,
+						"h": 158
+					}
+				},
+				{
+					"filename": "water_details_animation-2.png",
+					"region": {
+						"x": 1,
+						"y": 613,
+						"w": 560,
+						"h": 304
+					},
+					"margin": {
+						"x": 26,
+						"y": 40,
+						"w": 26,
+						"h": 110
+					}
+				},
+				{
+					"filename": "water_details_animation-5.png",
+					"region": {
+						"x": 1131,
+						"y": 565,
+						"w": 558,
+						"h": 254
+					},
+					"margin": {
+						"x": 0,
+						"y": 50,
+						"w": 28,
+						"h": 160
+					}
+				},
+				{
+					"filename": "water_details_animation-9.png",
+					"region": {
+						"x": 1,
+						"y": 919,
+						"w": 562,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 52,
+						"w": 24,
+						"h": 158
+					}
+				},
+				{
+					"filename": "water_details_animation-11.png",
+					"region": {
+						"x": 1,
+						"y": 1177,
+						"w": 560,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 54,
+						"w": 26,
+						"h": 158
+					}
+				},
+				{
+					"filename": "water_details_animation-20.png",
+					"region": {
+						"x": 1,
+						"y": 1435,
+						"w": 546,
+						"h": 146
+					},
+					"margin": {
+						"x": 38,
+						"y": 0,
+						"w": 38,
+						"h": 66
+					}
+				},
+				{
+					"filename": "water_details_animation-7.png",
+					"region": {
+						"x": 567,
+						"y": 609,
+						"w": 560,
+						"h": 254
+					},
+					"margin": {
+						"x": 0,
+						"y": 52,
+						"w": 26,
+						"h": 160
+					}
+				},
+				{
+					"filename": "water_details_animation-3.png",
+					"region": {
+						"x": 565,
+						"y": 865,
+						"w": 556,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 46,
+						"w": 30,
+						"h": 158
+					}
+				},
+				{
+					"filename": "water_details_animation-16.png",
+					"region": {
+						"x": 565,
+						"y": 1123,
+						"w": 550,
+						"h": 172
+					},
+					"margin": {
+						"x": 34,
+						"y": 16,
+						"w": 34,
+						"h": 40
+					}
+				},
+				{
+					"filename": "water_details_animation-12.png",
+					"region": {
+						"x": 563,
+						"y": 1297,
+						"w": 550,
+						"h": 156
+					},
+					"margin": {
+						"x": 34,
+						"y": 56,
+						"w": 34,
+						"h": 56
+					}
+				},
+				{
+					"filename": "water_details_animation-17.png",
+					"region": {
+						"x": 549,
+						"y": 1455,
+						"w": 518,
+						"h": 132
+					},
+					"margin": {
+						"x": 0,
+						"y": 14,
+						"w": 66,
+						"h": 80
+					}
+				},
+				{
+					"filename": "water_details_animation-15.png",
+					"region": {
+						"x": 1129,
+						"y": 821,
+						"w": 544,
+						"h": 94
+					},
+					"margin": {
+						"x": 10,
+						"y": 118,
+						"w": 40,
+						"h": 118
+					}
+				},
+				{
+					"filename": "water_details_animation-13.png",
+					"region": {
+						"x": 1123,
+						"y": 917,
+						"w": 518,
+						"h": 172
+					},
+					"margin": {
+						"x": 0,
+						"y": 14,
+						"w": 66,
+						"h": 40
+					}
+				},
+				{
+					"filename": "water_details_animation-18.png",
+					"region": {
+						"x": 1123,
+						"y": 1091,
+						"w": 536,
+						"h": 140
+					},
+					"margin": {
+						"x": 30,
+						"y": 72,
+						"w": 48,
+						"h": 72
+					}
+				},
+				{
+					"filename": "water_details_animation-19.png",
+					"region": {
+						"x": 1117,
+						"y": 1233,
+						"w": 540,
+						"h": 134
+					},
+					"margin": {
+						"x": 12,
+						"y": 78,
+						"w": 44,
+						"h": 78
+					}
+				},
+				{
+					"filename": "water_details_animation-21.png",
+					"region": {
+						"x": 1115,
+						"y": 1369,
+						"w": 514,
+						"h": 106
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 70,
+						"h": 106
+					}
+				},
+				{
+					"filename": "water_details_animation-14.png",
+					"region": {
+						"x": 1069,
+						"y": 1477,
+						"w": 480,
+						"h": 74
+					},
+					"margin": {
+						"x": 28,
+						"y": 112,
+						"w": 104,
+						"h": 138
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b26faad37b4bcdf6f1ace195d2df3618:d9f6786a2c238952e51f6296217fe2f0:55974716b40121b7536e559f006ddb61$"
+	}
+}

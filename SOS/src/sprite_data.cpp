@@ -7,7 +7,7 @@ SpriteData::SpriteData(std::string id, int width, int height, int columns)
     : id_(std::move(id)), width(width), height(height), columns(columns)
 {
     std::string exec_path = fs::current_path().string();
-    atlasPath = (fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "spriteatlas" / (id_ + ".json")).string();
+    atlasPath = (fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "spriteatlas" / (id_ + ".tpsheet")).string();
     
     std::cout << "[SpriteData] SpriteData created with ID: " << id_
               << ", Width: " << width << ", Height: " << height 
