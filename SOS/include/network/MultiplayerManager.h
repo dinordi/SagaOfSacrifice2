@@ -68,6 +68,8 @@ private:
     void handleChatMessage(const NetworkMessage& message);
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
+
+    bool updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);

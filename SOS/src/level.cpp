@@ -225,6 +225,7 @@ void Level::update(uint64_t deltaTime) {
         // Update all game objects
         for (auto& object : levelObjects) {
             object->update(deltaTime);
+            std::cout << "[Level] Updated object with ID: " << object->getObjID() << std::endl;
         }
         
         // Detect and resolve collisions
@@ -295,4 +296,38 @@ bool Level::removeAllObjects() {
     levelObjects.clear();
     std::cout << "[Level] Cleared all objects from level" << std::endl;
     return true;
+}
+
+std::shared_ptr<Minotaur> Level::spawnMinotaur(int x, int y) {
+    // Generate a unique ID for the minotaur
+    static int minotaurCounter = 0;
+    std::string minotaurId = "minotaur_" + std::to_string(minotaurCounter++);
+    
+    // Create a new minotaur at the specified position
+    std::shared_ptr<Minotaur> minotaur = std::make_shared<Minotaur>(x, y, minotaurId);
+    
+    // Add the minotaur to the level objects
+    levelObjects.push_back(minotaur);
+    
+    std::cout << "Spawned Minotaur at position (" << x << ", " << y << ") with ID: " << minotaurId << std::endl;
+    
+    return minotaur;
+}
+
+void Level::setAllEnemiesToTargetPlayer(std::shared_ptr<Player> player) {
+    if (!player) {
+        std::cerr << "[Level] Cannot set null player as target for enemies" << std::endl;
+        return;
+    }
+    
+    // Find all enemies in the level and set the player as their target
+    for (auto& object : levelObjects) {
+        // Use dynamic_cast to check if this object is an Enemy
+        std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(object);
+        
+        if (enemy) {
+            enemy->setTargetPlayer(player);
+            std::cout << "[Level] Set player as target for enemy: " << object->getObjID() << std::endl;
+        }
+    }
 }

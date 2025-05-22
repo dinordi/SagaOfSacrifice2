@@ -7,6 +7,7 @@
 #include "collision/CollisionManager.h"
 #include "objects/tile.h"
 #include "objects/enemy.h"
+#include "objects/minotaur.h"
 #include "objects/player.h"
 #include "factories/player_factory.h"
 #include "nlohmann/json.hpp" // Include the JSON library
@@ -49,6 +50,13 @@ class Level {
         // Add methods for tiles
         bool isCollidableTile(int tileIndex, const std::string& tileset);
         //std::shared_ptr<TileLayer> getTileLayer(const std::string& layerId);
+        
+        // Function to spawn a Minotaur enemy
+        std::shared_ptr<Minotaur> spawnMinotaur(int x, int y);
+        
+        // Function to set all enemies to target a specific player
+        void setAllEnemiesToTargetPlayer(std::shared_ptr<Player> player);
+        
     public:
         /**
          * Create and add a player to the level at the player start position

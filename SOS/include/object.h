@@ -12,15 +12,14 @@
 
 class Tile;
 
-constexpr float MAX_VELOCITY = 15.0f;
+constexpr float MAX_VELOCITY = 200.0f;
 
 enum class ObjectType {
     PLAYER = 0x1,
-    ENTITY,
     TILE,
     ITEM,
     BULLET,
-    ENEMY
+    MINOTAUR
 };
 
 class BoxCollider {

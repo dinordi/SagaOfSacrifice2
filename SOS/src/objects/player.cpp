@@ -2,10 +2,10 @@
 #include <iostream>
 
 
-Player::Player( BoxCollider collider, std::string objID) : Entity(collider, objID),
+Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << collider.position.x << ", " << collider.position.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -17,7 +17,7 @@ void Player::setupAnimations() {
 
     // Example animation setup - adjust these based on your actual sprite sheet
 
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 100, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
@@ -121,7 +121,8 @@ void Player::update(float deltaTime) {
     updateAnimationState();
 
     // Update the animation controller
-    updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
+    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
+    Entity::update(deltaTime); // Call base class update
 
     vel.x = 0; // Reset horizontal velocity
     vel.y = 0; // Reset vertical velocity

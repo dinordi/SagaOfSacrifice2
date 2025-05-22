@@ -12,7 +12,7 @@ extern uint32_t get_ticks();
 
 // RemotePlayer implementation
 RemotePlayer::RemotePlayer(const std::string& id) 
-    : Object(BoxCollider(0,0,128,128), ObjectType::ENTITY, id), 
+    : Object(BoxCollider(0,0,128,128), ObjectType::PLAYER, id), 
       id_(id),
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
@@ -483,18 +483,52 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 }
                 break;
             }
+            case ObjectType::MINOTAUR: {
+                    // std::cout << "[Client] Minotaur object received: " << objectId 
+                    //     << " at " << posX << "," << posY
+                    //     << " with velocity: " << velX << "," << velY << std::endl; 
+                    if (!updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY))) {
+                        // Create new platform
+                        auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
+                        newEntity->setvelocity(Vec2(velX, velY));
+                        newObjects.push_back(newEntity);
+                    }
+                    break;
+                }
             default:
                 std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
                 break;
+            }
+        }
+        // Add any new objects to the game
+        if (Game* game = Game::getInstance()) {
+            for (auto& obj : newObjects) {
+                game->addObject(obj);
+            }
+        }
+}
+
+// Returns true if the position was updated successfully, false if the object was not found
+bool MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
+    // Update the position of a specific entity
+    Game* game = Game::getInstance();
+    if (!game) {
+        std::cerr << "[Client] Game instance not found" << std::endl;
+        return true;
+    }
+    auto& objects = game->getObjects();
+    for (auto& obj : objects) {
+        if (obj->getObjID() == objectId) {
+            std::cout << "[Client] Updating position of object: " << objectId 
+                      << " to " << position.x << "," << position.y 
+                      << " with velocity: " << velocity.x << "," << velocity.y << std::endl;
+            // Update the object's position and velocity
+            obj->setcollider(BoxCollider(position, obj->getcollider().size));
+            obj->setvelocity(velocity);
+            return true; // Successfully updated
         }
     }
-    
-    // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        for (auto& obj : newObjects) {
-            game->addObject(obj);
-        }
-    }
+    return false;
 }
 
 std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* player) {

@@ -13,7 +13,7 @@ void CollisionHandler::visit(Player* player) {
     if (initiator->type == ObjectType::TILE) {
         // Player collided with platform
         handleInteraction(player);
-    } else if (initiator->type == ObjectType::ENEMY) {
+    } else if (initiator->type == ObjectType::MINOTAUR) {
         // Player collided with enemy
         handleInteraction(player);
     }
@@ -68,7 +68,7 @@ void CollisionHandler::handleInteraction(Player* player) {
 
         player->setcollider(*pCollider);
         player->setvelocity(vel);
-    } else if (initiator->type == ObjectType::ENEMY) {
+    } else if (initiator->type == ObjectType::MINOTAUR) {
         // Player collided with enemy - cause damage
         // player->takeDamage(1); // Example damage amount
     }

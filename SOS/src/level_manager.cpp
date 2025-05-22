@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include "player_manager.h"
+#include "game.h"
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -100,6 +101,23 @@ bool LevelManager::loadLevel(const std::string& levelId) {
                 loaded = false;
             }
             
+            // Example: Spawn a minotaur in the level near the player start position plus an offset
+            Vec2 playerStart = currentLevel_->getPlayerStartPosition();
+            
+            // Spawn a minotaur slightly to the right of the player start position
+            if (auto minotaur = currentLevel_->spawnMinotaur(playerStart.x + 300, playerStart.y)) {
+                std::cout << "[LevelManager] Spawned a minotaur in level " << levelId << std::endl;
+            }
+            
+            // Example: Spawn more minotaurs at different positions if desired
+            currentLevel_->spawnMinotaur(playerStart.x + 400, playerStart.y + 100);
+            currentLevel_->spawnMinotaur(playerStart.x - 200, playerStart.y + 200);
+            
+            // Set all enemies in the level to target any existing players
+            for (auto& playerPair : PlayerManager::getInstance().getAllPlayers()) {
+                currentLevel_->setAllEnemiesToTargetPlayer(playerPair.second);
+            }
+            
             // Get all existing players from PlayerManager and add them to this level
             auto& playerManager = PlayerManager::getInstance();
             const auto& players = playerManager.getAllPlayers();
@@ -124,11 +142,18 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             std::cout << "[LevelManager] Loaded level: " << levelId << std::endl;
             return true;
         } catch (json::exception& e) {
-            std::cerr << "JSON parsing error: " << e.what() << std::endl;
-            return false;
+            std::cerr << "[LevelManager] JSON error: " << e.what() << std::endl;
+            loaded = false;
+        } catch (std::exception& e) {
+            std::cerr << "[LevelManager] Error loading level: " << e.what() << std::endl;
+            loaded = false;
         }
+    } else {
+        std::cerr << "[LevelManager] Level ID not found: " << levelId << std::endl;
+        loaded = false;
     }
-    return false;
+    
+    return loaded;
 }
 
 Level* LevelManager::getCurrentLevel() const {

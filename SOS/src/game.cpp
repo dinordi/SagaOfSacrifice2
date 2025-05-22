@@ -105,6 +105,11 @@ void Game::update(float deltaTime) {
     switch(state)
     {
         case GameState::RUNNING:
+            // for(auto& obj : objects) {
+            //     if (obj) {
+            //         obj->update(deltaTime);
+            //     }
+            // }
             break;
         case GameState::MENU:
             // Handle menu state
@@ -129,10 +134,10 @@ void Game::update(float deltaTime) {
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
 
-        reconcileWithServerState(deltaTime);
+        // reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
-        updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        // updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
     else {
         // In single player mode, update the level directly
@@ -141,7 +146,7 @@ void Game::update(float deltaTime) {
             player->handleInput(input, deltaTime);
             
             // Update the current level (which updates all objects)
-            levelManager->update(deltaTime);
+            // levelManager->update(deltaTime);
         }
     }
 }
@@ -268,9 +273,17 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             remotePlayer->setvelocity(pair.second->getvelocity());
             objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
-            // Update existing remote player
-            (*it)->setcollider(pair.second->getcollider());
-            (*it)->setvelocity(pair.second->getvelocity());
+            if((*it)->getObjID() == player->getObjID())
+            {
+                // Skip updating the local player
+                continue;
+            }
+            else
+            {
+                // Update existing remote player
+                (*it)->setcollider(pair.second->getcollider());
+                (*it)->setvelocity(pair.second->getvelocity());
+            }
         }
     }
 }
@@ -281,7 +294,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
-    player->update(deltaTime);
+    // player->update(deltaTime);
 }
 
 void Game::reconcileWithServerState(float deltaTime) {
@@ -360,9 +373,10 @@ void Game::addObject(std::shared_ptr<Object> object) {
             // Add new object if it doesn't exist
             objects.push_back(object);
             std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
-        } else {
-            std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
-        }
+        } 
+        // else {
+        //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
+        // }
     }
 }
 

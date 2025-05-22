@@ -9,7 +9,7 @@ class Minotaur : public Enemy
 {
 public:
     Minotaur(BoxCollider collider, std::string objID);
-    Minotaur(int x, int y);
+    Minotaur(int x, int y, std::string objID);
     ~Minotaur() override;
 
     void move() override;
