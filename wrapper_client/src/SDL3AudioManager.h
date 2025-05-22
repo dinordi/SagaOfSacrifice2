@@ -20,6 +20,7 @@ public:
 
     bool initialize(const std::string& basePath) override;
     bool loadSound(const std::string& filePath) override;
+    bool unloadSound(const std::string& soundName) override;
     bool playSound(const std::string& soundName) override;
     bool stopSound(const std::string& soundName) override;
     bool setVolume(float volume) override;

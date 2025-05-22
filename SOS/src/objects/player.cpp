@@ -1,6 +1,6 @@
 #include "objects/player.h"
 #include <iostream>
-
+#include "interfaces/AudioManager.h"
 
 Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
     health(100), isAttacking(false), isJumping(false), attackTimer(0) {
@@ -49,17 +49,13 @@ void Player::update(uint64_t deltaTime) {
     Vec2 pos = getposition();
     Vec2 vel = getvelocity();
 
-    // float deltaTimeSeconds = static_cast<float>(deltaTime) / 1000.0f;
     float deltaTimeF = static_cast<float>(deltaTime);
-    // Prints velocity.y every second
     static uint64_t timems = 0.0f;
     timems += deltaTime;
-
 
     pos.x += vel.x * deltaTimeF;
     pos.y += vel.y * deltaTimeF;
 
-    
     // Set direction based on horizontal velocity
     if (vel.x > 0) {
         dir = FacingDirection::RIGHT;
@@ -67,33 +63,54 @@ void Player::update(uint64_t deltaTime) {
     else if (vel.x < 0) {
         dir = FacingDirection::LEFT;
     }
-
     if (vel.y < 0) {
         dir = FacingDirection::UP;
     } 
     else if (vel.y > 0) {
         dir = FacingDirection::DOWN;
     }
-    
+
     // Handle attack timer
     if (isAttacking) {
         attackTimer += deltaTime;
-        if (attackTimer >= 400) { // Attack animation time (ms)
+        if (attackTimer >= 400) {
             isAttacking = false;
             attackTimer = 0;
         }
+    }    // Modular audio: play walking sound only when starting to move
+    bool currentlyMoving = isMoving();
+    if (currentlyMoving && !wasMoving) {
+        std::cout << "[DEBUG] Attempting to play walking sound..." << std::endl;
+        
+        // Add safety checks to avoid crashes
+        try {
+            // Check if AudioManager instance exists
+            if (&AudioManager::Instance() == nullptr) {
+                std::cerr << "[ERROR] AudioManager instance is null!" << std::endl;
+            } else {
+                std::cout << "[DEBUG] AudioManager instance exists, calling playSound..." << std::endl;
+                AudioManager::Instance().playSound("walking");
+                std::cout << "[DEBUG] After playSound call" << std::endl;
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "[ERROR] Exception in audio playback: " << e.what() << std::endl;
+        } catch (...) {
+            std::cerr << "[ERROR] Unknown exception in audio playback" << std::endl;
+        }
     }
-    
-    
+    else if (!currentlyMoving && wasMoving) {
+        std::cout << "[DEBUG] Attempting to stop walking sound..." << std::endl;
+        AudioManager::Instance().stopSound("walking");
+    }
+    wasMoving = currentlyMoving;
+
     // Update animation state based on player state
     updateAnimationState();
-    
     // Update the animation controller
     updateAnimation(deltaTime);
 
     vel.x = 0; // Reset horizontal velocity
     vel.y = 0; // Reset vertical velocity
-    
     setvelocity(vel); // Update velocity
     setposition(pos); // Update position
 }
