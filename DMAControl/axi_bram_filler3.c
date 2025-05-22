@@ -69,7 +69,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     }
 }
 
-void handleIRQ()
+void handleIRQ(volatile uint64_t *frame_info_arr)
 {
     uint32_t irq_count;
     if (read(uio_fd, &irq_count, sizeof(irq_count)) != sizeof(irq_count)) {
@@ -82,10 +82,10 @@ void handleIRQ()
     }
 
     printf("Interrupt received! IRQ count: %d\n", irq_count);
-
+    update_and_write_animated_sprite(frame_info_arr, 1);
 }
 
-void irqHandlerThread()
+void irqHandlerThread(volatile uint64_t *frame_info_arr)
 {
     struct pollfd fds;
     fds.fd = uio_fd;
@@ -95,7 +95,7 @@ void irqHandlerThread()
         int ret = poll(&fds, 1, -1); // Wait indefinitely for an event
         if (ret > 0 && (fds.revents & POLLIN)) {
             if (fds.revents & POLLIN) {
-                handleIRQ();
+                handleIRQ(frame_info_arr);
             }
         } else if (ret < 0) {
             perror("poll");
@@ -105,6 +105,9 @@ void irqHandlerThread()
 }
 
 int main() {
+   
+
+
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd < 0) {
         perror("open");
@@ -123,7 +126,7 @@ int main() {
 
     // Then map the frame info BRAM
     void *frame_info_ptr = mmap(NULL, FRAME_INFO_SIZE, PROT_READ | PROT_WRITE,
-                               MAP_SHARED, fd, FRAME_INFO_ADDR);
+        MAP_SHARED, fd, FRAME_INFO_ADDR);
     if (frame_info_ptr == MAP_FAILED) {
         perror("mmap frame info");
         munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
@@ -160,19 +163,6 @@ int main() {
     // Each call updates frame_info[0] with the next animation step.
     // The loop runs NUM_SPRITES times to show NUM_SPRITES steps of animation.
     
-    //update_and_write_animated_sprite(frame_info, sprite_id_to_animate);
-    uio_fd = open("/dev/uio0", O_RDWR);
-    if (uio_fd < 0) {
-        perror("Failed to open UIO device");
-    }
-
-    // Clear any pending interrupts at the start by writing to the UIO device
-    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
-        perror("Failed to clear pending interrupt");
-        close(uio_fd);
-    }
-    
-    irqHandlerThread();
 
     // Create lookup table entry with proper alignment
     printf("Writing to lookup table at index 0\n"); // This line was present after the user's selection. Kept as is.
@@ -181,6 +171,21 @@ int main() {
     // Since we are always writing to frame_info[0], the list effectively has one active sprite.
     // The termination marker should be at the next position.
     frame_info[1] = 0xFFFFFFFFFFFFFFFF;
+
+
+    uio_fd = open("/dev/uio0", O_RDWR);
+    if (uio_fd < 0) {
+        perror("Failed to open UIO device");
+    }
+    
+    // Clear any pending interrupts at the start by writing to the UIO device
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear pending interrupt");
+        close(uio_fd);
+    }
+    
+    irqHandlerThread(frame_info);
+
 
     // Unmap both regions
     munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
