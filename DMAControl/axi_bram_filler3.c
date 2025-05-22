@@ -31,13 +31,13 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     static uint16_t s_sprite_x;
     static uint16_t s_sprite_y;
     static int s_direction;
-    static bool s_initialized = false;
+    static int s_initialized = 0;
 
     if (!s_initialized) {
         s_sprite_x = 120;
         s_sprite_y = 400; // Y is constant for this animation
         s_direction = 1;  // Start by moving right
-        s_initialized = true;
+        s_initialized = 1;
     }
 
     // Write current sprite state to index 0
