@@ -519,9 +519,9 @@ bool MultiplayerManager::updateEntityPosition(const std::string& objectId, const
     auto& objects = game->getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == objectId) {
-            std::cout << "[Client] Updating position of object: " << objectId 
-                      << " to " << position.x << "," << position.y 
-                      << " with velocity: " << velocity.x << "," << velocity.y << std::endl;
+            // std::cout << "[Client] Updating position of object: " << objectId 
+            //           << " to " << position.x << "," << position.y 
+            //           << " with velocity: " << velocity.x << "," << velocity.y << std::endl;
             // Update the object's position and velocity
             obj->setcollider(BoxCollider(position, obj->getcollider().size));
             obj->setvelocity(velocity);

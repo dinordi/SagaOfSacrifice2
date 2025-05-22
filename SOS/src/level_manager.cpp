@@ -239,7 +239,7 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
 }
 
 // Update the active level
-void LevelManager::update(uint64_t deltaTime) {
+void LevelManager::update(float deltaTime) {
     if (currentLevel_) {
         currentLevel_->update(deltaTime);
     }

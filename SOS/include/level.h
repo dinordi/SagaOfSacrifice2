@@ -24,7 +24,7 @@ class Level {
         void unload();
         
         // Update level-specific logic
-        void update(uint64_t deltaTime);
+        void update(float deltaTime);
         
         // Getters
         std::string getId() const { return id; }
@@ -102,36 +102,3 @@ class Level {
         std::mutex gameStateMutex_;
 
 };
-
-// // Additional classes you'll need to implement:
-
-// class TileLayer {
-// public:
-//     TileLayer(const std::string& id, const std::string& tileset, int tileWidth, int tileHeight)
-//         : id(id), tileset(tileset), tileWidth(tileWidth), tileHeight(tileHeight) {}
-    
-//     void addTile(std::shared_ptr<Tile> tile) {
-//         tiles.push_back(tile);
-//     }
-    
-//     const std::vector<std::shared_ptr<Tile>>& getTiles() const { return tiles; }
-//     std::string getId() const { return id; }
-//     std::string getTileset() const { return tileset; }
-    
-// private:
-//     std::string id;
-//     std::string tileset;
-//     int tileWidth;
-//     int tileHeight;
-//     std::vector<std::shared_ptr<Tile>> tiles;
-// };
-
-// class Tile : public Object {
-// public:
-//     Tile(int x, int y, SpriteData* spriteData, const std::string& objID)
-//         : Object(Vec2(x, y), spriteData, objID) {}
-    
-//     virtual void update(uint64_t deltaTime) override {
-//         // Tiles typically don't need updating, but we need to implement the pure virtual function
-//     }
-// };

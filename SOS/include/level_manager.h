@@ -38,7 +38,7 @@ public:
     void resetCurrentLevel();
     
     // Update the currently active level
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     
     // Check if all levels have been completed
     bool areAllLevelsCompleted() const;

@@ -138,21 +138,14 @@ void Enemy::update(float deltaTime) {
     }
 
     //Print old position
-    std::cout << "Old Position: (" << getcollider().position.x << ", " << getcollider().position.y << ")" << std::endl;
-    
+    Vec2 vel = getvelocity();
     // Update position based on velocity
     BoxCollider* pColl = &getcollider();
     Vec2* pos = &pColl->position;
-    Vec2 vel = getvelocity();
     pos->x += vel.x * deltaTime;
     pos->y += vel.y * deltaTime;
-    setcollider(*pColl); // Update collider position
-    
-    // Print new position
-    std::cout << "New Position: (" << getcollider().position.x << ", " << getcollider().position.y << ")" << std::endl;
 
     // Update animation
-    // updateAnimation(deltaTime*1000);
     Entity::update(deltaTime); // Call the base class update
     
     // Call the derived class's move function

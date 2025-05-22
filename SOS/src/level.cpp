@@ -219,13 +219,12 @@ bool Level::isCollidableTile(int tileIndex, const std::string& tileset) {
     return false;
 }
 
-void Level::update(uint64_t deltaTime) {
+void Level::update(float deltaTime) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-    {     
+    {
         // Update all game objects
         for (auto& object : levelObjects) {
             object->update(deltaTime);
-            std::cout << "[Level] Updated object with ID: " << object->getObjID() << std::endl;
         }
         
         // Detect and resolve collisions

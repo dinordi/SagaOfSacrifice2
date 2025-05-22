@@ -65,10 +65,6 @@ void Minotaur::move() {
             }
         }
     }
-    else
-    {
-        std::cout << "Minotaur is not moving!" << std::endl;
-    }
     
     // Set animation based on state
     if (currentState == EnemyState::IDLE) {
