@@ -105,11 +105,15 @@ void Game::update(float deltaTime) {
     switch(state)
     {
         case GameState::RUNNING:
-            // for(auto& obj : objects) {
-            //     if (obj) {
-            //         obj->update(deltaTime);
-            //     }
-            // }
+            for(auto& obj : objects) {
+                if (obj) {
+                    if(obj->getObjID() == player->getObjID()) {
+                        continue; // Skip updating the local player
+                    }
+                    // Update the player object
+                    obj->update(deltaTime);
+                }
+            }
             break;
         case GameState::MENU:
             // Handle menu state

@@ -182,6 +182,10 @@ void MultiplayerManager::update(float deltaTime) {
 
     // Update all remote players
     for (auto& pair : remotePlayers_) {
+        if(pair.second->getObjID() == playerId_) {
+            // Skip updating the local player
+            continue;
+        }
         pair.second->update(deltaTime);
     }
     
