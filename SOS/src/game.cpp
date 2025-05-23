@@ -137,7 +137,7 @@ void Game::update(float deltaTime) {
         reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
-        // updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
 }
 

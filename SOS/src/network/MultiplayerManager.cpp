@@ -18,19 +18,26 @@ RemotePlayer::RemotePlayer(const std::string& id)
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
     
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("Idle_fem", 96, 128, 8), 250, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9), 150, true);
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -439,9 +446,16 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
                     std::cout << "[Client] Created new remote player: " << objectId << std::endl;
                 }
+
+                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
+                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
+
                 
                 // Update remote player state
                 RemotePlayer* player = it->second.get();
+                
+                player->setDir(dir);
+                player->setAnimationState(state);
                 player->setTargetPosition(Vec2(posX, posY));
                 player->setTargetVelocity(Vec2(velX, velY));
                 player->resetInterpolation();

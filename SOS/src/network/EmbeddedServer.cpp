@@ -835,6 +835,12 @@ void EmbeddedServer::sendGameStateToClients() {
                     stateMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
                     break;
                 }
+                case ObjectType::PLAYER: {
+                    auto* player = static_cast<Player*>(obj.get());
+                    stateMsg.data.push_back(static_cast<uint8_t>(player->getAnimationState()));
+                    stateMsg.data.push_back(static_cast<uint8_t>(player->getDir()));
+                    break;
+                }
                 
                 default:
                     break;
