@@ -603,6 +603,7 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
         // Create a new player using the PlayerManager singleton
         player = pm.createPlayer(playerId, Vec2{100, 100});
         std::cout << "[EmbeddedServer] Created new player " << playerId << std::endl;
+        levelManager_->addPlayerToCurrentLevel(playerId);
     }
     
     
@@ -902,7 +903,7 @@ void EmbeddedServer::processPlayerInput(
     player->setInput(input.get());
 
     // 5) Immediately invoke the player’s handleInput (or let your game loop do it)
-    player->handleInput(input.get(), /*dtFrames=*/16);
+    player->handleInput(input.get(), 16);
 }
 
 NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {

@@ -232,9 +232,11 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
         player = playerManager.createPlayer(playerId, startPos);
     } else {
         // For existing players, update their position to the level's start position
-        player->setposition(startPos);
+        Vec2* playerPos = &player->getcollider().position;
+        playerPos->x = startPos.x;
+        playerPos->y = startPos.y;
         std::cout << "[LevelManager] Repositioned player " << playerId 
-                  << " to level start position: " << startPos.x << "," << startPos.y << std::endl;
+                  << " to level start position: " << playerPos->x << "," << playerPos->y << std::endl;
     }
     
     // Add the player to the current level

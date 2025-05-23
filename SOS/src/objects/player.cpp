@@ -134,15 +134,13 @@ void Player::update(float deltaTime) {
 void Player::handleInput(PlayerInput* input, float deltaTime) {
 
     // Handle player input here
-    Vec2 vel = getvelocity();
+    Vec2 vel(0,0);
 
     float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
         vel.x = -movementSpeed; // Move left
-    }
-    if (input->get_right()) {
-        // std::cout << "get_right" << std::endl;
+    } else if (input->get_right()) {
         vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
@@ -157,7 +155,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
         isAttacking = true;
         attackTimer = 0;
     }
-
+    // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
 }
 
