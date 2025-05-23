@@ -938,10 +938,14 @@ void EmbeddedServer::processPlayerPosition(
 
     // 3) Unpack the position and velocity
     Vec2 pos, vel;
+    FacingDirection dir;
+    AnimationState animState;
     std::memcpy(&pos.x, message.data.data(), sizeof(float));
     std::memcpy(&pos.y, message.data.data() + sizeof(float), sizeof(float));
     std::memcpy(&vel.x, message.data.data() + sizeof(float) * 2, sizeof(float));
     std::memcpy(&vel.y, message.data.data() + sizeof(float) * 3, sizeof(float));
+    std::memcpy(&dir, message.data.data() + sizeof(float) * 4, sizeof(FacingDirection));
+    std::memcpy(&animState, message.data.data() + sizeof(float) * 4 + sizeof(FacingDirection), sizeof(AnimationState));
 
     // 4) Update the player’s position and velocity
     BoxCollider* pColl = &player->getcollider();
@@ -949,6 +953,8 @@ void EmbeddedServer::processPlayerPosition(
     Vec2* velPtr = &player->getvelocity();
     *posPtr = pos;
     *velPtr = vel;
+    player->setDir(dir);
+    player->setAnimationState(animState);
 }
 
 
