@@ -32,10 +32,10 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     this->collisionManager = new CollisionManager();;
     
     // Create player using PlayerManager
-    auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
+    // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
     
     // Set player's input handler
-    player = playerSharedPtr.get();
+    player = new Player(500, 100, playerID);
     player->setInput(input);
     mapCharacters();
     state = GameState::MENU;
@@ -134,7 +134,7 @@ void Game::update(float deltaTime) {
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
 
-        // reconcileWithServerState(deltaTime);
+        reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
         // updateRemotePlayers(multiplayerManager->getRemotePlayers());
@@ -274,7 +274,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
-    // player->update(deltaTime);
+    player->update(deltaTime);
 }
 
 void Game::reconcileWithServerState(float deltaTime) {
@@ -315,28 +315,33 @@ void Game::reconcileWithServerState(float deltaTime) {
         // Reset the wait timer once we find our player
         remotePlayerWaitTime = 0;
         RemotePlayer* remotePlayer = it->second.get();
-        BoxCollider serverCollider = remotePlayer->getcollider();
-        BoxCollider clientCollider = player->getcollider();
-        Vec2 serverPosition = serverCollider.position;
-        Vec2 clientPosition = clientCollider.position;
+
+        Vec2 serverPosition = remotePlayer->getTargetPosition();
+        BoxCollider* clientCollider = &player->getcollider();
+        Vec2* clientPosition = &clientCollider->position;
         
         // Calculate position difference
-        float dx = serverPosition.x - clientPosition.x;
-        float dy = serverPosition.y - clientPosition.y;
+        float dx = serverPosition.x - clientPosition->x;
+        float dy = serverPosition.y - clientPosition->y;
         float distSquared = dx*dx + dy*dy;
         
-        // If difference is significant (beyond a small threshold)
-        if (distSquared > 4.0f) { // Small threshold to ignore minor differences
-            // Option 1: Smoothly interpolate toward server position
-            Vec2 newPosition = clientPosition;
+        // Only perform sanity checks, not constant corrections
+        const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
+        const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
+        
+        if (distSquared > TELEPORT_THRESHOLD) {
+            // Potential cheating or severe desync - force correction
+            clientPosition->x = serverPosition.x;
+            clientPosition->y = serverPosition.y;
             
-            // Interpolate 20% of the way to the server position
-            newPosition.x += dx * 0.2f;
-            newPosition.y += dy * 0.2f;
-            
-            // Update player position
-            player->setcollider(BoxCollider(newPosition, clientCollider.size));
+            // Log potential cheating attempt
+            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
         }
+        // Server side validation check, can be implemented later
+        // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
+        //     // Server validation failed - report to server we need validation
+        //     multiplayerManager->requestPositionValidation();
+        // }
     }
 }
 
@@ -359,36 +364,6 @@ void Game::addObject(std::shared_ptr<Object> object) {
         // }
     }
 }
-
-// // Initialize and load a level
-// bool Game::initializeLevel(const std::string& levelId) {
-//     if (!levelManager) {
-//         std::cerr << "[Game] LevelManager not initialized" << std::endl;
-//         return false;
-//     }
-    
-//     // Initialize level manager if not done already
-//     if (!levelManager->initialize()) {
-//         std::cerr << "[Game] Failed to initialize LevelManager" << std::endl;
-//         return false;
-//     }
-    
-//     // Load the specified level
-//     if (!levelManager->loadLevel(levelId)) {
-//         std::cerr << "[Game] Failed to load level: " << levelId << std::endl;
-//         return false;
-//     }
-    
-//     // Add the player to the level
-//     std::string playerId = player->getObjID();
-//     if (!levelManager->addPlayerToCurrentLevel(playerId)) {
-//         std::cerr << "[Game] Failed to add player to level" << std::endl;
-//         return false;
-//     }
-    
-//     std::cout << "[Game] Successfully initialized level: " << levelId << std::endl;
-//     return true;
-// }
 
 void Game::drawMenu(float deltaTime) {
     bool print = false;

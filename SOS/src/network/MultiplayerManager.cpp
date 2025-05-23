@@ -178,7 +178,7 @@ void MultiplayerManager::update(float deltaTime) {
     network_->update();
     
     static uint64_t lastUpdateTime = 0;
-    lastUpdateTime += deltaTime*1000;  // Convert to milliseconds
+    lastUpdateTime += static_cast<uint64_t>(deltaTime*1000);  // Convert to milliseconds
 
     // Update all remote players
     for (auto& pair : remotePlayers_) {
@@ -192,6 +192,7 @@ void MultiplayerManager::update(float deltaTime) {
     // Send player input periodically (primary control method now)
     if (playerInput_ && localPlayer_ && lastUpdateTime >= NetworkConfig::Client::UpdateInterval) {
         sendPlayerInput();
+        sendPlayerState();
         lastUpdateTime_ = deltaTime;
     }
 }
@@ -218,7 +219,7 @@ void MultiplayerManager::sendPlayerState() {
     posMsg.type = MessageType::PLAYER_POSITION;
     posMsg.senderId = playerId_;
     posMsg.data = serializePlayerState(localPlayer_);
-    
+
     network_->sendMessage(posMsg);
 }
 
@@ -426,9 +427,9 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         switch (static_cast<ObjectType>(objectType)) {
             case ObjectType::PLAYER: { // Player
                 // Skip if this is our local player
-                if (objectId == playerId_) {
-                    // Position and velocity are already handled by the local player and reconciliation
-                }
+                // if (objectId == playerId_) {
+                //     // Position and velocity are already handled by the local player and reconciliation
+                // }
                 
                 // Find or create remote player
                 auto it = remotePlayers_.find(objectId);

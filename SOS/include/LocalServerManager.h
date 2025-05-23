@@ -8,8 +8,6 @@
 
 // Forward declarations
 class EmbeddedServer;
-class LevelManager; // Forward declare LevelManager
-class CollisionManager; // Forward declare CollisionManager
 
 // Class to manage launching and stopping a local game server
 class LocalServerManager {
