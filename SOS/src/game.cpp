@@ -251,6 +251,8 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
             remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
+            remotePlayer->setDir(pair.second->getDir());
+            remotePlayer->setAnimationState(pair.second->getAnimationState());
             objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
             if((*it)->getObjID() == player->getObjID())
@@ -263,6 +265,12 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
                 // Update existing remote player
                 (*it)->setcollider(pair.second->getcollider());
                 (*it)->setvelocity(pair.second->getvelocity());
+                (*it)->setDir(pair.second->getDir());
+                (*it)->setAnimationState(pair.second->getAnimationState());
+
+                std::cout << "[Game] Updated remote player: " << pair.first << std::endl;
+                std::cout << "[Game] Direction: " << static_cast<int>((*it)->getDir()) << std::endl;
+                std::cout << "[Game] Animation state: " << static_cast<int>((*it)->getAnimationState()) << std::endl;
             }
         }
     }

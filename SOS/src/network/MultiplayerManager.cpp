@@ -67,6 +67,22 @@ void RemotePlayer::update(float deltaTime) {
         position_->x += velocity_.x * deltaTime;
         position_->y += velocity_.y * deltaTime;
     }
+    // Set direction based on velocity
+    if (velocity_.x > 0) {
+        setDir(FacingDirection::EAST);
+    } else if (velocity_.x < 0) {
+        setDir(FacingDirection::WEST);
+    } else if (velocity_.y > 0) {
+        setDir(FacingDirection::NORTH);
+    } else if (velocity_.y < 0) {
+        setDir(FacingDirection::SOUTH);
+    }
+    // Update animation state based on velocity
+    if (velocity_.length() > 0) {
+        setAnimationState(AnimationState::WALKING);
+    } else {
+        setAnimationState(AnimationState::IDLE);
+    }
 
     // Update the object's position
     setcollider(BoxCollider(*position_, getcollider().size));
