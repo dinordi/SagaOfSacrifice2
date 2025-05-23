@@ -711,6 +711,9 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_INPUT:
             processPlayerInput(message.senderId, message);
             break;
+        case MessageType::PLAYER_POSITION:
+            processPlayerPosition(message.senderId, message);
+            break;
             
         case MessageType::CHAT:
             // Just relay chat messages to all clients
@@ -905,6 +908,43 @@ void EmbeddedServer::processPlayerInput(
     // 5) Immediately invoke the player’s handleInput (or let your game loop do it)
     player->handleInput(input.get(), 16);
 }
+
+void EmbeddedServer::processPlayerPosition(
+    const std::string& playerId,
+    const NetworkMessage& message
+) {
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+
+    // 1) Lookup the player
+    auto player = PlayerManager::getInstance().getPlayer(playerId);
+    if (!player) {
+        std::cerr << "[EmbeddedServer] Player not found for position update: "
+                  << playerId << std::endl;
+        return;
+    }
+
+    // 2) Validate payload
+    if (message.data.size() < sizeof(float) * 4) {
+        std::cerr << "[EmbeddedServer] Invalid position data size: "
+                  << message.data.size() << " bytes" << std::endl;
+        return;
+    }
+
+    // 3) Unpack the position and velocity
+    Vec2 pos, vel;
+    std::memcpy(&pos.x, message.data.data(), sizeof(float));
+    std::memcpy(&pos.y, message.data.data() + sizeof(float), sizeof(float));
+    std::memcpy(&vel.x, message.data.data() + sizeof(float) * 2, sizeof(float));
+    std::memcpy(&vel.y, message.data.data() + sizeof(float) * 3, sizeof(float));
+
+    // 4) Update the player’s position and velocity
+    BoxCollider* pColl = &player->getcollider();
+    Vec2* posPtr = &pColl->position;
+    Vec2* velPtr = &player->getvelocity();
+    *posPtr = pos;
+    *velPtr = vel;
+}
+
 
 NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
     NetworkMessage message;

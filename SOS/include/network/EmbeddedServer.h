@@ -77,6 +77,7 @@ private:
     
     // Process player input message
     void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
+    void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
     
     // Server configuration
     int port_;

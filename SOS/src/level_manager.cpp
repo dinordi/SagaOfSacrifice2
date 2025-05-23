@@ -241,6 +241,7 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
     
     // Add the player to the current level
     currentLevel_->addObject(player);
+    currentLevel_->setAllEnemiesToTargetPlayer(player);
     std::cout << "[LevelManager] Added player " << playerId << " to current level" << std::endl;
     
     return true;
