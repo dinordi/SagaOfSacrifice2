@@ -1,6 +1,6 @@
 #include "objects/player.h"
 #include <iostream>
-#include "interfaces/AudioManager.h"
+
 
 Player::Player( BoxCollider collider, std::string objID) : Entity(collider, objID),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
@@ -43,15 +43,26 @@ void Player::setupAnimations() {
 }
 
 void Player::updateAnimationState() {
+    AudioManager& audioManager = AudioManager::Instance();
 
     if(isAttacking) {
         setAnimationState(AnimationState::ATTACKING);
+        // play attack sound once
+        //AudioManager::getInstance().playSound("attack_sound", 0.5f, false);
         return;
     }
     if (isMoving()) {
         setAnimationState(AnimationState::WALKING);
+        // play walking sound once
+        
+        audioManager.playSound("walking");
+        
+
     } else {
         setAnimationState(AnimationState::IDLE);
+        audioManager.stopSound("walking");
+    
+    
     }
 
 
@@ -114,42 +125,18 @@ void Player::update(float deltaTime) {
             isAttacking = false;
             attackTimer = 0.0f;
         }
-    }    // Modular audio: play walking sound only when starting to move
-    bool currentlyMoving = isMoving();
-    if (currentlyMoving && !wasMoving) {
-        std::cout << "[DEBUG] Attempting to play walking sound..." << std::endl;
-        
-        // Add safety checks to avoid crashes
-        try {
-            // Check if AudioManager instance exists
-            if (&AudioManager::Instance() == nullptr) {
-                std::cerr << "[ERROR] AudioManager instance is null!" << std::endl;
-            } else {
-                std::cout << "[DEBUG] AudioManager instance exists, calling playSound..." << std::endl;
-                AudioManager::Instance().playSound("walking");
-                std::cout << "[DEBUG] After playSound call" << std::endl;
-            }
-        } catch (const std::exception& e) {
-            std::cerr << "[ERROR] Exception in audio playback: " << e.what() << std::endl;
-        } catch (...) {
-            std::cerr << "[ERROR] Unknown exception in audio playback" << std::endl;
-        }
     }
-    else if (!currentlyMoving && wasMoving) {
-        std::cout << "[DEBUG] Attempting to stop walking sound..." << std::endl;
-        AudioManager::Instance().stopSound("walking");
-    }
-    wasMoving = currentlyMoving;
+
 
     // Update animation state based on player state
     updateAnimationState();
-
 
     // Update the animation controller
     updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
 
     vel.x = 0; // Reset horizontal velocity
     vel.y = 0; // Reset vertical velocity
+
     setvelocity(vel); // Update velocity
     setcollider(*pColl); // Update position
 }
@@ -180,6 +167,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
         isAttacking = true;
         attackTimer = 0;
     }
+    
 
     setvelocity(vel);
 }
@@ -189,9 +177,11 @@ void Player::takeDamage(int amount) {
     if (health <= 0) {
         // Handle player death
         setAnimationState(AnimationState::DYING);
+        // trigger death sfx
     } else {
         // Briefly show hurt animation
         setAnimationState(AnimationState::HURT);
+        // trigger hurt sfx
     }
 }
 
