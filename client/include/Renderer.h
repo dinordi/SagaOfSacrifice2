@@ -32,9 +32,6 @@ private:
     bool stop_thread;
     std::thread irq_thread;
 
-    // New bram management
-    void write_sprite_to_frame_info(int index, uint16_t x, uint16_t y, uint32_t sprite_id);
-    void update_and_write_animated_sprite(uint32_t sprite_id_to_use);
 
     void dmaTransfer();
     BRAMDATA readBRAM();

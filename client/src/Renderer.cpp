@@ -10,7 +10,10 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
                            virtual_src_addr(NULL),
                            total_size(0),
                            num_chunks(0),
-                           bram_ptr(NULL)
+                           bram_ptr(NULL),
+                           sprite_x(120),
+                            sprite_y(400),
+                            sprite_direction(1)
 {
     // Open the UIO device
     uio_fd = open("/dev/uio0", O_RDWR);
@@ -128,8 +131,18 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     // Add termination marker
     frame_info[1] = 0xFFFFFFFFFFFFFFFF;
 
+    std::cout << "Starting thread to handle interrupts..." << std::endl;
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
+    if (!irq_thread.joinable()) {
+        perror("Failed to create IRQ handler thread");
+        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
+        munmap(frame_info_ptr, FRAME_INFO_SIZE);
+        close(ddr_memory);
+        close(uio_fd);
+        throw std::runtime_error("Failed to create IRQ handler thread");
+    }
+    std::cout << "IRQ handler thread started." << std::endl;
 }
 
 
@@ -256,10 +269,14 @@ void Renderer::irqHandlerThread()
     fds.fd = uio_fd;
     fds.events = POLLIN;
 
-    while (!stop_thread) {
+    std::cout << "IRQ thread running, waiting for interrupts on fd: " << uio_fd << std::endl;
+
+    while (stop_thread == false) {
+        std::cout << "Waiting for interrupt..." << std::endl;
         int ret = poll(&fds, 1, -1); // Wait indefinitely for an event
         if (ret > 0 && (fds.revents & POLLIN)) {
             if (fds.revents & POLLIN) {
+                std::cout << "Interrupt detected!" << std::endl;
                 handleIRQ();
             }
         } else if (ret < 0) {
