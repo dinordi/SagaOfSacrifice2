@@ -29,11 +29,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     multiplayerManager = std::make_unique<MultiplayerManager>();
     
     // Initialize collision manager (used for local prediction only)
-    CollisionManager* collisionManager = new CollisionManager();
-    this->collisionManager = collisionManager;
-    
-    // Initialize LevelManager
-    levelManager = std::make_unique<LevelManager>(this, collisionManager);
+    this->collisionManager = new CollisionManager();;
     
     // Create player using PlayerManager
     auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
@@ -143,16 +139,6 @@ void Game::update(float deltaTime) {
         // Update remote players based on server data
         // updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
-    else {
-        // In single player mode, update the level directly
-        if (levelManager) {
-            // Process player input directly without server
-            player->handleInput(input, deltaTime);
-            
-            // Update the current level (which updates all objects)
-            // levelManager->update(deltaTime);
-        }
-    }
 }
 
 bool Game::isRunning() const {
@@ -172,7 +158,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     std::cout << "[Game] Setting up single player with embedded server" << std::endl;
     
     // Start the embedded server
-    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT, levelManager.get(), collisionManager)) {
+    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT)) {
         std::cerr << "[Game] Failed to start embedded server" << std::endl;
         return false;
     }
@@ -183,16 +169,6 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
         std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
         localServerManager->stopEmbeddedServer();
         return false;
-    }
-    
-    // Initialize the first level for single player mode
-    // This will be skipped in multiplayer mode since levels are managed by the server
-    if (!multiplayerActive) {
-        // Initialize the default level (level1)
-        if (!initializeLevel("level1")) {
-            std::cerr << "[Game] Failed to initialize level in single player mode" << std::endl;
-            // Continue anyway, as this might be recoverable
-        }
     }
     
     usingSinglePlayerServer = true;
@@ -384,35 +360,35 @@ void Game::addObject(std::shared_ptr<Object> object) {
     }
 }
 
-// Initialize and load a level
-bool Game::initializeLevel(const std::string& levelId) {
-    if (!levelManager) {
-        std::cerr << "[Game] LevelManager not initialized" << std::endl;
-        return false;
-    }
+// // Initialize and load a level
+// bool Game::initializeLevel(const std::string& levelId) {
+//     if (!levelManager) {
+//         std::cerr << "[Game] LevelManager not initialized" << std::endl;
+//         return false;
+//     }
     
-    // Initialize level manager if not done already
-    if (!levelManager->initialize()) {
-        std::cerr << "[Game] Failed to initialize LevelManager" << std::endl;
-        return false;
-    }
+//     // Initialize level manager if not done already
+//     if (!levelManager->initialize()) {
+//         std::cerr << "[Game] Failed to initialize LevelManager" << std::endl;
+//         return false;
+//     }
     
-    // Load the specified level
-    if (!levelManager->loadLevel(levelId)) {
-        std::cerr << "[Game] Failed to load level: " << levelId << std::endl;
-        return false;
-    }
+//     // Load the specified level
+//     if (!levelManager->loadLevel(levelId)) {
+//         std::cerr << "[Game] Failed to load level: " << levelId << std::endl;
+//         return false;
+//     }
     
-    // Add the player to the level
-    std::string playerId = player->getObjID();
-    if (!levelManager->addPlayerToCurrentLevel(playerId)) {
-        std::cerr << "[Game] Failed to add player to level" << std::endl;
-        return false;
-    }
+//     // Add the player to the level
+//     std::string playerId = player->getObjID();
+//     if (!levelManager->addPlayerToCurrentLevel(playerId)) {
+//         std::cerr << "[Game] Failed to add player to level" << std::endl;
+//         return false;
+//     }
     
-    std::cout << "[Game] Successfully initialized level: " << levelId << std::endl;
-    return true;
-}
+//     std::cout << "[Game] Successfully initialized level: " << levelId << std::endl;
+//     return true;
+// }
 
 void Game::drawMenu(float deltaTime) {
     bool print = false;

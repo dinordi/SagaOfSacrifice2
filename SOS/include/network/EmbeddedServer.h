@@ -29,7 +29,7 @@ class CollisionManager;
  */
 class EmbeddedServer {
 public:
-    EmbeddedServer(int port, LevelManager* levelManager);
+    EmbeddedServer(int port);
     ~EmbeddedServer();
     
     // Start the server
@@ -93,7 +93,7 @@ private:
     // Game state data
     //std::vector<std::shared_ptr<Object>> gameObjects_;
     //std::map<std::string, std::shared_ptr<Player>> players_;
-    LevelManager* levelManager_;
+    std::shared_ptr<LevelManager> levelManager_;
     std::shared_ptr<CollisionManager> collisionManager_;
     
     // Thread management

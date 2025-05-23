@@ -15,11 +15,11 @@
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
 
-EmbeddedServer::EmbeddedServer(int port, LevelManager* levelManager)
+EmbeddedServer::EmbeddedServer(int port)
     : port_(port), 
       running_(false),
       gameLoopRunning_(false),
-      levelManager_(levelManager),
+      levelManager_(std::make_shared<LevelManager>()),
       collisionManager_(std::make_shared<CollisionManager>()) {
     std::cout << "[EmbeddedServer] Created on port " << port << std::endl;
   

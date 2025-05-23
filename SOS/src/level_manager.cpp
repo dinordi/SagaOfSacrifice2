@@ -2,10 +2,16 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include "player_manager.h"
-#include "game.h"
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+LevelManager::LevelManager()
+{
+    // Initialize the level manager
+    collisionManager = new CollisionManager();
+    currentLevel_ = nullptr;
+}
 
 LevelManager::~LevelManager() {
     // Clean up levels
