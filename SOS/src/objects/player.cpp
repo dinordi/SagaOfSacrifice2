@@ -120,9 +120,6 @@ void Player::update(float deltaTime) {
     // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
     Entity::update(deltaTime); // Call base class update
 
-    vel.x = 0; // Reset horizontal velocity
-    vel.y = 0; // Reset vertical velocity
-
     setvelocity(vel); // Update velocity
     setcollider(*pColl); // Update position
 }
