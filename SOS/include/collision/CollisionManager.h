@@ -3,13 +3,14 @@
 
 #include <vector>
 #include <utility>
+#include <memory>
 #include "object.h"
 #include "CollisionInfo.h"
 #include "CollisionHandler.h"
 
 class CollisionManager {
 public:
-    std::vector<std::pair<Object*, Object*>> detectCollisions(const std::vector<Object*>& gameObjects);
+    std::vector<std::pair<Object*, Object*>> detectCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects);
     void resolveCollision(Object* objA, Object* objB, const CollisionInfo& info);
 };
 

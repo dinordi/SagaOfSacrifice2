@@ -20,7 +20,7 @@ void AnimationController::setState(AnimationState state) {
     }
 }
 
-void AnimationController::update(uint64_t deltaTime) {
+void AnimationController::update(uint64_t deltaTime, FacingDirection dir) {
     if (animations.find(currentState) == animations.end()) {
         // No animation found for this state, use default
         return;
@@ -53,10 +53,35 @@ void AnimationController::update(uint64_t deltaTime) {
     }
 }
 
-int AnimationController::getCurrentFrame() const {
-    return currentFrame;
+int AnimationController::getCurrentFrame(FacingDirection dir) const {
+    auto it = animations.find(currentState);
+    if (it == animations.end()) {
+        return 0;
+    }
+
+    const AnimationDef& def = it->second;
+
+    int baseFrame = def.startFrame + (currentFrame % def.frameCount);
+
+    int rowOffset = 0;
+    auto dirIt = def.directionRows.find(dir);
+    if (dirIt != def.directionRows.end()) {
+        rowOffset = dirIt->second * def.framesPerRow;
+    }
+    return baseFrame + rowOffset;
 }
 
 bool AnimationController::isFinished() const {
     return finished;
+}
+
+AnimationState AnimationController::getCurrentState() const {
+    return currentState;
+}
+
+void AnimationController::setDirectionRow(AnimationState state, FacingDirection dir, int row) {
+    auto it = animations.find(state);
+    if (it != animations.end()) {
+        it->second.directionRows[dir] = row;
+    }
 }
