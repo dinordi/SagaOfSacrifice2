@@ -69,6 +69,9 @@ bool SDL3AudioManager::initialize(const std::string& basePath) {
         return mInitialized;
     }
 
+    // Set the volume off
+    Mix_Volume(-1, 0);
+
     mInitialized = true;
     std::cout << "SDL3AudioManager (wrapper_client) initialized successfully." << std::endl;
     return mInitialized;
