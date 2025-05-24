@@ -13,7 +13,7 @@ void CollisionHandler::visit(Player* player) {
     if (initiator->type == ObjectType::TILE) {
         // Player collided with platform
         handleInteraction(player);
-    } else if (initiator->type == ObjectType::ENEMY) {
+    } else if (initiator->type == ObjectType::MINOTAUR) {
         // Player collided with enemy
         handleInteraction(player);
     }
@@ -26,6 +26,9 @@ void CollisionHandler::visit(Enemy* enemy) {
         handleInteraction(enemy);
     } else if (initiator->type == ObjectType::PLAYER) {
         // Enemy collided with player
+        handleInteraction(enemy);
+    } else if (initiator->type == ObjectType::MINOTAUR) {
+        // Enemy collided with another enemy
         handleInteraction(enemy);
     }
 }
@@ -68,7 +71,7 @@ void CollisionHandler::handleInteraction(Player* player) {
 
         player->setcollider(*pCollider);
         player->setvelocity(vel);
-    } else if (initiator->type == ObjectType::ENEMY) {
+    } else if (initiator->type == ObjectType::MINOTAUR) {
         // Player collided with enemy - cause damage
         // player->takeDamage(1); // Example damage amount
     }
@@ -77,20 +80,40 @@ void CollisionHandler::handleInteraction(Player* player) {
 void CollisionHandler::handleInteraction(Enemy* enemy) {
     if (initiator->type == ObjectType::TILE) {
         // Enemy landed on platform
-        if (info.penetrationVector.y < 0) {
+        Tile* platform = static_cast<Tile*>(initiator);
+        BoxCollider* pCollider = &enemy->getcollider();
+        Vec2* pos = &pCollider->position;
+        
+        // Check flags for platform collision
+        if (platform->hasFlag(Tile::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
+            // Coming from above
+            pos->y -= info.penetrationVector.y;
+        } else if (platform->hasFlag(Tile::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
+            // Side collision
+            pos->x -= info.penetrationVector.x;
+        }
+
+    } else if (initiator->type == ObjectType::PLAYER) {
+        // Enemy hit by player - might take damage depending on game logic
+    } else if (initiator->type == ObjectType::MINOTAUR) {
+        // Enemy collided with another enemy - handle accordingly
+        // Enemies should not pass through each other
+        if (initiator->getObjID() < enemy->getObjID()) {
+            return; // Only one enemy should handle the collision
+        }
+        if(info.penetrationVector.x != 0) {
             BoxCollider* pCollider = &enemy->getcollider();
             Vec2* pos = &pCollider->position;
             Vec2* vel = &enemy->getvelocity();
-            pos->y += info.penetrationVector.y;
+            pos->x -= info.penetrationVector.x;
+            vel->x = 0;
+        } else if (info.penetrationVector.y != 0) {
+            BoxCollider* pCollider = &enemy->getcollider();
+            Vec2* pos = &pCollider->position;
+            Vec2* vel = &enemy->getvelocity();
+            pos->y -= info.penetrationVector.y;
             vel->y = 0;
-            enemy->setcollider(*pCollider);
-            enemy->setvelocity(*vel);
-        } else if (info.penetrationVector.x != 0) {
-            // Side collision - reverse direction
-            // enemy->reverseDirection();
         }
-    } else if (initiator->type == ObjectType::PLAYER) {
-        // Enemy hit by player - might take damage depending on game logic
     }
 }
 
