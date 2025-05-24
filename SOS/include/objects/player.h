@@ -2,18 +2,18 @@
 
 #include "objects/entity.h"
 #include "sprite_data.h"
-#include "objects/platform.h"
+#include "objects/tile.h"
 #include "playerInput.h"
 #include "animation.h"
 
 class Player : public Entity {
 
 public:
-    Player(Vec2 pos, SpriteData* spData, std::string objID);
+    Player(int x, int y, std::string objID);
     void setInput(PlayerInput* input) { this->input = input; }
-    void update(uint64_t deltaTime) override;
+    void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;
-    void handleInput(PlayerInput* input, uint64_t deltaTime);
+    void handleInput(PlayerInput* input, float deltaTime);
     void takeDamage(int amount);
     void collectItem();
     void applyPhysicsResponse(const Vec2& resolutionVector);
@@ -28,6 +28,6 @@ private:
     int health;
     bool isAttacking;
     bool isJumping;
-    uint32_t attackTimer;
+    float attackTimer;
     bool wasMoving = false; // Track previous movement state for modular audio
 };

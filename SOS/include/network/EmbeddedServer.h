@@ -15,7 +15,7 @@
 #include <boost/asio.hpp>
 
 #include "interfaces/playerInput.h"
-
+#include "level_manager.h"
 // Forward declarations
 class Object;
 class Player;
@@ -71,12 +71,13 @@ private:
 
     // Game logic methods
     void createInitialGameObjects();
-    void updateGameState(uint64_t deltaTime);
+    void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
     
     // Process player input message
     void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
+    void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
     
     // Server configuration
     int port_;
@@ -91,8 +92,9 @@ private:
     std::mutex clientSocketsMutex_;
     
     // Game state data
-    std::vector<std::shared_ptr<Object>> gameObjects_;
-    std::map<std::string, std::shared_ptr<Player>> players_;
+    //std::vector<std::shared_ptr<Object>> gameObjects_;
+    //std::map<std::string, std::shared_ptr<Player>> players_;
+    std::shared_ptr<LevelManager> levelManager_;
     std::shared_ptr<CollisionManager> collisionManager_;
     
     // Thread management
@@ -111,19 +113,6 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime_;
 };
 
-// Create a temporary input object to handle player movement
-class TempInput : public PlayerInput {
-    public:
-        void readInput() override {}
-        
-        void setInputs(bool u, bool d, bool l, bool r, bool a) {
-            set_up(u);
-            set_down(d);
-            set_left(l);
-            set_right(r);
-            set_attack(a);
-        }
-    };
 
 // Message header structure
 struct MessageHeader {

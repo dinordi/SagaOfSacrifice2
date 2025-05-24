@@ -25,7 +25,7 @@ public:
     void shutdown();
     
     // Update network state - should be called once per frame
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     
     // Set the local player
     void setLocalPlayer(Player* player);
@@ -68,6 +68,8 @@ private:
     void handleChatMessage(const NetworkMessage& message);
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
+
+    std::shared_ptr<Object> updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
@@ -108,7 +110,7 @@ class RemotePlayer : public Object
 public:
     RemotePlayer(const std::string& id);
     
-    void update(uint64_t deltaTime) override;
+    void update(float deltaTime) override;
     
     // Setters
     void setOrientation(float orientation);

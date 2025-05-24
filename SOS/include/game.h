@@ -15,17 +15,34 @@
 #include "object.h"
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
-#include "objects/platform.h"
+#include "objects/minotaur.h"
+#include "objects/tile.h"
 #include "collision/CollisionManager.h"
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
+#include "player_manager.h"
+#include "ServerConfig.h"
+
+enum class GameState {
+    RUNNING,
+    MENU,
+    SERVER_SELECTION
+};
+
+enum class MenuOption {
+    SINGLEPLAYER = 0,
+    MULTIPLAYER = 1,
+    EXIT = 2,
+    CREDITS = 3,
+    COUNT // Used to get the number of menu options
+};
 
 class Game {
 public:
     Game(PlayerInput* input, std::string playerID);
     ~Game();
 
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     bool isRunning() const;
     std::string generateRandomPlayerId();
     
@@ -34,6 +51,12 @@ public:
 
     // New: Initialize single player mode with embedded server
     bool initializeSinglePlayerEmbeddedServer();
+    
+    // Set multiplayer configuration (to be used when menu option is selected)
+    void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
+    
+    // Initialize server configuration from file
+    void initializeServerConfig(const std::string& basePath);
     
     void shutdownServerConnection();
     bool isServerConnection() const;
@@ -45,7 +68,8 @@ public:
 
     std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
-    
+    void clearActors();
+
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
@@ -54,14 +78,26 @@ public:
     static void setInstance(Game* instance) { instance_ = instance; }
 
 private:
-    void drawWord(const std::string& word, int x, int y);
+    void drawWord(const std::string& word, int x, int y, int letterSize = 0);
+    void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
+    void drawMenu(float deltaTime);
+    void handleMenuInput(float deltaTime);
     
+    // Server selection methods
+    void drawServerSelectionMenu(float deltaTime);
+    void handleServerSelectionInput(float deltaTime);
+    
+    MenuOption selectedOption = MenuOption::SINGLEPLAYER;
+    bool menuOptionChanged = true;
+    float menuInputCooldown = 0.0f;
+    const float MENU_INPUT_DELAY = 0.2f; // Cooldown in seconds to prevent rapid selection changes
     
     // Local client-side prediction methods
-    void predictLocalPlayerMovement(uint64_t deltaTime);
-    void reconcileWithServerState();
+    void predictLocalPlayerMovement(float deltaTime);
+    void reconcileWithServerState(float deltaTime);
 
+    GameState state;
     bool running;
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
@@ -78,6 +114,15 @@ private:
     std::unique_ptr<MultiplayerManager> multiplayerManager;
     bool multiplayerActive;
     
+    // Multiplayer configuration (for deferred connection)
+    bool multiplayerConfigured = false;
+    std::string configuredServerAddress;
+    int configuredServerPort;
+    
+    // Server selection
+    ServerConfig serverConfig;
+    size_t selectedServerIndex = 0;
+    bool serverSelectionOptionChanged = true;
     
     // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);

@@ -8,6 +8,7 @@
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include <iostream>
 #include <set> // Add missing header for std::set
+#include <filesystem> // For std::filesystem::path
 
 // Initialize static instance pointer
 Game* Game::instance_ = nullptr;
@@ -18,7 +19,7 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8080;
 
-Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false) {
+Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     // Set this as the active instance
     instance_ = this;
     
@@ -29,15 +30,16 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     multiplayerManager = std::make_unique<MultiplayerManager>();
     
     // Initialize collision manager (used for local prediction only)
-    CollisionManager* collisionManager = new CollisionManager();
-    this->collisionManager = collisionManager;
+    this->collisionManager = new CollisionManager();;
     
-    // Initialize game objects
-    // Note: in server-authoritative mode, object creation will be managed by the server
-    // but we still need to initialize the local player for input and rendering
-    player = new Player(Vec2(500,100), new SpriteData(std::string("playermap"), 128, 128, 5), playerID);
+    // Create player using PlayerManager
+    // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
+    
+    // Set player's input handler
+    player = new Player(500, 100, playerID);
     player->setInput(input);
-    objects.push_back(std::shared_ptr<Player>(player));
+    mapCharacters();
+    state = GameState::MENU;
 }
 
 Game::~Game() {
@@ -85,12 +87,46 @@ void Game::mapCharacters()
     for(char c : letters) {
         characterMap[c] = index++;
     }
+    // Print the mapping
+    for (const auto& pair : characterMap) {
+        std::cout << pair.first << " -> " << pair.second << std::endl;
+    }
+
+    characterMap['>'] = 36;
 }
 
-void Game::update(uint64_t deltaTime) {
+void Game::update(float deltaTime) {
     // Process local input
     input->readInput();
     
+    switch(state)
+    {
+        case GameState::RUNNING:
+            for(auto& obj : objects) {
+                if (obj) {
+                    if(obj->getObjID() == player->getObjID()) {
+                        continue; // Skip updating the local player
+                    }
+                    // Update the player object
+                    obj->updateAnimation(deltaTime * 1000);
+                }
+            }
+            break;
+        case GameState::MENU:
+            // Handle menu state
+            drawMenu(deltaTime);
+            handleMenuInput(deltaTime);
+            return;
+        case GameState::SERVER_SELECTION:
+            // Handle server selection state
+            drawServerSelectionMenu(deltaTime);
+            handleServerSelectionInput(deltaTime);
+            return;
+        default:
+            std::cerr << "[Game] Unknown game state" << std::endl;
+            return;
+    }
+
     // If multiplayer is active, update network state
     if (multiplayerActive && multiplayerManager) {
         // Update the network state
@@ -104,7 +140,7 @@ void Game::update(uint64_t deltaTime) {
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
 
-        reconcileWithServerState();
+        reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
         updateRemotePlayers(multiplayerManager->getRemotePlayers());
@@ -140,6 +176,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
         localServerManager->stopEmbeddedServer();
         return false;
     }
+    
     usingSinglePlayerServer = true;
     std::cout << "[Game] Single player mode with embedded server initialized" << std::endl;
     
@@ -166,6 +203,37 @@ bool Game::initializeServerConnection(const std::string& serverAddress, int serv
     return success;
 }
 
+void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort) {
+    multiplayerConfigured = enableMultiplayer;
+    configuredServerAddress = serverAddress;
+    configuredServerPort = serverPort;
+    std::cout << "[Game] Multiplayer configuration set: " << (enableMultiplayer ? "enabled" : "disabled") 
+              << ", server: " << serverAddress << ":" << serverPort << std::endl;
+}
+
+void Game::initializeServerConfig(const std::string& basePath) {
+    std::filesystem::path configPath = std::filesystem::path(basePath) / "SOS" / "assets" / "server.json";
+    std::cout << "[Game] Loading server configuration from: " << configPath.string() << std::endl;
+    
+    if (!serverConfig.loadFromFile(configPath.string())) {
+        std::cout << "[Game] Failed to load server config, using defaults" << std::endl;
+    }
+    
+    // Set the default server as the first selected server
+    selectedServerIndex = 0;
+    const ServerInfo* defaultServer = serverConfig.getDefaultServer();
+    if (defaultServer) {
+        // Find the index of the default server
+        for (size_t i = 0; i < serverConfig.getServerCount(); ++i) {
+            const ServerInfo* server = serverConfig.getServer(i);
+            if (server && server->isDefault) {
+                selectedServerIndex = i;
+                break;
+            }
+        }
+    }
+}
+
 void Game::shutdownServerConnection() {
     if (multiplayerManager && multiplayerActive) {
         multiplayerManager->shutdown();
@@ -185,6 +253,13 @@ bool Game::isServerConnection() const {
 
 std::vector<Actor*>& Game::getActors() {
     return actors;
+}
+
+void Game::clearActors() {
+    for(auto& actor : actors) {
+        delete actor; // Clean up each actor
+    }
+    actors.clear();
 }
 
 void Game::sendChatMessage(const std::string& message) {
@@ -211,32 +286,39 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             // Create a new remote player
             std::cout << "[Game] Creating new remote player: " << pair.first << std::endl;
             RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
-            remotePlayer->setposition(pair.second->getposition());
+            remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
+            remotePlayer->setDir(pair.second->getDir());
+            remotePlayer->setAnimationState(pair.second->getAnimationState());
             objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
-            // Update existing remote player
-            (*it)->setposition(pair.second->getposition());
-            (*it)->setvelocity(pair.second->getvelocity());
+            if((*it)->getObjID() == player->getObjID())
+            {
+                // Skip updating the local player
+                continue;
+            }
+            else
+            {
+                // Update existing remote player
+                (*it)->setcollider(pair.second->getcollider());
+                (*it)->setvelocity(pair.second->getvelocity());
+                (*it)->setDir(pair.second->getDir());
+                (*it)->setAnimationState(pair.second->getAnimationState());
+            }
         }
     }
 }
 
-
-void Game::drawWord(const std::string& word, int x, int y) {
-    // This method can be implemented later if needed
-}
-
 // New methods for server-authoritative gameplay
 
-void Game::predictLocalPlayerMovement(uint64_t deltaTime) {
+void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
 }
 
-void Game::reconcileWithServerState() {
+void Game::reconcileWithServerState(float deltaTime) {
     // Compare the server's authoritative state with our predicted state
     // and correct any discrepancies
     
@@ -248,31 +330,59 @@ void Game::reconcileWithServerState() {
 
         const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
+        static uint64_t lastUpdateTime = 0;
+        static uint64_t remotePlayerWaitTime = 0;
+        lastUpdateTime += deltaTime;
+        remotePlayerWaitTime += deltaTime;
+
         if (it == remotePlayers.end()) {
-            std::cerr << "[Game] No remote player found for ID: " << player->getObjID() << std::endl;
+            // If we've been waiting too long for the server to recognize our player, 
+            // let's try resending our player information
+            if (remotePlayerWaitTime > 5000) { // 5 seconds
+                std::cout << "[Game] Resynchronizing player with server: " << player->getObjID() << std::endl;
+                // Force resend of player info
+                multiplayerManager->sendPlayerState();
+                remotePlayerWaitTime = 0;
+            }
+            
+            // Only log the error occasionally to avoid console spam
+            if (lastUpdateTime > 5000) { // Every 5 seconds
+                std::cout << "[Game] Waiting for server to synchronize player ID: " << player->getObjID() << std::endl;
+                lastUpdateTime = 0;
+            }
             return;
         }
+        
+        // Reset the wait timer once we find our player
+        remotePlayerWaitTime = 0;
         RemotePlayer* remotePlayer = it->second.get();
-        Vec2 serverPosition = remotePlayer->getposition();
-        Vec2 clientPosition = player->getposition();
+
+        Vec2 serverPosition = remotePlayer->getTargetPosition();
+        BoxCollider* clientCollider = &player->getcollider();
+        Vec2* clientPosition = &clientCollider->position;
         
         // Calculate position difference
-        float dx = serverPosition.x - clientPosition.x;
-        float dy = serverPosition.y - clientPosition.y;
+        float dx = serverPosition.x - clientPosition->x;
+        float dy = serverPosition.y - clientPosition->y;
         float distSquared = dx*dx + dy*dy;
         
-        // If difference is significant (beyond a small threshold)
-        if (distSquared > 4.0f) { // Small threshold to ignore minor differences
-            // Option 1: Smoothly interpolate toward server position
-            Vec2 newPosition = clientPosition;
+        // Only perform sanity checks, not constant corrections
+        const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
+        const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
+        
+        if (distSquared > TELEPORT_THRESHOLD) {
+            // Potential cheating or severe desync - force correction
+            clientPosition->x = serverPosition.x;
+            clientPosition->y = serverPosition.y;
             
-            // Interpolate 20% of the way to the server position
-            newPosition.x += dx * 0.2f;
-            newPosition.y += dy * 0.2f;
-            
-            // Update player position
-            player->setposition(newPosition);
+            // Log potential cheating attempt
+            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
         }
+        // Server side validation check, can be implemented later
+        // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
+        //     // Server validation failed - report to server we need validation
+        //     multiplayerManager->requestPositionValidation();
+        // }
     }
 }
 
@@ -289,8 +399,284 @@ void Game::addObject(std::shared_ptr<Object> object) {
             // Add new object if it doesn't exist
             objects.push_back(object);
             std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
-        } else {
-            std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
+        } 
+        // else {
+        //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
+        // }
+    }
+}
+
+void Game::drawMenu(float deltaTime) {
+    bool print = false;
+    static bool lastPrint = false;
+    static float lastTime = 0;
+    lastTime += deltaTime;
+    if(lastTime > 0.5f)
+    {
+        if(lastTime > 1.0f)
+        {
+            lastTime = 0;
         }
+        print = true;
+    }
+    
+    if(actors.size() != 0 && !menuOptionChanged && lastPrint == print)
+        return;
+    
+    // Clear previous actors if selection changed or print state changed
+    if (menuOptionChanged || lastPrint != print) {
+        clearActors();
+        menuOptionChanged = false;
+    }
+    lastPrint = print;
+
+    // Draw the menu screen
+    drawWord("Saga of sacrifice 2", 250, 100);
+
+    // Draw menu options with highlighting for the selected option
+    drawWordWithHighlight("Singleplayer", 400, 200, selectedOption == MenuOption::SINGLEPLAYER);
+    drawWordWithHighlight("Multiplayer", 400, 300, selectedOption == MenuOption::MULTIPLAYER);
+    drawWordWithHighlight("Exit", 400, 400, selectedOption == MenuOption::EXIT);
+    drawWordWithHighlight("Credits", 400, 500, selectedOption == MenuOption::CREDITS);
+
+    if(print)
+    {
+        drawWord("Use UP/DOWN to select", 200, 600, 1); 
+        drawWord("Square to confirm", 200, 680, 1);
+    }
+}
+
+// letterSize 0=default 64x64, 1=32x32
+void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
+    int letterWidth = (letterSize == 0) ? 64 : 32; // Default letter width
+    int startX = x; // Store the starting X position for potential line wrapping
+    // lowercase the word
+    std::string lowerWord = word;
+    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
+    // Draw the word at the specified position
+    for (char c : lowerWord) {
+        auto it = characterMap.find(c);
+        if (it != characterMap.end()) {
+            int index = it->second;
+            Actor* character;
+            if(letterSize == 0)
+            {
+                character = new Actor(Vec2(x,y), new SpriteData("letters", letterWidth, letterWidth, 3), index);
+            }
+            else
+            {
+                character = new Actor(Vec2(x,y), new SpriteData("letters_small", letterWidth, letterWidth, 3), index);
+            }
+            actors.push_back(character);
+            x += letterWidth; // Move to the right for the next character
+            if(x > 1600)
+            {
+                y += letterWidth; // Move down if we exceed screen width
+                x = startX;
+            }
+        }
+        else
+        {
+            x += letterWidth; // Space
+        }
+    }
+}
+
+void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected) {
+    // Clear any existing actors at this position (to refresh selection highlight)
+    if (isSelected) {
+        // Add a simple visual indicator for the selected item
+        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData("letters", 64, 64, 3), 36);
+        actors.push_back(selector);
+    }
+    
+    // Draw the actual word
+    drawWord(word, x, y);
+}
+
+void Game::handleMenuInput(float deltaTime) {
+    // Update cooldown timer
+    if (menuInputCooldown > 0) {
+        menuInputCooldown -= deltaTime;
+        return;
+    }
+    
+    // Check for up/down input
+    bool inputDetected = false;
+    
+    // Using virtual key codes for UP and DOWN
+    if (input->get_up()) {
+        // Move selection up
+        int newOption = static_cast<int>(selectedOption) - 1;
+        if (newOption < 0) {
+            newOption = static_cast<int>(MenuOption::COUNT) - 1;
+        }
+        selectedOption = static_cast<MenuOption>(newOption);
+        inputDetected = true;
+    } else if (input->get_down()) {
+        // Move selection down
+        int newOption = static_cast<int>(selectedOption) + 1;
+        if (newOption >= static_cast<int>(MenuOption::COUNT)) {
+            newOption = 0;
+        }
+        selectedOption = static_cast<MenuOption>(newOption);
+        inputDetected = true;
+    } else if (input->get_attack()) {
+        // Select current option
+        switch(selectedOption) {
+            case MenuOption::SINGLEPLAYER:
+                // Initialize single player mode with embedded server
+                if (!initializeSinglePlayerEmbeddedServer()) {
+                    std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+                    // Could show error message in menu or fallback
+                    break;
+                } else {
+                    std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
+                }
+                // Start single player game
+                state = GameState::RUNNING;
+                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                clearActors(); // Clear the menu
+                break;
+            case MenuOption::MULTIPLAYER:
+                // Go to server selection menu
+                state = GameState::SERVER_SELECTION;
+                selectedServerIndex = 0; // Reset to first server
+                serverSelectionOptionChanged = true;
+                clearActors(); // Clear the menu
+                break;
+            case MenuOption::EXIT:
+                // Exit game
+                running = false;
+                break;
+            case MenuOption::CREDITS:
+                // Show credits (not implemented)
+                break;
+            default:
+                break;
+        }
+        inputDetected = true;
+    }
+    
+    if (inputDetected) {
+        menuInputCooldown = MENU_INPUT_DELAY;
+        menuOptionChanged = true;
+    }
+}
+
+void Game::drawServerSelectionMenu(float deltaTime) {
+    bool print = false;
+    static bool lastPrint = false;
+    static float lastTime = 0;
+    lastTime += deltaTime;
+    if(lastTime > 0.5f)
+    {
+        if(lastTime > 1.0f)
+        {
+            lastTime = 0;
+        }
+        print = true;
+    }
+    
+    if(actors.size() != 0 && !serverSelectionOptionChanged && lastPrint == print)
+        return;
+    
+    // Clear previous actors if selection changed or print state changed
+    if (serverSelectionOptionChanged || lastPrint != print) {
+        clearActors();
+        serverSelectionOptionChanged = false;
+    }
+    lastPrint = print;
+
+    // Draw the server selection screen
+    drawWord("Select Server", 300, 100);
+    
+    // Draw server list
+    int yOffset = 200;
+    for (size_t i = 0; i < serverConfig.getServerCount(); ++i) {
+        const ServerInfo* server = serverConfig.getServer(i);
+        if (server) {
+            bool isSelected = (i == selectedServerIndex);
+            
+            // Draw server name
+            drawWordWithHighlight(server->name, 200, yOffset, isSelected);
+            
+            // Draw server address:port on the right
+            std::string addressPort = server->address + ":" + std::to_string(server->port);
+            drawWord(addressPort, 600, yOffset+60, 1);
+            
+            // Draw description if available
+            if (!server->description.empty() && isSelected) {
+                drawWord(server->description, 200, yOffset + 100, 1);
+            }
+            
+            yOffset += (isSelected && !server->description.empty()) ? 200 : 150;
+        }
+    }
+
+    if(print)
+    {
+        drawWord("Use UP/DOWN to select", 200, yOffset + 40, 1); 
+        drawWord("Square to connect", 200, yOffset + 80, 1);
+        drawWord("Circle to go back", 200, yOffset + 120, 1);
+    }
+}
+
+void Game::handleServerSelectionInput(float deltaTime) {
+    // Update cooldown timer
+    if (menuInputCooldown > 0) {
+        menuInputCooldown -= deltaTime;
+        return;
+    }
+    
+    // Check for up/down input
+    bool inputDetected = false;
+    
+    if (input->get_up()) {
+        // Move selection up
+        if (selectedServerIndex > 0) {
+            selectedServerIndex--;
+        } else {
+            selectedServerIndex = serverConfig.getServerCount() - 1;
+        }
+        inputDetected = true;
+    } else if (input->get_down()) {
+        // Move selection down
+        selectedServerIndex = (selectedServerIndex + 1) % serverConfig.getServerCount();
+        inputDetected = true;
+    } else if (input->get_attack()) {
+        // Connect to selected server
+        const ServerInfo* selectedServer = serverConfig.getServer(selectedServerIndex);
+        if (selectedServer) {
+            std::cout << "[Game] Connecting to server: " << selectedServer->name 
+                      << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
+            
+            if (!initializeServerConnection(selectedServer->address, selectedServer->port, player->getObjID())) {
+                std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
+                // Could show error message and stay in server selection
+                // For now, go back to main menu
+                state = GameState::MENU;
+                menuOptionChanged = true;
+            } else {
+                std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
+                // Start multiplayer game
+                state = GameState::RUNNING;
+                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                clearActors(); // Clear the menu
+            }
+        }
+        inputDetected = true;
+    } else if (input->get_left() || input->get_right()) {
+        // Go back to main menu (using left/right as back button for now)
+        // Note: You might want to add a dedicated back button input
+        state = GameState::MENU;
+        menuOptionChanged = true;
+        clearActors();
+        inputDetected = true;
+    }
+    
+    if (inputDetected) {
+        menuInputCooldown = MENU_INPUT_DELAY;
+        serverSelectionOptionChanged = true;
     }
 }

@@ -37,7 +37,7 @@ SDL3AudioManager::~SDL3AudioManager() {
 
 bool SDL3AudioManager::initialize(const std::string& basePath) {
     mBasePath = basePath;
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    if (!SDL_Init(SDL_INIT_AUDIO)) {
         std::cerr << "SDL3 could not initialize! SDL Error: " << SDL_GetError() << std::endl;
         mInitialized = false;
         return mInitialized;
@@ -61,13 +61,16 @@ bool SDL3AudioManager::initialize(const std::string& basePath) {
     spec.format = SDL_AUDIO_S16; // Standard SDL3 16-bit signed audio format, native endian
     spec.channels = 2;
 
-    if (Mix_OpenAudio(0, &spec) < 0) { // Pass device ID 0 for default, and pointer to spec
+    if (!Mix_OpenAudio(0, &spec)) { // Pass device ID 0 for default, and pointer to spec
         std::cerr << "SDL_mixer (SDL3) could not open audio! SDL_Error: " << SDL_GetError() << std::endl;
         Mix_Quit();
         SDL_Quit();
         mInitialized = false;
         return mInitialized;
     }
+
+    // Set the volume off
+    Mix_Volume(-1, 0);
 
     mInitialized = true;
     std::cout << "SDL3AudioManager (wrapper_client) initialized successfully." << std::endl;
@@ -204,7 +207,7 @@ bool SDL3AudioManager::playMusic() {
     }
     if (mMusic) {
         if (Mix_PlayingMusic() == 0) { 
-            if (Mix_PlayMusic(mMusic, -1) == -1) { 
+            if (!Mix_PlayMusic(mMusic, -1)) { 
                 std::cerr << "Failed to play music (SDL3 - wrapper_client)! SDL_Error: " << SDL_GetError() << std::endl;
                 return false;
             }

@@ -2,10 +2,11 @@
 #include <iostream>
 #include "interfaces/AudioManager.h"
 
-Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, spData, objID), 
-    health(100), isAttacking(false), isJumping(false), attackTimer(0) {
+
+Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
+    health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << pos.x << ", " << pos.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -14,68 +15,102 @@ Player::Player( Vec2 pos, SpriteData* spData, std::string objID) : Entity(pos, s
 void Player::setupAnimations() {
     // Define player animations based on sprite sheet layout
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
-    
+
     // Example animation setup - adjust these based on your actual sprite sheet
-    addAnimation(AnimationState::IDLE, 0, 2, spriteData->columns, 150, true);        // Idle animation (2 frames)
-    addAnimation(AnimationState::WALKING, 2, 3, spriteData->columns, 100, true);      // Walking animation (3 frames)
-    
+
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
+    // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
+    // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
+
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
 
 void Player::updateAnimationState() {
-    
+
+    if(isAttacking) {
+        setAnimationState(AnimationState::ATTACKING);
+        return;
+    }
     if (isMoving()) {
         setAnimationState(AnimationState::WALKING);
     } else {
         setAnimationState(AnimationState::IDLE);
     }
-    
+
+
 }
 
 bool Player::isMoving() const {
     // Check if the player is moving based on velocity
-    return getvelocity().x != 0 || getvelocity().y != 0;
+    Vec2 vel = getvelocity();
+
+    // Define an epsilon for floating point comparison
+    const float EPSILON = 0.001f;
+
+    // Compare with epsilon to handle floating-point precision issues
+    return (std::abs(vel.x) > EPSILON || std::abs(vel.y) > EPSILON);
 }
 
 void Player::accept(CollisionVisitor& visitor) {
     visitor.visit(this);
 }
 
-void Player::update(uint64_t deltaTime) {
+void Player::update(float deltaTime) {
     // Update player-specific logic here
     // handleInput(input, deltaTime); // Handle input
 
-    Vec2 pos = getposition();
+    BoxCollider* pColl = &getcollider();
+    Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
-    float deltaTimeF = static_cast<float>(deltaTime);
-    static uint64_t timems = 0.0f;
-    timems += deltaTime;
 
-    pos.x += vel.x * deltaTimeF;
-    pos.y += vel.y * deltaTimeF;
+    *pos += vel * deltaTime; // Update position based on velocity and delta time
 
-    // Set direction based on horizontal velocity
+
+    // Set direction based on horizontal and vertical velocity
     if (vel.x > 0) {
-        dir = FacingDirection::RIGHT;
-    } 
-    else if (vel.x < 0) {
-        dir = FacingDirection::LEFT;
+        dir = FacingDirection::EAST;
+    } else if (vel.x < 0) {
+        dir = FacingDirection::WEST;
+    } else if (vel.y > 0) {
+        dir = FacingDirection::SOUTH;
+    } else if (vel.y < 0) {
+        dir = FacingDirection::NORTH;
+    } else if (vel.x < 0 && vel.y < 0) {
+        dir = FacingDirection::NORTH_WEST;
+    } else if (vel.x > 0 && vel.y < 0) {
+        dir = FacingDirection::NORTH_EAST;
+    } else if (vel.x < 0 && vel.y > 0) {
+        dir = FacingDirection::SOUTH_WEST;
+    } else if (vel.x > 0 && vel.y > 0) {
+        dir = FacingDirection::SOUTH_EAST;
     }
-    if (vel.y < 0) {
-        dir = FacingDirection::UP;
-    } 
-    else if (vel.y > 0) {
-        dir = FacingDirection::DOWN;
-    }
+
 
     // Handle attack timer
     if (isAttacking) {
         attackTimer += deltaTime;
-        if (attackTimer >= 400) {
+        if (attackTimer >= 0.4f) { // Attack animation time (ms)
             isAttacking = false;
-            attackTimer = 0;
+            attackTimer = 0.0f;
         }
     }    // Modular audio: play walking sound only when starting to move
     bool currentlyMoving = isMoving();
@@ -84,14 +119,9 @@ void Player::update(uint64_t deltaTime) {
         
         // Add safety checks to avoid crashes
         try {
-            // Check if AudioManager instance exists
-            if (&AudioManager::Instance() == nullptr) {
-                std::cerr << "[ERROR] AudioManager instance is null!" << std::endl;
-            } else {
-                std::cout << "[DEBUG] AudioManager instance exists, calling playSound..." << std::endl;
-                AudioManager::Instance().playSound("walking");
-                std::cout << "[DEBUG] After playSound call" << std::endl;
-            }
+            std::cout << "[DEBUG] AudioManager instance exists, calling playSound..." << std::endl;
+            AudioManager::Instance().playSound("walking");
+            std::cout << "[DEBUG] After playSound call" << std::endl;
         } catch (const std::exception& e) {
             std::cerr << "[ERROR] Exception in audio playback: " << e.what() << std::endl;
         } catch (...) {
@@ -107,39 +137,38 @@ void Player::update(uint64_t deltaTime) {
     // Update animation state based on player state
     updateAnimationState();
     // Update the animation controller
-    updateAnimation(deltaTime);
+    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
+    Entity::update(deltaTime); // Call base class update
 
-    vel.x = 0; // Reset horizontal velocity
-    vel.y = 0; // Reset vertical velocity
     setvelocity(vel); // Update velocity
-    setposition(pos); // Update position
+    setcollider(*pColl); // Update position
 }
 
-void Player::handleInput(PlayerInput* input, uint64_t deltaTime) {
-    
+void Player::handleInput(PlayerInput* input, float deltaTime) {
+
     // Handle player input here
-    Vec2 vel = getvelocity();
-    
+    Vec2 vel(0,0);
+
+    float movementSpeed = 300.0f; // Set movement speed
+
     if (input->get_left()) {
-        vel.x = -0.3f; // Move left
-    }
-    if (input->get_right()) {
-        // std::cout << "get_right" << std::endl;
-        vel.x = 0.3f; // Move right
+        vel.x = -movementSpeed; // Move left
+    } else if (input->get_right()) {
+        vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
-        vel.y = 0.3f; // Move down
+        vel.y = movementSpeed; // Move down
     }
     if (input->get_up()) {
-        vel.y = -0.3f; // Move up
+        vel.y = -movementSpeed; // Move up
     }
-    
+
     // Handle attack input
     if (input->get_attack() && !isAttacking) {
         isAttacking = true;
         attackTimer = 0;
     }
-    
+    // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
 }
 

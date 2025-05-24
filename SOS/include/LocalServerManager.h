@@ -16,7 +16,7 @@ public:
     ~LocalServerManager();
 
     // Start the local server as a thread in the same process
-    bool startEmbeddedServer(int port);
+    bool startEmbeddedServer(int port); // Added parameters
 
     bool stopEmbeddedServer();
 
