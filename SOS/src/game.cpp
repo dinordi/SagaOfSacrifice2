@@ -29,17 +29,13 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     multiplayerManager = std::make_unique<MultiplayerManager>();
     
     // Initialize collision manager (used for local prediction only)
-    CollisionManager* collisionManager = new CollisionManager();
-    this->collisionManager = collisionManager;
-    
-    // Initialize LevelManager
-    levelManager = std::make_unique<LevelManager>(this, collisionManager);
+    this->collisionManager = new CollisionManager();;
     
     // Create player using PlayerManager
-    auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
+    // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
     
     // Set player's input handler
-    player = playerSharedPtr.get();
+    player = new Player(500, 100, playerID);
     player->setInput(input);
     mapCharacters();
     state = GameState::MENU;
@@ -138,20 +134,10 @@ void Game::update(float deltaTime) {
         // 2. But the server will correct our position if needed
         predictLocalPlayerMovement(deltaTime);
 
-        // reconcileWithServerState(deltaTime);
+        reconcileWithServerState(deltaTime);
         
         // Update remote players based on server data
-        // updateRemotePlayers(multiplayerManager->getRemotePlayers());
-    }
-    else {
-        // In single player mode, update the level directly
-        if (levelManager) {
-            // Process player input directly without server
-            player->handleInput(input, deltaTime);
-            
-            // Update the current level (which updates all objects)
-            // levelManager->update(deltaTime);
-        }
+        updateRemotePlayers(multiplayerManager->getRemotePlayers());
     }
 }
 
@@ -172,7 +158,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     std::cout << "[Game] Setting up single player with embedded server" << std::endl;
     
     // Start the embedded server
-    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT, levelManager.get(), collisionManager)) {
+    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT)) {
         std::cerr << "[Game] Failed to start embedded server" << std::endl;
         return false;
     }
@@ -183,16 +169,6 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
         std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
         localServerManager->stopEmbeddedServer();
         return false;
-    }
-    
-    // Initialize the first level for single player mode
-    // This will be skipped in multiplayer mode since levels are managed by the server
-    if (!multiplayerActive) {
-        // Initialize the default level (level1)
-        if (!initializeLevel("level1")) {
-            std::cerr << "[Game] Failed to initialize level in single player mode" << std::endl;
-            // Continue anyway, as this might be recoverable
-        }
     }
     
     usingSinglePlayerServer = true;
@@ -275,6 +251,8 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
             remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
+            remotePlayer->setDir(pair.second->getDir());
+            remotePlayer->setAnimationState(pair.second->getAnimationState());
             objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
         } else {
             if((*it)->getObjID() == player->getObjID())
@@ -287,6 +265,8 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
                 // Update existing remote player
                 (*it)->setcollider(pair.second->getcollider());
                 (*it)->setvelocity(pair.second->getvelocity());
+                (*it)->setDir(pair.second->getDir());
+                (*it)->setAnimationState(pair.second->getAnimationState());
             }
         }
     }
@@ -298,7 +278,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
-    // player->update(deltaTime);
+    player->update(deltaTime);
 }
 
 void Game::reconcileWithServerState(float deltaTime) {
@@ -339,28 +319,33 @@ void Game::reconcileWithServerState(float deltaTime) {
         // Reset the wait timer once we find our player
         remotePlayerWaitTime = 0;
         RemotePlayer* remotePlayer = it->second.get();
-        BoxCollider serverCollider = remotePlayer->getcollider();
-        BoxCollider clientCollider = player->getcollider();
-        Vec2 serverPosition = serverCollider.position;
-        Vec2 clientPosition = clientCollider.position;
+
+        Vec2 serverPosition = remotePlayer->getTargetPosition();
+        BoxCollider* clientCollider = &player->getcollider();
+        Vec2* clientPosition = &clientCollider->position;
         
         // Calculate position difference
-        float dx = serverPosition.x - clientPosition.x;
-        float dy = serverPosition.y - clientPosition.y;
+        float dx = serverPosition.x - clientPosition->x;
+        float dy = serverPosition.y - clientPosition->y;
         float distSquared = dx*dx + dy*dy;
         
-        // If difference is significant (beyond a small threshold)
-        if (distSquared > 4.0f) { // Small threshold to ignore minor differences
-            // Option 1: Smoothly interpolate toward server position
-            Vec2 newPosition = clientPosition;
+        // Only perform sanity checks, not constant corrections
+        const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
+        const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
+        
+        if (distSquared > TELEPORT_THRESHOLD) {
+            // Potential cheating or severe desync - force correction
+            clientPosition->x = serverPosition.x;
+            clientPosition->y = serverPosition.y;
             
-            // Interpolate 20% of the way to the server position
-            newPosition.x += dx * 0.2f;
-            newPosition.y += dy * 0.2f;
-            
-            // Update player position
-            player->setcollider(BoxCollider(newPosition, clientCollider.size));
+            // Log potential cheating attempt
+            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
         }
+        // Server side validation check, can be implemented later
+        // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
+        //     // Server validation failed - report to server we need validation
+        //     multiplayerManager->requestPositionValidation();
+        // }
     }
 }
 
@@ -382,36 +367,6 @@ void Game::addObject(std::shared_ptr<Object> object) {
         //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
         // }
     }
-}
-
-// Initialize and load a level
-bool Game::initializeLevel(const std::string& levelId) {
-    if (!levelManager) {
-        std::cerr << "[Game] LevelManager not initialized" << std::endl;
-        return false;
-    }
-    
-    // Initialize level manager if not done already
-    if (!levelManager->initialize()) {
-        std::cerr << "[Game] Failed to initialize LevelManager" << std::endl;
-        return false;
-    }
-    
-    // Load the specified level
-    if (!levelManager->loadLevel(levelId)) {
-        std::cerr << "[Game] Failed to load level: " << levelId << std::endl;
-        return false;
-    }
-    
-    // Add the player to the level
-    std::string playerId = player->getObjID();
-    if (!levelManager->addPlayerToCurrentLevel(playerId)) {
-        std::cerr << "[Game] Failed to add player to level" << std::endl;
-        return false;
-    }
-    
-    std::cout << "[Game] Successfully initialized level: " << levelId << std::endl;
-    return true;
 }
 
 void Game::drawMenu(float deltaTime) {

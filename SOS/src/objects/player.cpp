@@ -80,12 +80,8 @@ void Player::update(float deltaTime) {
     Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
-    // Prints velocity.y every second
-    static uint64_t timems = 0.0f;
-    timems += deltaTime;
 
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    *pos += vel * deltaTime; // Update position based on velocity and delta time
 
 
     // Set direction based on horizontal and vertical velocity
@@ -124,9 +120,6 @@ void Player::update(float deltaTime) {
     // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
     Entity::update(deltaTime); // Call base class update
 
-    vel.x = 0; // Reset horizontal velocity
-    vel.y = 0; // Reset vertical velocity
-
     setvelocity(vel); // Update velocity
     setcollider(*pColl); // Update position
 }
@@ -134,15 +127,13 @@ void Player::update(float deltaTime) {
 void Player::handleInput(PlayerInput* input, float deltaTime) {
 
     // Handle player input here
-    Vec2 vel = getvelocity();
+    Vec2 vel(0,0);
 
     float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
         vel.x = -movementSpeed; // Move left
-    }
-    if (input->get_right()) {
-        // std::cout << "get_right" << std::endl;
+    } else if (input->get_right()) {
         vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
@@ -157,7 +148,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
         isAttacking = true;
         attackTimer = 0;
     }
-
+    // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
 }
 

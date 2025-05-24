@@ -9,11 +9,10 @@
 #include "level.h"
 #include "collision/CollisionManager.h"
 
-class Game;
 
 class LevelManager {
 public:
-    LevelManager(Game* game, CollisionManager* collisionManager) : game(game), collisionManager(collisionManager){};
+    LevelManager();
     ~LevelManager();
 
     // Initialize the level manager and load all level metadata
@@ -53,7 +52,6 @@ public:
     bool removeAllObjectsFromCurrentLevel();
 
 private:
-    Game* game;
     CollisionManager* collisionManager;
 private:
     std::unordered_map<std::string, std::shared_ptr<Level>> levels_;

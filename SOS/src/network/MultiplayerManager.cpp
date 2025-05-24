@@ -18,19 +18,26 @@ RemotePlayer::RemotePlayer(const std::string& id)
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
     
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("Idle_fem", 96, 128, 8), 250, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("player_walking", 128, 128, 9), 150, true);
+    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+
+    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -178,7 +185,7 @@ void MultiplayerManager::update(float deltaTime) {
     network_->update();
     
     static uint64_t lastUpdateTime = 0;
-    lastUpdateTime += deltaTime*1000;  // Convert to milliseconds
+    lastUpdateTime += static_cast<uint64_t>(deltaTime*1000);  // Convert to milliseconds
 
     // Update all remote players
     for (auto& pair : remotePlayers_) {
@@ -192,6 +199,7 @@ void MultiplayerManager::update(float deltaTime) {
     // Send player input periodically (primary control method now)
     if (playerInput_ && localPlayer_ && lastUpdateTime >= NetworkConfig::Client::UpdateInterval) {
         sendPlayerInput();
+        sendPlayerState();
         lastUpdateTime_ = deltaTime;
     }
 }
@@ -218,7 +226,7 @@ void MultiplayerManager::sendPlayerState() {
     posMsg.type = MessageType::PLAYER_POSITION;
     posMsg.senderId = playerId_;
     posMsg.data = serializePlayerState(localPlayer_);
-    
+
     network_->sendMessage(posMsg);
 }
 
@@ -426,9 +434,9 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         switch (static_cast<ObjectType>(objectType)) {
             case ObjectType::PLAYER: { // Player
                 // Skip if this is our local player
-                if (objectId == playerId_) {
-                    // Position and velocity are already handled by the local player and reconciliation
-                }
+                // if (objectId == playerId_) {
+                //     // Position and velocity are already handled by the local player and reconciliation
+                // }
                 
                 // Find or create remote player
                 auto it = remotePlayers_.find(objectId);
@@ -438,9 +446,16 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
                     std::cout << "[Client] Created new remote player: " << objectId << std::endl;
                 }
+
+                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
+                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
+
                 
                 // Update remote player state
                 RemotePlayer* player = it->second.get();
+                
+                player->setDir(dir);
+                player->setAnimationState(state);
                 player->setTargetPosition(Vec2(posX, posY));
                 player->setTargetVelocity(Vec2(velX, velY));
                 player->resetInterpolation();
@@ -564,6 +579,10 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     // Copy velocity (8 bytes)
     std::memcpy(&data[8], &vel.x, sizeof(float));
     std::memcpy(&data[12], &vel.y, sizeof(float));
+
+    // Add direction and animation state
+    data.push_back(static_cast<uint8_t>(player->getDir()));
+    data.push_back(static_cast<uint8_t>(player->getAnimationState()));
     
     return data;
 }

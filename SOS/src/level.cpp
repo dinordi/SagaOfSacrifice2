@@ -321,12 +321,15 @@ void Level::setAllEnemiesToTargetPlayer(std::shared_ptr<Player> player) {
     
     // Find all enemies in the level and set the player as their target
     for (auto& object : levelObjects) {
-        // Use dynamic_cast to check if this object is an Enemy
-        std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(object);
-        
-        if (enemy) {
-            enemy->setTargetPlayer(player);
-            std::cout << "[Level] Set player as target for enemy: " << object->getObjID() << std::endl;
+        if(object->type == ObjectType::MINOTAUR)
+        {
+            Minotaur* enemy = static_cast<Minotaur*>(object.get());
+            
+            if (enemy) {
+                enemy->setTargetPlayer(player);
+                std::cout << "[Level] Set player as target for enemy: " << object->getObjID() << std::endl;
+            }
         }
+        // Use dynamic_cast to check if this object is an Enemy
     }
 }

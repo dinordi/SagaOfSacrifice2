@@ -2,10 +2,16 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include "player_manager.h"
-#include "game.h"
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+LevelManager::LevelManager()
+{
+    // Initialize the level manager
+    collisionManager = new CollisionManager();
+    currentLevel_ = nullptr;
+}
 
 LevelManager::~LevelManager() {
     // Clean up levels
@@ -226,13 +232,16 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
         player = playerManager.createPlayer(playerId, startPos);
     } else {
         // For existing players, update their position to the level's start position
-        player->setposition(startPos);
+        Vec2* playerPos = &player->getcollider().position;
+        playerPos->x = startPos.x;
+        playerPos->y = startPos.y;
         std::cout << "[LevelManager] Repositioned player " << playerId 
-                  << " to level start position: " << startPos.x << "," << startPos.y << std::endl;
+                  << " to level start position: " << playerPos->x << "," << playerPos->y << std::endl;
     }
     
     // Add the player to the current level
     currentLevel_->addObject(player);
+    currentLevel_->setAllEnemiesToTargetPlayer(player);
     std::cout << "[LevelManager] Added player " << playerId << " to current level" << std::endl;
     
     return true;
