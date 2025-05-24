@@ -267,10 +267,6 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
                 (*it)->setvelocity(pair.second->getvelocity());
                 (*it)->setDir(pair.second->getDir());
                 (*it)->setAnimationState(pair.second->getAnimationState());
-
-                std::cout << "[Game] Updated remote player: " << pair.first << std::endl;
-                std::cout << "[Game] Direction: " << static_cast<int>((*it)->getDir()) << std::endl;
-                std::cout << "[Game] Animation state: " << static_cast<int>((*it)->getAnimationState()) << std::endl;
             }
         }
     }
