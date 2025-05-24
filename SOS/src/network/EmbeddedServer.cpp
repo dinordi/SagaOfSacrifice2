@@ -15,11 +15,11 @@
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
 
-EmbeddedServer::EmbeddedServer(int port)
+EmbeddedServer::EmbeddedServer(int port, const std::filesystem::path& basePath)
     : port_(port), 
       running_(false),
       gameLoopRunning_(false),
-      levelManager_(std::make_shared<LevelManager>()),
+      levelManager_(std::make_shared<LevelManager>(basePath)),
       collisionManager_(std::make_shared<CollisionManager>()) {
     std::cout << "[EmbeddedServer] Created on port " << port << std::endl;
   
@@ -752,7 +752,16 @@ void EmbeddedServer::createInitialGameObjects() {
 void EmbeddedServer::updateGameState(float deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        
+        if(clientSockets_.empty()) {
+            // Print once every 5 seconds if no clients are connected
+            static auto last = std::chrono::steady_clock::now();
+            auto now = std::chrono::steady_clock::now();
+            if (now - last > std::chrono::seconds(5)) {
+                last = now;
+                std::cout << "[EmbeddedServer] No clients connected, skipping game update" << std::endl;
+            }
+            return; // nothing to update if no clients are connected
+        }
         levelManager_->update(deltaTime);
         // Update all players
         
