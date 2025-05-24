@@ -36,6 +36,12 @@ struct AppContext {
     Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
     Game* game;
     std::filesystem::path basePathSOS;
+    
+    // Multiplayer configuration
+    bool enableMultiplayer;
+    std::string serverAddress;
+    int serverPort;
+    std::string playerId;
 };
 
 SDL_AppResult SDL_Fail(){
@@ -271,28 +277,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
     //Load game
     Game* game = new Game(input, playerId);
-    // --- Initialize Multiplayer ---
-    if (enableMultiplayer) {
-        if (!game->initializeServerConnection(serverAddress, serverPort, playerId)) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize multiplayer. Continuing in single player mode.");
-            return SDL_APP_FAILURE;
-        } else {
-            SDL_Log("Multiplayer initialized successfully!");
-        }
-    }
-    else
-    {
-        // Initialize single player mode with local server
-        if (!game->initializeSinglePlayerEmbeddedServer()) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize single player mode.");
-            return SDL_APP_FAILURE;
-        } else {
-            SDL_Log("Single player mode initialized successfully!");
-        }
-    }
-    // --- End Initialize Multiplayer ---
-
-
+    
+    // Set multiplayer configuration for later use when menu option is selected
+    game->setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
+    
     SDL_SetWindowSize(window, 1920, 1080);
     // print some information about the window
     SDL_ShowWindow(window);
@@ -330,6 +318,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .backgroundTex = backgroundTex,
        .game = game,
        .basePathSOS = basePathSOS,
+       .enableMultiplayer = enableMultiplayer,
+       .serverAddress = serverAddress,
+       .serverPort = serverPort,
+       .playerId = playerId,
     };
 
     SDL_SetRenderVSync(renderer, 0);   // enable vysnc

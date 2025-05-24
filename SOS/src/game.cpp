@@ -197,6 +197,14 @@ bool Game::initializeServerConnection(const std::string& serverAddress, int serv
     return success;
 }
 
+void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort) {
+    multiplayerConfigured = enableMultiplayer;
+    configuredServerAddress = serverAddress;
+    configuredServerPort = serverPort;
+    std::cout << "[Game] Multiplayer configuration set: " << (enableMultiplayer ? "enabled" : "disabled") 
+              << ", server: " << serverAddress << ":" << serverPort << std::endl;
+}
+
 void Game::shutdownServerConnection() {
     if (multiplayerManager && multiplayerActive) {
         multiplayerManager->shutdown();
@@ -470,12 +478,36 @@ void Game::handleMenuInput(float deltaTime) {
         // Select current option
         switch(selectedOption) {
             case MenuOption::SINGLEPLAYER:
+                // Initialize single player mode with embedded server
+                if (!initializeSinglePlayerEmbeddedServer()) {
+                    std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+                    // Could show error message in menu or fallback
+                    break;
+                } else {
+                    std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
+                }
                 // Start single player game
                 state = GameState::RUNNING;
                 objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
+                // Initialize multiplayer connection
+                if (multiplayerConfigured) {
+                    if (!initializeServerConnection(configuredServerAddress, configuredServerPort, player->getObjID())) {
+                        std::cerr << "[Game] Failed to initialize multiplayer. Continuing in menu." << std::endl;
+                        // Could show error message in menu
+                        break;
+                    } else {
+                        std::cout << "[Game] Multiplayer initialized successfully!" << std::endl;
+                    }
+                } else {
+                    std::cerr << "[Game] Multiplayer not configured. Using default localhost connection." << std::endl;
+                    if (!initializeServerConnection("localhost", 8080, player->getObjID())) {
+                        std::cerr << "[Game] Failed to initialize multiplayer with default settings." << std::endl;
+                        break;
+                    }
+                }
                 // Start multiplayer game
                 state = GameState::RUNNING;
                 objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects

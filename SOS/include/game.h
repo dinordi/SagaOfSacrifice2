@@ -50,6 +50,9 @@ public:
     // New: Initialize single player mode with embedded server
     bool initializeSinglePlayerEmbeddedServer();
     
+    // Set multiplayer configuration (to be used when menu option is selected)
+    void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
+    
     void shutdownServerConnection();
     bool isServerConnection() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
@@ -102,6 +105,10 @@ private:
     std::unique_ptr<MultiplayerManager> multiplayerManager;
     bool multiplayerActive;
     
+    // Multiplayer configuration (for deferred connection)
+    bool multiplayerConfigured = false;
+    std::string configuredServerAddress;
+    int configuredServerPort;
     
     // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
