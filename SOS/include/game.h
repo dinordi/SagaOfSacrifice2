@@ -21,10 +21,12 @@
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
 #include "player_manager.h"
+#include "ServerConfig.h"
 
 enum class GameState {
     RUNNING,
-    MENU
+    MENU,
+    SERVER_SELECTION
 };
 
 enum class MenuOption {
@@ -53,6 +55,9 @@ public:
     // Set multiplayer configuration (to be used when menu option is selected)
     void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
     
+    // Initialize server configuration from file
+    void initializeServerConfig(const std::string& basePath);
+    
     void shutdownServerConnection();
     bool isServerConnection() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
@@ -73,11 +78,15 @@ public:
     static void setInstance(Game* instance) { instance_ = instance; }
 
 private:
-    void drawWord(const std::string& word, int x, int y);
+    void drawWord(const std::string& word, int x, int y, int letterSize = 0);
     void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);
     void handleMenuInput(float deltaTime);
+    
+    // Server selection methods
+    void drawServerSelectionMenu(float deltaTime);
+    void handleServerSelectionInput(float deltaTime);
     
     MenuOption selectedOption = MenuOption::SINGLEPLAYER;
     bool menuOptionChanged = true;
@@ -109,6 +118,11 @@ private:
     bool multiplayerConfigured = false;
     std::string configuredServerAddress;
     int configuredServerPort;
+    
+    // Server selection
+    ServerConfig serverConfig;
+    size_t selectedServerIndex = 0;
+    bool serverSelectionOptionChanged = true;
     
     // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);

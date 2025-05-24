@@ -278,6 +278,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     //Load game
     Game* game = new Game(input, playerId);
     
+    // Initialize server configuration
+    game->initializeServerConfig(basePathSOS.string());
+    
     // Set multiplayer configuration for later use when menu option is selected
     game->setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
     

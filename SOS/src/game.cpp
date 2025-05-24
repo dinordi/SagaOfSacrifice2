@@ -8,6 +8,7 @@
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include <iostream>
 #include <set> // Add missing header for std::set
+#include <filesystem> // For std::filesystem::path
 
 // Initialize static instance pointer
 Game* Game::instance_ = nullptr;
@@ -116,6 +117,11 @@ void Game::update(float deltaTime) {
             drawMenu(deltaTime);
             handleMenuInput(deltaTime);
             return;
+        case GameState::SERVER_SELECTION:
+            // Handle server selection state
+            drawServerSelectionMenu(deltaTime);
+            handleServerSelectionInput(deltaTime);
+            return;
         default:
             std::cerr << "[Game] Unknown game state" << std::endl;
             return;
@@ -203,6 +209,29 @@ void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serve
     configuredServerPort = serverPort;
     std::cout << "[Game] Multiplayer configuration set: " << (enableMultiplayer ? "enabled" : "disabled") 
               << ", server: " << serverAddress << ":" << serverPort << std::endl;
+}
+
+void Game::initializeServerConfig(const std::string& basePath) {
+    std::filesystem::path configPath = std::filesystem::path(basePath) / "SOS" / "assets" / "server.json";
+    std::cout << "[Game] Loading server configuration from: " << configPath.string() << std::endl;
+    
+    if (!serverConfig.loadFromFile(configPath.string())) {
+        std::cout << "[Game] Failed to load server config, using defaults" << std::endl;
+    }
+    
+    // Set the default server as the first selected server
+    selectedServerIndex = 0;
+    const ServerInfo* defaultServer = serverConfig.getDefaultServer();
+    if (defaultServer) {
+        // Find the index of the default server
+        for (size_t i = 0; i < serverConfig.getServerCount(); ++i) {
+            const ServerInfo* server = serverConfig.getServer(i);
+            if (server && server->isDefault) {
+                selectedServerIndex = i;
+                break;
+            }
+        }
+    }
 }
 
 void Game::shutdownServerConnection() {
@@ -379,25 +408,27 @@ void Game::addObject(std::shared_ptr<Object> object) {
 
 void Game::drawMenu(float deltaTime) {
     bool print = false;
+    static bool lastPrint = false;
     static float lastTime = 0;
     lastTime += deltaTime;
-    if(lastTime > 1.0f)
+    if(lastTime > 0.5f)
     {
-        if(lastTime > 2.0f)
+        if(lastTime > 1.0f)
         {
             lastTime = 0;
         }
         print = true;
     }
     
-    if(actors.size() != 0 && !menuOptionChanged)
+    if(actors.size() != 0 && !menuOptionChanged && lastPrint == print)
         return;
     
-    // Clear previous actors if selection changed
-    if (menuOptionChanged) {
+    // Clear previous actors if selection changed or print state changed
+    if (menuOptionChanged || lastPrint != print) {
         clearActors();
         menuOptionChanged = false;
     }
+    lastPrint = print;
 
     // Draw the menu screen
     drawWord("Saga of sacrifice 2", 250, 100);
@@ -410,12 +441,15 @@ void Game::drawMenu(float deltaTime) {
 
     if(print)
     {
-        drawWord("Use UP/DOWN to select", 200, 600); 
-        drawWord("Square to confirm", 200, 680);
+        drawWord("Use UP/DOWN to select", 200, 600, 1); 
+        drawWord("Square to confirm", 200, 680, 1);
     }
 }
 
-void Game::drawWord(const std::string& word, int x, int y) {
+// letterSize 0=default 64x64, 1=32x32
+void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
+    int letterWidth = (letterSize == 0) ? 64 : 32; // Default letter width
+    int startX = x; // Store the starting X position for potential line wrapping
     // lowercase the word
     std::string lowerWord = word;
     std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
@@ -424,13 +458,26 @@ void Game::drawWord(const std::string& word, int x, int y) {
         auto it = characterMap.find(c);
         if (it != characterMap.end()) {
             int index = it->second;
-            Actor* character = new Actor(Vec2(x,y), new SpriteData("letters", 64, 64, 3), index);
+            Actor* character;
+            if(letterSize == 0)
+            {
+                character = new Actor(Vec2(x,y), new SpriteData("letters", letterWidth, letterWidth, 3), index);
+            }
+            else
+            {
+                character = new Actor(Vec2(x,y), new SpriteData("letters_small", letterWidth, letterWidth, 3), index);
+            }
             actors.push_back(character);
-            x += 64; // Move to the right for the next character
+            x += letterWidth; // Move to the right for the next character
+            if(x > 1600)
+            {
+                y += letterWidth; // Move down if we exceed screen width
+                x = startX;
+            }
         }
         else
         {
-            x += 64; // Space
+            x += letterWidth; // Space
         }
     }
 }
@@ -492,25 +539,10 @@ void Game::handleMenuInput(float deltaTime) {
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
-                // Initialize multiplayer connection
-                if (multiplayerConfigured) {
-                    if (!initializeServerConnection(configuredServerAddress, configuredServerPort, player->getObjID())) {
-                        std::cerr << "[Game] Failed to initialize multiplayer. Continuing in menu." << std::endl;
-                        // Could show error message in menu
-                        break;
-                    } else {
-                        std::cout << "[Game] Multiplayer initialized successfully!" << std::endl;
-                    }
-                } else {
-                    std::cerr << "[Game] Multiplayer not configured. Using default localhost connection." << std::endl;
-                    if (!initializeServerConnection("localhost", 8080, player->getObjID())) {
-                        std::cerr << "[Game] Failed to initialize multiplayer with default settings." << std::endl;
-                        break;
-                    }
-                }
-                // Start multiplayer game
-                state = GameState::RUNNING;
-                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                // Go to server selection menu
+                state = GameState::SERVER_SELECTION;
+                selectedServerIndex = 0; // Reset to first server
+                serverSelectionOptionChanged = true;
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::EXIT:
@@ -529,5 +561,122 @@ void Game::handleMenuInput(float deltaTime) {
     if (inputDetected) {
         menuInputCooldown = MENU_INPUT_DELAY;
         menuOptionChanged = true;
+    }
+}
+
+void Game::drawServerSelectionMenu(float deltaTime) {
+    bool print = false;
+    static bool lastPrint = false;
+    static float lastTime = 0;
+    lastTime += deltaTime;
+    if(lastTime > 0.5f)
+    {
+        if(lastTime > 1.0f)
+        {
+            lastTime = 0;
+        }
+        print = true;
+    }
+    
+    if(actors.size() != 0 && !serverSelectionOptionChanged && lastPrint == print)
+        return;
+    
+    // Clear previous actors if selection changed or print state changed
+    if (serverSelectionOptionChanged || lastPrint != print) {
+        clearActors();
+        serverSelectionOptionChanged = false;
+    }
+    lastPrint = print;
+
+    // Draw the server selection screen
+    drawWord("Select Server", 300, 100);
+    
+    // Draw server list
+    int yOffset = 200;
+    for (size_t i = 0; i < serverConfig.getServerCount(); ++i) {
+        const ServerInfo* server = serverConfig.getServer(i);
+        if (server) {
+            bool isSelected = (i == selectedServerIndex);
+            
+            // Draw server name
+            drawWordWithHighlight(server->name, 200, yOffset, isSelected);
+            
+            // Draw server address:port on the right
+            std::string addressPort = server->address + ":" + std::to_string(server->port);
+            drawWord(addressPort, 600, yOffset+60, 1);
+            
+            // Draw description if available
+            if (!server->description.empty() && isSelected) {
+                drawWord(server->description, 200, yOffset + 100, 1);
+            }
+            
+            yOffset += (isSelected && !server->description.empty()) ? 200 : 150;
+        }
+    }
+
+    if(print)
+    {
+        drawWord("Use UP/DOWN to select", 200, yOffset + 40, 1); 
+        drawWord("Square to connect", 200, yOffset + 80, 1);
+        drawWord("Circle to go back", 200, yOffset + 120, 1);
+    }
+}
+
+void Game::handleServerSelectionInput(float deltaTime) {
+    // Update cooldown timer
+    if (menuInputCooldown > 0) {
+        menuInputCooldown -= deltaTime;
+        return;
+    }
+    
+    // Check for up/down input
+    bool inputDetected = false;
+    
+    if (input->get_up()) {
+        // Move selection up
+        if (selectedServerIndex > 0) {
+            selectedServerIndex--;
+        } else {
+            selectedServerIndex = serverConfig.getServerCount() - 1;
+        }
+        inputDetected = true;
+    } else if (input->get_down()) {
+        // Move selection down
+        selectedServerIndex = (selectedServerIndex + 1) % serverConfig.getServerCount();
+        inputDetected = true;
+    } else if (input->get_attack()) {
+        // Connect to selected server
+        const ServerInfo* selectedServer = serverConfig.getServer(selectedServerIndex);
+        if (selectedServer) {
+            std::cout << "[Game] Connecting to server: " << selectedServer->name 
+                      << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
+            
+            if (!initializeServerConnection(selectedServer->address, selectedServer->port, player->getObjID())) {
+                std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
+                // Could show error message and stay in server selection
+                // For now, go back to main menu
+                state = GameState::MENU;
+                menuOptionChanged = true;
+            } else {
+                std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
+                // Start multiplayer game
+                state = GameState::RUNNING;
+                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                clearActors(); // Clear the menu
+            }
+        }
+        inputDetected = true;
+    } else if (input->get_left() || input->get_right()) {
+        // Go back to main menu (using left/right as back button for now)
+        // Note: You might want to add a dedicated back button input
+        state = GameState::MENU;
+        menuOptionChanged = true;
+        clearActors();
+        inputDetected = true;
+    }
+    
+    if (inputDetected) {
+        menuInputCooldown = MENU_INPUT_DELAY;
+        serverSelectionOptionChanged = true;
     }
 }
