@@ -935,17 +935,35 @@ void EmbeddedServer::processPlayerPosition(
                   << message.data.size() << " bytes" << std::endl;
         return;
     }
+    size_t index;   // Index in the data vector for memcpy
 
     // 3) Unpack the position and velocity
     Vec2 pos, vel;
     FacingDirection dir;
     AnimationState animState;
-    std::memcpy(&pos.x, message.data.data(), sizeof(float));
-    std::memcpy(&pos.y, message.data.data() + sizeof(float), sizeof(float));
-    std::memcpy(&vel.x, message.data.data() + sizeof(float) * 2, sizeof(float));
-    std::memcpy(&vel.y, message.data.data() + sizeof(float) * 3, sizeof(float));
-    std::memcpy(&dir, message.data.data() + sizeof(float) * 4, sizeof(FacingDirection));
-    std::memcpy(&animState, message.data.data() + sizeof(float) * 4 + sizeof(FacingDirection), sizeof(AnimationState));
+    index = 0;
+    std::memcpy(&pos.x, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&pos.y, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&vel.x, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&vel.y, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    if (index + 2 > message.data.size()) {
+        std::cerr << "[EmbeddedServer] Invalid data size for direction and animation state" << std::endl;
+        return;
+    }
+    dir = static_cast<FacingDirection>(message.data[index++]);
+    animState = static_cast<AnimationState>(message.data[index++]);
+    if (index != message.data.size()) {
+        std::cerr << "[EmbeddedServer] Extra data in position update message" << std::endl;
+        return;
+    }
+
+    // std::cout << "[EmbeddedServer] Received direction: "
+    //             << dir << ", " << static_cast<int>(dir) << ", animation state: "
+    //             << animState << ", " << static_cast<int>(animState) << ", for player: " << playerId << std::endl;
 
     // 4) Update the player’s position and velocity
     BoxCollider* pColl = &player->getcollider();

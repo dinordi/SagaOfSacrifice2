@@ -80,12 +80,8 @@ void Player::update(float deltaTime) {
     Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
-    // Prints velocity.y every second
-    static uint64_t timems = 0.0f;
-    timems += deltaTime;
 
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    *pos += vel * deltaTime; // Update position based on velocity and delta time
 
 
     // Set direction based on horizontal and vertical velocity
