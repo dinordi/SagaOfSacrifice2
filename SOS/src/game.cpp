@@ -87,10 +87,6 @@ void Game::mapCharacters()
     for(char c : letters) {
         characterMap[c] = index++;
     }
-    // Print the mapping
-    for (const auto& pair : characterMap) {
-        std::cout << pair.first << " -> " << pair.second << std::endl;
-    }
 
     characterMap['>'] = 36;
 }

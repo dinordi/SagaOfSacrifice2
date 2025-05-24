@@ -70,7 +70,7 @@ bool SDL3AudioManager::initialize(const std::string& basePath) {
     }
 
     // Set the volume off
-    Mix_Volume(-1, 0);
+    Mix_Volume(-1, 100);    // Set volume for all channels to 100 (out of 128)
 
     mInitialized = true;
     std::cout << "SDL3AudioManager (wrapper_client) initialized successfully." << std::endl;
