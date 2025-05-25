@@ -217,9 +217,9 @@ bool Level::isCollidableTile(int tileIndex, const std::string& tileset) {
     return false;
 }
 
-void Level::update(uint64_t deltaTime) {
+void Level::update(float deltaTime) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-    {     
+    {
         // Update all game objects
         for (auto& object : levelObjects) {
             object->update(deltaTime);
@@ -293,4 +293,41 @@ bool Level::removeAllObjects() {
     levelObjects.clear();
     std::cout << "[Level] Cleared all objects from level" << std::endl;
     return true;
+}
+
+std::shared_ptr<Minotaur> Level::spawnMinotaur(int x, int y) {
+    // Generate a unique ID for the minotaur
+    static int minotaurCounter = 0;
+    std::string minotaurId = "minotaur_" + std::to_string(minotaurCounter++);
+    
+    // Create a new minotaur at the specified position
+    std::shared_ptr<Minotaur> minotaur = std::make_shared<Minotaur>(x, y, minotaurId);
+    
+    // Add the minotaur to the level objects
+    levelObjects.push_back(minotaur);
+    
+    std::cout << "Spawned Minotaur at position (" << x << ", " << y << ") with ID: " << minotaurId << std::endl;
+    
+    return minotaur;
+}
+
+void Level::setAllEnemiesToTargetPlayer(std::shared_ptr<Player> player) {
+    if (!player) {
+        std::cerr << "[Level] Cannot set null player as target for enemies" << std::endl;
+        return;
+    }
+    
+    // Find all enemies in the level and set the player as their target
+    for (auto& object : levelObjects) {
+        if(object->type == ObjectType::MINOTAUR)
+        {
+            Minotaur* enemy = static_cast<Minotaur*>(object.get());
+            
+            if (enemy) {
+                enemy->setTargetPlayer(player);
+                std::cout << "[Level] Set player as target for enemy: " << object->getObjID() << std::endl;
+            }
+        }
+        // Use dynamic_cast to check if this object is an Enemy
+    }
 }
