@@ -1,0 +1,678 @@
+{
+	"textures": [
+		{
+			"image": "water_coast-0.png",
+			"size": {
+				"w": 1234,
+				"h": 500
+			},
+			"sprites": [
+				{
+					"filename": "Water_coasts_animation-33.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 316,
+						"h": 320
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-4.png",
+					"region": {
+						"x": 1,
+						"y": 323,
+						"w": 192,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-11.png",
+					"region": {
+						"x": 1,
+						"y": 435,
+						"w": 192,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-17.png",
+					"region": {
+						"x": 195,
+						"y": 323,
+						"w": 192,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-14.png",
+					"region": {
+						"x": 195,
+						"y": 435,
+						"w": 192,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-20.png",
+					"region": {
+						"x": 319,
+						"y": 1,
+						"w": 192,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-35.png",
+					"region": {
+						"x": 319,
+						"y": 113,
+						"w": 192,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-8.png",
+					"region": {
+						"x": 319,
+						"y": 225,
+						"w": 192,
+						"h": 78
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-1.png",
+					"region": {
+						"x": 389,
+						"y": 305,
+						"w": 192,
+						"h": 108
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-22.png",
+					"region": {
+						"x": 389,
+						"y": 415,
+						"w": 192,
+						"h": 78
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-24.png",
+					"region": {
+						"x": 513,
+						"y": 1,
+						"w": 192,
+						"h": 78
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-37.png",
+					"region": {
+						"x": 513,
+						"y": 81,
+						"w": 192,
+						"h": 78
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-6.png",
+					"region": {
+						"x": 513,
+						"y": 161,
+						"w": 192,
+						"h": 76
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-27.png",
+					"region": {
+						"x": 513,
+						"y": 239,
+						"w": 192,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-0.png",
+					"region": {
+						"x": 583,
+						"y": 305,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-43.png",
+					"region": {
+						"x": 583,
+						"y": 449,
+						"w": 96,
+						"h": 32
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-3.png",
+					"region": {
+						"x": 681,
+						"y": 305,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-16.png",
+					"region": {
+						"x": 707,
+						"y": 1,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-19.png",
+					"region": {
+						"x": 707,
+						"y": 145,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-32.png",
+					"region": {
+						"x": 779,
+						"y": 289,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-30.png",
+					"region": {
+						"x": 779,
+						"y": 433,
+						"w": 192,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-34.png",
+					"region": {
+						"x": 805,
+						"y": 1,
+						"w": 96,
+						"h": 142
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-41.png",
+					"region": {
+						"x": 805,
+						"y": 145,
+						"w": 192,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-2.png",
+					"region": {
+						"x": 805,
+						"y": 211,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-5.png",
+					"region": {
+						"x": 871,
+						"y": 211,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-10.png",
+					"region": {
+						"x": 903,
+						"y": 1,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-13.png",
+					"region": {
+						"x": 877,
+						"y": 277,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-7.png",
+					"region": {
+						"x": 937,
+						"y": 211,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-12.png",
+					"region": {
+						"x": 999,
+						"y": 113,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-26.png",
+					"region": {
+						"x": 1001,
+						"y": 1,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-29.png",
+					"region": {
+						"x": 973,
+						"y": 389,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-39.png",
+					"region": {
+						"x": 975,
+						"y": 277,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-40.png",
+					"region": {
+						"x": 1071,
+						"y": 389,
+						"w": 96,
+						"h": 110
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-9.png",
+					"region": {
+						"x": 1003,
+						"y": 211,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-15.png",
+					"region": {
+						"x": 1065,
+						"y": 113,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-18.png",
+					"region": {
+						"x": 1069,
+						"y": 211,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-28.png",
+					"region": {
+						"x": 1099,
+						"y": 1,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-31.png",
+					"region": {
+						"x": 1131,
+						"y": 99,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-42.png",
+					"region": {
+						"x": 1165,
+						"y": 1,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-21.png",
+					"region": {
+						"x": 1073,
+						"y": 277,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-23.png",
+					"region": {
+						"x": 1135,
+						"y": 197,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-25.png",
+					"region": {
+						"x": 1139,
+						"y": 263,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-36.png",
+					"region": {
+						"x": 1169,
+						"y": 329,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water_coasts_animation-38.png",
+					"region": {
+						"x": 1169,
+						"y": 395,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:9f4d5f7d42f206af24547e09b7f22072:039f2902f653b39ba3115ac353ba39c7:05648468b0f89add61c94129ab7dbbb3$"
+	}
+}

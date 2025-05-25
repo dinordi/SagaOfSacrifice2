@@ -1,0 +1,618 @@
+{
+	"textures": [
+		{
+			"image": "slime2_death-0.png",
+			"size": {
+				"w": 126,
+				"h": 295
+			},
+			"sprites": [
+				{
+					"filename": "Slime2_Death_body-7.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 12,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-27.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 12,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-8.png",
+					"region": {
+						"x": 1,
+						"y": 36,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 13,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-28.png",
+					"region": {
+						"x": 1,
+						"y": 36,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 13,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-17.png",
+					"region": {
+						"x": 43,
+						"y": 1,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 13,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-18.png",
+					"region": {
+						"x": 85,
+						"y": 1,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 12,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-37.png",
+					"region": {
+						"x": 1,
+						"y": 71,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 13,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-38.png",
+					"region": {
+						"x": 43,
+						"y": 36,
+						"w": 40,
+						"h": 33
+					},
+					"margin": {
+						"x": 12,
+						"y": 8,
+						"w": 24,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-6.png",
+					"region": {
+						"x": 85,
+						"y": 36,
+						"w": 40,
+						"h": 32
+					},
+					"margin": {
+						"x": 12,
+						"y": 9,
+						"w": 24,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-26.png",
+					"region": {
+						"x": 85,
+						"y": 36,
+						"w": 40,
+						"h": 32
+					},
+					"margin": {
+						"x": 12,
+						"y": 9,
+						"w": 24,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-16.png",
+					"region": {
+						"x": 85,
+						"y": 70,
+						"w": 40,
+						"h": 32
+					},
+					"margin": {
+						"x": 13,
+						"y": 9,
+						"w": 24,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-36.png",
+					"region": {
+						"x": 43,
+						"y": 71,
+						"w": 40,
+						"h": 32
+					},
+					"margin": {
+						"x": 13,
+						"y": 9,
+						"w": 24,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-5.png",
+					"region": {
+						"x": 1,
+						"y": 106,
+						"w": 38,
+						"h": 32
+					},
+					"margin": {
+						"x": 13,
+						"y": 9,
+						"w": 26,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-15.png",
+					"region": {
+						"x": 1,
+						"y": 140,
+						"w": 38,
+						"h": 32
+					},
+					"margin": {
+						"x": 14,
+						"y": 9,
+						"w": 26,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-25.png",
+					"region": {
+						"x": 1,
+						"y": 174,
+						"w": 38,
+						"h": 32
+					},
+					"margin": {
+						"x": 13,
+						"y": 9,
+						"w": 26,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-35.png",
+					"region": {
+						"x": 1,
+						"y": 208,
+						"w": 38,
+						"h": 32
+					},
+					"margin": {
+						"x": 14,
+						"y": 9,
+						"w": 26,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-9.png",
+					"region": {
+						"x": 85,
+						"y": 104,
+						"w": 40,
+						"h": 23
+					},
+					"margin": {
+						"x": 13,
+						"y": 18,
+						"w": 24,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-29.png",
+					"region": {
+						"x": 85,
+						"y": 104,
+						"w": 40,
+						"h": 23
+					},
+					"margin": {
+						"x": 13,
+						"y": 18,
+						"w": 24,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-19.png",
+					"region": {
+						"x": 43,
+						"y": 105,
+						"w": 40,
+						"h": 23
+					},
+					"margin": {
+						"x": 12,
+						"y": 18,
+						"w": 24,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-39.png",
+					"region": {
+						"x": 85,
+						"y": 129,
+						"w": 40,
+						"h": 23
+					},
+					"margin": {
+						"x": 12,
+						"y": 18,
+						"w": 24,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-4.png",
+					"region": {
+						"x": 1,
+						"y": 242,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 33,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-0.png",
+					"region": {
+						"x": 1,
+						"y": 275,
+						"w": 25,
+						"h": 19
+					},
+					"margin": {
+						"x": 21,
+						"y": 22,
+						"w": 39,
+						"h": 45
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-14.png",
+					"region": {
+						"x": 41,
+						"y": 130,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 33,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-24.png",
+					"region": {
+						"x": 41,
+						"y": 163,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 33,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-34.png",
+					"region": {
+						"x": 41,
+						"y": 196,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 33,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-10.png",
+					"region": {
+						"x": 28,
+						"y": 275,
+						"w": 25,
+						"h": 19
+					},
+					"margin": {
+						"x": 19,
+						"y": 22,
+						"w": 39,
+						"h": 45
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-3.png",
+					"region": {
+						"x": 74,
+						"y": 154,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-13.png",
+					"region": {
+						"x": 74,
+						"y": 184,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-23.png",
+					"region": {
+						"x": 99,
+						"y": 154,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-33.png",
+					"region": {
+						"x": 99,
+						"y": 184,
+						"w": 23,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 41,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-1.png",
+					"region": {
+						"x": 74,
+						"y": 214,
+						"w": 25,
+						"h": 22
+					},
+					"margin": {
+						"x": 21,
+						"y": 19,
+						"w": 39,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-2.png",
+					"region": {
+						"x": 101,
+						"y": 214,
+						"w": 23,
+						"h": 24
+					},
+					"margin": {
+						"x": 22,
+						"y": 17,
+						"w": 41,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-11.png",
+					"region": {
+						"x": 41,
+						"y": 229,
+						"w": 25,
+						"h": 22
+					},
+					"margin": {
+						"x": 19,
+						"y": 19,
+						"w": 39,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-21.png",
+					"region": {
+						"x": 34,
+						"y": 253,
+						"w": 18,
+						"h": 20
+					},
+					"margin": {
+						"x": 23,
+						"y": 21,
+						"w": 46,
+						"h": 44
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-31.png",
+					"region": {
+						"x": 54,
+						"y": 253,
+						"w": 18,
+						"h": 20
+					},
+					"margin": {
+						"x": 24,
+						"y": 21,
+						"w": 46,
+						"h": 44
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-20.png",
+					"region": {
+						"x": 55,
+						"y": 275,
+						"w": 19,
+						"h": 18
+					},
+					"margin": {
+						"x": 23,
+						"y": 23,
+						"w": 45,
+						"h": 46
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-12.png",
+					"region": {
+						"x": 74,
+						"y": 238,
+						"w": 23,
+						"h": 24
+					},
+					"margin": {
+						"x": 20,
+						"y": 17,
+						"w": 41,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-22.png",
+					"region": {
+						"x": 99,
+						"y": 240,
+						"w": 18,
+						"h": 24
+					},
+					"margin": {
+						"x": 24,
+						"y": 17,
+						"w": 46,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-32.png",
+					"region": {
+						"x": 76,
+						"y": 264,
+						"w": 18,
+						"h": 24
+					},
+					"margin": {
+						"x": 23,
+						"y": 17,
+						"w": 46,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Slime2_Death_body-30.png",
+					"region": {
+						"x": 96,
+						"y": 266,
+						"w": 19,
+						"h": 18
+					},
+					"margin": {
+						"x": 23,
+						"y": 23,
+						"w": 45,
+						"h": 46
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:750bda36ec4acb5565b3bdf9d9dbdc50:bd4b4b07ff6346878bf35533cbb1c9e3:c0185834518b397c9fd67b2f933bf86e$"
+	}
+}

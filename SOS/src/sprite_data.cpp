@@ -42,9 +42,13 @@ SpriteRect SpriteData::getSpriteRect(int index) const {
         return SpriteRect(0, 0, 0, 0, id_);
     }
 
+    if (!data["textures"][0].contains("sprites") || !data["textures"][0]["sprites"].is_array()) {
+        std::cerr << "[SpriteData] Missing or malformed 'sprites' array in JSON." << std::endl;
+        return SpriteRect(0, 0, 0, 0, id_);
+    }
     const json& sprites = data["textures"][0]["sprites"];
-    if (!sprites.is_array() || index < 0 || index >= sprites.size()) {
-        std::cerr << "[SpriteData] Invalid index or malformed 'sprites' array." << std::endl;
+    if (index < 0 || index >= sprites.size()) {
+        std::cerr << "[SpriteData] Invalid index for 'sprites' array." << std::endl;
         return SpriteRect(0, 0, 0, 0, id_);
     }
 

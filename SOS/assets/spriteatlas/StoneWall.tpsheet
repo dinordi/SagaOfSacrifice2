@@ -1,0 +1,168 @@
+{
+	"textures": [
+		{
+			"image": "StoneWall.png",
+			"size": {
+				"w": 236,
+				"h": 248
+			},
+			"sprites": [
+				{
+					"filename": "TX Tileset Wall-0.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 96,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-1.png",
+					"region": {
+						"x": 99,
+						"y": 1,
+						"w": 114,
+						"h": 104
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-5.png",
+					"region": {
+						"x": 1,
+						"y": 131,
+						"w": 64,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-6.png",
+					"region": {
+						"x": 99,
+						"y": 107,
+						"w": 128,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-2.png",
+					"region": {
+						"x": 215,
+						"y": 1,
+						"w": 10,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-3.png",
+					"region": {
+						"x": 227,
+						"y": 1,
+						"w": 8,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-8.png",
+					"region": {
+						"x": 67,
+						"y": 173,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-4.png",
+					"region": {
+						"x": 1,
+						"y": 239,
+						"w": 96,
+						"h": 8
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-9.png",
+					"region": {
+						"x": 133,
+						"y": 173,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "TX Tileset Wall-7.png",
+					"region": {
+						"x": 199,
+						"y": 173,
+						"w": 32,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0e12c7fb35020a10508f0d2c32ae71b6:448f5ce565f37de5e2af2f0802f4d514:0e9b6c68ef0cfd79fa8a63e0f24af76d$"
+	}
+}

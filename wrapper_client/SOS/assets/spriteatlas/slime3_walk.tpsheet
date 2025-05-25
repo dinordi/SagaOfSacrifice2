@@ -1,0 +1,498 @@
+{
+	"textures": [
+		{
+			"image": "slime3_walk-0.png",
+			"size": {
+				"w": 249,
+				"h": 128
+			},
+			"sprites": [
+				{
+					"filename": "Slime3_Walk_body-7.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 24,
+						"h": 38
+					},
+					"margin": {
+						"x": 20,
+						"y": 3,
+						"w": 40,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-15.png",
+					"region": {
+						"x": 1,
+						"y": 41,
+						"w": 24,
+						"h": 38
+					},
+					"margin": {
+						"x": 21,
+						"y": 3,
+						"w": 40,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-23.png",
+					"region": {
+						"x": 1,
+						"y": 81,
+						"w": 22,
+						"h": 38
+					},
+					"margin": {
+						"x": 23,
+						"y": 3,
+						"w": 42,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-31.png",
+					"region": {
+						"x": 25,
+						"y": 81,
+						"w": 22,
+						"h": 38
+					},
+					"margin": {
+						"x": 19,
+						"y": 3,
+						"w": 42,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-6.png",
+					"region": {
+						"x": 27,
+						"y": 1,
+						"w": 27,
+						"h": 37
+					},
+					"margin": {
+						"x": 19,
+						"y": 4,
+						"w": 37,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-14.png",
+					"region": {
+						"x": 27,
+						"y": 40,
+						"w": 27,
+						"h": 37
+					},
+					"margin": {
+						"x": 19,
+						"y": 4,
+						"w": 37,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-22.png",
+					"region": {
+						"x": 49,
+						"y": 79,
+						"w": 24,
+						"h": 37
+					},
+					"margin": {
+						"x": 20,
+						"y": 4,
+						"w": 40,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-30.png",
+					"region": {
+						"x": 56,
+						"y": 1,
+						"w": 24,
+						"h": 37
+					},
+					"margin": {
+						"x": 20,
+						"y": 4,
+						"w": 40,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-5.png",
+					"region": {
+						"x": 56,
+						"y": 40,
+						"w": 26,
+						"h": 35
+					},
+					"margin": {
+						"x": 19,
+						"y": 6,
+						"w": 38,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-13.png",
+					"region": {
+						"x": 82,
+						"y": 1,
+						"w": 26,
+						"h": 35
+					},
+					"margin": {
+						"x": 20,
+						"y": 6,
+						"w": 38,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-21.png",
+					"region": {
+						"x": 75,
+						"y": 77,
+						"w": 25,
+						"h": 35
+					},
+					"margin": {
+						"x": 17,
+						"y": 6,
+						"w": 39,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-29.png",
+					"region": {
+						"x": 84,
+						"y": 38,
+						"w": 25,
+						"h": 35
+					},
+					"margin": {
+						"x": 22,
+						"y": 6,
+						"w": 39,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-20.png",
+					"region": {
+						"x": 110,
+						"y": 1,
+						"w": 26,
+						"h": 34
+					},
+					"margin": {
+						"x": 14,
+						"y": 7,
+						"w": 38,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-28.png",
+					"region": {
+						"x": 102,
+						"y": 75,
+						"w": 26,
+						"h": 34
+					},
+					"margin": {
+						"x": 24,
+						"y": 7,
+						"w": 38,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-19.png",
+					"region": {
+						"x": 111,
+						"y": 37,
+						"w": 31,
+						"h": 32
+					},
+					"margin": {
+						"x": 17,
+						"y": 9,
+						"w": 33,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-27.png",
+					"region": {
+						"x": 138,
+						"y": 1,
+						"w": 31,
+						"h": 32
+					},
+					"margin": {
+						"x": 16,
+						"y": 9,
+						"w": 33,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-4.png",
+					"region": {
+						"x": 130,
+						"y": 71,
+						"w": 23,
+						"h": 32
+					},
+					"margin": {
+						"x": 21,
+						"y": 9,
+						"w": 41,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-0.png",
+					"region": {
+						"x": 130,
+						"y": 105,
+						"w": 22,
+						"h": 22
+					},
+					"margin": {
+						"x": 20,
+						"y": 19,
+						"w": 42,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-8.png",
+					"region": {
+						"x": 154,
+						"y": 105,
+						"w": 22,
+						"h": 22
+					},
+					"margin": {
+						"x": 23,
+						"y": 19,
+						"w": 42,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-12.png",
+					"region": {
+						"x": 144,
+						"y": 35,
+						"w": 23,
+						"h": 32
+					},
+					"margin": {
+						"x": 21,
+						"y": 9,
+						"w": 41,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-18.png",
+					"region": {
+						"x": 155,
+						"y": 69,
+						"w": 30,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 34,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-16.png",
+					"region": {
+						"x": 178,
+						"y": 102,
+						"w": 22,
+						"h": 25
+					},
+					"margin": {
+						"x": 23,
+						"y": 16,
+						"w": 42,
+						"h": 39
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-26.png",
+					"region": {
+						"x": 169,
+						"y": 35,
+						"w": 30,
+						"h": 31
+					},
+					"margin": {
+						"x": 17,
+						"y": 10,
+						"w": 34,
+						"h": 33
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-17.png",
+					"region": {
+						"x": 187,
+						"y": 68,
+						"w": 26,
+						"h": 30
+					},
+					"margin": {
+						"x": 21,
+						"y": 11,
+						"w": 38,
+						"h": 34
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-1.png",
+					"region": {
+						"x": 202,
+						"y": 100,
+						"w": 22,
+						"h": 26
+					},
+					"margin": {
+						"x": 20,
+						"y": 15,
+						"w": 42,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-25.png",
+					"region": {
+						"x": 171,
+						"y": 1,
+						"w": 26,
+						"h": 30
+					},
+					"margin": {
+						"x": 17,
+						"y": 11,
+						"w": 38,
+						"h": 34
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-3.png",
+					"region": {
+						"x": 199,
+						"y": 1,
+						"w": 23,
+						"h": 30
+					},
+					"margin": {
+						"x": 22,
+						"y": 11,
+						"w": 41,
+						"h": 34
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-11.png",
+					"region": {
+						"x": 201,
+						"y": 33,
+						"w": 23,
+						"h": 30
+					},
+					"margin": {
+						"x": 20,
+						"y": 11,
+						"w": 41,
+						"h": 34
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-2.png",
+					"region": {
+						"x": 224,
+						"y": 1,
+						"w": 22,
+						"h": 28
+					},
+					"margin": {
+						"x": 21,
+						"y": 13,
+						"w": 42,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-10.png",
+					"region": {
+						"x": 215,
+						"y": 65,
+						"w": 22,
+						"h": 28
+					},
+					"margin": {
+						"x": 22,
+						"y": 13,
+						"w": 42,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-9.png",
+					"region": {
+						"x": 226,
+						"y": 31,
+						"w": 22,
+						"h": 26
+					},
+					"margin": {
+						"x": 23,
+						"y": 15,
+						"w": 42,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Slime3_Walk_body-24.png",
+					"region": {
+						"x": 226,
+						"y": 95,
+						"w": 22,
+						"h": 25
+					},
+					"margin": {
+						"x": 20,
+						"y": 16,
+						"w": 42,
+						"h": 39
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:04dd506b07e4e42eea2945ed3147ea4f:f83557a59727f4cde6deb0f0132ce688:4e0f60a10bf45d7a4b5c3e99fb5634ea$"
+	}
+}

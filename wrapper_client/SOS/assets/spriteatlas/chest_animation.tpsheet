@@ -1,0 +1,93 @@
+{
+	"textures": [
+		{
+			"image": "chest_animation-0.png",
+			"size": {
+				"w": 40,
+				"h": 210
+			},
+			"sprites": [
+				{
+					"filename": "doors_lever_chest_animation-14.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 38,
+						"h": 44
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "doors_lever_chest_animation-11.png",
+					"region": {
+						"x": 1,
+						"y": 47,
+						"w": 38,
+						"h": 42
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "doors_lever_chest_animation-8.png",
+					"region": {
+						"x": 1,
+						"y": 91,
+						"w": 38,
+						"h": 40
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "doors_lever_chest_animation-5.png",
+					"region": {
+						"x": 1,
+						"y": 133,
+						"w": 38,
+						"h": 38
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "doors_lever_chest_animation-2.png",
+					"region": {
+						"x": 1,
+						"y": 173,
+						"w": 38,
+						"h": 36
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:98ebec9b812d5a546a67f3759ed4ee88:483808b5c9f22c69e02d0ed613045ace:4c8e70cdbed7cd15969eea27731292ae$"
+	}
+}
