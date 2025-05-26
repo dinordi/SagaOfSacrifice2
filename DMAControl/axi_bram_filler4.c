@@ -78,6 +78,9 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     }
 }
 
+// Function prototype for distribute_sprites_over_pipelines
+void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELINES]);
+
 void handleIRQ(volatile uint64_t *frame_infos[NUM_PIPELINES])
 {
     uint32_t irq_count;
@@ -119,13 +122,18 @@ void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELI
     const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
-    for (int s = 0; s < TOTAL_STATIC_SPRITES; s++) {
-        int pipeline = s % NUM_PIPELINES;
-        int idx = sprites_in_pipeline[pipeline];
-        uint16_t x = 100 + idx * 50;
-        uint16_t y = 100 + pipeline * 100;
-        write_sprite_to_frame_info(frame_infos[pipeline], idx, x, y, 1);
-        sprites_in_pipeline[pipeline]++;
+    for (int pipeline = 0; pipeline < NUM_PIPELINES; pipeline++) {
+        uint16_t x = 100;
+        uint16_t y = 50;
+        for (int idx = 0; idx < TOTAL_STATIC_SPRITES / NUM_PIPELINES; idx++) {
+            write_sprite_to_frame_info(frame_infos[pipeline], idx, x, y, 1);
+            sprites_in_pipeline[pipeline]++;
+            x += 400;
+            if (x > 2050) {
+                x = 100;
+                y += 400;
+            }
+        }
     }
     for (int i = 0; i < NUM_PIPELINES; i++) {
         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
