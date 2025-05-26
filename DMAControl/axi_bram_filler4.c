@@ -118,27 +118,35 @@ void irqHandlerThread(volatile uint64_t *frame_infos[NUM_PIPELINES])
 
 // Helper: schrijf 15 sprites verdeeld over pipelines
 void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELINES]) {
-    int sprites_in_pipeline[NUM_PIPELINES] = {0};
     const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
-    for (int pipeline = 0; pipeline < NUM_PIPELINES; pipeline++) {
-        uint16_t x = 100;
-        uint16_t y = 50;
-        for (int idx = 0; idx < TOTAL_STATIC_SPRITES / NUM_PIPELINES; idx++) {
-            write_sprite_to_frame_info(frame_infos[pipeline], idx, x, y, 1);
-            sprites_in_pipeline[pipeline]++;
-            x += 400;
-            if (x > 2050) {
-                x = 100;
-                y += 400;
-            }
+
+    int sprites_in_pipeline[NUM_PIPELINES] = {0};
+
+    uint16_t x = 100;
+    uint16_t y = 50;
+
+    for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
+        int pipeline = sprite_idx % NUM_PIPELINES;
+        int index_in_pipeline = sprites_in_pipeline[pipeline];
+        
+        write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
+        sprites_in_pipeline[pipeline]++;
+
+        x += SPRITE_WIDTH;
+        if (x > 2050) {
+            x = 100;
+            y += SPRITE_HEIGHT;
         }
     }
+
+    // Voeg eindmarker toe voor elke pipeline
     for (int i = 0; i < NUM_PIPELINES; i++) {
         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
 }
+
 
 int main() {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
