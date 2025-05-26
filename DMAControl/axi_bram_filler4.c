@@ -3,19 +3,16 @@
 #include <stdint.h>
 #include <sys/mman.h>
 #include <unistd.h>
-
 #include <poll.h>
+#include <signal.h>
 
-// Physical memory base addresses for the BRAMs
-#define FRAME_INFO_ADDR   0x42000000         // Frame info BRAM - 8KB
-#define LOOKUP_TABLE_ADDR 0x40000000       // Lookup table BRAM - 16KB
+#define FRAME_INFO_ADDR   0x42000000
+#define LOOKUP_TABLE_ADDR 0x40000000
 
-#define FRAME_INFO_SIZE 0x2000             // 8KB
-#define LOOKUP_TABLE_SIZE 0x2000           // 16KB
+#define FRAME_INFO_SIZE 0x2000
+#define LOOKUP_TABLE_SIZE 0x2000
 
-// Sprite data base address
-#define SPRITE_DATA_BASE 0x0E000000        // Base address for sprite data (fixed to include leading 0)
-
+#define SPRITE_DATA_BASE 0x0E000000
 #define NUM_PIPELINES 4
 
 const uint32_t LOOKUP_TABLE_ADDRS[NUM_PIPELINES] = {
@@ -30,21 +27,22 @@ uint32_t irq_count;
 uint32_t clear_value = 1;
 int stop_thread = 0;
 
+// ─────────────────────────────────────────────
+// Signal handler voor Ctrl+C
+void handle_sigint(int sig) {
+    printf("\nSIGINT ontvangen, programma wordt afgesloten...\n");
+    stop_thread = 1;
+}
 
-// Function to write a single sprite's information to the frame_info BRAM
+// ─────────────────────────────────────────────
 void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
-    // Construct the 64-bit value (34 bits effective, but stored in uint64_t)
-    // X: bits 33-22 (12 bits), Y: bits 21-11 (11 bits), Sprite ID: bits 10-0 (11 bits)
     uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
     frame_info_arr[index] = base_value;
     printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", index, x, y, sprite_id);
     printf("  Value (hex): 0x%016llX\n", base_value);
 }
 
-// Function to update animation state and write to frame_info at index 0
-// This function manages its own state for x, y, and direction.
-void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
-                                      uint32_t sprite_id_to_use) {
+void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr, uint32_t sprite_id_to_use) {
     static uint16_t s_sprite_x;
     static uint16_t s_sprite_y;
     static int s_direction;
@@ -52,15 +50,13 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
 
     if (!s_initialized) {
         s_sprite_x = 120;
-        s_sprite_y = 400; // Y is constant for this animation
-        s_direction = 1;  // Start by moving right
+        s_sprite_y = 400;
+        s_direction = 1;
         s_initialized = 1;
     }
 
-    // Write current sprite state to index 0
     write_sprite_to_frame_info(frame_info_arr, 0, s_sprite_x, s_sprite_y, sprite_id_to_use);
 
-    // Update X position for next frame
     if (s_direction == 1) {
         if (s_sprite_x == 2050) {
             s_direction = -1;
@@ -68,7 +64,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
         } else {
             s_sprite_x++;
         }
-    } else { // s_direction == -1
+    } else {
         if (s_sprite_x == 120) {
             s_direction = 1;
             s_sprite_x++;
@@ -78,45 +74,6 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     }
 }
 
-// Function prototype for distribute_sprites_over_pipelines
-void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELINES]);
-
-void handleIRQ(volatile uint64_t *frame_infos[NUM_PIPELINES])
-{
-    uint32_t irq_count;
-    if (read(uio_fd, &irq_count, sizeof(irq_count)) != sizeof(irq_count)) {
-        perror("read");
-        return;
-    }
-    // Clear the interrupt flag by writing to the UIO device
-    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
-        perror("Failed to clear interrupt");
-    }
-
-    printf("Interrupt received! IRQ count: %d\n", irq_count);
-    distribute_sprites_over_pipelines(frame_infos);
-}
-
-void irqHandlerThread(volatile uint64_t *frame_infos[NUM_PIPELINES])
-{
-    struct pollfd fds;
-    fds.fd = uio_fd;
-    fds.events = POLLIN;
-
-    while (!stop_thread) {
-        int ret = poll(&fds, 1, -1); // Wait indefinitely for an event
-        if (ret > 0 && (fds.revents & POLLIN)) {
-            if (fds.revents & POLLIN) {
-                handleIRQ(frame_infos);
-            }
-        } else if (ret < 0) {
-            perror("poll");
-            break;
-        }
-    }
-}
-
-// Helper: schrijf 15 sprites verdeeld over pipelines
 void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELINES]) {
     const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
@@ -127,7 +84,6 @@ void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELI
     const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
 
     int sprites_in_pipeline[NUM_PIPELINES] = {0};
-
     uint16_t x = X_START;
     uint16_t y = Y_START;
 
@@ -148,14 +104,46 @@ void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELI
         }
     }
 
-    // Voeg eindmarker toe voor elke pipeline
     for (int i = 0; i < NUM_PIPELINES; i++) {
         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
 }
 
+void handleIRQ(volatile uint64_t *frame_infos[NUM_PIPELINES]) {
+    uint32_t irq_count;
+    if (read(uio_fd, &irq_count, sizeof(irq_count)) != sizeof(irq_count)) {
+        perror("read");
+        return;
+    }
+    if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
+        perror("Failed to clear interrupt");
+    }
 
+    printf("Interrupt received! IRQ count: %d\n", irq_count);
+    distribute_sprites_over_pipelines(frame_infos);
+}
+
+void irqHandlerThread(volatile uint64_t *frame_infos[NUM_PIPELINES]) {
+    struct pollfd fds;
+    fds.fd = uio_fd;
+    fds.events = POLLIN;
+
+    while (!stop_thread) {
+        int ret = poll(&fds, 1, 1000); // Check elke seconde op interrupt of stop_thread
+        if (ret > 0 && (fds.revents & POLLIN)) {
+            handleIRQ(frame_infos);
+        } else if (ret < 0) {
+            perror("poll");
+            break;
+        }
+    }
+}
+
+// ─────────────────────────────────────────────
 int main() {
+    // Ctrl+C handler activeren
+    signal(SIGINT, handle_sigint);
+
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd < 0) {
         perror("open");
@@ -190,8 +178,8 @@ int main() {
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
     uint64_t base_lookup_value = ((uint64_t)SPRITE_DATA_BASE << 23) |
-                                ((uint64_t)SPRITE_HEIGHT << 12) |
-                                (SPRITE_WIDTH);
+                                 ((uint64_t)SPRITE_HEIGHT << 12) |
+                                 (SPRITE_WIDTH);
 
     for (int i = 0; i < NUM_PIPELINES; i++) {
         lookup_tables[i][1] = base_lookup_value;
@@ -214,8 +202,10 @@ int main() {
         munmap(lookup_table_ptrs[i], LOOKUP_TABLE_SIZE);
         munmap(frame_info_ptrs[i], FRAME_INFO_SIZE);
     }
+
     close(fd);
     if (uio_fd >= 0) close(uio_fd);
-    printf("Successfully wrote sprite data using 64-bit words\n");
+
+    printf("Succesvol afgesloten en geheugen vrijgegeven.\n");
     return 0;
 }
