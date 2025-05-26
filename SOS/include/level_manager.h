@@ -12,7 +12,7 @@
 
 class LevelManager {
 public:
-    LevelManager();
+    LevelManager(const std::filesystem::path& basePath);
     ~LevelManager();
 
     // Initialize the level manager and load all level metadata
@@ -59,5 +59,5 @@ private:
     std::string currentJsonFilePath_;
     std::unordered_map<std::string, std::filesystem::path> levelFilePaths_;
 
-
+    std::filesystem::path basePath;
 };

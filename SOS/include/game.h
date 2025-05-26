@@ -134,6 +134,7 @@ private:
     // Default ports
     static const int LOCAL_SERVER_PORT = 8081;
     
+    std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     static Game* instance_;
 
