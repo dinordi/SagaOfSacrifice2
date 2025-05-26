@@ -6,13 +6,10 @@
 #include <poll.h>
 #include <signal.h>
 
-#define FRAME_INFO_ADDR   0x42000000
-#define LOOKUP_TABLE_ADDR 0x40000000
-
 #define FRAME_INFO_SIZE 0x2000
 #define LOOKUP_TABLE_SIZE 0x2000
 
-#define SPRITE_DATA_BASE 0x0E000000
+#define SPRITE_DATA_BASE 0x014B2000
 #define NUM_PIPELINES 4
 
 const uint32_t LOOKUP_TABLE_ADDRS[NUM_PIPELINES] = {
@@ -32,6 +29,22 @@ int stop_thread = 0;
 void handle_sigint(int sig) {
     printf("\nSIGINT ontvangen, programma wordt afgesloten...\n");
     stop_thread = 1;
+}
+
+// ─────────────────────────────────────────────
+// Lookup table entry schrijven
+void write_lookup_table_entry(volatile uint64_t *lookup_table, int index, uint32_t sprite_data_base, uint16_t width, uint16_t height) {
+    uint64_t value = ((uint64_t)sprite_data_base << 23) |
+                     ((uint64_t)height << 12) |
+                     width;
+
+    lookup_table[index] = value;
+
+    printf("Lookup Table [%d]:\n", index);
+    printf("  Base Addr = 0x%08X\n", sprite_data_base);
+    printf("  Width     = %u\n", width);
+    printf("  Height    = %u\n", height);
+    printf("  Value(hex)= 0x%016llX\n", value);
 }
 
 // ─────────────────────────────────────────────
@@ -177,12 +190,10 @@ int main() {
 
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
-    uint64_t base_lookup_value = ((uint64_t)SPRITE_DATA_BASE << 23) |
-                                 ((uint64_t)SPRITE_HEIGHT << 12) |
-                                 (SPRITE_WIDTH);
 
+    // ⬇️ Nieuw gebruik van write_lookup_table_entry()
     for (int i = 0; i < NUM_PIPELINES; i++) {
-        lookup_tables[i][1] = base_lookup_value;
+        write_lookup_table_entry(lookup_tables[i], 1, SPRITE_DATA_BASE, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
 
     distribute_sprites_over_pipelines(frame_infos);
