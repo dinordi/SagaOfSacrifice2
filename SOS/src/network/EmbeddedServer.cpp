@@ -518,6 +518,13 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // Add the message body after the header
         std::memcpy(complete_message.data() + sizeof(header), buffer.data(), buffer.size());
         
+        std::cout << "[EmbeddedServer] Sending message to client - Type: " 
+                  << static_cast<int>(message.type) 
+                  << ", Sender ID: " << message.senderId 
+                  << ", Data size: " << message.data.size() 
+                  << " bytes, Total size: " << complete_message.size() 
+                  << " bytes" << std::endl;
+
         // Store the buffer to keep it alive
         {
             std::lock_guard<std::mutex> lock(outgoing_buffers_mutex_);
@@ -778,6 +785,9 @@ void EmbeddedServer::updateGameState(float deltaTime) {
 }
 
 void EmbeddedServer::sendGameStateToClients() {
+    std::cout << "[EmbeddedServer] Before sending game state to clients, time ms: " 
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                         std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
     // 1) Build the header
     NetworkMessage stateMsg;
     stateMsg.type     = MessageType::GAME_STATE;
@@ -815,6 +825,10 @@ void EmbeddedServer::sendGameStateToClients() {
             stateMsg.data.push_back(uint8_t(id.size()));
             stateMsg.data.insert(stateMsg.data.end(), id.begin(), id.end());
 
+            // std::cout << "[EmbeddedServer] Serializing object: " 
+            //           << obj->getObjID() << " of type " 
+            //           << obj->type << std::endl;
+
             // c) Position & Velocity
             auto writeFloat = [&](float v) {
                 uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
@@ -835,6 +849,7 @@ void EmbeddedServer::sendGameStateToClients() {
                     auto* plat = static_cast<Tile*>(obj.get());
                     writeFloat(plat->getCurrentSpriteData()->width);
                     writeFloat(plat->getCurrentSpriteData()->height);
+                    stateMsg.data.push_back(plat->gettileIndex());
                     break;
                 }
                 case ObjectType::MINOTAUR: 
@@ -883,6 +898,10 @@ void EmbeddedServer::sendGameStateToClients() {
     if (messageCallback_) {
         messageCallback_(stateMsg);
     }
+
+    std::cout << "[EmbeddedServer] Game state sent to clients, time ms: " 
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                         std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
 }
 
 

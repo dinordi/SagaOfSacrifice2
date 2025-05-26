@@ -37,4 +37,5 @@ public:
 private:
     TileType tileType;
     uint32_t collisionFlags = 0;
+    DEFINE_CONST_GETTER_SETTER(uint8_t, tileIndex);
 };

@@ -6,17 +6,22 @@ namespace fs = std::filesystem;
 SpriteData::SpriteData(std::string id, int width, int height, int columns)
     : id_(std::move(id)), width(width), height(height), columns(columns)
 {
-    std::string exec_path = fs::current_path().string();
-    atlasPath = (fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "spriteatlas" / (id_ + ".tpsheet")).string();
+    std::string basePathStr = fs::current_path().string();
+    std::size_t pos = basePathStr.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        basePathStr = basePathStr.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = fs::path(basePathStr);
+    atlasPath = (basePath / "SOS" / "assets" / "spriteatlas" / (id_ + ".tpsheet")).string();
     
-    std::cout << "[SpriteData] SpriteData created with ID: " << id_
-              << ", Width: " << width << ", Height: " << height 
-              << ", Columns: " << columns << std::endl;
+    // std::cout << "[SpriteData] SpriteData created with ID: " << id_
+    //           << ", Width: " << width << ", Height: " << height 
+    //           << ", Columns: " << columns << std::endl;
 
     if (!fs::exists(atlasPath)) {
-        std::cerr << "[SpriteData] Atlas path not found: " << atlasPath<< "\n";
+        // std::cerr << "[SpriteData] Atlas path not found: " << atlasPath<< "\n";
     } else {
-        std::cout << "[SpriteData] Sprite path found: " << atlasPath << "\n";
+        // std::cout << "[SpriteData] Sprite path found: " << atlasPath << "\n";
     }
 }
 
@@ -24,7 +29,7 @@ SpriteData::SpriteData(std::string id, int width, int height, int columns)
 SpriteRect SpriteData::getSpriteRect(int index) const {
     std::ifstream file(atlasPath);
     if (!file.is_open()) {
-        std::cerr << "[SpriteData] Failed to open sprite JSON: " << atlasPath << std::endl;
+        // std::cerr << "[SpriteData] Failed to open sprite JSON: " << atlasPath << std::endl;
         return SpriteRect(0, 0, 0, 0, id_);
     }
 

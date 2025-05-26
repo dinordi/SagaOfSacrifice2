@@ -59,7 +59,7 @@ private:
     std::mutex message_mutex_;
     
     // Message read buffer
-    enum { max_buffer_size = 1024 };
+    enum { max_buffer_size = 8192 };
     std::vector<uint8_t> read_buffer_;
     
     // Message header contains the size of the following message

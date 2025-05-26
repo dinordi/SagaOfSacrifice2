@@ -29,17 +29,17 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     multiplayerManager = std::make_unique<MultiplayerManager>();
     
     // Initialize collision manager (used for local prediction only)
-    this->collisionManager = new CollisionManager();;
-    levelManager_ = std::make_unique<LevelManager>();  
-    levelManager_->initialize(); // Initialize the level manager
-    // Load the first level
-    if (!levelManager_->loadLevel("level1")) {
-        std::cerr << "[Game] Failed to load initial level" << std::endl;
-        running = false; // Stop running if level loading fails
-        return;
-    }
+    // this->collisionManager = new CollisionManager();;
+    // levelManager_ = std::make_unique<LevelManager>(std::filesystem::path("/Users/dinordi/Documents/GitHub/SagaOfSacrifice2"));  
+    // levelManager_->initialize(); // Initialize the level manager
+    // // Load the first level
+    // if (!levelManager_->loadLevel("level1")) {
+    //     std::cerr << "[Game] Failed to load initial level" << std::endl;
+    //     running = false; // Stop running if level loading fails
+    //     return;
+    // }
 
-    objects = levelManager_->getCurrentLevel()->getObjects(); // Get the objects from the level manager
+    // objects = levelManager_->getCurrentLevel()->getObjects(); // Get the objects from the level manager
     // Create player using PlayerManager
     // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
     
@@ -300,8 +300,8 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
             remotePlayer->setDir(pair.second->getDir());
             remotePlayer->setAnimationState(pair.second->getAnimationState());
             
-            //objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
-            levelManager_->addPlayerToCurrentLevel(remotePlayer->getObjID()); // Add to level manager
+            objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
+            // levelManager_->addPlayerToCurrentLevel(remotePlayer->getObjID()); // Add to level manager
 
         } else {
             if((*it)->getObjID() == player->getObjID())
