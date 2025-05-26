@@ -1,0 +1,1143 @@
+{
+	"textures": [
+		{
+			"image": "tile_cracked_floor-0.png",
+			"size": {
+				"w": 510,
+				"h": 974
+			},
+			"sprites": [
+				{
+					"filename": "decorative_cracks_floor-0.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-1.png",
+					"region": {
+						"x": 103,
+						"y": 1,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-2.png",
+					"region": {
+						"x": 205,
+						"y": 1,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-3.png",
+					"region": {
+						"x": 307,
+						"y": 1,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-4.png",
+					"region": {
+						"x": 409,
+						"y": 1,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-5.png",
+					"region": {
+						"x": 1,
+						"y": 67,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-6.png",
+					"region": {
+						"x": 103,
+						"y": 67,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-7.png",
+					"region": {
+						"x": 205,
+						"y": 67,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-8.png",
+					"region": {
+						"x": 307,
+						"y": 67,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-9.png",
+					"region": {
+						"x": 409,
+						"y": 67,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-10.png",
+					"region": {
+						"x": 1,
+						"y": 133,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-11.png",
+					"region": {
+						"x": 103,
+						"y": 133,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-12.png",
+					"region": {
+						"x": 205,
+						"y": 133,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-13.png",
+					"region": {
+						"x": 307,
+						"y": 133,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-14.png",
+					"region": {
+						"x": 409,
+						"y": 133,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-17.png",
+					"region": {
+						"x": 1,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-22.png",
+					"region": {
+						"x": 1,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-18.png",
+					"region": {
+						"x": 103,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-19.png",
+					"region": {
+						"x": 205,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-20.png",
+					"region": {
+						"x": 307,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-21.png",
+					"region": {
+						"x": 409,
+						"y": 199,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-23.png",
+					"region": {
+						"x": 1,
+						"y": 265,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-24.png",
+					"region": {
+						"x": 103,
+						"y": 265,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-25.png",
+					"region": {
+						"x": 205,
+						"y": 265,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-26.png",
+					"region": {
+						"x": 307,
+						"y": 265,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-27.png",
+					"region": {
+						"x": 409,
+						"y": 265,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-28.png",
+					"region": {
+						"x": 1,
+						"y": 331,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-29.png",
+					"region": {
+						"x": 103,
+						"y": 331,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-30.png",
+					"region": {
+						"x": 205,
+						"y": 331,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-31.png",
+					"region": {
+						"x": 307,
+						"y": 331,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-32.png",
+					"region": {
+						"x": 409,
+						"y": 331,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-33.png",
+					"region": {
+						"x": 1,
+						"y": 397,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-34.png",
+					"region": {
+						"x": 103,
+						"y": 397,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-35.png",
+					"region": {
+						"x": 205,
+						"y": 397,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-36.png",
+					"region": {
+						"x": 307,
+						"y": 397,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-37.png",
+					"region": {
+						"x": 409,
+						"y": 397,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-38.png",
+					"region": {
+						"x": 1,
+						"y": 463,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-39.png",
+					"region": {
+						"x": 103,
+						"y": 463,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-43.png",
+					"region": {
+						"x": 205,
+						"y": 463,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-44.png",
+					"region": {
+						"x": 307,
+						"y": 463,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-46.png",
+					"region": {
+						"x": 409,
+						"y": 463,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-47.png",
+					"region": {
+						"x": 1,
+						"y": 529,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-48.png",
+					"region": {
+						"x": 103,
+						"y": 529,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-49.png",
+					"region": {
+						"x": 205,
+						"y": 529,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-57.png",
+					"region": {
+						"x": 307,
+						"y": 529,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-58.png",
+					"region": {
+						"x": 409,
+						"y": 529,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-60.png",
+					"region": {
+						"x": 1,
+						"y": 595,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-61.png",
+					"region": {
+						"x": 1,
+						"y": 661,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-62.png",
+					"region": {
+						"x": 1,
+						"y": 727,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-63.png",
+					"region": {
+						"x": 1,
+						"y": 793,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-64.png",
+					"region": {
+						"x": 1,
+						"y": 859,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-59.png",
+					"region": {
+						"x": 1,
+						"y": 925,
+						"w": 100,
+						"h": 47
+					},
+					"margin": {
+						"x": 0,
+						"y": 17,
+						"w": 0,
+						"h": 17
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-65.png",
+					"region": {
+						"x": 103,
+						"y": 595,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-66.png",
+					"region": {
+						"x": 205,
+						"y": 595,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-67.png",
+					"region": {
+						"x": 307,
+						"y": 595,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-68.png",
+					"region": {
+						"x": 409,
+						"y": 595,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-69.png",
+					"region": {
+						"x": 103,
+						"y": 661,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-70.png",
+					"region": {
+						"x": 103,
+						"y": 727,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-71.png",
+					"region": {
+						"x": 103,
+						"y": 793,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-72.png",
+					"region": {
+						"x": 103,
+						"y": 859,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-42.png",
+					"region": {
+						"x": 103,
+						"y": 925,
+						"w": 95,
+						"h": 47
+					},
+					"margin": {
+						"x": 5,
+						"y": 17,
+						"w": 5,
+						"h": 17
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-52.png",
+					"region": {
+						"x": 200,
+						"y": 925,
+						"w": 95,
+						"h": 39
+					},
+					"margin": {
+						"x": 5,
+						"y": 0,
+						"w": 5,
+						"h": 25
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-73.png",
+					"region": {
+						"x": 297,
+						"y": 661,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-40.png",
+					"region": {
+						"x": 205,
+						"y": 661,
+						"w": 87,
+						"h": 64
+					},
+					"margin": {
+						"x": 13,
+						"y": 0,
+						"w": 13,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-74.png",
+					"region": {
+						"x": 399,
+						"y": 661,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-54.png",
+					"region": {
+						"x": 297,
+						"y": 727,
+						"w": 100,
+						"h": 63
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 1
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-45.png",
+					"region": {
+						"x": 205,
+						"y": 727,
+						"w": 87,
+						"h": 64
+					},
+					"margin": {
+						"x": 13,
+						"y": 0,
+						"w": 13,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-55.png",
+					"region": {
+						"x": 399,
+						"y": 727,
+						"w": 100,
+						"h": 63
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 1
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-15.png",
+					"region": {
+						"x": 205,
+						"y": 793,
+						"w": 95,
+						"h": 64
+					},
+					"margin": {
+						"x": 5,
+						"y": 0,
+						"w": 5,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-16.png",
+					"region": {
+						"x": 205,
+						"y": 859,
+						"w": 95,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 5,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-53.png",
+					"region": {
+						"x": 302,
+						"y": 792,
+						"w": 100,
+						"h": 59
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 5
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-56.png",
+					"region": {
+						"x": 404,
+						"y": 792,
+						"w": 100,
+						"h": 55
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 9
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-41.png",
+					"region": {
+						"x": 404,
+						"y": 849,
+						"w": 95,
+						"h": 63
+					},
+					"margin": {
+						"x": 0,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-51.png",
+					"region": {
+						"x": 302,
+						"y": 853,
+						"w": 95,
+						"h": 55
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 5,
+						"h": 9
+					}
+				},
+				{
+					"filename": "decorative_cracks_floor-50.png",
+					"region": {
+						"x": 302,
+						"y": 910,
+						"w": 91,
+						"h": 63
+					},
+					"margin": {
+						"x": 9,
+						"y": 0,
+						"w": 9,
+						"h": 1
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:5618ddcc52b4815030dc94ea33d9dd1e:2b21515e23a75fa938c6af69be062857:5f971eb0b3c539bec8a6aa6cf9a57b4c$"
+	}
+}
