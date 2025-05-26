@@ -6,7 +6,8 @@
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
-LevelManager::LevelManager()
+LevelManager::LevelManager(const std::filesystem::path& basePath)
+    : basePath(basePath)
 {
     // Initialize the level manager
     collisionManager = new CollisionManager();
@@ -22,11 +23,10 @@ LevelManager::~LevelManager() {
 }
 bool LevelManager::initialize() {
     // Set the path to the levels directory
-    std::string exec_path = fs::current_path().string();
-    std::cout << "[LevelManager] Executable path: " << exec_path << "\n";
+    std::cout << "[LevelManager] Base SOS project path: " << basePath << "\n";
     //from this directory, go to SOS/assets/levels
-    currentJsonFilePath_ = fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "levels";
-    std::cout << "[LevelManager] Current path: " << exec_path << "\n";
+    currentJsonFilePath_ = basePath / "SOS" / "assets" / "levels";
+    std::cout << "[LevelManager] Current path: " << basePath << "\n";
     std::cout << "[LevelManager] Initializing from directory: "
               << currentJsonFilePath_ << "\n";
 

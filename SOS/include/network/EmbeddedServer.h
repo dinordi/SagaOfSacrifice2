@@ -29,7 +29,7 @@ class CollisionManager;
  */
 class EmbeddedServer {
 public:
-    EmbeddedServer(int port);
+    EmbeddedServer(int port, const std::filesystem::path& basePath);
     ~EmbeddedServer();
     
     // Start the server
