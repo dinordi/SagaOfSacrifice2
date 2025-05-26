@@ -121,23 +121,30 @@ void distribute_sprites_over_pipelines(volatile uint64_t *frame_infos[NUM_PIPELI
     const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
+    const uint16_t X_START = 133;
+    const uint16_t Y_START = 50;
+    const uint16_t X_MAX = 2050 - SPRITE_WIDTH;
+    const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
 
     int sprites_in_pipeline[NUM_PIPELINES] = {0};
 
-    uint16_t x = 100;
-    uint16_t y = 50;
+    uint16_t x = X_START;
+    uint16_t y = Y_START;
 
     for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
         int pipeline = sprite_idx % NUM_PIPELINES;
         int index_in_pipeline = sprites_in_pipeline[pipeline];
-        
+
         write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
         sprites_in_pipeline[pipeline]++;
 
         x += SPRITE_WIDTH;
-        if (x > 2050) {
-            x = 100;
+        if (x > X_MAX) {
+            x = X_START;
             y += SPRITE_HEIGHT;
+            if (y > Y_MAX) {
+                y = Y_START;
+            }
         }
     }
 
