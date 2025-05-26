@@ -1,0 +1,138 @@
+{
+	"textures": [
+		{
+			"image": "minotaurus_idle",
+			"size": {
+				"w": 250,
+				"h": 256
+			},
+			"sprites": [
+				{
+					"filename": "minotaurus_idle-3.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 80,
+						"h": 86
+					},
+					"margin": {
+						"x": 36,
+						"y": 59,
+						"w": 112,
+						"h": 106
+					}
+				},
+				{
+					"filename": "minotaurus_idle-2.png",
+					"region": {
+						"x": 83,
+						"y": 1,
+						"w": 80,
+						"h": 85
+					},
+					"margin": {
+						"x": 36,
+						"y": 60,
+						"w": 112,
+						"h": 107
+					}
+				},
+				{
+					"filename": "minotaurus_idle-7.png",
+					"region": {
+						"x": 1,
+						"y": 89,
+						"w": 80,
+						"h": 86
+					},
+					"margin": {
+						"x": 75,
+						"y": 59,
+						"w": 112,
+						"h": 106
+					}
+				},
+				{
+					"filename": "minotaurus_idle-6.png",
+					"region": {
+						"x": 165,
+						"y": 1,
+						"w": 80,
+						"h": 85
+					},
+					"margin": {
+						"x": 75,
+						"y": 60,
+						"w": 112,
+						"h": 107
+					}
+				},
+				{
+					"filename": "minotaurus_idle-5.png",
+					"region": {
+						"x": 83,
+						"y": 88,
+						"w": 54,
+						"h": 88
+					},
+					"margin": {
+						"x": 68,
+						"y": 57,
+						"w": 138,
+						"h": 104
+					}
+				},
+				{
+					"filename": "minotaurus_idle-4.png",
+					"region": {
+						"x": 139,
+						"y": 88,
+						"w": 54,
+						"h": 86
+					},
+					"margin": {
+						"x": 68,
+						"y": 59,
+						"w": 138,
+						"h": 106
+					}
+				},
+				{
+					"filename": "minotaurus_idle-1.png",
+					"region": {
+						"x": 195,
+						"y": 88,
+						"w": 54,
+						"h": 83
+					},
+					"margin": {
+						"x": 68,
+						"y": 62,
+						"w": 138,
+						"h": 109
+					}
+				},
+				{
+					"filename": "minotaurus_idle",
+					"region": {
+						"x": 195,
+						"y": 173,
+						"w": 54,
+						"h": 82
+					},
+					"margin": {
+						"x": 68,
+						"y": 63,
+						"w": 138,
+						"h": 110
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:c0474b643e36c427509a21d2306a86eb:ca7e591357fa93294323db8be4f6c4b8:ac9cc4118a43c97c2bc40e504ce3f7ac$"
+	}
+}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <filesystem>
 
 Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96, 96), objID, ObjectType::MINOTAUR) {
     // Call the other constructor's setup code
@@ -15,24 +16,33 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
     detectionRange = 400.0f;
     moveSpeed = 100.0f;
 
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+
     // Set up animations
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("minotaurus_idle", 192, 192, 2), 100, true);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+    addSpriteSheet(AnimationState::IDLE, basePath / "minotaurus_idle.tpsheet");
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("minotaurus_walk", 192, 192, 8), 150, true);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+    addSpriteSheet(AnimationState::WALKING, basePath / "minotaurus_walk.tpsheet");
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
 
-    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("minotaurus_slash", 192, 192, 5), 80, false);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
+    addSpriteSheet(AnimationState::ATTACKING, basePath / "minotaurus_slash.tpsheet");
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);

@@ -1,0 +1,108 @@
+{
+	"textures": [
+		{
+			"image": "crack_animation",
+			"size": {
+				"w": 1548,
+				"h": 226
+			},
+			"sprites": [
+				{
+					"filename": "decorative_cracks_coasts_animation",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_coasts_animation-1.png",
+					"region": {
+						"x": 259,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_coasts_animation-2.png",
+					"region": {
+						"x": 517,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_coasts_animation-3.png",
+					"region": {
+						"x": 775,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_coasts_animation-4.png",
+					"region": {
+						"x": 1033,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "decorative_cracks_coasts_animation-5.png",
+					"region": {
+						"x": 1291,
+						"y": 1,
+						"w": 256,
+						"h": 224
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:9e332ad020a8c19612efe44af71e5ef4:af71c2d778e86a90628fb18ef1d5ee16:06314ef31709b3f74269f3577371b2db$"
+	}
+}

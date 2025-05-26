@@ -1,0 +1,498 @@
+{
+	"textures": [
+		{
+			"image": "orc2_run",
+			"size": {
+				"w": 944,
+				"h": 548
+			},
+			"sprites": [
+				{
+					"filename": "orc2_run_full-1.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 138,
+						"h": 114
+					},
+					"margin": {
+						"x": 43,
+						"y": 71,
+						"w": 118,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-5.png",
+					"region": {
+						"x": 141,
+						"y": 1,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 47,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-9.png",
+					"region": {
+						"x": 285,
+						"y": 1,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 71,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-13.png",
+					"region": {
+						"x": 429,
+						"y": 1,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 67,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-17.png",
+					"region": {
+						"x": 573,
+						"y": 1,
+						"w": 98,
+						"h": 114
+					},
+					"margin": {
+						"x": 75,
+						"y": 71,
+						"w": 158,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-21.png",
+					"region": {
+						"x": 673,
+						"y": 1,
+						"w": 90,
+						"h": 114
+					},
+					"margin": {
+						"x": 83,
+						"y": 71,
+						"w": 166,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-25.png",
+					"region": {
+						"x": 765,
+						"y": 1,
+						"w": 86,
+						"h": 114
+					},
+					"margin": {
+						"x": 83,
+						"y": 71,
+						"w": 170,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-29.png",
+					"region": {
+						"x": 853,
+						"y": 1,
+						"w": 86,
+						"h": 114
+					},
+					"margin": {
+						"x": 83,
+						"y": 71,
+						"w": 170,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc2_run_full-18.png",
+					"region": {
+						"x": 1,
+						"y": 117,
+						"w": 98,
+						"h": 134
+					},
+					"margin": {
+						"x": 75,
+						"y": 51,
+						"w": 158,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_run_full-22.png",
+					"region": {
+						"x": 101,
+						"y": 117,
+						"w": 82,
+						"h": 134
+					},
+					"margin": {
+						"x": 83,
+						"y": 51,
+						"w": 174,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_run_full-26.png",
+					"region": {
+						"x": 185,
+						"y": 117,
+						"w": 86,
+						"h": 134
+					},
+					"margin": {
+						"x": 83,
+						"y": 51,
+						"w": 170,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_run_full-30.png",
+					"region": {
+						"x": 273,
+						"y": 117,
+						"w": 82,
+						"h": 134
+					},
+					"margin": {
+						"x": 87,
+						"y": 51,
+						"w": 174,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc2_run_full",
+					"region": {
+						"x": 357,
+						"y": 117,
+						"w": 134,
+						"h": 138
+					},
+					"margin": {
+						"x": 47,
+						"y": 47,
+						"w": 122,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-2.png",
+					"region": {
+						"x": 493,
+						"y": 117,
+						"w": 142,
+						"h": 138
+					},
+					"margin": {
+						"x": 43,
+						"y": 47,
+						"w": 114,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-4.png",
+					"region": {
+						"x": 637,
+						"y": 117,
+						"w": 150,
+						"h": 138
+					},
+					"margin": {
+						"x": 43,
+						"y": 47,
+						"w": 106,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-6.png",
+					"region": {
+						"x": 789,
+						"y": 117,
+						"w": 142,
+						"h": 138
+					},
+					"margin": {
+						"x": 47,
+						"y": 47,
+						"w": 114,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-8.png",
+					"region": {
+						"x": 1,
+						"y": 253,
+						"w": 134,
+						"h": 138
+					},
+					"margin": {
+						"x": 75,
+						"y": 47,
+						"w": 122,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-10.png",
+					"region": {
+						"x": 137,
+						"y": 253,
+						"w": 146,
+						"h": 138
+					},
+					"margin": {
+						"x": 67,
+						"y": 47,
+						"w": 110,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-12.png",
+					"region": {
+						"x": 285,
+						"y": 257,
+						"w": 150,
+						"h": 138
+					},
+					"margin": {
+						"x": 63,
+						"y": 47,
+						"w": 106,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-14.png",
+					"region": {
+						"x": 437,
+						"y": 257,
+						"w": 142,
+						"h": 138
+					},
+					"margin": {
+						"x": 67,
+						"y": 47,
+						"w": 114,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-16.png",
+					"region": {
+						"x": 581,
+						"y": 257,
+						"w": 94,
+						"h": 138
+					},
+					"margin": {
+						"x": 79,
+						"y": 47,
+						"w": 162,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-20.png",
+					"region": {
+						"x": 677,
+						"y": 257,
+						"w": 90,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 166,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-24.png",
+					"region": {
+						"x": 769,
+						"y": 257,
+						"w": 86,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 170,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-28.png",
+					"region": {
+						"x": 857,
+						"y": 257,
+						"w": 86,
+						"h": 138
+					},
+					"margin": {
+						"x": 83,
+						"y": 47,
+						"w": 170,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc2_run_full-19.png",
+					"region": {
+						"x": 1,
+						"y": 393,
+						"w": 90,
+						"h": 146
+					},
+					"margin": {
+						"x": 79,
+						"y": 39,
+						"w": 166,
+						"h": 110
+					}
+				},
+				{
+					"filename": "orc2_run_full-23.png",
+					"region": {
+						"x": 93,
+						"y": 393,
+						"w": 82,
+						"h": 146
+					},
+					"margin": {
+						"x": 87,
+						"y": 39,
+						"w": 174,
+						"h": 110
+					}
+				},
+				{
+					"filename": "orc2_run_full-27.png",
+					"region": {
+						"x": 177,
+						"y": 393,
+						"w": 82,
+						"h": 146
+					},
+					"margin": {
+						"x": 87,
+						"y": 39,
+						"w": 174,
+						"h": 110
+					}
+				},
+				{
+					"filename": "orc2_run_full-31.png",
+					"region": {
+						"x": 261,
+						"y": 397,
+						"w": 86,
+						"h": 146
+					},
+					"margin": {
+						"x": 83,
+						"y": 39,
+						"w": 170,
+						"h": 110
+					}
+				},
+				{
+					"filename": "orc2_run_full-7.png",
+					"region": {
+						"x": 349,
+						"y": 397,
+						"w": 134,
+						"h": 150
+					},
+					"margin": {
+						"x": 51,
+						"y": 35,
+						"w": 122,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc2_run_full-3.png",
+					"region": {
+						"x": 485,
+						"y": 397,
+						"w": 154,
+						"h": 150
+					},
+					"margin": {
+						"x": 39,
+						"y": 35,
+						"w": 102,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc2_run_full-11.png",
+					"region": {
+						"x": 641,
+						"y": 397,
+						"w": 154,
+						"h": 150
+					},
+					"margin": {
+						"x": 63,
+						"y": 35,
+						"w": 102,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc2_run_full-15.png",
+					"region": {
+						"x": 797,
+						"y": 397,
+						"w": 134,
+						"h": 150
+					},
+					"margin": {
+						"x": 71,
+						"y": 35,
+						"w": 122,
+						"h": 106
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:41815cd9592cd4a245b8f84efa00cc12:826894ae56cfe4486d7aee46378dc7a7:855e6dbe0398eca99479dd5422b46956$"
+	}
+}

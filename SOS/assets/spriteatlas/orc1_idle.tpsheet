@@ -1,0 +1,258 @@
+{
+	"textures": [
+		{
+			"image": "orc1_idle",
+			"size": {
+				"w": 1888,
+				"h": 136
+			},
+			"sprites": [
+				{
+					"filename": "orc1_idle_full-2.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 154,
+						"h": 134
+					},
+					"margin": {
+						"x": 27,
+						"y": 51,
+						"w": 102,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-6.png",
+					"region": {
+						"x": 157,
+						"y": 1,
+						"w": 154,
+						"h": 134
+					},
+					"margin": {
+						"x": 71,
+						"y": 51,
+						"w": 102,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-1.png",
+					"region": {
+						"x": 313,
+						"y": 1,
+						"w": 150,
+						"h": 134
+					},
+					"margin": {
+						"x": 31,
+						"y": 51,
+						"w": 106,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-5.png",
+					"region": {
+						"x": 465,
+						"y": 1,
+						"w": 150,
+						"h": 134
+					},
+					"margin": {
+						"x": 71,
+						"y": 51,
+						"w": 106,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-10.png",
+					"region": {
+						"x": 617,
+						"y": 1,
+						"w": 90,
+						"h": 134
+					},
+					"margin": {
+						"x": 79,
+						"y": 51,
+						"w": 166,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-9.png",
+					"region": {
+						"x": 709,
+						"y": 1,
+						"w": 86,
+						"h": 134
+					},
+					"margin": {
+						"x": 79,
+						"y": 51,
+						"w": 170,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-13.png",
+					"region": {
+						"x": 797,
+						"y": 1,
+						"w": 82,
+						"h": 134
+					},
+					"margin": {
+						"x": 87,
+						"y": 51,
+						"w": 174,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-14.png",
+					"region": {
+						"x": 881,
+						"y": 1,
+						"w": 82,
+						"h": 134
+					},
+					"margin": {
+						"x": 87,
+						"y": 51,
+						"w": 174,
+						"h": 122
+					}
+				},
+				{
+					"filename": "orc1_idle_full-3.png",
+					"region": {
+						"x": 965,
+						"y": 1,
+						"w": 150,
+						"h": 130
+					},
+					"margin": {
+						"x": 31,
+						"y": 55,
+						"w": 106,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-7.png",
+					"region": {
+						"x": 1117,
+						"y": 1,
+						"w": 150,
+						"h": 130
+					},
+					"margin": {
+						"x": 71,
+						"y": 55,
+						"w": 106,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full",
+					"region": {
+						"x": 1269,
+						"y": 1,
+						"w": 138,
+						"h": 130
+					},
+					"margin": {
+						"x": 39,
+						"y": 55,
+						"w": 118,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-4.png",
+					"region": {
+						"x": 1409,
+						"y": 1,
+						"w": 138,
+						"h": 130
+					},
+					"margin": {
+						"x": 75,
+						"y": 55,
+						"w": 118,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-11.png",
+					"region": {
+						"x": 1549,
+						"y": 1,
+						"w": 86,
+						"h": 130
+					},
+					"margin": {
+						"x": 79,
+						"y": 55,
+						"w": 170,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-8.png",
+					"region": {
+						"x": 1637,
+						"y": 1,
+						"w": 82,
+						"h": 130
+					},
+					"margin": {
+						"x": 83,
+						"y": 55,
+						"w": 174,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-12.png",
+					"region": {
+						"x": 1721,
+						"y": 1,
+						"w": 82,
+						"h": 130
+					},
+					"margin": {
+						"x": 87,
+						"y": 55,
+						"w": 174,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc1_idle_full-15.png",
+					"region": {
+						"x": 1805,
+						"y": 1,
+						"w": 82,
+						"h": 130
+					},
+					"margin": {
+						"x": 87,
+						"y": 55,
+						"w": 174,
+						"h": 126
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:72174aed9ed3f661ceefb5f7ae430f64:952a5d2f816dc9a2eae7bdb735b44b12:44943d1b0814dee847d2673e8e632551$"
+	}
+}
