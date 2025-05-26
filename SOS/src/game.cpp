@@ -172,7 +172,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     std::cout << "[Game] Setting up single player with embedded server" << std::endl;
     
     // Start the embedded server
-    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT)) {
+    if (!localServerManager->startEmbeddedServer(LOCAL_SERVER_PORT, basePath_)) {
         std::cerr << "[Game] Failed to start embedded server" << std::endl;
         return false;
     }
@@ -220,6 +220,7 @@ void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serve
 }
 
 void Game::initializeServerConfig(const std::string& basePath) {
+    this->basePath_ = std::filesystem::path(basePath);
     std::filesystem::path configPath = std::filesystem::path(basePath) / "SOS" / "assets" / "server.json";
     std::cout << "[Game] Loading server configuration from: " << configPath.string() << std::endl;
     

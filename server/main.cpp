@@ -2,7 +2,7 @@
 #include <csignal>
 #include <chrono>
 #include <thread>
-
+#include <filesystem>
 #include "network/EmbeddedServer.h"
 
 // Default server port
@@ -51,9 +51,18 @@ int main(int argc, char* argv[]) {
         std::signal(SIGINT, signalHandler);
         std::signal(SIGTERM, signalHandler);
         
+        std::filesystem::path basePath = std::filesystem::current_path();
+        // Edit path so it ends at /SagaOfSacrifice2/ i.e. remove /server/build
+        basePath = basePath.parent_path().parent_path();
+        if (!std::filesystem::exists(basePath)) {
+            std::cerr << "Base path does not exist: " << basePath.string() << std::endl;
+            return 1;
+        }
+        std::cout << "Using base path: " << basePath.string() << std::endl;
+
         // Create and start server
         std::cout << "Initializing server on port " << port << std::endl;
-        g_server = std::make_unique<EmbeddedServer>(port);
+        g_server = std::make_unique<EmbeddedServer>(port, basePath);
         g_server->start();
         
         std::cout << "Server running on port " << port << std::endl;
