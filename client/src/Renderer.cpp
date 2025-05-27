@@ -1,13 +1,13 @@
 #include <iostream>
-#include <fstream>
-#include <thread>
-#include <stdexcept>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/mman.h>
+#include <poll.h>
+#include <stdexcept>
 #include <cstring>
 
 #include "Renderer.h"
-#include "SpriteLoader.h"
+#include "fpga/spriteloader.h"
 
 Renderer::Renderer(const std::string& img_path)
     : stop_thread(false),
@@ -74,19 +74,13 @@ void Renderer::initUIO() {
 Renderer::~Renderer()
 {
     // Unmap the DMA virtual address
-    if (dma_virtual_addr != MAP_FAILED) {
-        munmap(dma_virtual_addr, 4096);
-    }
-    if (virtual_src_addr != MAP_FAILED) {
-        munmap(virtual_src_addr, 4096);
-    }
     
     stop_thread = true;
     if (irq_thread.joinable()) {
         irq_thread.join();
     }
 
-    close(ddr_memory);
+
     close(uio_fd);
 
 }
@@ -148,7 +142,7 @@ void Renderer::init_lookup_tables() {
             throw std::runtime_error("mmap failed");
         }
 
-        lookup_tables[i] = reinterpret_cast<volatile uint64_t*>(lookup_table_ptrs[i]);
+        lookup_tables[i] = (volatile uint64_t *)(lookup_table_ptrs[i]);
         // <<Write lookup table values here>>
         write_lookup_table_entry(lookup_tables[i], 1, SPRITE_DATA_BASE, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
@@ -171,7 +165,7 @@ void Renderer::init_frame_infos() {
             throw std::runtime_error("mmap failed");
         }
 
-        frame_infos[i] = reinterpret_cast<volatile uint64_t*>(frame_info_ptrs[i]);
+        frame_infos[i] = (volatile uint64_t *)(frame_info_ptrs[i]);
     }
 
     close(fd);
@@ -210,4 +204,38 @@ void Renderer::distribute_sprites_over_pipelines() {
     for (int i = 0; i < NUM_PIPELINES; i++) {
         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
+}
+
+// Lookup table entry schrijven
+void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int index, uint32_t sprite_data_base, uint16_t width, uint16_t height) {
+    if (lookup_table == nullptr) {
+        printf("Error: lookup_table pointer is NULL\n");
+        return; // Of: throw std::runtime_error("lookup_table pointer is NULL");
+    }
+
+    uint64_t value = ((uint64_t)sprite_data_base << 23) |
+                     ((uint64_t)height << 12) |
+                     width;
+
+    lookup_table[index] = value;
+
+    printf("Lookup Table [%d]:\n", index);
+    printf("  Base Addr = 0x%08X\n", sprite_data_base);
+    printf("  Width     = %u\n", width);
+    printf("  Height    = %u\n", height);
+    printf("  Value(hex)= 0x%016llX\n", value);
+}
+
+// ─────────────────────────────────────────────
+void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
+    if (frame_info_arr == nullptr) {
+        printf("Error: frame_info_arr pointer is NULL\n");
+        return; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
+    }
+
+    uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
+    frame_info_arr[index] = base_value;
+
+    //printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", index, x, y, sprite_id);
+    //printf("  Value (hex): 0x%016llX\n", base_value);
 }

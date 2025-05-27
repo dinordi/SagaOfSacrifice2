@@ -225,7 +225,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     // Initialize the mapped region to 0xFFFFFFFF before copying
     std::cout << "Initializing mapped region (" << mapped_size << " bytes) to 0xFFFFFFFF..." << std::endl;
     memset(mapped_mem, 0xFF, mapped_size);
-
+    std::cout << "reset to white" << std::endl;
     // Copy the actual sprite data (currently commented out)
     // std::cout << "Copying " << sprite_size << " bytes to virtual address " << mapped_mem
     //           << " (physical 0x" << std::hex << *phys_addr << std::dec << ")" << std::endl;
