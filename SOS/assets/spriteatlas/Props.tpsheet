@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "Props-0.png",
+			"image": "Props",
 			"size": {
 				"w": 1452,
 				"h": 512
@@ -518,7 +518,7 @@
 					}
 				},
 				{
-					"filename": "TX Props-0.png",
+					"filename": "TX Props",
 					"region": {
 						"x": 757,
 						"y": 1,

@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc3_death-0.png",
+			"image": "orc3_death",
 			"size": {
 				"w": 1008,
 				"h": 676
@@ -458,7 +458,7 @@
 					}
 				},
 				{
-					"filename": "orc3_death_full-0.png",
+					"filename": "orc3_death_full",
 					"region": {
 						"x": 437,
 						"y": 505,

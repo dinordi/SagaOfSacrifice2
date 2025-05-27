@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime_attack-0.png",
+			"image": "slime_attack",
 			"size": {
 				"w": 127,
 				"h": 376
@@ -473,7 +473,7 @@
 					}
 				},
 				{
-					"filename": "Slime1_Attack_body-0.png",
+					"filename": "Slime1_Attack_body",
 					"region": {
 						"x": 35,
 						"y": 342,

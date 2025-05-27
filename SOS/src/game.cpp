@@ -42,7 +42,16 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // objects = levelManager_->getCurrentLevel()->getObjects(); // Get the objects from the level manager
     // Create player using PlayerManager
     // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
-    
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+    basePath_ = basePath; // Store base path for later use
+
     // Set player's input handler
     player = new Player(500, 100, playerID);
     player->setInput(input);
@@ -99,6 +108,8 @@ void Game::mapCharacters()
     for (const auto& pair : characterMap) {
         std::cout << pair.first << " -> " << pair.second << std::endl;
     }
+    this->letters = new SpriteData(basePath_ / "letters.tpsheet");
+    this->letters_small = new SpriteData(basePath_ / "letters_small.tpsheet");
 
     characterMap['>'] = 36;
 }
@@ -473,11 +484,11 @@ void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
             Actor* character;
             if(letterSize == 0)
             {
-                character = new Actor(Vec2(x,y), new SpriteData("letters", letterWidth, letterWidth, 3), index);
+                character = new Actor(Vec2(x,y), new SpriteData(*letters), index);
             }
             else
             {
-                character = new Actor(Vec2(x,y), new SpriteData("letters_small", letterWidth, letterWidth, 3), index);
+                character = new Actor(Vec2(x,y), new SpriteData(*letters_small), index);
             }
             actors.push_back(character);
             x += letterWidth; // Move to the right for the next character
@@ -498,7 +509,7 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     // Clear any existing actors at this position (to refresh selection highlight)
     if (isSelected) {
         // Add a simple visual indicator for the selected item
-        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData("letters", 64, 64, 3), 36);
+        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData(*this->letters), 36);
         actors.push_back(selector);
     }
     

@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "slime3_idle-0.png",
+			"image": "slime3_idle",
 			"size": {
 				"w": 24,
 				"h": 772
 			},
 			"sprites": [
 				{
-					"filename": "Slime3_Idle_body-0.png",
+					"filename": "Slime3_Idle_body",
 					"region": {
 						"x": 1,
 						"y": 1,

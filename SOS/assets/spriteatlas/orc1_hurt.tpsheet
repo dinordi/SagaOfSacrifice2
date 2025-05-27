@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc1_hurt-0.png",
+			"image": "orc1_hurt",
 			"size": {
 				"w": 248,
 				"h": 960
@@ -323,7 +323,7 @@
 					}
 				},
 				{
-					"filename": "orc1_hurt_full-0.png",
+					"filename": "orc1_hurt_full",
 					"region": {
 						"x": 1,
 						"y": 829,

@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "letters_small-0.png",
+			"image": "letters_small",
 			"size": {
 				"w": 249,
 				"h": 165
 			},
 			"sprites": [
 				{
-					"filename": "letters_small-0.png",
+					"filename": "letters_small",
 					"region": {
 						"x": 1,
 						"y": 1,
@@ -113,21 +113,6 @@
 					}
 				},
 				{
-					"filename": "letters_small-8.png",
-					"region": {
-						"x": 232,
-						"y": 1,
-						"w": 16,
-						"h": 31
-					},
-					"margin": {
-						"x": 10,
-						"y": 1,
-						"w": 16,
-						"h": 1
-					}
-				},
-				{
 					"filename": "letters_small-7.png",
 					"region": {
 						"x": 1,
@@ -139,6 +124,21 @@
 						"x": 1,
 						"y": 1,
 						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-8.png",
+					"region": {
+						"x": 232,
+						"y": 1,
+						"w": 16,
+						"h": 31
+					},
+					"margin": {
+						"x": 10,
+						"y": 1,
+						"w": 16,
 						"h": 1
 					}
 				},
@@ -169,6 +169,21 @@
 						"x": 1,
 						"y": 1,
 						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-11.png",
+					"region": {
+						"x": 132,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
 						"h": 1
 					}
 				},
@@ -278,6 +293,21 @@
 					}
 				},
 				{
+					"filename": "letters_small-19.png",
+					"region": {
+						"x": 161,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
 					"filename": "letters_small-20.png",
 					"region": {
 						"x": 100,
@@ -338,6 +368,21 @@
 					}
 				},
 				{
+					"filename": "letters_small-24.png",
+					"region": {
+						"x": 190,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
 					"filename": "letters_small-25.png",
 					"region": {
 						"x": 1,
@@ -364,6 +409,21 @@
 						"x": 1,
 						"y": 1,
 						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-27.png",
+					"region": {
+						"x": 219,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
 						"h": 1
 					}
 				},
@@ -500,66 +560,6 @@
 						"y": 3,
 						"w": 2,
 						"h": 9
-					}
-				},
-				{
-					"filename": "letters_small-11.png",
-					"region": {
-						"x": 132,
-						"y": 133,
-						"w": 27,
-						"h": 31
-					},
-					"margin": {
-						"x": 4,
-						"y": 1,
-						"w": 5,
-						"h": 1
-					}
-				},
-				{
-					"filename": "letters_small-19.png",
-					"region": {
-						"x": 161,
-						"y": 133,
-						"w": 27,
-						"h": 31
-					},
-					"margin": {
-						"x": 4,
-						"y": 1,
-						"w": 5,
-						"h": 1
-					}
-				},
-				{
-					"filename": "letters_small-24.png",
-					"region": {
-						"x": 190,
-						"y": 133,
-						"w": 27,
-						"h": 31
-					},
-					"margin": {
-						"x": 4,
-						"y": 1,
-						"w": 5,
-						"h": 1
-					}
-				},
-				{
-					"filename": "letters_small-27.png",
-					"region": {
-						"x": 219,
-						"y": 133,
-						"w": 27,
-						"h": 31
-					},
-					"margin": {
-						"x": 4,
-						"y": 1,
-						"w": 5,
-						"h": 1
 					}
 				}
 			]

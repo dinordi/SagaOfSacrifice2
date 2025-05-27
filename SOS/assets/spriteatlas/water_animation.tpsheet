@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "water_animation-0.png",
+			"image": "water_animation",
 			"size": {
 				"w": 1690,
 				"h": 1588
@@ -53,7 +53,7 @@
 					}
 				},
 				{
-					"filename": "water_details_animation-0.png",
+					"filename": "water_details_animation",
 					"region": {
 						"x": 1131,
 						"y": 1,

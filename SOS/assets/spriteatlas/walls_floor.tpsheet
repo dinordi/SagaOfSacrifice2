@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "walls_floor-0.png",
+			"image": "walls_floor",
 			"size": {
 				"w": 676,
 				"h": 456
@@ -53,7 +53,7 @@
 					}
 				},
 				{
-					"filename": "walls_floor-0.png",
+					"filename": "walls_floor",
 					"region": {
 						"x": 511,
 						"y": 253,

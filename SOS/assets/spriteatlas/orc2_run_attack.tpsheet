@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc2_run_attack-0.png",
+			"image": "orc2_run_attack",
 			"size": {
 				"w": 1020,
 				"h": 762
@@ -113,7 +113,7 @@
 					}
 				},
 				{
-					"filename": "orc2_run_attack_full-0.png",
+					"filename": "orc2_run_attack_full",
 					"region": {
 						"x": 135,
 						"y": 123,

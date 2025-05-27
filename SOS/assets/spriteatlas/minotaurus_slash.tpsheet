@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "minotaurus_slash-0.png",
+			"image": "minotaurus_slash",
 			"size": {
 				"w": 256,
 				"h": 567
 			},
 			"sprites": [
 				{
-					"filename": "minotaurus_slash-0.png",
+					"filename": "minotaurus_slash",
 					"region": {
 						"x": 1,
 						"y": 1,

@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "player_walking-0.png",
+			"image": "player_walking",
 			"size": {
 				"w": 1400,
 				"h": 208
@@ -113,7 +113,7 @@
 					}
 				},
 				{
-					"filename": "player_walking-0.png",
+					"filename": "player_walking",
 					"region": {
 						"x": 276,
 						"y": 107,

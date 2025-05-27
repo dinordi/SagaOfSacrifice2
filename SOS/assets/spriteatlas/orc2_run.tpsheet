@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc2_run-0.png",
+			"image": "orc2_run",
 			"size": {
 				"w": 944,
 				"h": 548
@@ -188,7 +188,7 @@
 					}
 				},
 				{
-					"filename": "orc2_run_full-0.png",
+					"filename": "orc2_run_full",
 					"region": {
 						"x": 357,
 						"y": 117,

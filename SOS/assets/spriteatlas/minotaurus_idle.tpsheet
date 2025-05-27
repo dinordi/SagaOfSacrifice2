@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "minotaurus_idle-0.png",
+			"image": "minotaurus_idle",
 			"size": {
 				"w": 250,
 				"h": 256
@@ -23,21 +23,6 @@
 					}
 				},
 				{
-					"filename": "minotaurus_idle-7.png",
-					"region": {
-						"x": 1,
-						"y": 89,
-						"w": 80,
-						"h": 86
-					},
-					"margin": {
-						"x": 75,
-						"y": 59,
-						"w": 112,
-						"h": 106
-					}
-				},
-				{
 					"filename": "minotaurus_idle-2.png",
 					"region": {
 						"x": 83,
@@ -50,6 +35,21 @@
 						"y": 60,
 						"w": 112,
 						"h": 107
+					}
+				},
+				{
+					"filename": "minotaurus_idle-7.png",
+					"region": {
+						"x": 1,
+						"y": 89,
+						"w": 80,
+						"h": 86
+					},
+					"margin": {
+						"x": 75,
+						"y": 59,
+						"w": 112,
+						"h": 106
 					}
 				},
 				{
@@ -113,7 +113,7 @@
 					}
 				},
 				{
-					"filename": "minotaurus_idle-0.png",
+					"filename": "minotaurus_idle",
 					"region": {
 						"x": 195,
 						"y": 173,

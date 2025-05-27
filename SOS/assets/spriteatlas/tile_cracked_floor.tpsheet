@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "tile_cracked_floor-0.png",
+			"image": "tile_cracked_floor",
 			"size": {
 				"w": 510,
 				"h": 974
 			},
 			"sprites": [
 				{
-					"filename": "decorative_cracks_floor-0.png",
+					"filename": "decorative_cracks_floor",
 					"region": {
 						"x": 1,
 						"y": 1,

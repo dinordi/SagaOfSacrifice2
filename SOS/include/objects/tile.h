@@ -18,6 +18,7 @@ public:
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;
     bool isBreakable() const;
+    bool isCollidable() const override;
     
     TileType getTileType() const;
     void setTileType(TileType type);

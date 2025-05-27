@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime_idle-0.png",
+			"image": "slime_idle",
 			"size": {
 				"w": 119,
 				"h": 122
@@ -188,7 +188,7 @@
 					}
 				},
 				{
-					"filename": "Slime1_Idle_body-0.png",
+					"filename": "Slime1_Idle_body",
 					"region": {
 						"x": 26,
 						"y": 53,

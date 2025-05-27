@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "minotaurus_walk-0.png",
+			"image": "minotaurus_walk",
 			"size": {
 				"w": 226,
 				"h": 866
@@ -368,7 +368,7 @@
 					}
 				},
 				{
-					"filename": "minotaurus_walk-0.png",
+					"filename": "minotaurus_walk",
 					"region": {
 						"x": 1,
 						"y": 781,
