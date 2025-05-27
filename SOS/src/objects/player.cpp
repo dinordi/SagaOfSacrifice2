@@ -24,6 +24,7 @@ void Player::setupAnimations() {
     }
     auto basePath = std::filesystem::path(temp);
     basePath /= "SOS/assets/spriteatlas";
+    std::cout << "Got base path for player" << std::endl;
 
     addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 2,3);
@@ -163,10 +164,10 @@ void Player::takeDamage(int amount) {
     health -= amount;
     if (health <= 0) {
         // Handle player death
-        setAnimationState(AnimationState::DYING);
+        // setAnimationState(AnimationState::DYING);
     } else {
         // Briefly show hurt animation
-        setAnimationState(AnimationState::HURT);
+        // setAnimationState(AnimationState::HURT);
     }
 }
 

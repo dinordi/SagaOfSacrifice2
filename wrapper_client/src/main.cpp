@@ -574,7 +574,7 @@ SDL_Gamepad* getGamepad()
     if (targetInstanceID != 0) { // Check against the invalid ID 0
         gamepad = SDL_OpenGamepad(targetInstanceID);
         if (!gamepad) {
-            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", SDL_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_INPUT, "Could not open gamepad with ID %u! SDL Error: %s", targetInstanceID, SDL_GetError());
         } else {
             // Get the name from the opened gamepad handle (preferred method)
             const char* gamepadName = SDL_GetGamepadName(gamepad);

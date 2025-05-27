@@ -5,7 +5,7 @@
 #include <random>
 #include <filesystem>
 
-Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96, 96), objID, ObjectType::MINOTAUR) {
+Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR) {
     // Call the other constructor's setup code
     setvelocity(Vec2(0, 0));
     
@@ -15,30 +15,28 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
     attackRange = 120.0f;
     detectionRange = 400.0f;
     moveSpeed = 100.0f;
+}
 
-    std::filesystem::path base = std::filesystem::current_path();
-    std::string temp = base.string();
-    std::size_t pos = temp.find("SagaOfSacrifice2/");
-    if (pos != std::string::npos) {
-        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
-    }
-    auto basePath = std::filesystem::path(temp);
-    basePath /= "SOS/assets/spriteatlas";
+Minotaur::~Minotaur() {
+    // Clean up any resources
+}
 
+void Minotaur::setupAnimations(std::filesystem::path atlasPath)
+{
     // Set up animations
-    addSpriteSheet(AnimationState::IDLE, basePath / "minotaurus_idle.tpsheet");
+    addSpriteSheet(AnimationState::IDLE, atlasPath / "minotaurus_idle.tpsheet");
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
 
-    addSpriteSheet(AnimationState::WALKING, basePath / "minotaurus_walk.tpsheet");
+    addSpriteSheet(AnimationState::WALKING, atlasPath / "minotaurus_walk.tpsheet");
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
     animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
 
-    addSpriteSheet(AnimationState::ATTACKING, basePath / "minotaurus_slash.tpsheet");
+    addSpriteSheet(AnimationState::ATTACKING, atlasPath / "minotaurus_slash.tpsheet");
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
@@ -46,10 +44,6 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);
-}
-
-Minotaur::~Minotaur() {
-    // Clean up any resources
 }
 
 void Minotaur::move() {
@@ -69,9 +63,9 @@ void Minotaur::move() {
         } else {
             // Vertical movement is dominant
             if (velocity.y > 0) {
-                // dir = FacingDirection::SOUTH;
+                dir = FacingDirection::SOUTH;
             } else {
-                // dir = FacingDirection::NORTH;
+                dir = FacingDirection::NORTH;
             }
         }
     }

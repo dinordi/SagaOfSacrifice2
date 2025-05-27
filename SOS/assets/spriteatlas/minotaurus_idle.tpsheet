@@ -8,93 +8,18 @@
 			},
 			"sprites": [
 				{
-					"filename": "minotaurus_idle-3.png",
+					"filename": "minotaurus_idle",
 					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 80,
-						"h": 86
-					},
-					"margin": {
-						"x": 36,
-						"y": 59,
-						"w": 112,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_idle-2.png",
-					"region": {
-						"x": 83,
-						"y": 1,
-						"w": 80,
-						"h": 85
-					},
-					"margin": {
-						"x": 36,
-						"y": 60,
-						"w": 112,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_idle-7.png",
-					"region": {
-						"x": 1,
-						"y": 89,
-						"w": 80,
-						"h": 86
-					},
-					"margin": {
-						"x": 75,
-						"y": 59,
-						"w": 112,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_idle-6.png",
-					"region": {
-						"x": 165,
-						"y": 1,
-						"w": 80,
-						"h": 85
-					},
-					"margin": {
-						"x": 75,
-						"y": 60,
-						"w": 112,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_idle-5.png",
-					"region": {
-						"x": 83,
-						"y": 88,
+						"x": 195,
+						"y": 173,
 						"w": 54,
-						"h": 88
+						"h": 82
 					},
 					"margin": {
 						"x": 68,
-						"y": 57,
+						"y": 63,
 						"w": 138,
-						"h": 104
-					}
-				},
-				{
-					"filename": "minotaurus_idle-4.png",
-					"region": {
-						"x": 139,
-						"y": 88,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
+						"h": 110
 					}
 				},
 				{
@@ -113,18 +38,93 @@
 					}
 				},
 				{
-					"filename": "minotaurus_idle",
+					"filename": "minotaurus_idle-2.png",
 					"region": {
-						"x": 195,
-						"y": 173,
+						"x": 83,
+						"y": 1,
+						"w": 80,
+						"h": 85
+					},
+					"margin": {
+						"x": 36,
+						"y": 60,
+						"w": 112,
+						"h": 107
+					}
+				},
+				{
+					"filename": "minotaurus_idle-3.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 80,
+						"h": 86
+					},
+					"margin": {
+						"x": 36,
+						"y": 59,
+						"w": 112,
+						"h": 106
+					}
+				},
+				{
+					"filename": "minotaurus_idle-4.png",
+					"region": {
+						"x": 139,
+						"y": 88,
 						"w": 54,
-						"h": 82
+						"h": 86
 					},
 					"margin": {
 						"x": 68,
-						"y": 63,
+						"y": 59,
 						"w": 138,
-						"h": 110
+						"h": 106
+					}
+				},
+				{
+					"filename": "minotaurus_idle-5.png",
+					"region": {
+						"x": 83,
+						"y": 88,
+						"w": 54,
+						"h": 88
+					},
+					"margin": {
+						"x": 68,
+						"y": 57,
+						"w": 138,
+						"h": 104
+					}
+				},
+				{
+					"filename": "minotaurus_idle-6.png",
+					"region": {
+						"x": 165,
+						"y": 1,
+						"w": 80,
+						"h": 85
+					},
+					"margin": {
+						"x": 75,
+						"y": 60,
+						"w": 112,
+						"h": 107
+					}
+				},
+				{
+					"filename": "minotaurus_idle-7.png",
+					"region": {
+						"x": 1,
+						"y": 89,
+						"w": 80,
+						"h": 86
+					},
+					"margin": {
+						"x": 75,
+						"y": 59,
+						"w": 112,
+						"h": 106
 					}
 				}
 			]

@@ -115,6 +115,15 @@ MultiplayerManager::MultiplayerManager()
       inputSequenceNumber_(0) {
     // Create the network interface
     network_ = std::make_unique<AsioNetworkClient>();
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+    atlasBasePath_ = basePath;  // Store base path for atlas
 }
 
 MultiplayerManager::~MultiplayerManager() {
@@ -400,6 +409,9 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     // The first 2 bytes contain the object count
     uint16_t objectCount = (static_cast<uint16_t>(gameStateData[0]) << 8) | 
                            static_cast<uint16_t>(gameStateData[1]);
+
+    // std::cout << "[Client] Processing game state with " << objectCount 
+    //           << " objects from server" << std::endl;
     
     // Current position in the data stream
     size_t pos = 2;
@@ -421,6 +433,8 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         // Read object ID
         if (pos + idLength > gameStateData.size()) break;
         std::string objectId(gameStateData.begin() + pos, gameStateData.begin() + pos + idLength);
+        // std::cout << "[Client] Processing object ID: " << objectId 
+        //           << " of type: " << (objectType) << std::endl;
         pos += idLength;
         
         // Read position and velocity (4 floats, 16 bytes total)
@@ -479,6 +493,15 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 pos += sizeof(float);
                 std::memcpy(&height, &gameStateData[pos], sizeof(float));
                 pos += sizeof(float);
+
+                // Read tile index (1 byte)
+                if (pos >= gameStateData.size()) break;
+                uint8_t tileIndex = gameStateData[pos++];
+
+                if (pos >= gameStateData.size()) break;
+                uint32_t flags;
+                std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
+                pos += sizeof(uint32_t);
                 
                 // Check if we need to create a new platform object
                 bool found = false;
@@ -502,8 +525,9 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                         std::shared_ptr<Tile> platform = std::make_shared<Tile>(
                             posX, posY,
                             objectId,
-                            "Tilemap_Flat", 0, 64, 64, 12
+                            "Tilemap_Flat", tileIndex, 64, 64, 12
                         );
+                        platform->setFlag(flags);
                         newObjects.push_back(platform);
                         std::cout << "[Client] Created new platform: " << objectId << " at " 
                                   << posX << "," << posY << " size: " << width << "x" << height << std::endl;
@@ -522,6 +546,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     if (existingObject == nullptr) {
                         // Create new platform
                         auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
+                        newEntity->setupAnimations(atlasBasePath_);
                         newEntity->setDir(dir);
                         newEntity->setAnimationState(state);
                         newEntity->setvelocity(Vec2(velX, velY));

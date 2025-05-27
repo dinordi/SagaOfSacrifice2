@@ -1,5 +1,7 @@
 #include "sprite_data.h"
-
+#include <iostream>
+using json = nlohmann::json;
+namespace fs = std::filesystem;
 
 SpriteData::SpriteData(std::string atlasPath)
 {
@@ -7,7 +9,19 @@ SpriteData::SpriteData(std::string atlasPath)
 }
 
 SpriteRect SpriteData::getSpriteRect(int index) const {
-    return spriteRects.at(index);
+    auto it = spriteRects.find(index);
+    if (it == spriteRects.end()) {
+        for(const auto& pair : spriteRects) {
+            std::cout << "SpriteRect ID: " << pair.first << ", Rect: (" 
+                      << pair.second.x << ", " << pair.second.y << ", "
+                      << pair.second.w << ", " << pair.second.h << ")\n";
+        }
+        std::cout << "Could not find sprite rect for index: " << index << std::endl;
+        return SpriteRect(); // Return an empty SpriteRect if not found
+    }
+    const SpriteRect& spriteRect = it->second;
+
+    return spriteRect;
 }
 
 void SpriteData::makeSpriteRect(json& data, int index) {

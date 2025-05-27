@@ -22,6 +22,17 @@ enum class ObjectType {
     MINOTAUR
 };
 
+inline std::ostream& operator<<(std::ostream& os, ObjectType type) {
+    switch (type) {
+        case ObjectType::PLAYER: os << "PLAYER"; break;
+        case ObjectType::TILE: os << "TILE"; break;
+        case ObjectType::ITEM: os << "ITEM"; break;
+        case ObjectType::BULLET: os << "BULLET"; break;
+        case ObjectType::MINOTAUR: os << "MINOTAUR"; break;
+    }
+    return os;
+}
+
 class BoxCollider {
 public:
 BoxCollider(Vec2 pos, Vec2 size);

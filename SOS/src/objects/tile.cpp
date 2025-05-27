@@ -1,7 +1,8 @@
 #include "objects/tile.h"
 #include <filesystem>
+#include <iostream>
 
-Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, objID) {
+Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, (objID)), tileIndex(tileIndex) {
     // Initialize Tile-specific attributes here
     std::filesystem::path base = std::filesystem::current_path();
     std::string temp = base.string();
@@ -11,11 +12,13 @@ Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, 
     }
     auto basePath = std::filesystem::path(temp);
     basePath /= "SOS/assets/spriteatlas";
+    std::cout << "Got base path for tile" << std::endl;
 
     addSpriteSheet(AnimationState::IDLE, basePath / "tilemap_flat.tpsheet");
     // addAnimation(AnimationState::IDLE, tileIndex, 1, columns, 250, true);
 
 }
+
 
 void Tile::update(float deltaTime) {
 

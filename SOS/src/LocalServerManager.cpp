@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#include "level_manager.h"
 #include "collision/CollisionManager.h"
 #endif
 

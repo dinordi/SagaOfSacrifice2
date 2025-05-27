@@ -119,6 +119,7 @@ private:
     
     FacingDirection lastDirection;
     AnimationState currentState;
+    AnimationState targetState;
     int currentFrame;
     uint32_t elapsedTime;
     bool finished;

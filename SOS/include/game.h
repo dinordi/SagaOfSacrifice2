@@ -22,6 +22,7 @@
 #include "LocalServerManager.h"
 #include "player_manager.h"
 #include "ServerConfig.h"
+#include "level_manager.h"
 
 enum class GameState {
     RUNNING,
@@ -138,6 +139,8 @@ private:
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     static Game* instance_;
+
+    std::unique_ptr<LevelManager> levelManager_;
 };
 
 #endif // GAME_H
