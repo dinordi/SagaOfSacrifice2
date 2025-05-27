@@ -518,12 +518,12 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // Add the message body after the header
         std::memcpy(complete_message.data() + sizeof(header), buffer.data(), buffer.size());
         
-        std::cout << "[EmbeddedServer] Sending message to client - Type: " 
-                  << static_cast<int>(message.type) 
-                  << ", Sender ID: " << message.senderId 
-                  << ", Data size: " << message.data.size() 
-                  << " bytes, Total size: " << complete_message.size() 
-                  << " bytes" << std::endl;
+        // std::cout << "[EmbeddedServer] Sending message to client - Type: " 
+        //           << static_cast<int>(message.type) 
+        //           << ", Sender ID: " << message.senderId 
+        //           << ", Data size: " << message.data.size() 
+        //           << " bytes, Total size: " << complete_message.size() 
+        //           << " bytes" << std::endl;
 
         // Store the buffer to keep it alive
         {
@@ -785,9 +785,9 @@ void EmbeddedServer::updateGameState(float deltaTime) {
 }
 
 void EmbeddedServer::sendGameStateToClients() {
-    std::cout << "[EmbeddedServer] Before sending game state to clients, time ms: " 
-                << std::chrono::duration_cast<std::chrono::milliseconds>(
-                         std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
+    // std::cout << "[EmbeddedServer] Before sending game state to clients, time ms: " 
+    //             << std::chrono::duration_cast<std::chrono::milliseconds>(
+    //                      std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
     // 1) Build the header
     NetworkMessage stateMsg;
     stateMsg.type     = MessageType::GAME_STATE;
@@ -899,9 +899,9 @@ void EmbeddedServer::sendGameStateToClients() {
         messageCallback_(stateMsg);
     }
 
-    std::cout << "[EmbeddedServer] Game state sent to clients, time ms: " 
-                << std::chrono::duration_cast<std::chrono::milliseconds>(
-                         std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
+    // std::cout << "[EmbeddedServer] Game state sent to clients, time ms: " 
+    //             << std::chrono::duration_cast<std::chrono::milliseconds>(
+    //                      std::chrono::steady_clock::now().time_since_epoch()).count() << std::endl;
 }
 
 

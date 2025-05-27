@@ -401,8 +401,8 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     uint16_t objectCount = (static_cast<uint16_t>(gameStateData[0]) << 8) | 
                            static_cast<uint16_t>(gameStateData[1]);
 
-    std::cout << "[Client] Processing game state with " << objectCount 
-              << " objects from server" << std::endl;
+    // std::cout << "[Client] Processing game state with " << objectCount 
+    //           << " objects from server" << std::endl;
     
     // Current position in the data stream
     size_t pos = 2;
