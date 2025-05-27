@@ -199,6 +199,7 @@ void Renderer::irqHandlerThread()
     struct pollfd fds;
     fds.fd = uio_fd;
     fds.events = POLLIN;
+    stop_thread = false;
 
     std::cout << "IRQ thread running, waiting for interrupts on fd: " << uio_fd << std::endl;
 
