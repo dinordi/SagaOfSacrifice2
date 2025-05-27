@@ -850,6 +850,10 @@ void EmbeddedServer::sendGameStateToClients() {
                     writeFloat(plat->getCurrentSpriteData()->width);
                     writeFloat(plat->getCurrentSpriteData()->height);
                     stateMsg.data.push_back(plat->gettileIndex());
+                    //send flags uint32_t
+                    for (int i = 0; i < 4; ++i) {
+                        stateMsg.data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
+                    }
                     break;
                 }
                 case ObjectType::MINOTAUR: 

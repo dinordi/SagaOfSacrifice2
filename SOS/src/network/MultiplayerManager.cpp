@@ -488,6 +488,11 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 // Read tile index (1 byte)
                 if (pos >= gameStateData.size()) break;
                 uint8_t tileIndex = gameStateData[pos++];
+
+                if (pos >= gameStateData.size()) break;
+                uint32_t flags;
+                std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
+                pos += sizeof(uint32_t);
                 
                 // Check if we need to create a new platform object
                 bool found = false;
@@ -513,6 +518,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                             objectId,
                             "Tilemap_Flat", tileIndex, 64, 64, 12
                         );
+                        platform->setFlag(flags);
                         newObjects.push_back(platform);
                         std::cout << "[Client] Created new platform: " << objectId << " at " 
                                   << posX << "," << posY << " size: " << width << "x" << height << std::endl;

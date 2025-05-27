@@ -172,7 +172,7 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectPlayerCollision
             }
         }
     }
-    // std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks << std::endl;
+    std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks << std::endl;
     return collisions;
 }
 

@@ -24,6 +24,7 @@ void Player::setupAnimations() {
     }
     auto basePath = std::filesystem::path(temp);
     basePath /= "SOS/assets/spriteatlas";
+    std::cout << "Got base path for player" << std::endl;
 
     addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 2,3);

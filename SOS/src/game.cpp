@@ -40,6 +40,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     auto basePath = std::filesystem::path(temp);
     basePath /= "SOS/assets/spriteatlas";
     basePath_ = basePath; // Store base path for later use
+    std::cout << "Got base path for game" << std::endl;
 
     // Set player's input handler
     player = new Player(500, 100, playerID);

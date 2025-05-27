@@ -24,6 +24,7 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
     }
     auto basePath = std::filesystem::path(temp);
     basePath /= "SOS/assets/spriteatlas";
+    std::cout << "Got base path for minotaur" << std::endl;
 
     // Set up animations
     addSpriteSheet(AnimationState::IDLE, basePath / "minotaurus_idle.tpsheet");
