@@ -115,6 +115,15 @@ MultiplayerManager::MultiplayerManager()
       inputSequenceNumber_(0) {
     // Create the network interface
     network_ = std::make_unique<AsioNetworkClient>();
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+    atlasBasePath_ = basePath;  // Store base path for atlas
 }
 
 MultiplayerManager::~MultiplayerManager() {
@@ -537,6 +546,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                     if (existingObject == nullptr) {
                         // Create new platform
                         auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
+                        newEntity->setupAnimations(atlasBasePath_);
                         newEntity->setDir(dir);
                         newEntity->setAnimationState(state);
                         newEntity->setvelocity(Vec2(velX, velY));

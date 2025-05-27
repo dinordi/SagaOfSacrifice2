@@ -121,7 +121,7 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             // }
             
             // Example: Spawn more minotaurs at different positions if desired
-            // currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
+            currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
             // currentLevel_->spawnMinotaur(playerStart.x - 600, playerStart.y + 200);
             
             // Set all enemies in the level to target any existing players

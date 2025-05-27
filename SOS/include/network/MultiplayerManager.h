@@ -102,6 +102,9 @@ private:
     // Client-side prediction state
     float lastSentInputTime_;
     uint32_t inputSequenceNumber_;
+
+    //Base path for atlas
+    std::filesystem::path atlasBasePath_;
 };
 
 // RemotePlayer class to represent other players in the game

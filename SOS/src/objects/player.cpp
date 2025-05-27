@@ -164,10 +164,10 @@ void Player::takeDamage(int amount) {
     health -= amount;
     if (health <= 0) {
         // Handle player death
-        setAnimationState(AnimationState::DYING);
+        // setAnimationState(AnimationState::DYING);
     } else {
         // Briefly show hurt animation
-        setAnimationState(AnimationState::HURT);
+        // setAnimationState(AnimationState::HURT);
     }
 }
 

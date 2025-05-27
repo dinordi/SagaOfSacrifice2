@@ -35,8 +35,6 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             
             collisionChecks++;
             // Get the sprite dimensions for collision detection
-            const SpriteRect spriteA = objA->getCurrentSpriteData()->getSpriteRect(1);
-            const SpriteRect spriteB = objB->getCurrentSpriteData()->getSpriteRect(1);
 
             // Simple AABB collision detection
             float leftA = posA.x;
@@ -123,9 +121,6 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectPlayerCollision
             }
             
             collisionChecks++;
-            // Get the sprite dimensions for collision detection
-            const SpriteRect spriteA = objA->getCurrentSpriteData()->getSpriteRect(1);
-            const SpriteRect spriteB = objB->getCurrentSpriteData()->getSpriteRect(1);
 
             // Simple AABB collision detection
             float leftA = posA.x;
@@ -172,7 +167,7 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectPlayerCollision
             }
         }
     }
-    std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks << std::endl;
+    // std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks << std::endl;
     return collisions;
 }
 

@@ -6,8 +6,6 @@
 
   "tileWidth": 64,
   "tileHeight": 64,
-  "tileWidth": 64,
-  "tileHeight": 64,
 
   "tilesets": [
     "NeonFloor",
@@ -37,7 +35,7 @@
     }
   ],
 
-  "playerStart": { "x": 1, "y": 90 },
+  "playerStart": { "x": 1, "y": 500 },
 
   "enemies": [
     { "id": "e1", "type": "android_scout",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },

@@ -12,9 +12,10 @@ void AnimationController::addAnimation(AnimationState state, const AnimationDef&
 void AnimationController::setState(AnimationState state) {
     // Only change state if it's different from current state
     // or if the current animation is finished
-
+    targetState = state;
+    
     if (animations.find(state) == animations.end()) {
-        std::cerr << "Animation state " << static_cast<int>(state) << " not found!" << std::endl;
+        // std::cerr << "Animation state " << (state) << " not found!" << std::endl;
         return; // No animation defined for this state
     }
     AnimationDef def = animations.find(state)->second;
@@ -24,9 +25,9 @@ void AnimationController::setState(AnimationState state) {
         return;
     }
     FacingDirFrames& fdf = dirIt->second;
-
-    if (state != currentState || finished) {
-        currentState = state;
+    if(finished || targetState != currentState)
+    {
+        currentState = targetState;
         currentFrame = fdf.firstFrame;
         elapsedTime = 0;
         finished = false;
@@ -103,7 +104,7 @@ bool AnimationController::isFinished() const {
 }
 
 AnimationState AnimationController::getCurrentState() const {
-    return currentState;
+    return targetState;
 }
 
 void AnimationController::setDirectionRow(AnimationState state, FacingDirection dir, int firstFrame, int lastFrame) {
