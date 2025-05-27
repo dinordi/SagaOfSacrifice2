@@ -1,0 +1,573 @@
+{
+	"textures": [
+		{
+			"image": "letters_small",
+			"size": {
+				"w": 249,
+				"h": 165
+			},
+			"sprites": [
+				{
+					"filename": "letters_small",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-1.png",
+					"region": {
+						"x": 34,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-2.png",
+					"region": {
+						"x": 67,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-3.png",
+					"region": {
+						"x": 100,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-4.png",
+					"region": {
+						"x": 133,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-5.png",
+					"region": {
+						"x": 166,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-6.png",
+					"region": {
+						"x": 199,
+						"y": 1,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-7.png",
+					"region": {
+						"x": 1,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-8.png",
+					"region": {
+						"x": 232,
+						"y": 1,
+						"w": 16,
+						"h": 31
+					},
+					"margin": {
+						"x": 10,
+						"y": 1,
+						"w": 16,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-9.png",
+					"region": {
+						"x": 34,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-10.png",
+					"region": {
+						"x": 67,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-11.png",
+					"region": {
+						"x": 132,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-12.png",
+					"region": {
+						"x": 100,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-13.png",
+					"region": {
+						"x": 133,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-14.png",
+					"region": {
+						"x": 166,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-15.png",
+					"region": {
+						"x": 199,
+						"y": 34,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-16.png",
+					"region": {
+						"x": 1,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-17.png",
+					"region": {
+						"x": 34,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-18.png",
+					"region": {
+						"x": 67,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-19.png",
+					"region": {
+						"x": 161,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-20.png",
+					"region": {
+						"x": 100,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-21.png",
+					"region": {
+						"x": 133,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-22.png",
+					"region": {
+						"x": 166,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-23.png",
+					"region": {
+						"x": 199,
+						"y": 67,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-24.png",
+					"region": {
+						"x": 190,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-25.png",
+					"region": {
+						"x": 1,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-26.png",
+					"region": {
+						"x": 34,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-27.png",
+					"region": {
+						"x": 219,
+						"y": 133,
+						"w": 27,
+						"h": 31
+					},
+					"margin": {
+						"x": 4,
+						"y": 1,
+						"w": 5,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-28.png",
+					"region": {
+						"x": 67,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-29.png",
+					"region": {
+						"x": 100,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-30.png",
+					"region": {
+						"x": 133,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-31.png",
+					"region": {
+						"x": 166,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-32.png",
+					"region": {
+						"x": 199,
+						"y": 100,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-33.png",
+					"region": {
+						"x": 1,
+						"y": 133,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-34.png",
+					"region": {
+						"x": 34,
+						"y": 133,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-35.png",
+					"region": {
+						"x": 67,
+						"y": 133,
+						"w": 31,
+						"h": 31
+					},
+					"margin": {
+						"x": 1,
+						"y": 1,
+						"w": 1,
+						"h": 1
+					}
+				},
+				{
+					"filename": "letters_small-36.png",
+					"region": {
+						"x": 100,
+						"y": 133,
+						"w": 30,
+						"h": 23
+					},
+					"margin": {
+						"x": 2,
+						"y": 3,
+						"w": 2,
+						"h": 9
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:7a7d06a6093cf025803b6a58a2806a2d:67890041fbff95fe54e0f0a2a762b4c0:bc1abc4b1e737590154b8b32e395ada8$"
+	}
+}

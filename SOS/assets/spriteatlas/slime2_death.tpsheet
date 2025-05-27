@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime2_death-0.png",
+			"image": "slime2_death",
 			"size": {
 				"w": 126,
 				"h": 295
@@ -323,7 +323,7 @@
 					}
 				},
 				{
-					"filename": "Slime2_Death_body-0.png",
+					"filename": "Slime2_Death_body",
 					"region": {
 						"x": 1,
 						"y": 275,

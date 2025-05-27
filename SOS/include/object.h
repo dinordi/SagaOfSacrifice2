@@ -49,8 +49,9 @@ public:
 
     virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
+    virtual bool isCollidable() const { return true; } // Default to collidable
     
-    void addSpriteSheet(AnimationState state, SpriteData* spData, uint32_t frameTime, bool loop, int startFrame = 0);
+    void addSpriteSheet(AnimationState state, std::string tpsheet, uint32_t frameTime = 150);
     const SpriteData* getCurrentSpriteData() const;
 
     // Animation methods
@@ -58,8 +59,10 @@ public:
     void setAnimationState(AnimationState state);
     AnimationState getAnimationState() const { return animController.getCurrentState(); }
     int getCurrentSpriteIndex() const;
-    void addAnimation(AnimationState state, int startFrame, int frameCount, 
-                     int framesPerRow, uint32_t frameTime = 100, bool loop = true);
+    void addAnimation(AnimationState state, int frameCount, 
+                     uint32_t frameTime = 100, bool loop = true);
+
+
     FacingDirection getDir() const { return dir; }
     void setDir(FacingDirection direction) { dir = direction; }
 
@@ -70,7 +73,7 @@ protected:
     AnimationController animController;
     FacingDirection dir;
     
-    std::unordered_map<AnimationState, SpriteData*> spriteSheets;
+    
 private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);

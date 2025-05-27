@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc1_walk-0.png",
+			"image": "orc1_walk",
 			"size": {
 				"w": 228,
 				"h": 1580
@@ -323,7 +323,7 @@
 					}
 				},
 				{
-					"filename": "orc1_walk_full-0.png",
+					"filename": "orc1_walk_full",
 					"region": {
 						"x": 1,
 						"y": 1453,

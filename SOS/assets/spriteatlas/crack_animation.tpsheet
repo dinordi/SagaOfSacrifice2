@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "crack_animation-0.png",
+			"image": "crack_animation",
 			"size": {
 				"w": 1548,
 				"h": 226
 			},
 			"sprites": [
 				{
-					"filename": "decorative_cracks_coasts_animation-0.png",
+					"filename": "decorative_cracks_coasts_animation",
 					"region": {
 						"x": 1,
 						"y": 1,

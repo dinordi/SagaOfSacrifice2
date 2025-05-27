@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "water_coast-0.png",
+			"image": "water_coast",
 			"size": {
 				"w": 1234,
 				"h": 500
@@ -218,7 +218,7 @@
 					}
 				},
 				{
-					"filename": "Water_coasts_animation-0.png",
+					"filename": "Water_coasts_animation",
 					"region": {
 						"x": 583,
 						"y": 305,

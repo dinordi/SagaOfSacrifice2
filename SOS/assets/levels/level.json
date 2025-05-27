@@ -6,6 +6,8 @@
 
   "tileWidth": 64,
   "tileHeight": 64,
+  "tileWidth": 64,
+  "tileHeight": 64,
 
   "tilesets": [
     "NeonFloor",
@@ -22,6 +24,7 @@
     {
       "id": "floor",
       "type": "tilemap",
+      "tileset": "Grasstileset",
       "tileset": "Grasstileset",
       "data": [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -47,6 +50,22 @@
   ],
 
   "objects": [
+    { "id": "1",   "spriteId": 1, "x":  10, "y":  96 },
+    { "id": "2",  "spriteId": 2, "x":  2, "y":  640 },
+    { "id": "3", "spriteId": 3, "x":  300, "y": 160 },
+    { "id": "4", "spriteId": 4, "x":  4, "y":  800 },
+    { "id": "5","spriteId": 5, "x":  50, "y":  960 },
+    { "id": "6",   "spriteId": 6, "x":  6, "y": 128 },
+    { "id": "7",   "spriteId": 7, "x":  8, "y": 256 },
+    { "id": "8",   "spriteId": 8, "x": 10, "y": 384 },
+    { "id": "9",   "spriteId": 9, "x": 12, "y": 512 },
+    { "id": "10",  "spriteId":10, "x": 14, "y": 640 },
+    { "id": "11",  "spriteId":11, "x": 16, "y": 768 },
+    { "id": "12",  "spriteId":12, "x": 18, "y": 896 },
+    { "id": "13",  "spriteId":13, "x": 20, "y":1024 },
+    { "id": "14",  "spriteId":14, "x": 22, "y":1152 },
+    { "id": "15",  "spriteId":15, "x": 24, "y":1280 },
+    { "id": "16",   "spriteId": 6, "x":  6, "y": 128 }
     { "id": "1",   "spriteId": 1, "x":  10, "y":  96 },
     { "id": "2",  "spriteId": 2, "x":  2, "y":  640 },
     { "id": "3", "spriteId": 3, "x":  300, "y": 160 },

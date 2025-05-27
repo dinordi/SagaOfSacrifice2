@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime2_walk-0.png",
+			"image": "slime2_walk",
 			"size": {
 				"w": 250,
 				"h": 121
@@ -278,7 +278,7 @@
 					}
 				},
 				{
-					"filename": "Slime2_Walk_body-0.png",
+					"filename": "Slime2_Walk_body",
 					"region": {
 						"x": 61,
 						"y": 54,

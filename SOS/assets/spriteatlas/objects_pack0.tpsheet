@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "objects_pack0-0.png",
+			"image": "objects_pack0",
 			"size": {
 				"w": 2048,
 				"h": 2048

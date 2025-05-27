@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "orc2_idle-0.png",
+			"image": "orc2_idle",
 			"size": {
 				"w": 1008,
 				"h": 284
 			},
 			"sprites": [
 				{
-					"filename": "orc2_idle_full-0.png",
+					"filename": "orc2_idle_full",
 					"region": {
 						"x": 1,
 						"y": 1,

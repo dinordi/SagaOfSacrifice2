@@ -2,8 +2,9 @@
 #pragma once
 #include <string>
 #include <nlohmann/json.hpp>
-#include <filesystem>
 #include <fstream>
+#include <map>
+using json = nlohmann::json;
 
 #define DEFINE_GETTER_SETTER(type, member) \
 private:                                   \
@@ -26,23 +27,27 @@ struct SpriteRect {
     int h; // Height of the sprite
     std::string id_; // ID of the sprite, i.e. player.png, enemy.png, etc.
 
+    SpriteRect() : x(0), y(0), w(0), h(0), id_("") {}
     SpriteRect(int x, int y, int w, int h, std::string id)
         : x(x), y(y), w(w), h(h), id_(std::move(id)) {}
 };
 
 
 class SpriteData {
+// SpriteData is a single spritesheet of a single animation
 public:
     // Constructor
-    SpriteData(std::string id, int width, int height, int columns);
+    SpriteData(std::string atlasPath);
 
     SpriteRect getSpriteRect(int index) const;
+
+    void makeSpriteRect(json& atlas, int index);
+    void addSpriteSheet(std::string atlasPath);
 
     int width;  // Width of the sprite, consistent in a single sprite sheet
     int height; // Height of the sprite, consistent in a single sprite sheet
     int columns; // Number of columns in the sprite sheet
 private:
-    std::string atlasPath;  // Path to the atlas file
-private:
-    DEFINE_CONST_GETTER_SETTER(std::string, id_);
+    DEFINE_GETTER_SETTER(std::string, id_);
+    std::map<int, SpriteRect> spriteRects; // Maps sprite sheet ID to its rects
 };
