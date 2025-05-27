@@ -1,378 +1,378 @@
 {
-	"textures": [
-		{
-			"image": "orc1_hurt",
-			"size": {
-				"w": 248,
-				"h": 960
-			},
-			"sprites": [
-				{
-					"filename": "orc1_hurt_full-2.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 154,
-						"h": 114
-					},
-					"margin": {
-						"x": 35,
-						"y": 71,
-						"w": 102,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-4.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 154,
-						"h": 114
-					},
-					"margin": {
-						"x": 35,
-						"y": 71,
-						"w": 102,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-13.png",
-					"region": {
-						"x": 157,
-						"y": 1,
-						"w": 90,
-						"h": 122
-					},
-					"margin": {
-						"x": 87,
-						"y": 63,
-						"w": 166,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-17.png",
-					"region": {
-						"x": 157,
-						"y": 1,
-						"w": 90,
-						"h": 122
-					},
-					"margin": {
-						"x": 87,
-						"y": 63,
-						"w": 166,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-8.png",
-					"region": {
-						"x": 1,
-						"y": 117,
-						"w": 154,
-						"h": 114
-					},
-					"margin": {
-						"x": 63,
-						"y": 71,
-						"w": 102,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-10.png",
-					"region": {
-						"x": 1,
-						"y": 117,
-						"w": 154,
-						"h": 114
-					},
-					"margin": {
-						"x": 63,
-						"y": 71,
-						"w": 102,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-19.png",
-					"region": {
-						"x": 157,
-						"y": 125,
-						"w": 90,
-						"h": 122
-					},
-					"margin": {
-						"x": 79,
-						"y": 63,
-						"w": 166,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-23.png",
-					"region": {
-						"x": 157,
-						"y": 125,
-						"w": 90,
-						"h": 122
-					},
-					"margin": {
-						"x": 79,
-						"y": 63,
-						"w": 166,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-3.png",
-					"region": {
-						"x": 1,
-						"y": 233,
-						"w": 154,
-						"h": 106
-					},
-					"margin": {
-						"x": 35,
-						"y": 79,
-						"w": 102,
-						"h": 150
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-12.png",
-					"region": {
-						"x": 157,
-						"y": 249,
-						"w": 82,
-						"h": 130
-					},
-					"margin": {
-						"x": 83,
-						"y": 55,
-						"w": 174,
-						"h": 126
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-9.png",
-					"region": {
-						"x": 1,
-						"y": 341,
-						"w": 154,
-						"h": 106
-					},
-					"margin": {
-						"x": 63,
-						"y": 79,
-						"w": 102,
-						"h": 150
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-18.png",
-					"region": {
-						"x": 157,
-						"y": 381,
-						"w": 82,
-						"h": 130
-					},
-					"margin": {
-						"x": 91,
-						"y": 55,
-						"w": 174,
-						"h": 126
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-1.png",
-					"region": {
-						"x": 1,
-						"y": 449,
-						"w": 150,
-						"h": 122
-					},
-					"margin": {
-						"x": 35,
-						"y": 63,
-						"w": 106,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-5.png",
-					"region": {
-						"x": 1,
-						"y": 449,
-						"w": 150,
-						"h": 122
-					},
-					"margin": {
-						"x": 35,
-						"y": 63,
-						"w": 106,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-14.png",
-					"region": {
-						"x": 153,
-						"y": 513,
-						"w": 94,
-						"h": 114
-					},
-					"margin": {
-						"x": 87,
-						"y": 71,
-						"w": 162,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-16.png",
-					"region": {
-						"x": 153,
-						"y": 513,
-						"w": 94,
-						"h": 114
-					},
-					"margin": {
-						"x": 87,
-						"y": 71,
-						"w": 162,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-7.png",
-					"region": {
-						"x": 1,
-						"y": 573,
-						"w": 150,
-						"h": 122
-					},
-					"margin": {
-						"x": 67,
-						"y": 63,
-						"w": 106,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-11.png",
-					"region": {
-						"x": 1,
-						"y": 573,
-						"w": 150,
-						"h": 122
-					},
-					"margin": {
-						"x": 67,
-						"y": 63,
-						"w": 106,
-						"h": 134
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-20.png",
-					"region": {
-						"x": 153,
-						"y": 629,
-						"w": 94,
-						"h": 114
-					},
-					"margin": {
-						"x": 75,
-						"y": 71,
-						"w": 162,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-22.png",
-					"region": {
-						"x": 153,
-						"y": 629,
-						"w": 94,
-						"h": 114
-					},
-					"margin": {
-						"x": 75,
-						"y": 71,
-						"w": 162,
-						"h": 142
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-6.png",
-					"region": {
-						"x": 1,
-						"y": 697,
-						"w": 142,
-						"h": 130
-					},
-					"margin": {
-						"x": 75,
-						"y": 55,
-						"w": 114,
-						"h": 126
-					}
-				},
-				{
-					"filename": "orc1_hurt_full",
-					"region": {
-						"x": 1,
-						"y": 829,
-						"w": 138,
-						"h": 130
-					},
-					"margin": {
-						"x": 39,
-						"y": 55,
-						"w": 118,
-						"h": 126
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-15.png",
-					"region": {
-						"x": 145,
-						"y": 745,
-						"w": 94,
-						"h": 106
-					},
-					"margin": {
-						"x": 87,
-						"y": 79,
-						"w": 162,
-						"h": 150
-					}
-				},
-				{
-					"filename": "orc1_hurt_full-21.png",
-					"region": {
-						"x": 141,
-						"y": 853,
-						"w": 94,
-						"h": 106
-					},
-					"margin": {
-						"x": 75,
-						"y": 79,
-						"w": 162,
-						"h": 150
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:109b51ff43f2421b6a7588f8bbf4ea26:1b3da12832a85e94d463072d3c091df7:38caf35f8c06f262cf8d9cccedbd1cc9$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:109b51ff43f2421b6a7588f8bbf4ea26:1b3da12832a85e94d463072d3c091df7:38caf35f8c06f262cf8d9cccedbd1cc9$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc1_hurt",
+            "size": {
+                "h": 960,
+                "w": 248
+            },
+            "sprites": [
+                {
+                    "filename": "orc1_hurt_full",
+                    "margin": {
+                        "h": 126,
+                        "w": 118,
+                        "x": 39,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 138,
+                        "x": 1,
+                        "y": 829
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-1",
+                    "margin": {
+                        "h": 134,
+                        "w": 106,
+                        "x": 35,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 150,
+                        "x": 1,
+                        "y": 449
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-2",
+                    "margin": {
+                        "h": 142,
+                        "w": 102,
+                        "x": 35,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 154,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-3",
+                    "margin": {
+                        "h": 150,
+                        "w": 102,
+                        "x": 35,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 154,
+                        "x": 1,
+                        "y": 233
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-4",
+                    "margin": {
+                        "h": 142,
+                        "w": 102,
+                        "x": 35,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 154,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-5",
+                    "margin": {
+                        "h": 134,
+                        "w": 106,
+                        "x": 35,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 150,
+                        "x": 1,
+                        "y": 449
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-6",
+                    "margin": {
+                        "h": 126,
+                        "w": 114,
+                        "x": 75,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 142,
+                        "x": 1,
+                        "y": 697
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-7",
+                    "margin": {
+                        "h": 134,
+                        "w": 106,
+                        "x": 67,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 150,
+                        "x": 1,
+                        "y": 573
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-8",
+                    "margin": {
+                        "h": 142,
+                        "w": 102,
+                        "x": 63,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 154,
+                        "x": 1,
+                        "y": 117
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-9",
+                    "margin": {
+                        "h": 150,
+                        "w": 102,
+                        "x": 63,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 154,
+                        "x": 1,
+                        "y": 341
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-10",
+                    "margin": {
+                        "h": 142,
+                        "w": 102,
+                        "x": 63,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 154,
+                        "x": 1,
+                        "y": 117
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-11",
+                    "margin": {
+                        "h": 134,
+                        "w": 106,
+                        "x": 67,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 150,
+                        "x": 1,
+                        "y": 573
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-12",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 83,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 157,
+                        "y": 249
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-13",
+                    "margin": {
+                        "h": 134,
+                        "w": 166,
+                        "x": 87,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 90,
+                        "x": 157,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-14",
+                    "margin": {
+                        "h": 142,
+                        "w": 162,
+                        "x": 87,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 94,
+                        "x": 153,
+                        "y": 513
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-15",
+                    "margin": {
+                        "h": 150,
+                        "w": 162,
+                        "x": 87,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 94,
+                        "x": 145,
+                        "y": 745
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-16",
+                    "margin": {
+                        "h": 142,
+                        "w": 162,
+                        "x": 87,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 94,
+                        "x": 153,
+                        "y": 513
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-17",
+                    "margin": {
+                        "h": 134,
+                        "w": 166,
+                        "x": 87,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 90,
+                        "x": 157,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-18",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 91,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 157,
+                        "y": 381
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-19",
+                    "margin": {
+                        "h": 134,
+                        "w": 166,
+                        "x": 79,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 90,
+                        "x": 157,
+                        "y": 125
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-20",
+                    "margin": {
+                        "h": 142,
+                        "w": 162,
+                        "x": 75,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 94,
+                        "x": 153,
+                        "y": 629
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-21",
+                    "margin": {
+                        "h": 150,
+                        "w": 162,
+                        "x": 75,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 94,
+                        "x": 141,
+                        "y": 853
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-22",
+                    "margin": {
+                        "h": 142,
+                        "w": 162,
+                        "x": 75,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 94,
+                        "x": 153,
+                        "y": 629
+                    }
+                },
+                {
+                    "filename": "orc1_hurt_full-23",
+                    "margin": {
+                        "h": 134,
+                        "w": 166,
+                        "x": 79,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 90,
+                        "x": 157,
+                        "y": 125
+                    }
+                }
+            ]
+        }
+    ]
 }

@@ -1,1818 +1,1818 @@
 {
-	"textures": [
-		{
-			"image": "objects_pack3",
-			"size": {
-				"w": 1658,
-				"h": 1366
-			},
-			"sprites": [
-				{
-					"filename": "Dragon_bones_shadow1.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 386,
-						"h": 300
-					},
-					"margin": {
-						"x": 62,
-						"y": 106,
-						"w": 126,
-						"h": 212
-					}
-				},
-				{
-					"filename": "Dragon_bones_shadow2.png",
-					"region": {
-						"x": 1,
-						"y": 303,
-						"w": 386,
-						"h": 300
-					},
-					"margin": {
-						"x": 62,
-						"y": 106,
-						"w": 126,
-						"h": 212
-					}
-				},
-				{
-					"filename": "Dragon_bones_shadow3.png",
-					"region": {
-						"x": 389,
-						"y": 1,
-						"w": 386,
-						"h": 300
-					},
-					"margin": {
-						"x": 62,
-						"y": 106,
-						"w": 126,
-						"h": 212
-					}
-				},
-				{
-					"filename": "Statue1_shadow1.png",
-					"region": {
-						"x": 1,
-						"y": 605,
-						"w": 166,
-						"h": 352
-					},
-					"margin": {
-						"x": 172,
-						"y": 80,
-						"w": 346,
-						"h": 160
-					}
-				},
-				{
-					"filename": "Statue1_shadow2.png",
-					"region": {
-						"x": 1,
-						"y": 959,
-						"w": 166,
-						"h": 352
-					},
-					"margin": {
-						"x": 172,
-						"y": 80,
-						"w": 346,
-						"h": 160
-					}
-				},
-				{
-					"filename": "Statue1_shadow3.png",
-					"region": {
-						"x": 169,
-						"y": 605,
-						"w": 166,
-						"h": 352
-					},
-					"margin": {
-						"x": 172,
-						"y": 80,
-						"w": 346,
-						"h": 160
-					}
-				},
-				{
-					"filename": "Ship1_shadow1.png",
-					"region": {
-						"x": 389,
-						"y": 303,
-						"w": 342,
-						"h": 152
-					},
-					"margin": {
-						"x": 84,
-						"y": 180,
-						"w": 170,
-						"h": 360
-					}
-				},
-				{
-					"filename": "Ship1_shadow2.png",
-					"region": {
-						"x": 777,
-						"y": 1,
-						"w": 342,
-						"h": 152
-					},
-					"margin": {
-						"x": 84,
-						"y": 180,
-						"w": 170,
-						"h": 360
-					}
-				},
-				{
-					"filename": "Ship1_shadow3.png",
-					"region": {
-						"x": 1121,
-						"y": 1,
-						"w": 342,
-						"h": 152
-					},
-					"margin": {
-						"x": 84,
-						"y": 180,
-						"w": 170,
-						"h": 360
-					}
-				},
-				{
-					"filename": "Crab_shadow1.png",
-					"region": {
-						"x": 389,
-						"y": 457,
-						"w": 278,
-						"h": 212
-					},
-					"margin": {
-						"x": 116,
-						"y": 150,
-						"w": 234,
-						"h": 300
-					}
-				},
-				{
-					"filename": "Crab_shadow2.png",
-					"region": {
-						"x": 337,
-						"y": 671,
-						"w": 278,
-						"h": 212
-					},
-					"margin": {
-						"x": 116,
-						"y": 150,
-						"w": 234,
-						"h": 300
-					}
-				},
-				{
-					"filename": "Crab_shadow3.png",
-					"region": {
-						"x": 777,
-						"y": 155,
-						"w": 278,
-						"h": 212
-					},
-					"margin": {
-						"x": 116,
-						"y": 150,
-						"w": 234,
-						"h": 300
-					}
-				},
-				{
-					"filename": "Statue2_shadow1.png",
-					"region": {
-						"x": 169,
-						"y": 959,
-						"w": 128,
-						"h": 272
-					},
-					"margin": {
-						"x": 192,
-						"y": 120,
-						"w": 384,
-						"h": 240
-					}
-				},
-				{
-					"filename": "Riff1_shadow1.png",
-					"region": {
-						"x": 1057,
-						"y": 155,
-						"w": 202,
-						"h": 192
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 54,
-						"h": 64
-					}
-				},
-				{
-					"filename": "Riff1_shadow2.png",
-					"region": {
-						"x": 1261,
-						"y": 155,
-						"w": 202,
-						"h": 192
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 54,
-						"h": 64
-					}
-				},
-				{
-					"filename": "Statue2_shadow2.png",
-					"region": {
-						"x": 1465,
-						"y": 1,
-						"w": 128,
-						"h": 272
-					},
-					"margin": {
-						"x": 192,
-						"y": 120,
-						"w": 384,
-						"h": 240
-					}
-				},
-				{
-					"filename": "Statue2_shadow3.png",
-					"region": {
-						"x": 299,
-						"y": 959,
-						"w": 128,
-						"h": 272
-					},
-					"margin": {
-						"x": 192,
-						"y": 120,
-						"w": 384,
-						"h": 240
-					}
-				},
-				{
-					"filename": "Riff1_shadow3.png",
-					"region": {
-						"x": 429,
-						"y": 885,
-						"w": 202,
-						"h": 192
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 54,
-						"h": 64
-					}
-				},
-				{
-					"filename": "Riff2_shadow1.png",
-					"region": {
-						"x": 429,
-						"y": 1079,
-						"w": 208,
-						"h": 172
-					},
-					"margin": {
-						"x": 24,
-						"y": 42,
-						"w": 48,
-						"h": 84
-					}
-				},
-				{
-					"filename": "Monster_fish_bones_shadow1.png",
-					"region": {
-						"x": 169,
-						"y": 1233,
-						"w": 182,
-						"h": 98
-					},
-					"margin": {
-						"x": 36,
-						"y": 78,
-						"w": 74,
-						"h": 158
-					}
-				},
-				{
-					"filename": "Riff2_shadow2.png",
-					"region": {
-						"x": 733,
-						"y": 369,
-						"w": 208,
-						"h": 172
-					},
-					"margin": {
-						"x": 24,
-						"y": 42,
-						"w": 48,
-						"h": 84
-					}
-				},
-				{
-					"filename": "Riff3_shadow1.png",
-					"region": {
-						"x": 943,
-						"y": 369,
-						"w": 138,
-						"h": 174
-					},
-					"margin": {
-						"x": 58,
-						"y": 40,
-						"w": 118,
-						"h": 82
-					}
-				},
-				{
-					"filename": "Riff2_shadow3.png",
-					"region": {
-						"x": 1083,
-						"y": 349,
-						"w": 208,
-						"h": 172
-					},
-					"margin": {
-						"x": 24,
-						"y": 42,
-						"w": 48,
-						"h": 84
-					}
-				},
-				{
-					"filename": "Mermaid_house_shadow1.png",
-					"region": {
-						"x": 1293,
-						"y": 349,
-						"w": 180,
-						"h": 162
-					},
-					"margin": {
-						"x": 38,
-						"y": 46,
-						"w": 76,
-						"h": 94
-					}
-				},
-				{
-					"filename": "Monster_fish_bones_shadow2.png",
-					"region": {
-						"x": 1475,
-						"y": 275,
-						"w": 182,
-						"h": 98
-					},
-					"margin": {
-						"x": 36,
-						"y": 78,
-						"w": 74,
-						"h": 158
-					}
-				},
-				{
-					"filename": "Monster_fish_bones_shadow3.png",
-					"region": {
-						"x": 1475,
-						"y": 375,
-						"w": 182,
-						"h": 98
-					},
-					"margin": {
-						"x": 36,
-						"y": 78,
-						"w": 74,
-						"h": 158
-					}
-				},
-				{
-					"filename": "Mermaid_house_shadow2.png",
-					"region": {
-						"x": 669,
-						"y": 543,
-						"w": 180,
-						"h": 162
-					},
-					"margin": {
-						"x": 38,
-						"y": 46,
-						"w": 76,
-						"h": 94
-					}
-				},
-				{
-					"filename": "Mermaid_house_shadow3.png",
-					"region": {
-						"x": 617,
-						"y": 707,
-						"w": 180,
-						"h": 162
-					},
-					"margin": {
-						"x": 38,
-						"y": 46,
-						"w": 76,
-						"h": 94
-					}
-				},
-				{
-					"filename": "Riff3_shadow2.png",
-					"region": {
-						"x": 633,
-						"y": 871,
-						"w": 138,
-						"h": 174
-					},
-					"margin": {
-						"x": 58,
-						"y": 40,
-						"w": 118,
-						"h": 82
-					}
-				},
-				{
-					"filename": "Riff3_shadow3.png",
-					"region": {
-						"x": 639,
-						"y": 1047,
-						"w": 138,
-						"h": 174
-					},
-					"margin": {
-						"x": 58,
-						"y": 40,
-						"w": 118,
-						"h": 82
-					}
-				},
-				{
-					"filename": "Gray-red_coral2_shadow1.png",
-					"region": {
-						"x": 337,
-						"y": 885,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Sea_urchin1_shadow1.png",
-					"region": {
-						"x": 851,
-						"y": 545,
-						"w": 152,
-						"h": 158
-					},
-					"margin": {
-						"x": 52,
-						"y": 48,
-						"w": 104,
-						"h": 98
-					}
-				},
-				{
-					"filename": "Sea_urchin1_shadow2.png",
-					"region": {
-						"x": 1005,
-						"y": 545,
-						"w": 152,
-						"h": 158
-					},
-					"margin": {
-						"x": 52,
-						"y": 48,
-						"w": 104,
-						"h": 98
-					}
-				},
-				{
-					"filename": "Sea_urchin1_shadow3.png",
-					"region": {
-						"x": 1159,
-						"y": 523,
-						"w": 152,
-						"h": 158
-					},
-					"margin": {
-						"x": 52,
-						"y": 48,
-						"w": 104,
-						"h": 98
-					}
-				},
-				{
-					"filename": "Violet-pink_coral1_shadow1.png",
-					"region": {
-						"x": 1313,
-						"y": 513,
-						"w": 146,
-						"h": 140
-					},
-					"margin": {
-						"x": 54,
-						"y": 58,
-						"w": 110,
-						"h": 116
-					}
-				},
-				{
-					"filename": "Ship2_shadow1.png",
-					"region": {
-						"x": 1475,
-						"y": 475,
-						"w": 156,
-						"h": 78
-					},
-					"margin": {
-						"x": 50,
-						"y": 88,
-						"w": 100,
-						"h": 178
-					}
-				},
-				{
-					"filename": "Violet-pink_coral1_shadow2.png",
-					"region": {
-						"x": 1461,
-						"y": 555,
-						"w": 146,
-						"h": 140
-					},
-					"margin": {
-						"x": 54,
-						"y": 58,
-						"w": 110,
-						"h": 116
-					}
-				},
-				{
-					"filename": "Violet-pink_coral1_shadow3.png",
-					"region": {
-						"x": 1313,
-						"y": 655,
-						"w": 146,
-						"h": 140
-					},
-					"margin": {
-						"x": 54,
-						"y": 58,
-						"w": 110,
-						"h": 116
-					}
-				},
-				{
-					"filename": "Beige-violet_coral1_shadow1.png",
-					"region": {
-						"x": 1461,
-						"y": 697,
-						"w": 136,
-						"h": 128
-					},
-					"margin": {
-						"x": 60,
-						"y": 64,
-						"w": 120,
-						"h": 128
-					}
-				},
-				{
-					"filename": "Turtle_shell_shadow1.png",
-					"region": {
-						"x": 353,
-						"y": 1253,
-						"w": 94,
-						"h": 112
-					},
-					"margin": {
-						"x": 16,
-						"y": 8,
-						"w": 34,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Turtle_shell_shadow2.png",
-					"region": {
-						"x": 449,
-						"y": 1253,
-						"w": 94,
-						"h": 112
-					},
-					"margin": {
-						"x": 16,
-						"y": 8,
-						"w": 34,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Turtle_shell_shadow3.png",
-					"region": {
-						"x": 545,
-						"y": 1253,
-						"w": 94,
-						"h": 112
-					},
-					"margin": {
-						"x": 16,
-						"y": 8,
-						"w": 34,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Beige-violet_coral1_shadow2.png",
-					"region": {
-						"x": 641,
-						"y": 1223,
-						"w": 136,
-						"h": 128
-					},
-					"margin": {
-						"x": 60,
-						"y": 64,
-						"w": 120,
-						"h": 128
-					}
-				},
-				{
-					"filename": "Beige-violet_coral1_shadow3.png",
-					"region": {
-						"x": 799,
-						"y": 707,
-						"w": 136,
-						"h": 128
-					},
-					"margin": {
-						"x": 60,
-						"y": 64,
-						"w": 120,
-						"h": 128
-					}
-				},
-				{
-					"filename": "Ship2_shadow2.png",
-					"region": {
-						"x": 937,
-						"y": 705,
-						"w": 156,
-						"h": 78
-					},
-					"margin": {
-						"x": 50,
-						"y": 88,
-						"w": 100,
-						"h": 178
-					}
-				},
-				{
-					"filename": "Ship2_shadow3.png",
-					"region": {
-						"x": 937,
-						"y": 785,
-						"w": 156,
-						"h": 78
-					},
-					"margin": {
-						"x": 50,
-						"y": 88,
-						"w": 100,
-						"h": 178
-					}
-				},
-				{
-					"filename": "Riff4_shadow1.png",
-					"region": {
-						"x": 1095,
-						"y": 705,
-						"w": 94,
-						"h": 118
-					},
-					"margin": {
-						"x": 16,
-						"y": 4,
-						"w": 34,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Violet-pink_coral2_shadow1.png",
-					"region": {
-						"x": 1191,
-						"y": 683,
-						"w": 120,
-						"h": 114
-					},
-					"margin": {
-						"x": 4,
-						"y": 6,
-						"w": 8,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Gray-red_coral3_shadow1.png",
-					"region": {
-						"x": 1595,
-						"y": 1,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Gray-red_coral3_shadow2.png",
-					"region": {
-						"x": 669,
-						"y": 457,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Gray-red_coral3_shadow3.png",
-					"region": {
-						"x": 1595,
-						"y": 57,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell2_shadow1.png",
-					"region": {
-						"x": 1595,
-						"y": 113,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell2_shadow2.png",
-					"region": {
-						"x": 1595,
-						"y": 169,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell2_shadow1.png",
-					"region": {
-						"x": 1595,
-						"y": 225,
-						"w": 62,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 8,
-						"w": 2,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Violet-pink_coral2_shadow2.png",
-					"region": {
-						"x": 799,
-						"y": 837,
-						"w": 120,
-						"h": 114
-					},
-					"margin": {
-						"x": 4,
-						"y": 6,
-						"w": 8,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Brown-white_shell1_shadow1.png",
-					"region": {
-						"x": 921,
-						"y": 865,
-						"w": 140,
-						"h": 80
-					},
-					"margin": {
-						"x": 58,
-						"y": 88,
-						"w": 116,
-						"h": 176
-					}
-				},
-				{
-					"filename": "Brown-white_shell1_shadow2.png",
-					"region": {
-						"x": 773,
-						"y": 953,
-						"w": 140,
-						"h": 80
-					},
-					"margin": {
-						"x": 58,
-						"y": 88,
-						"w": 116,
-						"h": 176
-					}
-				},
-				{
-					"filename": "Violet-pink_coral2_shadow3.png",
-					"region": {
-						"x": 779,
-						"y": 1035,
-						"w": 120,
-						"h": 114
-					},
-					"margin": {
-						"x": 4,
-						"y": 6,
-						"w": 8,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Anchor_shadow1.png",
-					"region": {
-						"x": 779,
-						"y": 1151,
-						"w": 116,
-						"h": 100
-					},
-					"margin": {
-						"x": 6,
-						"y": 14,
-						"w": 12,
-						"h": 28
-					}
-				},
-				{
-					"filename": "Anchor_shadow2.png",
-					"region": {
-						"x": 779,
-						"y": 1253,
-						"w": 116,
-						"h": 100
-					},
-					"margin": {
-						"x": 6,
-						"y": 14,
-						"w": 12,
-						"h": 28
-					}
-				},
-				{
-					"filename": "Brown-white_shell1_shadow3.png",
-					"region": {
-						"x": 1191,
-						"y": 799,
-						"w": 140,
-						"h": 80
-					},
-					"margin": {
-						"x": 58,
-						"y": 88,
-						"w": 116,
-						"h": 176
-					}
-				},
-				{
-					"filename": "Sea_insect_shadow1.png",
-					"region": {
-						"x": 1333,
-						"y": 797,
-						"w": 120,
-						"h": 80
-					},
-					"margin": {
-						"x": 4,
-						"y": 24,
-						"w": 8,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Riff4_shadow2.png",
-					"region": {
-						"x": 1095,
-						"y": 825,
-						"w": 94,
-						"h": 118
-					},
-					"margin": {
-						"x": 16,
-						"y": 4,
-						"w": 34,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Sea_insect_shadow2.png",
-					"region": {
-						"x": 1191,
-						"y": 881,
-						"w": 120,
-						"h": 80
-					},
-					"margin": {
-						"x": 4,
-						"y": 24,
-						"w": 8,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Sea_insect_shadow3.png",
-					"region": {
-						"x": 1455,
-						"y": 827,
-						"w": 120,
-						"h": 80
-					},
-					"margin": {
-						"x": 4,
-						"y": 24,
-						"w": 8,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Riff4_shadow3.png",
-					"region": {
-						"x": 901,
-						"y": 1035,
-						"w": 94,
-						"h": 118
-					},
-					"margin": {
-						"x": 16,
-						"y": 4,
-						"w": 34,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Sea_urchin2_shadow1.png",
-					"region": {
-						"x": 897,
-						"y": 1155,
-						"w": 102,
-						"h": 102
-					},
-					"margin": {
-						"x": 12,
-						"y": 12,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Sea_urchin2_shadow2.png",
-					"region": {
-						"x": 897,
-						"y": 1259,
-						"w": 102,
-						"h": 102
-					},
-					"margin": {
-						"x": 12,
-						"y": 12,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Blue_coral1_shadow1.png",
-					"region": {
-						"x": 915,
-						"y": 953,
-						"w": 64,
-						"h": 80
-					},
-					"margin": {
-						"x": 32,
-						"y": 24,
-						"w": 64,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Gray-red_coral1_shadow1.png",
-					"region": {
-						"x": 981,
-						"y": 947,
-						"w": 98,
-						"h": 84
-					},
-					"margin": {
-						"x": 14,
-						"y": 22,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Sea_urchin2_shadow3.png",
-					"region": {
-						"x": 997,
-						"y": 1033,
-						"w": 102,
-						"h": 102
-					},
-					"margin": {
-						"x": 12,
-						"y": 12,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Anchor_shadow3.png",
-					"region": {
-						"x": 1001,
-						"y": 1137,
-						"w": 116,
-						"h": 100
-					},
-					"margin": {
-						"x": 6,
-						"y": 14,
-						"w": 12,
-						"h": 28
-					}
-				},
-				{
-					"filename": "Starfish1_shadow1.png",
-					"region": {
-						"x": 1001,
-						"y": 1239,
-						"w": 96,
-						"h": 88
-					},
-					"margin": {
-						"x": 16,
-						"y": 20,
-						"w": 32,
-						"h": 40
-					}
-				},
-				{
-					"filename": "Gray-red_coral1_shadow2.png",
-					"region": {
-						"x": 1081,
-						"y": 945,
-						"w": 98,
-						"h": 84
-					},
-					"margin": {
-						"x": 14,
-						"y": 22,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Beige-violet_coral2_shadow1.png",
-					"region": {
-						"x": 1101,
-						"y": 1031,
-						"w": 94,
-						"h": 90
-					},
-					"margin": {
-						"x": 16,
-						"y": 18,
-						"w": 34,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Brown-white_shell2_shadow1.png",
-					"region": {
-						"x": 1181,
-						"y": 963,
-						"w": 112,
-						"h": 56
-					},
-					"margin": {
-						"x": 8,
-						"y": 36,
-						"w": 16,
-						"h": 72
-					}
-				},
-				{
-					"filename": "Starfish1_shadow2.png",
-					"region": {
-						"x": 1197,
-						"y": 1021,
-						"w": 96,
-						"h": 88
-					},
-					"margin": {
-						"x": 16,
-						"y": 20,
-						"w": 32,
-						"h": 40
-					}
-				},
-				{
-					"filename": "Beige-violet_coral2_shadow2.png",
-					"region": {
-						"x": 1119,
-						"y": 1123,
-						"w": 94,
-						"h": 90
-					},
-					"margin": {
-						"x": 16,
-						"y": 18,
-						"w": 34,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Beige-violet_coral2_shadow3.png",
-					"region": {
-						"x": 1215,
-						"y": 1111,
-						"w": 94,
-						"h": 90
-					},
-					"margin": {
-						"x": 16,
-						"y": 18,
-						"w": 34,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Blue-beige_coral3_shadow1.png",
-					"region": {
-						"x": 733,
-						"y": 303,
-						"w": 42,
-						"h": 38
-					},
-					"margin": {
-						"x": 10,
-						"y": 12,
-						"w": 22,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Brown-white_shell2_shadow2.png",
-					"region": {
-						"x": 1119,
-						"y": 1215,
-						"w": 112,
-						"h": 56
-					},
-					"margin": {
-						"x": 8,
-						"y": 36,
-						"w": 16,
-						"h": 72
-					}
-				},
-				{
-					"filename": "Brown-white_shell2_shadow3.png",
-					"region": {
-						"x": 1099,
-						"y": 1273,
-						"w": 112,
-						"h": 56
-					},
-					"margin": {
-						"x": 8,
-						"y": 36,
-						"w": 16,
-						"h": 72
-					}
-				},
-				{
-					"filename": "Gray-red_coral1_shadow3.png",
-					"region": {
-						"x": 1233,
-						"y": 1203,
-						"w": 98,
-						"h": 84
-					},
-					"margin": {
-						"x": 14,
-						"y": 22,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Blue-beige_coral2_shadow1.png",
-					"region": {
-						"x": 1,
-						"y": 1313,
-						"w": 64,
-						"h": 50
-					},
-					"margin": {
-						"x": 0,
-						"y": 6,
-						"w": 0,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Blue-beige_coral2_shadow2.png",
-					"region": {
-						"x": 67,
-						"y": 1313,
-						"w": 64,
-						"h": 50
-					},
-					"margin": {
-						"x": 0,
-						"y": 6,
-						"w": 0,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Violet-pink_coral3_shadow1.png",
-					"region": {
-						"x": 1295,
-						"y": 963,
-						"w": 74,
-						"h": 90
-					},
-					"margin": {
-						"x": 26,
-						"y": 18,
-						"w": 54,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Blue_coral1_shadow2.png",
-					"region": {
-						"x": 1313,
-						"y": 881,
-						"w": 64,
-						"h": 80
-					},
-					"margin": {
-						"x": 32,
-						"y": 24,
-						"w": 64,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Violet-pink_coral3_shadow2.png",
-					"region": {
-						"x": 1379,
-						"y": 879,
-						"w": 74,
-						"h": 90
-					},
-					"margin": {
-						"x": 26,
-						"y": 18,
-						"w": 54,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Starfish1_shadow3.png",
-					"region": {
-						"x": 1371,
-						"y": 971,
-						"w": 96,
-						"h": 88
-					},
-					"margin": {
-						"x": 16,
-						"y": 20,
-						"w": 32,
-						"h": 40
-					}
-				},
-				{
-					"filename": "Starfish2_shadow1.png",
-					"region": {
-						"x": 1455,
-						"y": 909,
-						"w": 70,
-						"h": 60
-					},
-					"margin": {
-						"x": 28,
-						"y": 34,
-						"w": 58,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Violet-pink_coral3_shadow3.png",
-					"region": {
-						"x": 1469,
-						"y": 971,
-						"w": 74,
-						"h": 90
-					},
-					"margin": {
-						"x": 26,
-						"y": 18,
-						"w": 54,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell2_shadow3.png",
-					"region": {
-						"x": 1295,
-						"y": 1055,
-						"w": 62,
-						"h": 54
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 2,
-						"h": 10
-					}
-				},
-				{
-					"filename": "Blue_coral1_shadow3.png",
-					"region": {
-						"x": 1311,
-						"y": 1111,
-						"w": 64,
-						"h": 80
-					},
-					"margin": {
-						"x": 32,
-						"y": 24,
-						"w": 64,
-						"h": 48
-					}
-				},
-				{
-					"filename": "Starfish2_shadow2.png",
-					"region": {
-						"x": 1527,
-						"y": 909,
-						"w": 70,
-						"h": 60
-					},
-					"margin": {
-						"x": 28,
-						"y": 34,
-						"w": 58,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell1_shadow1.png",
-					"region": {
-						"x": 1545,
-						"y": 971,
-						"w": 66,
-						"h": 78
-					},
-					"margin": {
-						"x": 30,
-						"y": 24,
-						"w": 62,
-						"h": 50
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell2_shadow2.png",
-					"region": {
-						"x": 1359,
-						"y": 1061,
-						"w": 62,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 8,
-						"w": 2,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell1_shadow2.png",
-					"region": {
-						"x": 1377,
-						"y": 1111,
-						"w": 66,
-						"h": 78
-					},
-					"margin": {
-						"x": 30,
-						"y": 24,
-						"w": 62,
-						"h": 50
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell1_shadow3.png",
-					"region": {
-						"x": 1333,
-						"y": 1193,
-						"w": 66,
-						"h": 78
-					},
-					"margin": {
-						"x": 30,
-						"y": 24,
-						"w": 62,
-						"h": 50
-					}
-				},
-				{
-					"filename": "Gray-red_coral2_shadow2.png",
-					"region": {
-						"x": 1401,
-						"y": 1191,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Gray-red_coral2_shadow3.png",
-					"region": {
-						"x": 1213,
-						"y": 1289,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Steering_wheel_shadow1.png",
-					"region": {
-						"x": 1297,
-						"y": 1289,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Blue_coral2_shadow1.png",
-					"region": {
-						"x": 337,
-						"y": 605,
-						"w": 40,
-						"h": 58
-					},
-					"margin": {
-						"x": 12,
-						"y": 2,
-						"w": 24,
-						"h": 6
-					}
-				},
-				{
-					"filename": "Steering_wheel_shadow2.png",
-					"region": {
-						"x": 1401,
-						"y": 1265,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell1_shadow1.png",
-					"region": {
-						"x": 1577,
-						"y": 827,
-						"w": 70,
-						"h": 68
-					},
-					"margin": {
-						"x": 28,
-						"y": 30,
-						"w": 58,
-						"h": 60
-					}
-				},
-				{
-					"filename": "Blue_coral2_shadow2.png",
-					"region": {
-						"x": 1599,
-						"y": 897,
-						"w": 40,
-						"h": 58
-					},
-					"margin": {
-						"x": 12,
-						"y": 2,
-						"w": 24,
-						"h": 6
-					}
-				},
-				{
-					"filename": "Steering_wheel_shadow3.png",
-					"region": {
-						"x": 1445,
-						"y": 1063,
-						"w": 82,
-						"h": 72
-					},
-					"margin": {
-						"x": 22,
-						"y": 28,
-						"w": 46,
-						"h": 56
-					}
-				},
-				{
-					"filename": "Blue-beige_coral2_shadow3.png",
-					"region": {
-						"x": 1445,
-						"y": 1137,
-						"w": 64,
-						"h": 50
-					},
-					"margin": {
-						"x": 0,
-						"y": 6,
-						"w": 0,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell1_shadow2.png",
-					"region": {
-						"x": 1485,
-						"y": 1189,
-						"w": 70,
-						"h": 68
-					},
-					"margin": {
-						"x": 28,
-						"y": 30,
-						"w": 58,
-						"h": 60
-					}
-				},
-				{
-					"filename": "Yellow-white-gray_shell1_shadow3.png",
-					"region": {
-						"x": 1485,
-						"y": 1259,
-						"w": 70,
-						"h": 68
-					},
-					"margin": {
-						"x": 28,
-						"y": 30,
-						"w": 58,
-						"h": 60
-					}
-				},
-				{
-					"filename": "Blue_coral2_shadow3.png",
-					"region": {
-						"x": 1609,
-						"y": 555,
-						"w": 40,
-						"h": 58
-					},
-					"margin": {
-						"x": 12,
-						"y": 2,
-						"w": 24,
-						"h": 6
-					}
-				},
-				{
-					"filename": "Blue-beige_coral3_shadow2.png",
-					"region": {
-						"x": 1609,
-						"y": 615,
-						"w": 42,
-						"h": 38
-					},
-					"margin": {
-						"x": 10,
-						"y": 12,
-						"w": 22,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Blue-beige_coral3_shadow3.png",
-					"region": {
-						"x": 1609,
-						"y": 655,
-						"w": 42,
-						"h": 38
-					},
-					"margin": {
-						"x": 10,
-						"y": 12,
-						"w": 22,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Blue-beige_coral1_shadow1.png",
-					"region": {
-						"x": 1545,
-						"y": 1051,
-						"w": 76,
-						"h": 62
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 52,
-						"h": 66
-					}
-				},
-				{
-					"filename": "Blue-beige_coral1_shadow2.png",
-					"region": {
-						"x": 1529,
-						"y": 1115,
-						"w": 76,
-						"h": 62
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 52,
-						"h": 66
-					}
-				},
-				{
-					"filename": "Blue-beige_coral1_shadow3.png",
-					"region": {
-						"x": 1557,
-						"y": 1179,
-						"w": 76,
-						"h": 62
-					},
-					"margin": {
-						"x": 26,
-						"y": 32,
-						"w": 52,
-						"h": 66
-					}
-				},
-				{
-					"filename": "Starfish2_shadow3.png",
-					"region": {
-						"x": 1557,
-						"y": 1243,
-						"w": 70,
-						"h": 60
-					},
-					"margin": {
-						"x": 28,
-						"y": 34,
-						"w": 58,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Pearl_sea_shell2_shadow3.png",
-					"region": {
-						"x": 1557,
-						"y": 1305,
-						"w": 62,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 8,
-						"w": 2,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Blue_coral3_shadow1.png",
-					"region": {
-						"x": 133,
-						"y": 1313,
-						"w": 32,
-						"h": 40
-					},
-					"margin": {
-						"x": 16,
-						"y": 12,
-						"w": 32,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Blue_coral3_shadow2.png",
-					"region": {
-						"x": 1607,
-						"y": 1115,
-						"w": 32,
-						"h": 40
-					},
-					"margin": {
-						"x": 16,
-						"y": 12,
-						"w": 32,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Blue_coral3_shadow3.png",
-					"region": {
-						"x": 1613,
-						"y": 957,
-						"w": 32,
-						"h": 40
-					},
-					"margin": {
-						"x": 16,
-						"y": 12,
-						"w": 32,
-						"h": 24
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:f4da98811a63cae071eb98e001ace311:1c2ca2a932d72af68b39d3298c176145:28ced86fc54fc01e5fccec752c8d9426$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:f4da98811a63cae071eb98e001ace311:1c2ca2a932d72af68b39d3298c176145:28ced86fc54fc01e5fccec752c8d9426$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "objects_pack3",
+            "size": {
+                "h": 1366,
+                "w": 1658
+            },
+            "sprites": [
+                {
+                    "filename": "Dragon_bones_shadow1",
+                    "margin": {
+                        "h": 212,
+                        "w": 126,
+                        "x": 62,
+                        "y": 106
+                    },
+                    "region": {
+                        "h": 300,
+                        "w": 386,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Statue1_shadow1",
+                    "margin": {
+                        "h": 160,
+                        "w": 346,
+                        "x": 172,
+                        "y": 80
+                    },
+                    "region": {
+                        "h": 352,
+                        "w": 166,
+                        "x": 1,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "Ship1_shadow1",
+                    "margin": {
+                        "h": 360,
+                        "w": 170,
+                        "x": 84,
+                        "y": 180
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 342,
+                        "x": 389,
+                        "y": 303
+                    }
+                },
+                {
+                    "filename": "Crab_shadow1",
+                    "margin": {
+                        "h": 300,
+                        "w": 234,
+                        "x": 116,
+                        "y": 150
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 278,
+                        "x": 389,
+                        "y": 457
+                    }
+                },
+                {
+                    "filename": "Statue2_shadow1",
+                    "margin": {
+                        "h": 240,
+                        "w": 384,
+                        "x": 192,
+                        "y": 120
+                    },
+                    "region": {
+                        "h": 272,
+                        "w": 128,
+                        "x": 169,
+                        "y": 959
+                    }
+                },
+                {
+                    "filename": "Riff1_shadow1",
+                    "margin": {
+                        "h": 64,
+                        "w": 54,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 192,
+                        "w": 202,
+                        "x": 1057,
+                        "y": 155
+                    }
+                },
+                {
+                    "filename": "Riff2_shadow1",
+                    "margin": {
+                        "h": 84,
+                        "w": 48,
+                        "x": 24,
+                        "y": 42
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 208,
+                        "x": 429,
+                        "y": 1079
+                    }
+                },
+                {
+                    "filename": "Monster_fish_bones_shadow1",
+                    "margin": {
+                        "h": 158,
+                        "w": 74,
+                        "x": 36,
+                        "y": 78
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 182,
+                        "x": 169,
+                        "y": 1233
+                    }
+                },
+                {
+                    "filename": "Riff3_shadow1",
+                    "margin": {
+                        "h": 82,
+                        "w": 118,
+                        "x": 58,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 138,
+                        "x": 943,
+                        "y": 369
+                    }
+                },
+                {
+                    "filename": "Mermaid_house_shadow1",
+                    "margin": {
+                        "h": 94,
+                        "w": 76,
+                        "x": 38,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 180,
+                        "x": 1293,
+                        "y": 349
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral2_shadow1",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 337,
+                        "y": 885
+                    }
+                },
+                {
+                    "filename": "Sea_urchin1_shadow1",
+                    "margin": {
+                        "h": 98,
+                        "w": 104,
+                        "x": 52,
+                        "y": 48
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 152,
+                        "x": 851,
+                        "y": 545
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral1_shadow1",
+                    "margin": {
+                        "h": 116,
+                        "w": 110,
+                        "x": 54,
+                        "y": 58
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 146,
+                        "x": 1313,
+                        "y": 513
+                    }
+                },
+                {
+                    "filename": "Ship2_shadow1",
+                    "margin": {
+                        "h": 178,
+                        "w": 100,
+                        "x": 50,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 156,
+                        "x": 1475,
+                        "y": 475
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral1_shadow1",
+                    "margin": {
+                        "h": 128,
+                        "w": 120,
+                        "x": 60,
+                        "y": 64
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 136,
+                        "x": 1461,
+                        "y": 697
+                    }
+                },
+                {
+                    "filename": "Turtle_shell_shadow1",
+                    "margin": {
+                        "h": 16,
+                        "w": 34,
+                        "x": 16,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 94,
+                        "x": 353,
+                        "y": 1253
+                    }
+                },
+                {
+                    "filename": "Riff4_shadow1",
+                    "margin": {
+                        "h": 10,
+                        "w": 34,
+                        "x": 16,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 94,
+                        "x": 1095,
+                        "y": 705
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral2_shadow1",
+                    "margin": {
+                        "h": 14,
+                        "w": 8,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 120,
+                        "x": 1191,
+                        "y": 683
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral3_shadow1",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 1595,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell2_shadow1",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 1595,
+                        "y": 113
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell2_shadow1",
+                    "margin": {
+                        "h": 16,
+                        "w": 2,
+                        "x": 0,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 62,
+                        "x": 1595,
+                        "y": 225
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell1_shadow1",
+                    "margin": {
+                        "h": 176,
+                        "w": 116,
+                        "x": 58,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 140,
+                        "x": 921,
+                        "y": 865
+                    }
+                },
+                {
+                    "filename": "Anchor_shadow1",
+                    "margin": {
+                        "h": 28,
+                        "w": 12,
+                        "x": 6,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 116,
+                        "x": 779,
+                        "y": 1151
+                    }
+                },
+                {
+                    "filename": "Sea_insect_shadow1",
+                    "margin": {
+                        "h": 48,
+                        "w": 8,
+                        "x": 4,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 120,
+                        "x": 1333,
+                        "y": 797
+                    }
+                },
+                {
+                    "filename": "Sea_urchin2_shadow1",
+                    "margin": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 12,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 102,
+                        "x": 897,
+                        "y": 1155
+                    }
+                },
+                {
+                    "filename": "Blue_coral1_shadow1",
+                    "margin": {
+                        "h": 48,
+                        "w": 64,
+                        "x": 32,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 64,
+                        "x": 915,
+                        "y": 953
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral1_shadow1",
+                    "margin": {
+                        "h": 44,
+                        "w": 30,
+                        "x": 14,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 84,
+                        "w": 98,
+                        "x": 981,
+                        "y": 947
+                    }
+                },
+                {
+                    "filename": "Starfish1_shadow1",
+                    "margin": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 16,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 96,
+                        "x": 1001,
+                        "y": 1239
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral2_shadow1",
+                    "margin": {
+                        "h": 38,
+                        "w": 34,
+                        "x": 16,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 94,
+                        "x": 1101,
+                        "y": 1031
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell2_shadow1",
+                    "margin": {
+                        "h": 72,
+                        "w": 16,
+                        "x": 8,
+                        "y": 36
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 112,
+                        "x": 1181,
+                        "y": 963
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral3_shadow1",
+                    "margin": {
+                        "h": 26,
+                        "w": 22,
+                        "x": 10,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 42,
+                        "x": 733,
+                        "y": 303
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral2_shadow1",
+                    "margin": {
+                        "h": 14,
+                        "w": 0,
+                        "x": 0,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 50,
+                        "w": 64,
+                        "x": 1,
+                        "y": 1313
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral3_shadow1",
+                    "margin": {
+                        "h": 38,
+                        "w": 54,
+                        "x": 26,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 74,
+                        "x": 1295,
+                        "y": 963
+                    }
+                },
+                {
+                    "filename": "Starfish2_shadow1",
+                    "margin": {
+                        "h": 68,
+                        "w": 58,
+                        "x": 28,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 60,
+                        "w": 70,
+                        "x": 1455,
+                        "y": 909
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell1_shadow1",
+                    "margin": {
+                        "h": 50,
+                        "w": 62,
+                        "x": 30,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 66,
+                        "x": 1545,
+                        "y": 971
+                    }
+                },
+                {
+                    "filename": "Steering_wheel_shadow1",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 1297,
+                        "y": 1289
+                    }
+                },
+                {
+                    "filename": "Blue_coral2_shadow1",
+                    "margin": {
+                        "h": 6,
+                        "w": 24,
+                        "x": 12,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 40,
+                        "x": 337,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell1_shadow1",
+                    "margin": {
+                        "h": 60,
+                        "w": 58,
+                        "x": 28,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 68,
+                        "w": 70,
+                        "x": 1577,
+                        "y": 827
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral1_shadow1",
+                    "margin": {
+                        "h": 66,
+                        "w": 52,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 62,
+                        "w": 76,
+                        "x": 1545,
+                        "y": 1051
+                    }
+                },
+                {
+                    "filename": "Blue_coral3_shadow1",
+                    "margin": {
+                        "h": 24,
+                        "w": 32,
+                        "x": 16,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 133,
+                        "y": 1313
+                    }
+                },
+                {
+                    "filename": "Dragon_bones_shadow2",
+                    "margin": {
+                        "h": 212,
+                        "w": 126,
+                        "x": 62,
+                        "y": 106
+                    },
+                    "region": {
+                        "h": 300,
+                        "w": 386,
+                        "x": 1,
+                        "y": 303
+                    }
+                },
+                {
+                    "filename": "Statue1_shadow2",
+                    "margin": {
+                        "h": 160,
+                        "w": 346,
+                        "x": 172,
+                        "y": 80
+                    },
+                    "region": {
+                        "h": 352,
+                        "w": 166,
+                        "x": 1,
+                        "y": 959
+                    }
+                },
+                {
+                    "filename": "Ship1_shadow2",
+                    "margin": {
+                        "h": 360,
+                        "w": 170,
+                        "x": 84,
+                        "y": 180
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 342,
+                        "x": 777,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Crab_shadow2",
+                    "margin": {
+                        "h": 300,
+                        "w": 234,
+                        "x": 116,
+                        "y": 150
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 278,
+                        "x": 337,
+                        "y": 671
+                    }
+                },
+                {
+                    "filename": "Riff1_shadow2",
+                    "margin": {
+                        "h": 64,
+                        "w": 54,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 192,
+                        "w": 202,
+                        "x": 1261,
+                        "y": 155
+                    }
+                },
+                {
+                    "filename": "Statue2_shadow2",
+                    "margin": {
+                        "h": 240,
+                        "w": 384,
+                        "x": 192,
+                        "y": 120
+                    },
+                    "region": {
+                        "h": 272,
+                        "w": 128,
+                        "x": 1465,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Riff2_shadow2",
+                    "margin": {
+                        "h": 84,
+                        "w": 48,
+                        "x": 24,
+                        "y": 42
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 208,
+                        "x": 733,
+                        "y": 369
+                    }
+                },
+                {
+                    "filename": "Monster_fish_bones_shadow2",
+                    "margin": {
+                        "h": 158,
+                        "w": 74,
+                        "x": 36,
+                        "y": 78
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 182,
+                        "x": 1475,
+                        "y": 275
+                    }
+                },
+                {
+                    "filename": "Mermaid_house_shadow2",
+                    "margin": {
+                        "h": 94,
+                        "w": 76,
+                        "x": 38,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 180,
+                        "x": 669,
+                        "y": 543
+                    }
+                },
+                {
+                    "filename": "Riff3_shadow2",
+                    "margin": {
+                        "h": 82,
+                        "w": 118,
+                        "x": 58,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 138,
+                        "x": 633,
+                        "y": 871
+                    }
+                },
+                {
+                    "filename": "Sea_urchin1_shadow2",
+                    "margin": {
+                        "h": 98,
+                        "w": 104,
+                        "x": 52,
+                        "y": 48
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 152,
+                        "x": 1005,
+                        "y": 545
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral1_shadow2",
+                    "margin": {
+                        "h": 116,
+                        "w": 110,
+                        "x": 54,
+                        "y": 58
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 146,
+                        "x": 1461,
+                        "y": 555
+                    }
+                },
+                {
+                    "filename": "Turtle_shell_shadow2",
+                    "margin": {
+                        "h": 16,
+                        "w": 34,
+                        "x": 16,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 94,
+                        "x": 449,
+                        "y": 1253
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral1_shadow2",
+                    "margin": {
+                        "h": 128,
+                        "w": 120,
+                        "x": 60,
+                        "y": 64
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 136,
+                        "x": 641,
+                        "y": 1223
+                    }
+                },
+                {
+                    "filename": "Ship2_shadow2",
+                    "margin": {
+                        "h": 178,
+                        "w": 100,
+                        "x": 50,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 156,
+                        "x": 937,
+                        "y": 705
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral3_shadow2",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 669,
+                        "y": 457
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell2_shadow2",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 1595,
+                        "y": 169
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral2_shadow2",
+                    "margin": {
+                        "h": 14,
+                        "w": 8,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 120,
+                        "x": 799,
+                        "y": 837
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell1_shadow2",
+                    "margin": {
+                        "h": 176,
+                        "w": 116,
+                        "x": 58,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 140,
+                        "x": 773,
+                        "y": 953
+                    }
+                },
+                {
+                    "filename": "Anchor_shadow2",
+                    "margin": {
+                        "h": 28,
+                        "w": 12,
+                        "x": 6,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 116,
+                        "x": 779,
+                        "y": 1253
+                    }
+                },
+                {
+                    "filename": "Riff4_shadow2",
+                    "margin": {
+                        "h": 10,
+                        "w": 34,
+                        "x": 16,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 94,
+                        "x": 1095,
+                        "y": 825
+                    }
+                },
+                {
+                    "filename": "Sea_insect_shadow2",
+                    "margin": {
+                        "h": 48,
+                        "w": 8,
+                        "x": 4,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 120,
+                        "x": 1191,
+                        "y": 881
+                    }
+                },
+                {
+                    "filename": "Sea_urchin2_shadow2",
+                    "margin": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 12,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 102,
+                        "x": 897,
+                        "y": 1259
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral1_shadow2",
+                    "margin": {
+                        "h": 44,
+                        "w": 30,
+                        "x": 14,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 84,
+                        "w": 98,
+                        "x": 1081,
+                        "y": 945
+                    }
+                },
+                {
+                    "filename": "Starfish1_shadow2",
+                    "margin": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 16,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 96,
+                        "x": 1197,
+                        "y": 1021
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral2_shadow2",
+                    "margin": {
+                        "h": 38,
+                        "w": 34,
+                        "x": 16,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 94,
+                        "x": 1119,
+                        "y": 1123
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell2_shadow2",
+                    "margin": {
+                        "h": 72,
+                        "w": 16,
+                        "x": 8,
+                        "y": 36
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 112,
+                        "x": 1119,
+                        "y": 1215
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral2_shadow2",
+                    "margin": {
+                        "h": 14,
+                        "w": 0,
+                        "x": 0,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 50,
+                        "w": 64,
+                        "x": 67,
+                        "y": 1313
+                    }
+                },
+                {
+                    "filename": "Blue_coral1_shadow2",
+                    "margin": {
+                        "h": 48,
+                        "w": 64,
+                        "x": 32,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 64,
+                        "x": 1313,
+                        "y": 881
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral3_shadow2",
+                    "margin": {
+                        "h": 38,
+                        "w": 54,
+                        "x": 26,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 74,
+                        "x": 1379,
+                        "y": 879
+                    }
+                },
+                {
+                    "filename": "Starfish2_shadow2",
+                    "margin": {
+                        "h": 68,
+                        "w": 58,
+                        "x": 28,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 60,
+                        "w": 70,
+                        "x": 1527,
+                        "y": 909
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell2_shadow2",
+                    "margin": {
+                        "h": 16,
+                        "w": 2,
+                        "x": 0,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 62,
+                        "x": 1359,
+                        "y": 1061
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell1_shadow2",
+                    "margin": {
+                        "h": 50,
+                        "w": 62,
+                        "x": 30,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 66,
+                        "x": 1377,
+                        "y": 1111
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral2_shadow2",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 1401,
+                        "y": 1191
+                    }
+                },
+                {
+                    "filename": "Steering_wheel_shadow2",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 1401,
+                        "y": 1265
+                    }
+                },
+                {
+                    "filename": "Blue_coral2_shadow2",
+                    "margin": {
+                        "h": 6,
+                        "w": 24,
+                        "x": 12,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 40,
+                        "x": 1599,
+                        "y": 897
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell1_shadow2",
+                    "margin": {
+                        "h": 60,
+                        "w": 58,
+                        "x": 28,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 68,
+                        "w": 70,
+                        "x": 1485,
+                        "y": 1189
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral3_shadow2",
+                    "margin": {
+                        "h": 26,
+                        "w": 22,
+                        "x": 10,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 42,
+                        "x": 1609,
+                        "y": 615
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral1_shadow2",
+                    "margin": {
+                        "h": 66,
+                        "w": 52,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 62,
+                        "w": 76,
+                        "x": 1529,
+                        "y": 1115
+                    }
+                },
+                {
+                    "filename": "Blue_coral3_shadow2",
+                    "margin": {
+                        "h": 24,
+                        "w": 32,
+                        "x": 16,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 1607,
+                        "y": 1115
+                    }
+                },
+                {
+                    "filename": "Dragon_bones_shadow3",
+                    "margin": {
+                        "h": 212,
+                        "w": 126,
+                        "x": 62,
+                        "y": 106
+                    },
+                    "region": {
+                        "h": 300,
+                        "w": 386,
+                        "x": 389,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Statue1_shadow3",
+                    "margin": {
+                        "h": 160,
+                        "w": 346,
+                        "x": 172,
+                        "y": 80
+                    },
+                    "region": {
+                        "h": 352,
+                        "w": 166,
+                        "x": 169,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "Ship1_shadow3",
+                    "margin": {
+                        "h": 360,
+                        "w": 170,
+                        "x": 84,
+                        "y": 180
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 342,
+                        "x": 1121,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Crab_shadow3",
+                    "margin": {
+                        "h": 300,
+                        "w": 234,
+                        "x": 116,
+                        "y": 150
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 278,
+                        "x": 777,
+                        "y": 155
+                    }
+                },
+                {
+                    "filename": "Statue2_shadow3",
+                    "margin": {
+                        "h": 240,
+                        "w": 384,
+                        "x": 192,
+                        "y": 120
+                    },
+                    "region": {
+                        "h": 272,
+                        "w": 128,
+                        "x": 299,
+                        "y": 959
+                    }
+                },
+                {
+                    "filename": "Riff1_shadow3",
+                    "margin": {
+                        "h": 64,
+                        "w": 54,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 192,
+                        "w": 202,
+                        "x": 429,
+                        "y": 885
+                    }
+                },
+                {
+                    "filename": "Riff2_shadow3",
+                    "margin": {
+                        "h": 84,
+                        "w": 48,
+                        "x": 24,
+                        "y": 42
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 208,
+                        "x": 1083,
+                        "y": 349
+                    }
+                },
+                {
+                    "filename": "Monster_fish_bones_shadow3",
+                    "margin": {
+                        "h": 158,
+                        "w": 74,
+                        "x": 36,
+                        "y": 78
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 182,
+                        "x": 1475,
+                        "y": 375
+                    }
+                },
+                {
+                    "filename": "Mermaid_house_shadow3",
+                    "margin": {
+                        "h": 94,
+                        "w": 76,
+                        "x": 38,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 180,
+                        "x": 617,
+                        "y": 707
+                    }
+                },
+                {
+                    "filename": "Riff3_shadow3",
+                    "margin": {
+                        "h": 82,
+                        "w": 118,
+                        "x": 58,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 138,
+                        "x": 639,
+                        "y": 1047
+                    }
+                },
+                {
+                    "filename": "Sea_urchin1_shadow3",
+                    "margin": {
+                        "h": 98,
+                        "w": 104,
+                        "x": 52,
+                        "y": 48
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 152,
+                        "x": 1159,
+                        "y": 523
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral1_shadow3",
+                    "margin": {
+                        "h": 116,
+                        "w": 110,
+                        "x": 54,
+                        "y": 58
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 146,
+                        "x": 1313,
+                        "y": 655
+                    }
+                },
+                {
+                    "filename": "Turtle_shell_shadow3",
+                    "margin": {
+                        "h": 16,
+                        "w": 34,
+                        "x": 16,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 94,
+                        "x": 545,
+                        "y": 1253
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral1_shadow3",
+                    "margin": {
+                        "h": 128,
+                        "w": 120,
+                        "x": 60,
+                        "y": 64
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 136,
+                        "x": 799,
+                        "y": 707
+                    }
+                },
+                {
+                    "filename": "Ship2_shadow3",
+                    "margin": {
+                        "h": 178,
+                        "w": 100,
+                        "x": 50,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 156,
+                        "x": 937,
+                        "y": 785
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral3_shadow3",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 1595,
+                        "y": 57
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral2_shadow3",
+                    "margin": {
+                        "h": 14,
+                        "w": 8,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 120,
+                        "x": 779,
+                        "y": 1035
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell1_shadow3",
+                    "margin": {
+                        "h": 176,
+                        "w": 116,
+                        "x": 58,
+                        "y": 88
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 140,
+                        "x": 1191,
+                        "y": 799
+                    }
+                },
+                {
+                    "filename": "Sea_insect_shadow3",
+                    "margin": {
+                        "h": 48,
+                        "w": 8,
+                        "x": 4,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 120,
+                        "x": 1455,
+                        "y": 827
+                    }
+                },
+                {
+                    "filename": "Riff4_shadow3",
+                    "margin": {
+                        "h": 10,
+                        "w": 34,
+                        "x": 16,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 94,
+                        "x": 901,
+                        "y": 1035
+                    }
+                },
+                {
+                    "filename": "Sea_urchin2_shadow3",
+                    "margin": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 12,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 102,
+                        "x": 997,
+                        "y": 1033
+                    }
+                },
+                {
+                    "filename": "Anchor_shadow3",
+                    "margin": {
+                        "h": 28,
+                        "w": 12,
+                        "x": 6,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 116,
+                        "x": 1001,
+                        "y": 1137
+                    }
+                },
+                {
+                    "filename": "Beige-violet_coral2_shadow3",
+                    "margin": {
+                        "h": 38,
+                        "w": 34,
+                        "x": 16,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 94,
+                        "x": 1215,
+                        "y": 1111
+                    }
+                },
+                {
+                    "filename": "Brown-white_shell2_shadow3",
+                    "margin": {
+                        "h": 72,
+                        "w": 16,
+                        "x": 8,
+                        "y": 36
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 112,
+                        "x": 1099,
+                        "y": 1273
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral1_shadow3",
+                    "margin": {
+                        "h": 44,
+                        "w": 30,
+                        "x": 14,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 84,
+                        "w": 98,
+                        "x": 1233,
+                        "y": 1203
+                    }
+                },
+                {
+                    "filename": "Starfish1_shadow3",
+                    "margin": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 16,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 96,
+                        "x": 1371,
+                        "y": 971
+                    }
+                },
+                {
+                    "filename": "Violet-pink_coral3_shadow3",
+                    "margin": {
+                        "h": 38,
+                        "w": 54,
+                        "x": 26,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 74,
+                        "x": 1469,
+                        "y": 971
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell2_shadow3",
+                    "margin": {
+                        "h": 10,
+                        "w": 2,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 62,
+                        "x": 1295,
+                        "y": 1055
+                    }
+                },
+                {
+                    "filename": "Blue_coral1_shadow3",
+                    "margin": {
+                        "h": 48,
+                        "w": 64,
+                        "x": 32,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 64,
+                        "x": 1311,
+                        "y": 1111
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell1_shadow3",
+                    "margin": {
+                        "h": 50,
+                        "w": 62,
+                        "x": 30,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 66,
+                        "x": 1333,
+                        "y": 1193
+                    }
+                },
+                {
+                    "filename": "Gray-red_coral2_shadow3",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 1213,
+                        "y": 1289
+                    }
+                },
+                {
+                    "filename": "Steering_wheel_shadow3",
+                    "margin": {
+                        "h": 56,
+                        "w": 46,
+                        "x": 22,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 1445,
+                        "y": 1063
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral2_shadow3",
+                    "margin": {
+                        "h": 14,
+                        "w": 0,
+                        "x": 0,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 50,
+                        "w": 64,
+                        "x": 1445,
+                        "y": 1137
+                    }
+                },
+                {
+                    "filename": "Yellow-white-gray_shell1_shadow3",
+                    "margin": {
+                        "h": 60,
+                        "w": 58,
+                        "x": 28,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 68,
+                        "w": 70,
+                        "x": 1485,
+                        "y": 1259
+                    }
+                },
+                {
+                    "filename": "Blue_coral2_shadow3",
+                    "margin": {
+                        "h": 6,
+                        "w": 24,
+                        "x": 12,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 40,
+                        "x": 1609,
+                        "y": 555
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral3_shadow3",
+                    "margin": {
+                        "h": 26,
+                        "w": 22,
+                        "x": 10,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 42,
+                        "x": 1609,
+                        "y": 655
+                    }
+                },
+                {
+                    "filename": "Blue-beige_coral1_shadow3",
+                    "margin": {
+                        "h": 66,
+                        "w": 52,
+                        "x": 26,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 62,
+                        "w": 76,
+                        "x": 1557,
+                        "y": 1179
+                    }
+                },
+                {
+                    "filename": "Starfish2_shadow3",
+                    "margin": {
+                        "h": 68,
+                        "w": 58,
+                        "x": 28,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 60,
+                        "w": 70,
+                        "x": 1557,
+                        "y": 1243
+                    }
+                },
+                {
+                    "filename": "Pearl_sea_shell2_shadow3",
+                    "margin": {
+                        "h": 16,
+                        "w": 2,
+                        "x": 0,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 62,
+                        "x": 1557,
+                        "y": 1305
+                    }
+                },
+                {
+                    "filename": "Blue_coral3_shadow3",
+                    "margin": {
+                        "h": 24,
+                        "w": 32,
+                        "x": 16,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 40,
+                        "w": 32,
+                        "x": 1613,
+                        "y": 957
+                    }
+                }
+            ]
+        }
+    ]
 }

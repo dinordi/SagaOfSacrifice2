@@ -1,378 +1,378 @@
 {
-	"textures": [
-		{
-			"image": "fire_animation",
-			"size": {
-				"w": 128,
-				"h": 806
-			},
-			"sprites": [
-				{
-					"filename": "fire_animation-10.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 78,
-						"h": 78
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-8.png",
-					"region": {
-						"x": 81,
-						"y": 1,
-						"w": 44,
-						"h": 44
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-20.png",
-					"region": {
-						"x": 81,
-						"y": 47,
-						"w": 44,
-						"h": 44
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-22.png",
-					"region": {
-						"x": 1,
-						"y": 81,
-						"w": 78,
-						"h": 78
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-6.png",
-					"region": {
-						"x": 1,
-						"y": 161,
-						"w": 74,
-						"h": 74
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation",
-					"region": {
-						"x": 77,
-						"y": 161,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-5.png",
-					"region": {
-						"x": 77,
-						"y": 211,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-18.png",
-					"region": {
-						"x": 1,
-						"y": 237,
-						"w": 74,
-						"h": 74
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-12.png",
-					"region": {
-						"x": 77,
-						"y": 261,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-17.png",
-					"region": {
-						"x": 77,
-						"y": 311,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-2.png",
-					"region": {
-						"x": 1,
-						"y": 313,
-						"w": 70,
-						"h": 72
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-4.png",
-					"region": {
-						"x": 73,
-						"y": 361,
-						"w": 52,
-						"h": 52
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-14.png",
-					"region": {
-						"x": 1,
-						"y": 387,
-						"w": 70,
-						"h": 72
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-9.png",
-					"region": {
-						"x": 73,
-						"y": 415,
-						"w": 52,
-						"h": 52
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-3.png",
-					"region": {
-						"x": 1,
-						"y": 461,
-						"w": 70,
-						"h": 70
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-16.png",
-					"region": {
-						"x": 73,
-						"y": 469,
-						"w": 52,
-						"h": 52
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-21.png",
-					"region": {
-						"x": 73,
-						"y": 523,
-						"w": 52,
-						"h": 52
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-15.png",
-					"region": {
-						"x": 1,
-						"y": 533,
-						"w": 70,
-						"h": 70
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-11.png",
-					"region": {
-						"x": 1,
-						"y": 605,
-						"w": 66,
-						"h": 66
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-1.png",
-					"region": {
-						"x": 69,
-						"y": 605,
-						"w": 56,
-						"h": 56
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-13.png",
-					"region": {
-						"x": 69,
-						"y": 663,
-						"w": 56,
-						"h": 56
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-23.png",
-					"region": {
-						"x": 1,
-						"y": 673,
-						"w": 66,
-						"h": 66
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-7.png",
-					"region": {
-						"x": 1,
-						"y": 741,
-						"w": 62,
-						"h": 64
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "fire_animation-19.png",
-					"region": {
-						"x": 65,
-						"y": 741,
-						"w": 62,
-						"h": 64
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:6844235a3f9d5ad88920293ed373b362:e2342713f41d24cdffa4f8856d2b039e:10b5f4d0719aff809aeb17702de6d87d$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:6844235a3f9d5ad88920293ed373b362:e2342713f41d24cdffa4f8856d2b039e:10b5f4d0719aff809aeb17702de6d87d$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "fire_animation",
+            "size": {
+                "h": 806,
+                "w": 128
+            },
+            "sprites": [
+                {
+                    "filename": "fire_animation",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 77,
+                        "y": 161
+                    }
+                },
+                {
+                    "filename": "fire_animation-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 56,
+                        "x": 69,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "fire_animation-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 70,
+                        "x": 1,
+                        "y": 313
+                    }
+                },
+                {
+                    "filename": "fire_animation-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 70,
+                        "w": 70,
+                        "x": 1,
+                        "y": 461
+                    }
+                },
+                {
+                    "filename": "fire_animation-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 52,
+                        "w": 52,
+                        "x": 73,
+                        "y": 361
+                    }
+                },
+                {
+                    "filename": "fire_animation-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 77,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "fire_animation-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 74,
+                        "w": 74,
+                        "x": 1,
+                        "y": 161
+                    }
+                },
+                {
+                    "filename": "fire_animation-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 62,
+                        "x": 1,
+                        "y": 741
+                    }
+                },
+                {
+                    "filename": "fire_animation-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 44,
+                        "w": 44,
+                        "x": 81,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "fire_animation-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 52,
+                        "w": 52,
+                        "x": 73,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "fire_animation-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 78,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "fire_animation-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 66,
+                        "w": 66,
+                        "x": 1,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "fire_animation-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 77,
+                        "y": 261
+                    }
+                },
+                {
+                    "filename": "fire_animation-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 56,
+                        "x": 69,
+                        "y": 663
+                    }
+                },
+                {
+                    "filename": "fire_animation-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 70,
+                        "x": 1,
+                        "y": 387
+                    }
+                },
+                {
+                    "filename": "fire_animation-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 70,
+                        "w": 70,
+                        "x": 1,
+                        "y": 533
+                    }
+                },
+                {
+                    "filename": "fire_animation-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 52,
+                        "w": 52,
+                        "x": 73,
+                        "y": 469
+                    }
+                },
+                {
+                    "filename": "fire_animation-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 77,
+                        "y": 311
+                    }
+                },
+                {
+                    "filename": "fire_animation-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 74,
+                        "w": 74,
+                        "x": 1,
+                        "y": 237
+                    }
+                },
+                {
+                    "filename": "fire_animation-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 62,
+                        "x": 65,
+                        "y": 741
+                    }
+                },
+                {
+                    "filename": "fire_animation-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 44,
+                        "w": 44,
+                        "x": 81,
+                        "y": 47
+                    }
+                },
+                {
+                    "filename": "fire_animation-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 52,
+                        "w": 52,
+                        "x": 73,
+                        "y": 523
+                    }
+                },
+                {
+                    "filename": "fire_animation-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 78,
+                        "x": 1,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "fire_animation-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 66,
+                        "w": 66,
+                        "x": 1,
+                        "y": 673
+                    }
+                }
+            ]
+        }
+    ]
 }
