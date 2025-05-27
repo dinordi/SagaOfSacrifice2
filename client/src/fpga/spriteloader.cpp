@@ -138,13 +138,6 @@ int SpriteLoader::load_png(const char *filename, uint32_t **sprite_data_out, int
             (*sprite_data_out)[y * width + x] = rgba;
         }
     }
-
-    // Debug output for first few pixels
-    std::cout << "Debug: First 5 pixels in RGBA (hex): ";
-    for (int i = 0; i < std::min(5, (int)width); i++) {
-        std::cout << "0x" << std::hex << (*sprite_data_out)[i] << std::dec << " ";
-    }
-    std::cout << std::endl;
     
     // Clean up
     for (size_t y = 0; y < height; y++) {
@@ -239,9 +232,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     memcpy(mapped_mem, data_to_use, sprite_size);
 
     // --- Debugging before msync ---
-    std::cout << "Preparing for msync:" << std::endl;
-    std::cout << "  mapped_mem address: " << mapped_mem << std::endl;
-    std::cout << "  mapped_size: " << mapped_size << " bytes" << std::endl;
+   
     if (mapped_mem == NULL || mapped_mem == MAP_FAILED) {
         std::cerr << "  ERROR: mapped_mem pointer is invalid!" << std::endl;
     }
@@ -249,23 +240,6 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
         std::cerr << "  ERROR: mapped_size is zero!" << std::endl;
     }
     // --- End Debugging ---
-
-    // Explicitly synchronize the memory: Flush CPU cache and invalidate others
-    std::cout << "Synchronizing memory (msync with MS_SYNC | MS_INVALIDATE) for "
-              << size_to_sync << " bytes..." << std::endl; // Now uses the declared variable
-
-    if (msync(mapped_mem, mapped_size, MS_SYNC | MS_INVALIDATE) == -1) { // Using size_to_sync
-         // Capture errno immediately
-         int msync_errno = errno;
-         perror("Error during msync");
-         std::cerr << "  msync errno: " << msync_errno << " (" << strerror(msync_errno) << ")" << std::endl;
-         std::cerr << "  msync arguments: addr=" << mapped_mem << ", len=" << size_to_sync << std::endl; // Log the size used
-         // Decide if this is a fatal error
-         // result = 1;
-         // goto cleanup;
-    } else {
-         std::cout << "msync completed successfully for mapped region." << std::endl;
-    }
 
     // Update the physical address pointer for the caller to the next available address
     // *phys_addr += sprite_size; // Point right after the actual data
