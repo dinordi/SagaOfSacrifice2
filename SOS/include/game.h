@@ -102,6 +102,8 @@ private:
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
+    SpriteData* letters;
+    SpriteData* letters_small;
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;

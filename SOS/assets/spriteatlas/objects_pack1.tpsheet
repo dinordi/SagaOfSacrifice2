@@ -1,0 +1,33 @@
+{
+	"textures": [
+		{
+			"image": "objects_pack1",
+			"size": {
+				"w": 474,
+				"h": 224
+			},
+			"sprites": [
+				{
+					"filename": "Slime1_Run_body.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 472,
+						"h": 222
+					},
+					"margin": {
+						"x": 21,
+						"y": 11,
+						"w": 40,
+						"h": 34
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:a53df8d296fe71854615963f85af3a3f:0596547b45ef7c71bc89032545132913:1ad249be31321dbb2181c264ceb329ad$"
+	}
+}

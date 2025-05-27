@@ -18,26 +18,35 @@ RemotePlayer::RemotePlayer(const std::string& id)
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
     
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+
+    addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
+    addSpriteSheet(AnimationState::WALKING, basePath / "wolfman_walk.tpsheet");
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
 
-    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+    addSpriteSheet(AnimationState::ATTACKING, basePath / "wolfman_slash.tpsheet");
 
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);

@@ -1,0 +1,318 @@
+{
+	"textures": [
+		{
+			"image": "wolfman_slash",
+			"size": {
+				"w": 248,
+				"h": 872
+			},
+			"sprites": [
+				{
+					"filename": "wolfman_slash",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 68,
+						"h": 88
+					},
+					"margin": {
+						"x": 155,
+						"y": 169,
+						"w": 316,
+						"h": 296
+					}
+				},
+				{
+					"filename": "wolfman_slash-1.png",
+					"region": {
+						"x": 71,
+						"y": 1,
+						"w": 70,
+						"h": 88
+					},
+					"margin": {
+						"x": 153,
+						"y": 169,
+						"w": 314,
+						"h": 296
+					}
+				},
+				{
+					"filename": "wolfman_slash-2.png",
+					"region": {
+						"x": 1,
+						"y": 757,
+						"w": 76,
+						"h": 102
+					},
+					"margin": {
+						"x": 147,
+						"y": 155,
+						"w": 308,
+						"h": 282
+					}
+				},
+				{
+					"filename": "wolfman_slash-3.png",
+					"region": {
+						"x": 79,
+						"y": 759,
+						"w": 122,
+						"h": 112
+					},
+					"margin": {
+						"x": 155,
+						"y": 145,
+						"w": 262,
+						"h": 272
+					}
+				},
+				{
+					"filename": "wolfman_slash-4.png",
+					"region": {
+						"x": 1,
+						"y": 91,
+						"w": 132,
+						"h": 90
+					},
+					"margin": {
+						"x": 159,
+						"y": 167,
+						"w": 252,
+						"h": 294
+					}
+				},
+				{
+					"filename": "wolfman_slash-5.png",
+					"region": {
+						"x": 135,
+						"y": 91,
+						"w": 76,
+						"h": 90
+					},
+					"margin": {
+						"x": 155,
+						"y": 167,
+						"w": 308,
+						"h": 294
+					}
+				},
+				{
+					"filename": "wolfman_slash-6.png",
+					"region": {
+						"x": 147,
+						"y": 183,
+						"w": 78,
+						"h": 94
+					},
+					"margin": {
+						"x": 149,
+						"y": 163,
+						"w": 306,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-7.png",
+					"region": {
+						"x": 1,
+						"y": 371,
+						"w": 112,
+						"h": 94
+					},
+					"margin": {
+						"x": 131,
+						"y": 163,
+						"w": 272,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-8.png",
+					"region": {
+						"x": 81,
+						"y": 469,
+						"w": 146,
+						"h": 94
+					},
+					"margin": {
+						"x": 87,
+						"y": 163,
+						"w": 238,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-9.png",
+					"region": {
+						"x": 115,
+						"y": 373,
+						"w": 132,
+						"h": 94
+					},
+					"margin": {
+						"x": 105,
+						"y": 163,
+						"w": 252,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-10.png",
+					"region": {
+						"x": 79,
+						"y": 183,
+						"w": 66,
+						"h": 92
+					},
+					"margin": {
+						"x": 161,
+						"y": 165,
+						"w": 318,
+						"h": 292
+					}
+				},
+				{
+					"filename": "wolfman_slash-11.png",
+					"region": {
+						"x": 143,
+						"y": 1,
+						"w": 84,
+						"h": 88
+					},
+					"margin": {
+						"x": 145,
+						"y": 169,
+						"w": 300,
+						"h": 296
+					}
+				},
+				{
+					"filename": "wolfman_slash-12.png",
+					"region": {
+						"x": 149,
+						"y": 661,
+						"w": 72,
+						"h": 96
+					},
+					"margin": {
+						"x": 157,
+						"y": 167,
+						"w": 312,
+						"h": 288
+					}
+				},
+				{
+					"filename": "wolfman_slash-13.png",
+					"region": {
+						"x": 1,
+						"y": 277,
+						"w": 114,
+						"h": 92
+					},
+					"margin": {
+						"x": 155,
+						"y": 165,
+						"w": 270,
+						"h": 292
+					}
+				},
+				{
+					"filename": "wolfman_slash-14.png",
+					"region": {
+						"x": 117,
+						"y": 279,
+						"w": 116,
+						"h": 92
+					},
+					"margin": {
+						"x": 159,
+						"y": 165,
+						"w": 268,
+						"h": 292
+					}
+				},
+				{
+					"filename": "wolfman_slash-15.png",
+					"region": {
+						"x": 1,
+						"y": 183,
+						"w": 76,
+						"h": 90
+					},
+					"margin": {
+						"x": 153,
+						"y": 167,
+						"w": 308,
+						"h": 294
+					}
+				},
+				{
+					"filename": "wolfman_slash-16.png",
+					"region": {
+						"x": 1,
+						"y": 467,
+						"w": 78,
+						"h": 94
+					},
+					"margin": {
+						"x": 157,
+						"y": 163,
+						"w": 306,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-17.png",
+					"region": {
+						"x": 1,
+						"y": 565,
+						"w": 112,
+						"h": 94
+					},
+					"margin": {
+						"x": 141,
+						"y": 163,
+						"w": 272,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-18.png",
+					"region": {
+						"x": 1,
+						"y": 661,
+						"w": 146,
+						"h": 94
+					},
+					"margin": {
+						"x": 151,
+						"y": 163,
+						"w": 238,
+						"h": 290
+					}
+				},
+				{
+					"filename": "wolfman_slash-19.png",
+					"region": {
+						"x": 115,
+						"y": 565,
+						"w": 132,
+						"h": 94
+					},
+					"margin": {
+						"x": 147,
+						"y": 163,
+						"w": 252,
+						"h": 290
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:bdb00172bc2e1e12f5b2cf4dfa192ef6:a615598dd2ae0f3e0e487ad2204802b3:1a09239765270c81f357f20cac44da36$"
+	}
+}

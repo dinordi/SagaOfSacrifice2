@@ -1,0 +1,1248 @@
+{
+	"textures": [
+		{
+			"image": "objects_pack2",
+			"size": {
+				"w": 1024,
+				"h": 1596
+			},
+			"sprites": [
+				{
+					"filename": "Dragon_bones_full_grass_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 436,
+						"h": 356
+					},
+					"margin": {
+						"x": 38,
+						"y": 78,
+						"w": 76,
+						"h": 156
+					}
+				},
+				{
+					"filename": "Dragon_bones_full_ground_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 359,
+						"w": 428,
+						"h": 352
+					},
+					"margin": {
+						"x": 42,
+						"y": 80,
+						"w": 84,
+						"h": 160
+					}
+				},
+				{
+					"filename": "Dragon_bones_wing2_grass_shadow.png",
+					"region": {
+						"x": 439,
+						"y": 1,
+						"w": 246,
+						"h": 202
+					},
+					"margin": {
+						"x": 4,
+						"y": 26,
+						"w": 10,
+						"h": 54
+					}
+				},
+				{
+					"filename": "Dragon_bones_wing2_ground_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 713,
+						"w": 246,
+						"h": 198
+					},
+					"margin": {
+						"x": 4,
+						"y": 28,
+						"w": 10,
+						"h": 58
+					}
+				},
+				{
+					"filename": "Rock_statue_deer_grass_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 913,
+						"w": 198,
+						"h": 244
+					},
+					"margin": {
+						"x": 28,
+						"y": 6,
+						"w": 58,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Rock_statue_mother_grass_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 1159,
+						"w": 164,
+						"h": 278
+					},
+					"margin": {
+						"x": 174,
+						"y": 116,
+						"w": 348,
+						"h": 234
+					}
+				},
+				{
+					"filename": "Rock_statue_deer_ground_shadow.png",
+					"region": {
+						"x": 687,
+						"y": 1,
+						"w": 198,
+						"h": 240
+					},
+					"margin": {
+						"x": 28,
+						"y": 8,
+						"w": 58,
+						"h": 16
+					}
+				},
+				{
+					"filename": "Cave_entrance1_grass_shadow.png",
+					"region": {
+						"x": 249,
+						"y": 713,
+						"w": 168,
+						"h": 196
+					},
+					"margin": {
+						"x": 44,
+						"y": 30,
+						"w": 88,
+						"h": 60
+					}
+				},
+				{
+					"filename": "Liana_bridges_ground_shadow.png",
+					"region": {
+						"x": 887,
+						"y": 1,
+						"w": 136,
+						"h": 110
+					},
+					"margin": {
+						"x": 60,
+						"y": 72,
+						"w": 120,
+						"h": 146
+					}
+				},
+				{
+					"filename": "Liana_bridges3_grass_shadow.png",
+					"region": {
+						"x": 439,
+						"y": 205,
+						"w": 200,
+						"h": 156
+					},
+					"margin": {
+						"x": 28,
+						"y": 50,
+						"w": 56,
+						"h": 100
+					}
+				},
+				{
+					"filename": "Rock_statue_mother_ground_shadow.png",
+					"region": {
+						"x": 431,
+						"y": 363,
+						"w": 158,
+						"h": 272
+					},
+					"margin": {
+						"x": 176,
+						"y": 120,
+						"w": 354,
+						"h": 240
+					}
+				},
+				{
+					"filename": "Yurt1_grass_shadow.png",
+					"region": {
+						"x": 1,
+						"y": 1439,
+						"w": 164,
+						"h": 156
+					},
+					"margin": {
+						"x": 46,
+						"y": 50,
+						"w": 92,
+						"h": 100
+					}
+				},
+				{
+					"filename": "Dragon_bones_wing1_grass_shadow.png",
+					"region": {
+						"x": 641,
+						"y": 243,
+						"w": 288,
+						"h": 96
+					},
+					"margin": {
+						"x": 112,
+						"y": 208,
+						"w": 224,
+						"h": 416
+					}
+				},
+				{
+					"filename": "Dragon_bones_wing1_ground_shadow.png",
+					"region": {
+						"x": 641,
+						"y": 341,
+						"w": 288,
+						"h": 88
+					},
+					"margin": {
+						"x": 112,
+						"y": 212,
+						"w": 224,
+						"h": 424
+					}
+				},
+				{
+					"filename": "Dragon_bones_body_grass_shadow.png",
+					"region": {
+						"x": 591,
+						"y": 431,
+						"w": 270,
+						"h": 96
+					},
+					"margin": {
+						"x": 120,
+						"y": 208,
+						"w": 242,
+						"h": 416
+					}
+				},
+				{
+					"filename": "Dragon_bones_body_ground_shadow.png",
+					"region": {
+						"x": 591,
+						"y": 529,
+						"w": 256,
+						"h": 96
+					},
+					"margin": {
+						"x": 0,
+						"y": 80,
+						"w": 0,
+						"h": 160
+					}
+				},
+				{
+					"filename": "Fern_tree2.png",
+					"region": {
+						"x": 887,
+						"y": 113,
+						"w": 118,
+						"h": 128
+					},
+					"margin": {
+						"x": 4,
+						"y": 0,
+						"w": 10,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Black_mushrooms1_grass_shadow.png",
+					"region": {
+						"x": 931,
+						"y": 243,
+						"w": 92,
+						"h": 104
+					},
+					"margin": {
+						"x": 18,
+						"y": 12,
+						"w": 36,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Black_mushrooms1_ground_shadow.png",
+					"region": {
+						"x": 931,
+						"y": 349,
+						"w": 92,
+						"h": 104
+					},
+					"margin": {
+						"x": 18,
+						"y": 12,
+						"w": 36,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Cave_entrance1_ground_shadow.png",
+					"region": {
+						"x": 201,
+						"y": 913,
+						"w": 168,
+						"h": 196
+					},
+					"margin": {
+						"x": 44,
+						"y": 30,
+						"w": 88,
+						"h": 60
+					}
+				},
+				{
+					"filename": "Rock_statue_old_man_grass_shadow.png",
+					"region": {
+						"x": 371,
+						"y": 911,
+						"w": 146,
+						"h": 192
+					},
+					"margin": {
+						"x": 54,
+						"y": 32,
+						"w": 110,
+						"h": 64
+					}
+				},
+				{
+					"filename": "Liana_bridges1_ground_shadow.png",
+					"region": {
+						"x": 431,
+						"y": 637,
+						"w": 180,
+						"h": 80
+					},
+					"margin": {
+						"x": 38,
+						"y": 88,
+						"w": 76,
+						"h": 176
+					}
+				},
+				{
+					"filename": "Fern_tree1.png",
+					"region": {
+						"x": 419,
+						"y": 719,
+						"w": 172,
+						"h": 186
+					},
+					"margin": {
+						"x": 42,
+						"y": 34,
+						"w": 84,
+						"h": 70
+					}
+				},
+				{
+					"filename": "Liana_bridges3_ground_shadow.png",
+					"region": {
+						"x": 613,
+						"y": 627,
+						"w": 200,
+						"h": 152
+					},
+					"margin": {
+						"x": 28,
+						"y": 52,
+						"w": 56,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Liana_bridges5_grass_shadow.png",
+					"region": {
+						"x": 593,
+						"y": 781,
+						"w": 178,
+						"h": 128
+					},
+					"margin": {
+						"x": 38,
+						"y": 64,
+						"w": 78,
+						"h": 128
+					}
+				},
+				{
+					"filename": "Rock_statue_old_man_ground_shadow.png",
+					"region": {
+						"x": 519,
+						"y": 911,
+						"w": 144,
+						"h": 188
+					},
+					"margin": {
+						"x": 56,
+						"y": 34,
+						"w": 112,
+						"h": 68
+					}
+				},
+				{
+					"filename": "Yurt2_grass_shadow.png",
+					"region": {
+						"x": 665,
+						"y": 911,
+						"w": 154,
+						"h": 178
+					},
+					"margin": {
+						"x": 50,
+						"y": 38,
+						"w": 102,
+						"h": 78
+					}
+				},
+				{
+					"filename": "Liana_bridges1_grass_shadow.png",
+					"region": {
+						"x": 201,
+						"y": 1111,
+						"w": 180,
+						"h": 90
+					},
+					"margin": {
+						"x": 38,
+						"y": 82,
+						"w": 76,
+						"h": 166
+					}
+				},
+				{
+					"filename": "Yurt2_ground_shadow.png",
+					"region": {
+						"x": 167,
+						"y": 1203,
+						"w": 144,
+						"h": 170
+					},
+					"margin": {
+						"x": 56,
+						"y": 42,
+						"w": 112,
+						"h": 86
+					}
+				},
+				{
+					"filename": "Yurt1_ground_shadow.png",
+					"region": {
+						"x": 167,
+						"y": 1375,
+						"w": 158,
+						"h": 152
+					},
+					"margin": {
+						"x": 48,
+						"y": 52,
+						"w": 98,
+						"h": 104
+					}
+				},
+				{
+					"filename": "Liana_bridges5_ground_shadow.png",
+					"region": {
+						"x": 383,
+						"y": 1105,
+						"w": 176,
+						"h": 124
+					},
+					"margin": {
+						"x": 40,
+						"y": 66,
+						"w": 80,
+						"h": 132
+					}
+				},
+				{
+					"filename": "Dragon_bones_tail_grass_shadow.png",
+					"region": {
+						"x": 561,
+						"y": 1101,
+						"w": 154,
+						"h": 134
+					},
+					"margin": {
+						"x": 50,
+						"y": 60,
+						"w": 102,
+						"h": 122
+					}
+				},
+				{
+					"filename": "Dragon_bones_tail_ground_shadow.png",
+					"region": {
+						"x": 717,
+						"y": 1091,
+						"w": 152,
+						"h": 134
+					},
+					"margin": {
+						"x": 52,
+						"y": 60,
+						"w": 104,
+						"h": 122
+					}
+				},
+				{
+					"filename": "Oval_rock1_grass_shadow.png",
+					"region": {
+						"x": 313,
+						"y": 1231,
+						"w": 158,
+						"h": 112
+					},
+					"margin": {
+						"x": 48,
+						"y": 72,
+						"w": 98,
+						"h": 144
+					}
+				},
+				{
+					"filename": "Caury_white1_grass_shadow.png",
+					"region": {
+						"x": 327,
+						"y": 1345,
+						"w": 144,
+						"h": 118
+					},
+					"margin": {
+						"x": 56,
+						"y": 68,
+						"w": 112,
+						"h": 138
+					}
+				},
+				{
+					"filename": "Rock_statue_fox_grass_shadow.png",
+					"region": {
+						"x": 473,
+						"y": 1231,
+						"w": 86,
+						"h": 126
+					},
+					"margin": {
+						"x": 20,
+						"y": 0,
+						"w": 42,
+						"h": 2
+					}
+				},
+				{
+					"filename": "Caury_white1_ground_shadow.png",
+					"region": {
+						"x": 561,
+						"y": 1237,
+						"w": 144,
+						"h": 114
+					},
+					"margin": {
+						"x": 56,
+						"y": 70,
+						"w": 112,
+						"h": 142
+					}
+				},
+				{
+					"filename": "Liana_bridges2_ground_shadow.png",
+					"region": {
+						"x": 327,
+						"y": 1465,
+						"w": 164,
+						"h": 80
+					},
+					"margin": {
+						"x": 46,
+						"y": 88,
+						"w": 92,
+						"h": 176
+					}
+				},
+				{
+					"filename": "Liana_bridges4_ground_shadow.png",
+					"region": {
+						"x": 473,
+						"y": 1359,
+						"w": 134,
+						"h": 104
+					},
+					"margin": {
+						"x": 60,
+						"y": 76,
+						"w": 122,
+						"h": 152
+					}
+				},
+				{
+					"filename": "Liana_bridges6_grass_shadow.png",
+					"region": {
+						"x": 609,
+						"y": 1353,
+						"w": 138,
+						"h": 116
+					},
+					"margin": {
+						"x": 58,
+						"y": 70,
+						"w": 118,
+						"h": 140
+					}
+				},
+				{
+					"filename": "Oval_leaf_tree1.png",
+					"region": {
+						"x": 493,
+						"y": 1465,
+						"w": 98,
+						"h": 116
+					},
+					"margin": {
+						"x": 14,
+						"y": 6,
+						"w": 30,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Oval_rock1_ground_shadow.png",
+					"region": {
+						"x": 593,
+						"y": 1471,
+						"w": 150,
+						"h": 106
+					},
+					"margin": {
+						"x": 52,
+						"y": 74,
+						"w": 106,
+						"h": 150
+					}
+				},
+				{
+					"filename": "Liana_bridges7_ground_shadow.png",
+					"region": {
+						"x": 167,
+						"y": 1529,
+						"w": 116,
+						"h": 58
+					},
+					"margin": {
+						"x": 6,
+						"y": 34,
+						"w": 12,
+						"h": 70
+					}
+				},
+				{
+					"filename": "Rock_statue_fox_ground_shadow.png",
+					"region": {
+						"x": 773,
+						"y": 781,
+						"w": 72,
+						"h": 126
+					},
+					"margin": {
+						"x": 28,
+						"y": 0,
+						"w": 56,
+						"h": 2
+					}
+				},
+				{
+					"filename": "Liana_bridges4_grass_shadow.png",
+					"region": {
+						"x": 707,
+						"y": 1237,
+						"w": 134,
+						"h": 114
+					},
+					"margin": {
+						"x": 60,
+						"y": 70,
+						"w": 122,
+						"h": 142
+					}
+				},
+				{
+					"filename": "Cave_entrance2_grass_shadow.png",
+					"region": {
+						"x": 749,
+						"y": 1353,
+						"w": 88,
+						"h": 118
+					},
+					"margin": {
+						"x": 20,
+						"y": 4,
+						"w": 40,
+						"h": 10
+					}
+				},
+				{
+					"filename": "Cave_entrance2_ground_shadow.png",
+					"region": {
+						"x": 745,
+						"y": 1473,
+						"w": 88,
+						"h": 118
+					},
+					"margin": {
+						"x": 20,
+						"y": 4,
+						"w": 40,
+						"h": 10
+					}
+				},
+				{
+					"filename": "Black_mushrooms2_grass_shadow.png",
+					"region": {
+						"x": 863,
+						"y": 431,
+						"w": 64,
+						"h": 72
+					},
+					"margin": {
+						"x": 32,
+						"y": 28,
+						"w": 64,
+						"h": 56
+					}
+				},
+				{
+					"filename": "Rock_statue_head_grass_shadow.png",
+					"region": {
+						"x": 929,
+						"y": 455,
+						"w": 94,
+						"h": 88
+					},
+					"margin": {
+						"x": 16,
+						"y": 20,
+						"w": 34,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Liana_bridges2_grass_shadow.png",
+					"region": {
+						"x": 849,
+						"y": 545,
+						"w": 170,
+						"h": 96
+					},
+					"margin": {
+						"x": 42,
+						"y": 80,
+						"w": 86,
+						"h": 160
+					}
+				},
+				{
+					"filename": "Oval_rock5_ground_shadow.png",
+					"region": {
+						"x": 863,
+						"y": 505,
+						"w": 64,
+						"h": 38
+					},
+					"margin": {
+						"x": 0,
+						"y": 12,
+						"w": 0,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Oval_rock2_grass_shadow.png",
+					"region": {
+						"x": 815,
+						"y": 643,
+						"w": 128,
+						"h": 88
+					},
+					"margin": {
+						"x": 0,
+						"y": 20,
+						"w": 0,
+						"h": 40
+					}
+				},
+				{
+					"filename": "Fern_tree3.png",
+					"region": {
+						"x": 945,
+						"y": 643,
+						"w": 78,
+						"h": 92
+					},
+					"margin": {
+						"x": 24,
+						"y": 18,
+						"w": 50,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Cave_entrance3_grass_shadow.png",
+					"region": {
+						"x": 847,
+						"y": 733,
+						"w": 86,
+						"h": 102
+					},
+					"margin": {
+						"x": 20,
+						"y": 12,
+						"w": 42,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Cave_entrance3_ground_shadow.png",
+					"region": {
+						"x": 935,
+						"y": 737,
+						"w": 86,
+						"h": 102
+					},
+					"margin": {
+						"x": 20,
+						"y": 12,
+						"w": 42,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Rock_statue_head_ground_shadow.png",
+					"region": {
+						"x": 847,
+						"y": 837,
+						"w": 84,
+						"h": 86
+					},
+					"margin": {
+						"x": 22,
+						"y": 20,
+						"w": 44,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Oval_rock2_ground_shadow.png",
+					"region": {
+						"x": 821,
+						"y": 925,
+						"w": 128,
+						"h": 82
+					},
+					"margin": {
+						"x": 0,
+						"y": 22,
+						"w": 0,
+						"h": 46
+					}
+				},
+				{
+					"filename": "Liana_bridges7_grass_shadow.png",
+					"region": {
+						"x": 821,
+						"y": 1009,
+						"w": 116,
+						"h": 74
+					},
+					"margin": {
+						"x": 6,
+						"y": 26,
+						"w": 12,
+						"h": 54
+					}
+				},
+				{
+					"filename": "Oval_leaf_tree2.png",
+					"region": {
+						"x": 871,
+						"y": 1085,
+						"w": 76,
+						"h": 96
+					},
+					"margin": {
+						"x": 26,
+						"y": 16,
+						"w": 52,
+						"h": 32
+					}
+				},
+				{
+					"filename": "Caury_pearl1_ground_shadow.png",
+					"region": {
+						"x": 933,
+						"y": 841,
+						"w": 82,
+						"h": 74
+					},
+					"margin": {
+						"x": 22,
+						"y": 26,
+						"w": 46,
+						"h": 54
+					}
+				},
+				{
+					"filename": "Oval_rock4_ground_shadow.png",
+					"region": {
+						"x": 951,
+						"y": 917,
+						"w": 72,
+						"h": 52
+					},
+					"margin": {
+						"x": 28,
+						"y": 38,
+						"w": 56,
+						"h": 76
+					}
+				},
+				{
+					"filename": "Caury_white2_grass_shadow.png",
+					"region": {
+						"x": 871,
+						"y": 1183,
+						"w": 80,
+						"h": 70
+					},
+					"margin": {
+						"x": 24,
+						"y": 28,
+						"w": 48,
+						"h": 58
+					}
+				},
+				{
+					"filename": "Caury_pearl1_grass_shadow.png",
+					"region": {
+						"x": 843,
+						"y": 1255,
+						"w": 94,
+						"h": 78
+					},
+					"margin": {
+						"x": 16,
+						"y": 24,
+						"w": 34,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Oval_rock3_grass_shadow.png",
+					"region": {
+						"x": 843,
+						"y": 1335,
+						"w": 100,
+						"h": 64
+					},
+					"margin": {
+						"x": 14,
+						"y": 32,
+						"w": 28,
+						"h": 64
+					}
+				},
+				{
+					"filename": "Oval_rock3_ground_shadow.png",
+					"region": {
+						"x": 839,
+						"y": 1401,
+						"w": 100,
+						"h": 56
+					},
+					"margin": {
+						"x": 14,
+						"y": 36,
+						"w": 28,
+						"h": 72
+					}
+				},
+				{
+					"filename": "Oval_rock4_grass_shadow.png",
+					"region": {
+						"x": 941,
+						"y": 1401,
+						"w": 82,
+						"h": 56
+					},
+					"margin": {
+						"x": 22,
+						"y": 36,
+						"w": 46,
+						"h": 72
+					}
+				},
+				{
+					"filename": "Orange_mushrooms2_ground_shadow.png",
+					"region": {
+						"x": 285,
+						"y": 1529,
+						"w": 40,
+						"h": 44
+					},
+					"margin": {
+						"x": 12,
+						"y": 10,
+						"w": 24,
+						"h": 20
+					}
+				},
+				{
+					"filename": "Black_mushrooms2_ground_shadow.png",
+					"region": {
+						"x": 951,
+						"y": 971,
+						"w": 64,
+						"h": 70
+					},
+					"margin": {
+						"x": 32,
+						"y": 28,
+						"w": 64,
+						"h": 58
+					}
+				},
+				{
+					"filename": "Caury_white2_ground_shadow.png",
+					"region": {
+						"x": 949,
+						"y": 1043,
+						"w": 74,
+						"h": 64
+					},
+					"margin": {
+						"x": 26,
+						"y": 32,
+						"w": 54,
+						"h": 64
+					}
+				},
+				{
+					"filename": "Caury_pearl2_grass_shadow.png",
+					"region": {
+						"x": 949,
+						"y": 1109,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Stone_pyramid1_grass_shadow.png",
+					"region": {
+						"x": 953,
+						"y": 1175,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Oval_rock5_grass_shadow.png",
+					"region": {
+						"x": 327,
+						"y": 1547,
+						"w": 64,
+						"h": 44
+					},
+					"margin": {
+						"x": 0,
+						"y": 10,
+						"w": 0,
+						"h": 20
+					}
+				},
+				{
+					"filename": "Stone_pyramid3_grass_shadow.png",
+					"region": {
+						"x": 393,
+						"y": 1547,
+						"w": 56,
+						"h": 44
+					},
+					"margin": {
+						"x": 4,
+						"y": 10,
+						"w": 8,
+						"h": 20
+					}
+				},
+				{
+					"filename": "Orange_mushrooms2_grass_shadow.png",
+					"region": {
+						"x": 591,
+						"y": 363,
+						"w": 42,
+						"h": 46
+					},
+					"margin": {
+						"x": 10,
+						"y": 8,
+						"w": 22,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Oval_leaf_tree3.png",
+					"region": {
+						"x": 939,
+						"y": 1255,
+						"w": 52,
+						"h": 64
+					},
+					"margin": {
+						"x": 6,
+						"y": 0,
+						"w": 12,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Stone_pyramid1_ground_shadow.png",
+					"region": {
+						"x": 945,
+						"y": 1321,
+						"w": 62,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 2,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Caury_pearl2_ground_shadow.png",
+					"region": {
+						"x": 839,
+						"y": 1459,
+						"w": 64,
+						"h": 62
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 2
+					}
+				},
+				{
+					"filename": "Orange_mushrooms1_grass_shadow.png",
+					"region": {
+						"x": 905,
+						"y": 1459,
+						"w": 58,
+						"h": 62
+					},
+					"margin": {
+						"x": 2,
+						"y": 0,
+						"w": 6,
+						"h": 2
+					}
+				},
+				{
+					"filename": "Orange_mushrooms1_ground_shadow.png",
+					"region": {
+						"x": 965,
+						"y": 1459,
+						"w": 58,
+						"h": 60
+					},
+					"margin": {
+						"x": 2,
+						"y": 2,
+						"w": 6,
+						"h": 4
+					}
+				},
+				{
+					"filename": "Stone_pyramid2_grass_shadow.png",
+					"region": {
+						"x": 835,
+						"y": 1523,
+						"w": 62,
+						"h": 58
+					},
+					"margin": {
+						"x": 0,
+						"y": 2,
+						"w": 2,
+						"h": 6
+					}
+				},
+				{
+					"filename": "Stone_pyramid2_ground_shadow.png",
+					"region": {
+						"x": 899,
+						"y": 1523,
+						"w": 54,
+						"h": 52
+					},
+					"margin": {
+						"x": 4,
+						"y": 6,
+						"w": 10,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Stone_pyramid3_ground_shadow.png",
+					"region": {
+						"x": 965,
+						"y": 1521,
+						"w": 46,
+						"h": 38
+					},
+					"margin": {
+						"x": 8,
+						"y": 12,
+						"w": 18,
+						"h": 26
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0d6820b253175636ab54aa3e021f5c87:972f180e5a5a2cfc955f9ca711be3b47:82e723ff233e08f3fb9294bd54578c41$"
+	}
+}

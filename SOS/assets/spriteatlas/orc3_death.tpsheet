@@ -1,0 +1,498 @@
+{
+	"textures": [
+		{
+			"image": "orc3_death",
+			"size": {
+				"w": 1008,
+				"h": 676
+			},
+			"sprites": [
+				{
+					"filename": "orc3_death_full-15.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 162,
+						"h": 78
+					},
+					"margin": {
+						"x": 67,
+						"y": 107,
+						"w": 94,
+						"h": 178
+					}
+				},
+				{
+					"filename": "orc3_death_full-14.png",
+					"region": {
+						"x": 165,
+						"y": 1,
+						"w": 162,
+						"h": 82
+					},
+					"margin": {
+						"x": 67,
+						"y": 103,
+						"w": 94,
+						"h": 174
+					}
+				},
+				{
+					"filename": "orc3_death_full-13.png",
+					"region": {
+						"x": 329,
+						"y": 1,
+						"w": 162,
+						"h": 94
+					},
+					"margin": {
+						"x": 67,
+						"y": 91,
+						"w": 94,
+						"h": 162
+					}
+				},
+				{
+					"filename": "orc3_death_full-23.png",
+					"region": {
+						"x": 493,
+						"y": 1,
+						"w": 138,
+						"h": 102
+					},
+					"margin": {
+						"x": 35,
+						"y": 83,
+						"w": 118,
+						"h": 154
+					}
+				},
+				{
+					"filename": "orc3_death_full-31.png",
+					"region": {
+						"x": 633,
+						"y": 1,
+						"w": 138,
+						"h": 102
+					},
+					"margin": {
+						"x": 83,
+						"y": 83,
+						"w": 118,
+						"h": 154
+					}
+				},
+				{
+					"filename": "orc3_death_full-5.png",
+					"region": {
+						"x": 773,
+						"y": 1,
+						"w": 162,
+						"h": 106
+					},
+					"margin": {
+						"x": 27,
+						"y": 87,
+						"w": 94,
+						"h": 150
+					}
+				},
+				{
+					"filename": "orc3_death_full-6.png",
+					"region": {
+						"x": 1,
+						"y": 81,
+						"w": 162,
+						"h": 106
+					},
+					"margin": {
+						"x": 27,
+						"y": 87,
+						"w": 94,
+						"h": 150
+					}
+				},
+				{
+					"filename": "orc3_death_full-7.png",
+					"region": {
+						"x": 165,
+						"y": 85,
+						"w": 162,
+						"h": 106
+					},
+					"margin": {
+						"x": 27,
+						"y": 87,
+						"w": 94,
+						"h": 150
+					}
+				},
+				{
+					"filename": "orc3_death_full-22.png",
+					"region": {
+						"x": 329,
+						"y": 97,
+						"w": 138,
+						"h": 110
+					},
+					"margin": {
+						"x": 35,
+						"y": 75,
+						"w": 118,
+						"h": 146
+					}
+				},
+				{
+					"filename": "orc3_death_full-30.png",
+					"region": {
+						"x": 469,
+						"y": 105,
+						"w": 138,
+						"h": 110
+					},
+					"margin": {
+						"x": 83,
+						"y": 75,
+						"w": 118,
+						"h": 146
+					}
+				},
+				{
+					"filename": "orc3_death_full-20.png",
+					"region": {
+						"x": 609,
+						"y": 105,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 35,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc3_death_full-21.png",
+					"region": {
+						"x": 753,
+						"y": 109,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 35,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc3_death_full-17.png",
+					"region": {
+						"x": 897,
+						"y": 109,
+						"w": 110,
+						"h": 154
+					},
+					"margin": {
+						"x": 83,
+						"y": 31,
+						"w": 146,
+						"h": 102
+					}
+				},
+				{
+					"filename": "orc3_death_full-28.png",
+					"region": {
+						"x": 1,
+						"y": 189,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 79,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc3_death_full-29.png",
+					"region": {
+						"x": 145,
+						"y": 193,
+						"w": 142,
+						"h": 114
+					},
+					"margin": {
+						"x": 79,
+						"y": 71,
+						"w": 114,
+						"h": 142
+					}
+				},
+				{
+					"filename": "orc3_death_full-12.png",
+					"region": {
+						"x": 289,
+						"y": 209,
+						"w": 162,
+						"h": 122
+					},
+					"margin": {
+						"x": 67,
+						"y": 63,
+						"w": 94,
+						"h": 134
+					}
+				},
+				{
+					"filename": "orc3_death_full-11.png",
+					"region": {
+						"x": 453,
+						"y": 221,
+						"w": 158,
+						"h": 130
+					},
+					"margin": {
+						"x": 71,
+						"y": 55,
+						"w": 98,
+						"h": 126
+					}
+				},
+				{
+					"filename": "orc3_death_full-19.png",
+					"region": {
+						"x": 613,
+						"y": 221,
+						"w": 130,
+						"h": 138
+					},
+					"margin": {
+						"x": 51,
+						"y": 47,
+						"w": 126,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc3_death_full-27.png",
+					"region": {
+						"x": 745,
+						"y": 225,
+						"w": 130,
+						"h": 138
+					},
+					"margin": {
+						"x": 75,
+						"y": 47,
+						"w": 126,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc3_death_full-18.png",
+					"region": {
+						"x": 877,
+						"y": 265,
+						"w": 122,
+						"h": 150
+					},
+					"margin": {
+						"x": 79,
+						"y": 35,
+						"w": 134,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc3_death_full-4.png",
+					"region": {
+						"x": 1,
+						"y": 309,
+						"w": 162,
+						"h": 138
+					},
+					"margin": {
+						"x": 27,
+						"y": 59,
+						"w": 94,
+						"h": 118
+					}
+				},
+				{
+					"filename": "orc3_death_full-26.png",
+					"region": {
+						"x": 165,
+						"y": 309,
+						"w": 122,
+						"h": 150
+					},
+					"margin": {
+						"x": 55,
+						"y": 35,
+						"w": 134,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc3_death_full-3.png",
+					"region": {
+						"x": 289,
+						"y": 333,
+						"w": 158,
+						"h": 142
+					},
+					"margin": {
+						"x": 27,
+						"y": 43,
+						"w": 98,
+						"h": 114
+					}
+				},
+				{
+					"filename": "orc3_death_full-2.png",
+					"region": {
+						"x": 449,
+						"y": 353,
+						"w": 158,
+						"h": 150
+					},
+					"margin": {
+						"x": 27,
+						"y": 35,
+						"w": 98,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc3_death_full-10.png",
+					"region": {
+						"x": 609,
+						"y": 365,
+						"w": 158,
+						"h": 150
+					},
+					"margin": {
+						"x": 71,
+						"y": 35,
+						"w": 98,
+						"h": 106
+					}
+				},
+				{
+					"filename": "orc3_death_full-24.png",
+					"region": {
+						"x": 769,
+						"y": 365,
+						"w": 106,
+						"h": 158
+					},
+					"margin": {
+						"x": 67,
+						"y": 27,
+						"w": 150,
+						"h": 98
+					}
+				},
+				{
+					"filename": "orc3_death_full-25.png",
+					"region": {
+						"x": 877,
+						"y": 417,
+						"w": 110,
+						"h": 154
+					},
+					"margin": {
+						"x": 63,
+						"y": 31,
+						"w": 146,
+						"h": 102
+					}
+				},
+				{
+					"filename": "orc3_death_full-1.png",
+					"region": {
+						"x": 1,
+						"y": 449,
+						"w": 158,
+						"h": 154
+					},
+					"margin": {
+						"x": 27,
+						"y": 31,
+						"w": 98,
+						"h": 102
+					}
+				},
+				{
+					"filename": "orc3_death_full-16.png",
+					"region": {
+						"x": 161,
+						"y": 461,
+						"w": 114,
+						"h": 158
+					},
+					"margin": {
+						"x": 75,
+						"y": 27,
+						"w": 142,
+						"h": 98
+					}
+				},
+				{
+					"filename": "orc3_death_full-9.png",
+					"region": {
+						"x": 277,
+						"y": 477,
+						"w": 158,
+						"h": 154
+					},
+					"margin": {
+						"x": 71,
+						"y": 31,
+						"w": 98,
+						"h": 102
+					}
+				},
+				{
+					"filename": "orc3_death_full",
+					"region": {
+						"x": 437,
+						"y": 505,
+						"w": 150,
+						"h": 158
+					},
+					"margin": {
+						"x": 35,
+						"y": 27,
+						"w": 106,
+						"h": 98
+					}
+				},
+				{
+					"filename": "orc3_death_full-8.png",
+					"region": {
+						"x": 589,
+						"y": 517,
+						"w": 154,
+						"h": 158
+					},
+					"margin": {
+						"x": 67,
+						"y": 27,
+						"w": 102,
+						"h": 98
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:089b88bd2acbd4b02c18720b2dc3705c:7e7ad40a8d22997c70914a02ab60b9b0:8e5f99c37a292ebba1d488c68a7d0dac$"
+	}
+}

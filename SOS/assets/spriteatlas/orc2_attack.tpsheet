@@ -1,0 +1,498 @@
+{
+	"textures": [
+		{
+			"image": "orc2_attack",
+			"size": {
+				"w": 502,
+				"h": 1542
+			},
+			"sprites": [
+				{
+					"filename": "orc2_attack_full-13.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 196,
+						"h": 164
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-34.png",
+					"region": {
+						"x": 199,
+						"y": 1,
+						"w": 168,
+						"h": 180
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-16.png",
+					"region": {
+						"x": 369,
+						"y": 1,
+						"w": 132,
+						"h": 156
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-31.png",
+					"region": {
+						"x": 369,
+						"y": 159,
+						"w": 132,
+						"h": 140
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-4.png",
+					"region": {
+						"x": 1,
+						"y": 167,
+						"w": 196,
+						"h": 152
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-24.png",
+					"region": {
+						"x": 199,
+						"y": 183,
+						"w": 164,
+						"h": 180
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-26.png",
+					"region": {
+						"x": 365,
+						"y": 301,
+						"w": 136,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-15.png",
+					"region": {
+						"x": 1,
+						"y": 321,
+						"w": 180,
+						"h": 164
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-5.png",
+					"region": {
+						"x": 183,
+						"y": 365,
+						"w": 180,
+						"h": 160
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-36.png",
+					"region": {
+						"x": 365,
+						"y": 439,
+						"w": 128,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-23.png",
+					"region": {
+						"x": 1,
+						"y": 487,
+						"w": 164,
+						"h": 172
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-33.png",
+					"region": {
+						"x": 167,
+						"y": 527,
+						"w": 164,
+						"h": 172
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-25.png",
+					"region": {
+						"x": 1,
+						"y": 661,
+						"w": 164,
+						"h": 164
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-35.png",
+					"region": {
+						"x": 333,
+						"y": 577,
+						"w": 168,
+						"h": 164
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-6.png",
+					"region": {
+						"x": 167,
+						"y": 701,
+						"w": 148,
+						"h": 168
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-1.png",
+					"region": {
+						"x": 1,
+						"y": 827,
+						"w": 156,
+						"h": 132
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-11.png",
+					"region": {
+						"x": 317,
+						"y": 743,
+						"w": 156,
+						"h": 132
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-10.png",
+					"region": {
+						"x": 159,
+						"y": 871,
+						"w": 148,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full",
+					"region": {
+						"x": 1,
+						"y": 961,
+						"w": 144,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-22.png",
+					"region": {
+						"x": 309,
+						"y": 877,
+						"w": 188,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-32.png",
+					"region": {
+						"x": 309,
+						"y": 1007,
+						"w": 188,
+						"h": 124
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-18.png",
+					"region": {
+						"x": 147,
+						"y": 1009,
+						"w": 116,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-27.png",
+					"region": {
+						"x": 1,
+						"y": 1099,
+						"w": 112,
+						"h": 140
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-12.png",
+					"region": {
+						"x": 265,
+						"y": 1133,
+						"w": 200,
+						"h": 144
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-8.png",
+					"region": {
+						"x": 115,
+						"y": 1147,
+						"w": 112,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-21.png",
+					"region": {
+						"x": 1,
+						"y": 1241,
+						"w": 108,
+						"h": 140
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-2.png",
+					"region": {
+						"x": 229,
+						"y": 1279,
+						"w": 200,
+						"h": 124
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-7.png",
+					"region": {
+						"x": 111,
+						"y": 1285,
+						"w": 104,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-37.png",
+					"region": {
+						"x": 1,
+						"y": 1383,
+						"w": 100,
+						"h": 140
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-17.png",
+					"region": {
+						"x": 217,
+						"y": 1405,
+						"w": 100,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-20.png",
+					"region": {
+						"x": 319,
+						"y": 1405,
+						"w": 88,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "orc2_attack_full-30.png",
+					"region": {
+						"x": 409,
+						"y": 1405,
+						"w": 84,
+						"h": 136
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:f161105b9314075deda5fc2e397e8fd2:dc2e640eb92c86c17b6ebb7dc2a0a436:e5521ebec2bf1507dd979095805adef5$"
+	}
+}

@@ -1,15 +1,39 @@
 #include "collision/CollisionManager.h"
 #include <iostream>
+#include "objects/tile.h"
 
 std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects)
 {
     std::vector<std::pair<Object*, Object*>> collisions;
-
+    int collisionChecks = 0;
     for (size_t i = 0; i < gameObjects.size(); ++i) {
         for (size_t j = i + 1; j < gameObjects.size(); ++j) {
             Object* objA = gameObjects[i].get();
             Object* objB = gameObjects[j].get();
 
+            if(!objA->isCollidable())
+            {
+                continue; // Skip non-collidable objects
+            }
+            if(!objB->isCollidable())
+            {
+                continue; // Skip non-collidable objects
+            }
+            
+            BoxCollider* pColliderA = &objA->getcollider();
+            BoxCollider* pColliderB = &objB->getcollider();
+            Vec2 posA = pColliderA->position;
+            Vec2 posB = pColliderB->position;
+            
+            // Skip collision if objects are too far apart (broad phase)
+            float maxDistance = 200.0f; // Adjust based on your game
+            float distanceSquared = (posA.x - posB.x) * (posA.x - posB.x) + 
+            (posA.y - posB.y) * (posA.y - posB.y);
+            if (distanceSquared > maxDistance * maxDistance) {
+                continue; // Skip expensive collision check
+            }
+            
+            collisionChecks++;
             // Get the sprite dimensions for collision detection
             const SpriteRect spriteA = objA->getCurrentSpriteData()->getSpriteRect(1);
             const SpriteRect spriteB = objB->getCurrentSpriteData()->getSpriteRect(1);
@@ -20,10 +44,6 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             //     std::cout << "No sprite data for one of the objects." << std::endl;
             //     continue;
             // }
-            BoxCollider* pColliderA = &objA->getcollider();
-            BoxCollider* pColliderB = &objB->getcollider();
-            Vec2 posA = pColliderA->position;
-            Vec2 posB = pColliderB->position;
 
             // Simple AABB collision detection
             float leftA = posA.x;
@@ -70,7 +90,7 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(cons
             }
         }
     }
-
+    std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks << std::endl;
     return collisions;
 }
 
