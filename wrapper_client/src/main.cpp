@@ -29,6 +29,9 @@ struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* messageTex, *backgroundTex;
+    // Parallax layers
+    SDL_Texture* parallaxLayer1Tex = nullptr;
+    SDL_Texture* parallaxLayer2Tex = nullptr;
     SDL_Rect imageDest;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Uint64 fixed_timestep_us = 16666; // For ~60 updates per second (1,000,000 microseconds / 60)
@@ -301,29 +304,50 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // Load the background image
-    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background.png").make_preferred();
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background2.png").make_preferred();
     SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
     if (!backgroundSurface) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-
     SDL_Texture* backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundSurface);
-    SDL_DestroySurface(backgroundSurface); // Free the surface after creating the texture
+    SDL_DestroySurface(backgroundSurface);
     if (!backgroundTex) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    
+    // Load parallax layers
+    SDL_Texture* parallaxLayer1Tex = nullptr;
+    SDL_Texture* parallaxLayer2Tex = nullptr;
+    {
+        auto layer1Path = (basePathSOS / "SOS/assets/backgrounds/platform.png").make_preferred();
+        SDL_Surface* layer1Surface = IMG_Load(layer1Path.string().c_str());
+        if (layer1Surface) {
+            parallaxLayer1Tex = SDL_CreateTextureFromSurface(renderer, layer1Surface);
+            SDL_DestroySurface(layer1Surface);
+        } else {
+            SDL_LogWarn(SDL_LOG_CATEGORY_CUSTOM, "Could not load parallax layer 1: %s", SDL_GetError());
+        }
+        auto layer2Path = (basePathSOS / "SOS/assets/backgrounds/islands2.png").make_preferred();
+        SDL_Surface* layer2Surface = IMG_Load(layer2Path.string().c_str());
+        if (layer2Surface) {
+            parallaxLayer2Tex = SDL_CreateTextureFromSurface(renderer, layer2Surface);
+            SDL_DestroySurface(layer2Surface);
+        } else {
+            SDL_LogWarn(SDL_LOG_CATEGORY_CUSTOM, "Could not load parallax layer 2: %s", SDL_GetError());
+        }
+    }
+
     // Initialize camera
     Camera* camera = new Camera(windowStartWidth, windowStartHeight);
-
     // set up the application data
     *appstate = new AppContext{
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
        .backgroundTex = backgroundTex,
+       .parallaxLayer1Tex = parallaxLayer1Tex,
+       .parallaxLayer2Tex = parallaxLayer2Tex,
        .game = game,
        .basePathSOS = basePathSOS,
        .camera = camera,
@@ -421,7 +445,38 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
-    SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
+    // --- Parallax Background Rendering ---
+    float camX = app->camera->getPosition().x;
+    float camY = app->camera->getPosition().y;
+    // Parallax factors (0 = static, 1 = moves with camera)
+    float bgFactor = 0.1f; // background almost static
+    float layer1Factor = 0.3f;
+    float layer2Factor = 0.6f;
+
+    // Helper lambda to render a parallax layer at native size, moving with camera and tiling if needed
+    auto renderParallaxLayer = [&](SDL_Texture* tex, float factor) {
+        if (!tex) return;
+        auto props = SDL_GetTextureProperties(tex);
+        int texW = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
+        int texH = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
+        float offsetX = fmod(camX * factor, texW);
+        float offsetY = fmod(camY * factor, texH);
+        if (offsetX < 0) offsetX += texW;
+        if (offsetY < 0) offsetY += texH;
+        // Tile the image to fill the window
+        for (float y = -offsetY; y < windowStartHeight; y += texH) {
+            for (float x = -offsetX; x < windowStartWidth; x += texW) {
+                SDL_FRect dest = { x, y, (float)texW, (float)texH };
+                SDL_RenderTexture(app->renderer, tex, nullptr, &dest);
+            }
+        }
+    };
+    // Render farthest background (sky)
+    renderParallaxLayer(app->backgroundTex, bgFactor);
+    // Render parallax layer 1 (islands far)
+    renderParallaxLayer(app->parallaxLayer1Tex, layer1Factor);
+    // Render parallax layer 2 (islands closer)
+    renderParallaxLayer(app->parallaxLayer2Tex, layer2Factor);
 
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
@@ -557,6 +612,8 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
         SDL_DestroyTexture(app->backgroundTex);
+        SDL_DestroyTexture(app->parallaxLayer1Tex);
+        SDL_DestroyTexture(app->parallaxLayer2Tex);
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
 
