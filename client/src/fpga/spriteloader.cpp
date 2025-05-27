@@ -254,7 +254,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     std::cout << "Synchronizing memory (msync with MS_SYNC | MS_INVALIDATE) for "
               << size_to_sync << " bytes..." << std::endl; // Now uses the declared variable
 
-    if (msync(mapped_mem, size_to_sync, MS_SYNC | MS_INVALIDATE) == -1) { // Using size_to_sync
+    if (msync(mapped_mem, mapped_size, MS_SYNC | MS_INVALIDATE) == -1) { // Using size_to_sync
          // Capture errno immediately
          int msync_errno = errno;
          perror("Error during msync");
