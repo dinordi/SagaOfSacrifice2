@@ -134,21 +134,22 @@ int main(int argc, char *argv[]) {
     std::string path_sprites = path + "/assets/sprites/";
     imageName = imageName + ".png";
 
-    AudioManager* audio = new SDL2AudioManager();
-    std::string path_assets = path + "/assets";
-    if(!audio->initialize(path_assets)) {
+    AudioManager& audio = SDL2AudioManager::Instance();
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2";
+    if(audio.initialize(basePathSOS) == false) {
+    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
+        std::cout << "AudioManager initialized successfully." << std::endl;
+        audio.loadMusic("music/menu/menu.wav");
+        audio.loadSound("sfx/001.wav");
+        audio.loadSound("sfx/jump.wav");
+        audio.playMusic();
+        audio.playSound("001");
+        audio.playSound("jump");
+    if(!audio.initialize(basePathSOS)) {
         std::cerr << "Failed to initialize AudioManager." << std::endl;
     }
-    if(audio)
-    {
-        audio->loadMusic("music/menu/menu.wav");
-        audio->loadSound("sfx/001.wav");
-        audio->loadSound("sfx/jump.wav");
-        audio->playMusic();
-        audio->playSound("001");
-        audio->playSound("jump");
-    }
 
+    
     if(!devMode)
     {
         Renderer renderer(path_sprites + imageName);

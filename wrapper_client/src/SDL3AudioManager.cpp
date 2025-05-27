@@ -70,7 +70,7 @@ bool SDL3AudioManager::initialize(const std::string& basePath) {
     }
 
     // Set the volume off
-    Mix_Volume(-1, 0);
+    Mix_Volume(-1, 100);    // Set volume for all channels to 100 (out of 128)
 
     mInitialized = true;
     std::cout << "SDL3AudioManager (wrapper_client) initialized successfully." << std::endl;
@@ -99,21 +99,48 @@ bool SDL3AudioManager::loadSound(const std::string& filePath) {
     std::cout << "Loaded sound (SDL3 - wrapper_client): " << soundName << " from " << fullPath << std::endl;
     return true;
 }
-
-bool SDL3AudioManager::playSound(const std::string& soundName) {
+bool SDL3AudioManager::unloadSound(const std::string& soundName) {
     if (!mInitialized) {
-        std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot play sound." << std::endl;
+        std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot unload sound." << std::endl;
         return false;
     }
     auto it = mSoundEffects.find(soundName);
     if (it != mSoundEffects.end() && it->second) {
-        if (Mix_PlayChannel(-1, it->second, 0) == -1) {
-            std::cerr << "Failed to play sound (SDL3 - wrapper_client): " << soundName << " SDL_Error: " << SDL_GetError() << std::endl;
-            return false; // Failed to play
-        }
-        return true; // Sound played successfully
+        Mix_FreeChunk(it->second);
+        mSoundEffects.erase(it);
+        std::cout << "Unloaded sound (SDL3 - wrapper_client): " << soundName << std::endl;
+        return true; // Successfully unloaded
     } else {
         std::cerr << "Sound not found (SDL3 - wrapper_client): " << soundName << std::endl;
+        return false; // Sound not found
+    }
+}
+bool SDL3AudioManager::playSound(const std::string& soundName) {
+    if (!mInitialized) {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "ERROR: AudioManager (SDL3) not initialized. Cannot play sound.");
+        return false;
+    }
+    
+    // Debug logging for diagnostic purposes
+    SDL_Log("DEBUG: Attempting to play sound: '%s'", soundName.c_str());
+    SDL_Log("DEBUG: Sound map contains %d entries", static_cast<int>(mSoundEffects.size()));
+    
+    // Print all available sound keys in the map
+    for (const auto& pair : mSoundEffects) {
+        SDL_Log("DEBUG: Sound key in map: '%s'", pair.first.c_str());
+    }
+    
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        SDL_Log("DEBUG: Found sound '%s' in map, attempting to play...", soundName.c_str());
+        if (Mix_PlayChannel(-1, it->second, 0) == -1) {
+            SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "Failed to play sound: %s - Error: %s", soundName.c_str(), SDL_GetError());
+            return false; // Failed to play
+        }
+        SDL_Log("DEBUG: Successfully played sound: '%s'", soundName.c_str());
+        return true; // Sound played successfully
+    } else {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "ERROR: Sound not found: '%s'", soundName.c_str());
         return false; // Sound not found
     }
 }

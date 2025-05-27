@@ -5,7 +5,7 @@
 #include "objects/tile.h"
 #include "playerInput.h"
 #include "animation.h"
-
+#include "AudioManager.h"
 class Player : public Entity {
 
 public:
@@ -29,4 +29,5 @@ private:
     bool isAttacking;
     bool isJumping;
     float attackTimer;
+    bool wasMoving = false; // Track previous movement state for modular audio
 };

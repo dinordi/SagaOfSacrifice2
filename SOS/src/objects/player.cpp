@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
@@ -51,15 +52,26 @@ void Player::setupAnimations() {
 }
 
 void Player::updateAnimationState() {
+    AudioManager& audioManager = AudioManager::Instance();
 
     if(isAttacking) {
         setAnimationState(AnimationState::ATTACKING);
+        // play attack sound once
+        //AudioManager::getInstance().playSound("attack_sound", 0.5f, false);
         return;
     }
     if (isMoving()) {
         setAnimationState(AnimationState::WALKING);
+        // play walking sound once
+        
+        audioManager.playSound("walking");
+        
+
     } else {
         setAnimationState(AnimationState::IDLE);
+        audioManager.stopSound("walking");
+    
+    
     }
 
 
