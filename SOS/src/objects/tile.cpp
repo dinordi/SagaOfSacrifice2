@@ -4,19 +4,11 @@
 
 Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, (objID)), tileIndex(tileIndex) {
     // Initialize Tile-specific attributes here
-    std::filesystem::path base = std::filesystem::current_path();
-    std::string temp = base.string();
-    std::size_t pos = temp.find("SagaOfSacrifice2/");
-    if (pos != std::string::npos) {
-        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
-    }
-    auto basePath = std::filesystem::path(temp);
-    basePath /= "SOS/assets/spriteatlas";
-    std::cout << "Got base path for tile" << std::endl;
+}
 
-    addSpriteSheet(AnimationState::IDLE, basePath / "Tilemap_Flat.tpsheet");
-    // addAnimation(AnimationState::IDLE, tileIndex, 1, columns, 250, true);
-
+void Tile::setupAnimations(std::filesystem::path atlasPath)
+{
+    addSpriteSheet(AnimationState::IDLE, atlasPath / "Tilemap_Flat.tpsheet");
 }
 
 
@@ -33,12 +25,4 @@ bool Tile::isCollidable() const {
 
 void Tile::accept(CollisionVisitor& visitor) {
     visitor.visit(this);
-}
-
-void Tile::setTileType(TileType type) {
-    tileType = type;
-}
-
-TileType Tile::getTileType() const {
-    return tileType;
 }

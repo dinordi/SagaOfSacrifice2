@@ -847,8 +847,8 @@ void EmbeddedServer::sendGameStateToClients() {
             switch(obj->type) {
                 case ObjectType::TILE: {
                     auto* plat = static_cast<Tile*>(obj.get());
-                    writeFloat(plat->getCurrentSpriteData()->width);
-                    writeFloat(plat->getCurrentSpriteData()->height);
+                    // writeFloat(plat->getCurrentSpriteData()->width);
+                    // writeFloat(plat->getCurrentSpriteData()->height);
                     stateMsg.data.push_back(plat->gettileIndex());
                     //send flags uint32_t
                     for (int i = 0; i < 4; ++i) {

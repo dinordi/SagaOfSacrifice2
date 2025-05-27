@@ -488,11 +488,11 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 // Read platform width and height (2 floats, 8 bytes total)
                 if (pos + 8 > gameStateData.size()) break;
                 
-                float width, height;
-                std::memcpy(&width, &gameStateData[pos], sizeof(float));
-                pos += sizeof(float);
-                std::memcpy(&height, &gameStateData[pos], sizeof(float));
-                pos += sizeof(float);
+                // float width, height;
+                // std::memcpy(&width, &gameStateData[pos], sizeof(float));
+                // pos += sizeof(float);
+                // std::memcpy(&height, &gameStateData[pos], sizeof(float));
+                // pos += sizeof(float);
 
                 // Read tile index (1 byte)
                 if (pos >= gameStateData.size()) break;
@@ -527,10 +527,11 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                             objectId,
                             "Tilemap_Flat", tileIndex, 64, 64, 12
                         );
+                        platform->setupAnimations(atlasBasePath_);
                         platform->setFlag(flags);
                         newObjects.push_back(platform);
-                        std::cout << "[Client] Created new platform: " << objectId << " at " 
-                                  << posX << "," << posY << " size: " << width << "x" << height << std::endl;
+                        // std::cout << "[Client] Created new platform: " << objectId << " at " 
+                        //           << posX << "," << posY << " size: " << width << "x" << height << std::endl;
                     }
                 }
                 break;

@@ -3,13 +3,6 @@
 #include "object.h"
 #include "sprite_data.h"
 
-enum class TileType {
-    GROUND,
-    WALL,
-    STAIRS,
-    OBSTACLE
-};
-
 class Tile : public Object {
 public:
     Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex,
@@ -20,8 +13,7 @@ public:
     bool isBreakable() const;
     bool isCollidable() const override;
     
-    TileType getTileType() const;
-    void setTileType(TileType type);
+    void setupAnimations(std::filesystem::path atlasPath);
     
     bool hasFlag(uint32_t flag) const { return (collisionFlags & flag) != 0; }
     void setFlag(uint32_t flag) { collisionFlags |= flag; }
@@ -37,7 +29,6 @@ public:
 
 
 private:
-    TileType tileType;
     uint32_t collisionFlags = 0;
     DEFINE_CONST_GETTER_SETTER(uint8_t, tileIndex);
 };
