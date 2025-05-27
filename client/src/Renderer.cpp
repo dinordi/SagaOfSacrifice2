@@ -1,90 +1,75 @@
-#include "Renderer.h"
+#include <iostream>
+#include <fstream>
+#include <thread>
+#include <stdexcept>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstring>
 
-Renderer::Renderer(const std::string& img_path) : stop_thread(false), 
-                           uio_fd(-1),
-                           ddr_memory(-1),
-                           dma_virtual_addr(NULL),
-                           virtual_src_addr(NULL),
-                           total_size(0),
-                           num_chunks(0),
-                           bram_ptr(NULL),
-                           sprite_x(120),
-                            sprite_y(400),
-                            sprite_direction(1)
+#include "Renderer.h"
+#include "SpriteLoader.h"
+
+Renderer::Renderer(const std::string& img_path)
+    : stop_thread(false),
+      uio_fd(-1)
 {
-    // Open the UIO device
+    loadSprite(img_path);
+    init_lookup_tables();
+    init_frame_infos();
+    initUIO();
+}
+
+void Renderer::loadSprite(const std::string& img_path) {
+    SpriteLoader spriteLoader;
+    uint32_t* sprite_data = nullptr;
+    int width = 0, height = 0;
+    size_t sprite_size = 0;
+    uint32_t phys_addr = SPRITE_DATA_BASE;  // Page-aligned startadres
+
+    const char* png_file = img_path.c_str();
+    std::cout << "PNG file path img_path: " << img_path << std::endl;
+
+    if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
+        perror("Failed to load PNG file");
+        throw std::runtime_error("Failed to load PNG file");
+    }
+
+    if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
+        spriteLoader.free_sprite_data(sprite_data);
+        perror("Failed to map sprite to memory");
+        throw std::runtime_error("Failed to map sprite to memory");
+    }
+
+    spriteLoader.free_sprite_data(sprite_data);
+
+    std::cout << "Sprite mapped to physical memory: 0x"
+              << std::hex << phys_addr << std::dec << std::endl;
+}
+
+void Renderer::initUIO() {
     uio_fd = open("/dev/uio0", O_RDWR);
     if (uio_fd < 0) {
         perror("Failed to open UIO device");
         throw std::runtime_error("Failed to open UIO device");
     }
 
-    // Clear any pending interrupts at the start by writing to the UIO device
+    uint32_t clear_value = 1;
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
         perror("Failed to clear pending interrupt");
         close(uio_fd);
         throw std::runtime_error("Failed to clear pending interrupt");
     }
-    
-    // Use a properly page-aligned physical address
-    uint32_t phys_addr = 0x0e000000;  // Ensure this is page-aligned (multiple of 0x1000)
-    sprite_base_addr = phys_addr;     // Store base address for future reference
-    
-    const char *png_file = img_path.c_str();
-    std::cout << "PNG file path img_path: " << img_path << std::endl;
-    
-    SpriteLoader spriteLoader;
-    uint32_t *sprite_data = nullptr;
-    int width = 0, height = 0;
-    size_t sprite_size = 0;
-    
-    // Load the PNG file
-    if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
-        perror("Failed to load PNG file");
-        close(uio_fd);
-        throw std::runtime_error("Failed to load PNG file");
-    }
-    
-    // Store sprite properties from actual loaded data
-    sprite_width = width;
-    sprite_height = height;
-    bytes_per_pixel = 4;  // RGBA format = 4 bytes per pixel
-    line_offset = sprite_width * bytes_per_pixel;
-    total_size = sprite_size;
-    
-    std::cout << "Loaded sprite: " << sprite_width << "x" << sprite_height 
-              << ", " << bytes_per_pixel << " bytes per pixel" << std::endl;
-    
-    // Map the sprite data to physical memory
-    if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
-        spriteLoader.free_sprite_data(sprite_data);
-        perror("Failed to map sprite to memory");
-        close(uio_fd);
-        throw std::runtime_error("Failed to map sprite to memory");
-    }
-    
-    std::cout << "Sprite mapped to physical memory: 0x" << std::hex << sprite_base_addr 
-              << " - 0x" << phys_addr << std::dec << std::endl;
-    
-    // Calculate how many lines/rows are in the sprite
-    sprite_lines = sprite_height;
-    
-    // Free temporary sprite data (it's now in physical memory)
-    spriteLoader.free_sprite_data(sprite_data);
-    sprite_data = nullptr;  // Avoid dangling pointers
 
     std::cout << "Starting thread to handle interrupts..." << std::endl;
-    // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
     if (!irq_thread.joinable()) {
         perror("Failed to create IRQ handler thread");
-        close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to create IRQ handler thread");
     }
+
     std::cout << "IRQ handler thread started." << std::endl;
 }
-
 
 Renderer::~Renderer()
 {
@@ -106,73 +91,10 @@ Renderer::~Renderer()
 
 }
 
-void Renderer::init()
-{
-    
-}
-
-void Renderer::render(std::vector<std::shared_ptr<Object>>& objects)
-{
-    
-}
-
-BRAMDATA Renderer::readBRAM()
-{
-    volatile unsigned int *bram = (unsigned int *) bram_ptr;
-    if (bram == nullptr) {
-        perror("Failed to map BRAM");
-        throw std::runtime_error("Failed to map BRAM");
-    }
-    // Y - 11 bits
-    unsigned int ID = bram[0] & 0x7FF; // Read the first 11 bits for Y coordinate
-    unsigned int y = (bram[0] >> 11) & 0x7FF; // Read the next 11 bits for ID
-    
-    // Unmap the BRAM pointer
-    // munmap(bram_ptr, BRAM_SIZE);
-
-    BRAMDATA bramData;
-    bramData.y = y;
-    bramData.id = ID;
-
-    return bramData;
-}
-
-void Renderer::dmaTransfer()
-{
-    // BRAMDATA brData = readBRAM();
-    BRAMDATA brData = {0, 0}; // Placeholder for BRAM data
-   
-    // Only check DMA status if there was a previous error, skip during normal operation
-    static bool had_previous_error = false;
-    if (had_previous_error) {
-        uint32_t status = read_dma(dma_virtual_addr, MM2S_STATUS_REGISTER);
-        if (status & 0x70) {  // Error bits
-            // Only reset on error
-            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-            write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ | RUN_DMA);
-            had_previous_error = false;
-        }
-    }
-   
-    // No need to reset or initialize for every transfer
-    // Just set source address and length
-   
-    // Set source address directly
-    uint32_t src_addr = 0x0e000000 + (brData.y * sprite_width * bytes_per_pixel);
-    write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, src_addr);
-   
-    // Start transfer immediately by setting length
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, sprite_width * bytes_per_pixel);
- 
-    // No waiting for completion - assume DMA hardware completes the transfer
-    // The next interrupt will either find the DMA idle or in error state
-    // and handle it appropriately
-   
-}
-
 void Renderer::handleIRQ()
 {
     uint32_t irq_count;
+    uint32_t clear_value = 1;
     if (read(uio_fd, &irq_count, sizeof(irq_count)) != sizeof(irq_count)) {
         perror("read");
         return;
@@ -181,16 +103,9 @@ void Renderer::handleIRQ()
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
         perror("Failed to clear interrupt");
     }
-
-    // if((irq_count % 24000) == 0)
-    // {
-    //     std::cout << irq_count << std::endl;
-    // }
-    //printf("Interrupt received! IRQ count: %u\n", irq_count);
-    //Start DMA transfer
-    // dmaTransfer();
-    std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
-    update_and_write_animated_sprite(1);
+    distribute_sprites_over_pipelines();
+    //std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
+    //update_and_write_animated_sprite(1);
 
 }
 
@@ -217,36 +132,81 @@ void Renderer::irqHandlerThread()
     }
 }
 
+void Renderer::init_lookup_tables() {
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
+    if (fd < 0) {
+        perror("open /dev/mem");
+        throw std::runtime_error("Cannot open /dev/mem");
+    }
 
-void Renderer::write_sprite_to_frame_info(int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
-    // Construct the 64-bit value
-    // X: bits 33-22 (12 bits), Y: bits 21-11 (11 bits), Sprite ID: bits 10-0 (11 bits)
-    uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
-    frame_info[index] = base_value;
-    
-    std::cout << "Frame info [" << index << "]: X=" << x << ", Y=" << y 
-              << ", ID=" << sprite_id << std::endl;
-    std::cout << "  Value (hex): 0x" << std::hex << base_value << std::dec << std::endl;
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        lookup_table_ptrs[i] = mmap(NULL, LOOKUP_TABLE_SIZE, PROT_READ | PROT_WRITE,
+                                    MAP_SHARED, fd, LOOKUP_TABLE_ADDRS[i]);
+        if (lookup_table_ptrs[i] == MAP_FAILED) {
+            perror("mmap lookup table");
+            throw std::runtime_error("mmap failed");
+        }
+
+        lookup_tables[i] = reinterpret_cast<volatile uint64_t*>(lookup_table_ptrs[i]);
+        // <<Write lookup table values here>>
+        write_lookup_table_entry(lookup_tables[i], 1, SPRITE_DATA_BASE, SPRITE_WIDTH, SPRITE_HEIGHT);
+    }
+
+    close(fd);
 }
 
-void Renderer::update_and_write_animated_sprite(uint32_t sprite_id_to_use) {
-    // Write current sprite state to index 0
-    write_sprite_to_frame_info(0, sprite_x, sprite_y, sprite_id_to_use);
+void Renderer::init_frame_infos() {
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
+    if (fd < 0) {
+        perror("open /dev/mem");
+        throw std::runtime_error("Cannot open /dev/mem");
+    }
 
-    // Update X position for next frame
-    if (sprite_direction == 1) {
-        if (sprite_x == 2050) {
-            sprite_direction = -1;
-            sprite_x--;
-        } else {
-            sprite_x++;
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        frame_info_ptrs[i] = mmap(NULL, FRAME_INFO_SIZE, PROT_READ | PROT_WRITE,
+                                  MAP_SHARED, fd, FRAME_INFO_ADDRS[i]);
+        if (frame_info_ptrs[i] == MAP_FAILED) {
+            perror("mmap frame info");
+            throw std::runtime_error("mmap failed");
         }
-    } else { // sprite_direction == -1
-        if (sprite_x == 120) {
-            sprite_direction = 1;
-            sprite_x++;
-        } else {
-            sprite_x--;
+
+        frame_infos[i] = reinterpret_cast<volatile uint64_t*>(frame_info_ptrs[i]);
+    }
+
+    close(fd);
+}
+
+void Renderer::distribute_sprites_over_pipelines() {
+    const int TOTAL_STATIC_SPRITES = 15;
+    const uint16_t SPRITE_WIDTH = 400;
+    const uint16_t SPRITE_HEIGHT = 400;
+    const uint16_t X_START = 133;
+    const uint16_t Y_START = 50;
+    const uint16_t X_MAX = 2050 - SPRITE_WIDTH;
+    const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
+
+    int sprites_in_pipeline[NUM_PIPELINES] = {0};
+    uint16_t x = X_START;
+    uint16_t y = Y_START;
+
+    for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
+        int pipeline = sprite_idx % NUM_PIPELINES;
+        int index_in_pipeline = sprites_in_pipeline[pipeline];
+
+        write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
+        sprites_in_pipeline[pipeline]++;
+
+        x += SPRITE_WIDTH;
+        if (x > X_MAX) {
+            x = X_START;
+            y += SPRITE_HEIGHT;
+            if (y > Y_MAX) {
+                y = Y_START;
+            }
         }
+    }
+
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
 }
