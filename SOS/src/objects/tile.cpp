@@ -4,6 +4,7 @@ Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, 
     // Initialize Tile-specific attributes here
     SpriteData* spriteData = new SpriteData(tileMap, tileWidth, tileHeight, columns);
     addSpriteSheet(AnimationState::IDLE, spriteData, 250, true, tileIndex);
+    addAnimation(AnimationState::IDLE, tileIndex, 1, columns, 250, true);
 
 }
 

@@ -17,7 +17,7 @@ Object::Object(BoxCollider collider, ObjectType type, std::string ID)
 
 // Animation methods implementation
 void Object::updateAnimation(float deltaTime) {
-    animController.update(deltaTime, dir);
+    animController.update(static_cast<uint64_t>(deltaTime), dir);
 }
 
 void Object::setAnimationState(AnimationState state) {

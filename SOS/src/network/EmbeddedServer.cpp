@@ -15,11 +15,11 @@
 // Buffer size for incoming messages
 constexpr size_t MAX_MESSAGE_SIZE = 1024;
 
-EmbeddedServer::EmbeddedServer(int port, LevelManager* levelManager)
+EmbeddedServer::EmbeddedServer(int port, const std::filesystem::path& basePath)
     : port_(port), 
       running_(false),
       gameLoopRunning_(false),
-      levelManager_(levelManager),
+      levelManager_(std::make_shared<LevelManager>(basePath)),
       collisionManager_(std::make_shared<CollisionManager>()) {
     std::cout << "[EmbeddedServer] Created on port " << port << std::endl;
   
@@ -603,6 +603,7 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
         // Create a new player using the PlayerManager singleton
         player = pm.createPlayer(playerId, Vec2{100, 100});
         std::cout << "[EmbeddedServer] Created new player " << playerId << std::endl;
+        levelManager_->addPlayerToCurrentLevel(playerId);
     }
     
     
@@ -710,6 +711,9 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_INPUT:
             processPlayerInput(message.senderId, message);
             break;
+        case MessageType::PLAYER_POSITION:
+            processPlayerPosition(message.senderId, message);
+            break;
             
         case MessageType::CHAT:
             // Just relay chat messages to all clients
@@ -748,7 +752,16 @@ void EmbeddedServer::createInitialGameObjects() {
 void EmbeddedServer::updateGameState(float deltaTime) {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-        
+        if(clientSockets_.empty()) {
+            // Print once every 5 seconds if no clients are connected
+            static auto last = std::chrono::steady_clock::now();
+            auto now = std::chrono::steady_clock::now();
+            if (now - last > std::chrono::seconds(5)) {
+                last = now;
+                std::cout << "[EmbeddedServer] No clients connected, skipping game update" << std::endl;
+            }
+            return; // nothing to update if no clients are connected
+        }
         levelManager_->update(deltaTime);
         // Update all players
         
@@ -816,12 +829,33 @@ void EmbeddedServer::sendGameStateToClients() {
             writeFloat(v.x);
             writeFloat(v.y);
 
-            // d) Platform extra fields
-            if (obj->type == ObjectType::TILE) {
-                auto* plat = static_cast<Tile*>(obj.get());
-                writeFloat(plat->getCurrentSpriteData()->width);
-                writeFloat(plat->getCurrentSpriteData()->height);
+            // Extra fields for specific object types
+            switch(obj->type) {
+                case ObjectType::TILE: {
+                    auto* plat = static_cast<Tile*>(obj.get());
+                    writeFloat(plat->getCurrentSpriteData()->width);
+                    writeFloat(plat->getCurrentSpriteData()->height);
+                    break;
+                }
+                case ObjectType::MINOTAUR: 
+                {
+                    auto* mino = static_cast<Minotaur*>(obj.get());
+                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
+                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
+                    break;
+                }
+                case ObjectType::PLAYER: {
+                    auto* player = static_cast<Player*>(obj.get());
+                    stateMsg.data.push_back(static_cast<uint8_t>(player->getAnimationState()));
+                    stateMsg.data.push_back(static_cast<uint8_t>(player->getDir()));
+                    break;
+                }
+                
+                default:
+                    break;
             }
+
+
         }
     }
 
@@ -887,8 +921,69 @@ void EmbeddedServer::processPlayerInput(
     player->setInput(input.get());
 
     // 5) Immediately invoke the player’s handleInput (or let your game loop do it)
-    player->handleInput(input.get(), /*dtFrames=*/16);
+    player->handleInput(input.get(), 16);
 }
+
+void EmbeddedServer::processPlayerPosition(
+    const std::string& playerId,
+    const NetworkMessage& message
+) {
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+
+    // 1) Lookup the player
+    auto player = PlayerManager::getInstance().getPlayer(playerId);
+    if (!player) {
+        std::cerr << "[EmbeddedServer] Player not found for position update: "
+                  << playerId << std::endl;
+        return;
+    }
+
+    // 2) Validate payload
+    if (message.data.size() < sizeof(float) * 4) {
+        std::cerr << "[EmbeddedServer] Invalid position data size: "
+                  << message.data.size() << " bytes" << std::endl;
+        return;
+    }
+    size_t index;   // Index in the data vector for memcpy
+
+    // 3) Unpack the position and velocity
+    Vec2 pos, vel;
+    FacingDirection dir;
+    AnimationState animState;
+    index = 0;
+    std::memcpy(&pos.x, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&pos.y, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&vel.x, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    std::memcpy(&vel.y, message.data.data() + index, sizeof(float));
+    index += sizeof(float);
+    if (index + 2 > message.data.size()) {
+        std::cerr << "[EmbeddedServer] Invalid data size for direction and animation state" << std::endl;
+        return;
+    }
+    dir = static_cast<FacingDirection>(message.data[index++]);
+    animState = static_cast<AnimationState>(message.data[index++]);
+    if (index != message.data.size()) {
+        std::cerr << "[EmbeddedServer] Extra data in position update message" << std::endl;
+        return;
+    }
+
+    // std::cout << "[EmbeddedServer] Received direction: "
+    //             << dir << ", " << static_cast<int>(dir) << ", animation state: "
+    //             << animState << ", " << static_cast<int>(animState) << ", for player: " << playerId << std::endl;
+
+    // 4) Update the player’s position and velocity
+    BoxCollider* pColl = &player->getcollider();
+    Vec2* posPtr = &pColl->position;
+    Vec2* velPtr = &player->getvelocity();
+    *posPtr = pos;
+    *velPtr = vel;
+    player->setDir(dir);
+    player->setAnimationState(animState);
+}
+
 
 NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
     NetworkMessage message;

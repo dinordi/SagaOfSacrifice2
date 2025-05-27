@@ -2,10 +2,10 @@
 #include <iostream>
 
 
-Player::Player( BoxCollider collider, std::string objID) : Entity(collider, objID),
+Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << collider.position.x << ", " << collider.position.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -17,7 +17,7 @@ void Player::setupAnimations() {
 
     // Example animation setup - adjust these based on your actual sprite sheet
 
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 100, true);
+    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 200, true);
     // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
     animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
@@ -80,12 +80,8 @@ void Player::update(float deltaTime) {
     Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
-    // Prints velocity.y every second
-    static uint64_t timems = 0.0f;
-    timems += deltaTime;
 
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    *pos += vel * deltaTime; // Update position based on velocity and delta time
 
 
     // Set direction based on horizontal and vertical velocity
@@ -121,10 +117,8 @@ void Player::update(float deltaTime) {
     updateAnimationState();
 
     // Update the animation controller
-    updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
-
-    vel.x = 0; // Reset horizontal velocity
-    vel.y = 0; // Reset vertical velocity
+    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
+    Entity::update(deltaTime); // Call base class update
 
     setvelocity(vel); // Update velocity
     setcollider(*pColl); // Update position
@@ -133,15 +127,13 @@ void Player::update(float deltaTime) {
 void Player::handleInput(PlayerInput* input, float deltaTime) {
 
     // Handle player input here
-    Vec2 vel = getvelocity();
+    Vec2 vel(0,0);
 
     float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
         vel.x = -movementSpeed; // Move left
-    }
-    if (input->get_right()) {
-        // std::cout << "get_right" << std::endl;
+    } else if (input->get_right()) {
         vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
@@ -156,7 +148,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
         isAttacking = true;
         attackTimer = 0;
     }
-
+    // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
 }
 

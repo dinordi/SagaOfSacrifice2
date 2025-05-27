@@ -9,11 +9,10 @@
 #include "level.h"
 #include "collision/CollisionManager.h"
 
-class Game;
 
 class LevelManager {
 public:
-    LevelManager(Game* game, CollisionManager* collisionManager) : game(game), collisionManager(collisionManager){};
+    LevelManager(const std::filesystem::path& basePath);
     ~LevelManager();
 
     // Initialize the level manager and load all level metadata
@@ -38,7 +37,7 @@ public:
     void resetCurrentLevel();
     
     // Update the currently active level
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     
     // Check if all levels have been completed
     bool areAllLevelsCompleted() const;
@@ -53,7 +52,6 @@ public:
     bool removeAllObjectsFromCurrentLevel();
 
 private:
-    Game* game;
     CollisionManager* collisionManager;
 private:
     std::unordered_map<std::string, std::shared_ptr<Level>> levels_;
@@ -61,5 +59,5 @@ private:
     std::string currentJsonFilePath_;
     std::unordered_map<std::string, std::filesystem::path> levelFilePaths_;
 
-
+    std::filesystem::path basePath;
 };

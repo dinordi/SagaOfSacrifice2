@@ -8,8 +8,6 @@
 
 // Forward declarations
 class EmbeddedServer;
-class LevelManager; // Forward declare LevelManager
-class CollisionManager; // Forward declare CollisionManager
 
 // Class to manage launching and stopping a local game server
 class LocalServerManager {
@@ -18,7 +16,7 @@ public:
     ~LocalServerManager();
 
     // Start the local server as a thread in the same process
-    bool startEmbeddedServer(int port, LevelManager* levelManager, CollisionManager* collisionManager); // Added parameters
+    bool startEmbeddedServer(int port, const std::filesystem::path basePath); // Added parameters
 
     bool stopEmbeddedServer();
 
