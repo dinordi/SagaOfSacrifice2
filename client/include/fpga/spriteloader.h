@@ -17,7 +17,7 @@ class SpriteLoader
 public:
     SpriteLoader();
     // Functie om een PNG-bestand in te laden
-    int load_png(const char *filename, uint32_t **sprite_data_out, int *width_out, int *height_out, size_t *sprite_size_out);
+    int load_png(const char *filename, uint32_t *sprite_data_out, int *width_out, int *height_out, size_t *sprite_size_out);
 
     // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren
     int map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size);

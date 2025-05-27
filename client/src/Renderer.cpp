@@ -9,11 +9,17 @@
 #include "Renderer.h"
 #include "fpga/spriteloader.h"
 
+#define MAX_SPRITE_WIDTH 512
+#define MAX_SPRITE_HEIGHT 512
+#define MAX_SPRITE_PIXELS (MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT)
+
+uint32_t sprite_data[MAX_SPRITE_PIXELS];
+
 Renderer::Renderer(const std::string& img_path)
     : stop_thread(false),
       uio_fd(-1)
 {
-    //loadSprite(img_path);
+    loadSprite(img_path);
     //init_lookup_tables();
     //init_frame_infos();
     //initUIO();
@@ -21,26 +27,27 @@ Renderer::Renderer(const std::string& img_path)
 
 void Renderer::loadSprite(const std::string& img_path) {
     SpriteLoader spriteLoader;
-    uint32_t* sprite_data = nullptr;
+
+    uint32_t sprite_data[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT] = {0};
+
     int width = 0, height = 0;
     size_t sprite_size = 0;
-    uint32_t phys_addr = SPRITE_DATA_BASE;  // Page-aligned startadres
+    uint32_t phys_addr = SPRITE_DATA_BASE;  // Zorg dat dit page-aligned is
 
     const char* png_file = img_path.c_str();
     std::cout << "PNG file path img_path: " << img_path << std::endl;
 
-    if (spriteLoader.load_png(png_file, &sprite_data, &width, &height, &sprite_size) != 0) {
-        perror("Failed to load PNG file");
+    // Laad PNG direct in het bestaande sprite_data buffer
+    if (spriteLoader.load_png(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
+        std::cerr << "Failed to load PNG file" << std::endl;
         throw std::runtime_error("Failed to load PNG file");
     }
 
+    // Map de sprite naar fysiek geheugen
     if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
-        spriteLoader.free_sprite_data(sprite_data);
-        perror("Failed to map sprite to memory");
+        std::cerr << "Failed to map sprite to memory" << std::endl;
         throw std::runtime_error("Failed to map sprite to memory");
     }
-
-    spriteLoader.free_sprite_data(sprite_data);
 
     std::cout << "Sprite mapped to physical memory: 0x"
               << std::hex << phys_addr << std::dec << std::endl;
