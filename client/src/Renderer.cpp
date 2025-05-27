@@ -13,10 +13,10 @@ Renderer::Renderer(const std::string& img_path)
     : stop_thread(false),
       uio_fd(-1)
 {
-    loadSprite(img_path);
-    init_lookup_tables();
-    init_frame_infos();
-    initUIO();
+    //loadSprite(img_path);
+    //init_lookup_tables();
+    //init_frame_infos();
+    //initUIO();
 }
 
 void Renderer::loadSprite(const std::string& img_path) {
