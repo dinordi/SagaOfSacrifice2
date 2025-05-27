@@ -1,8 +1,5 @@
 #include "Renderer.h"
 
-// Define MM2S_DMA_BASE_ADDR with the appropriate value
-#define MM2S_DMA_BASE_ADDR 0x40400000 // Replace with the correct base address for your hardware
-
 Renderer::Renderer(const std::string& img_path) : stop_thread(false), 
                            uio_fd(-1),
                            ddr_memory(-1),
@@ -28,40 +25,6 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
         close(uio_fd);
         throw std::runtime_error("Failed to clear pending interrupt");
     }
-
-    // Open /dev/mem for BRAM and memory access
-    ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
-    if (ddr_memory < 0) {
-        perror("Failed to open /dev/mem");
-        close(uio_fd);
-        throw std::runtime_error("Failed to open /dev/mem");
-    }
-    
-    // Map lookup table BRAM
-    lookup_table_ptr = mmap(NULL, LOOKUP_TABLE_SIZE, PROT_READ | PROT_WRITE,
-                           MAP_SHARED, ddr_memory, LOOKUP_TABLE_ADDR);
-    if (lookup_table_ptr == MAP_FAILED) {
-        perror("Failed to map lookup table BRAM");
-        close(ddr_memory);
-        close(uio_fd);
-        throw std::runtime_error("Failed to map lookup table BRAM");
-    }
-    
-    // Map frame info BRAM
-    frame_info_ptr = mmap(NULL, FRAME_INFO_SIZE, PROT_READ | PROT_WRITE,
-                         MAP_SHARED, ddr_memory, FRAME_INFO_ADDR);
-    if (frame_info_ptr == MAP_FAILED) {
-        perror("Failed to map frame info BRAM");
-        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
-        close(ddr_memory);
-        close(uio_fd);
-        throw std::runtime_error("Failed to map frame info BRAM");
-    }
-    
-    // Get pointers to the BRAMs as 64-bit words
-    lookup_table = static_cast<volatile uint64_t*>(lookup_table_ptr);
-    frame_info = static_cast<volatile uint64_t*>(frame_info_ptr);
-    
     
     // Use a properly page-aligned physical address
     uint32_t phys_addr = 0x0e000000;  // Ensure this is page-aligned (multiple of 0x1000)
@@ -110,34 +73,11 @@ Renderer::Renderer(const std::string& img_path) : stop_thread(false),
     spriteLoader.free_sprite_data(sprite_data);
     sprite_data = nullptr;  // Avoid dangling pointers
 
-    BRAMDATA brData = {0, 0};
-    sprite_width = 400;
-    bytes_per_pixel = 4;
-    line_offset = sprite_width * bytes_per_pixel; // Offset for one line in bytes
-    offset = brData.y * line_offset; // Calculate the offset for the second line
-    bytes_to_transfer = line_offset; // Transfer the entire line
-
-    // After loading sprite data, set up the lookup table entry
-    const uint16_t SPRITE_WIDTH = 400;  // Use your actual sprite width
-    const uint16_t SPRITE_HEIGHT = 400; // Use your actual sprite height
-    
-    // Create lookup table entry with correct field placement
-    uint64_t base_lookup_value = ((uint64_t)SPRITE_DATA_BASE << 23) | 
-                                 (SPRITE_HEIGHT << 12) | 
-                                 (SPRITE_WIDTH);
-                                 
-    lookup_table[1] = base_lookup_value;  // Using sprite ID 1
-    
-    // Add termination marker
-    frame_info[1] = 0xFFFFFFFFFFFFFFFF;
-
     std::cout << "Starting thread to handle interrupts..." << std::endl;
     // Create a thread to handle interrupts
     irq_thread = std::thread(&Renderer::irqHandlerThread, this);
     if (!irq_thread.joinable()) {
         perror("Failed to create IRQ handler thread");
-        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
-        munmap(frame_info_ptr, FRAME_INFO_SIZE);
         close(ddr_memory);
         close(uio_fd);
         throw std::runtime_error("Failed to create IRQ handler thread");
@@ -160,15 +100,6 @@ Renderer::~Renderer()
     if (irq_thread.joinable()) {
         irq_thread.join();
     }
-
-    // Unmap memory regions
-    if (lookup_table_ptr != MAP_FAILED) {
-        munmap(lookup_table_ptr, LOOKUP_TABLE_SIZE);
-    }
-    if (frame_info_ptr != MAP_FAILED) {
-        munmap(frame_info_ptr, FRAME_INFO_SIZE);
-    }
-
 
     close(ddr_memory);
     close(uio_fd);
