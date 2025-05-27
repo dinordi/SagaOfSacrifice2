@@ -17,6 +17,7 @@
 #include "logger_sdl.h"
 #include "sdl_input.h"
 #include "SDL3AudioManager.h"
+#include "graphics/Camera.h"
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
@@ -36,6 +37,7 @@ struct AppContext {
     Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
     Game* game;
     std::filesystem::path basePathSOS;
+    Camera* camera;
     
     // Multiplayer configuration
     bool enableMultiplayer;
@@ -312,6 +314,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    
+    // Initialize camera
+    Camera* camera = new Camera(windowStartWidth, windowStartHeight);
 
     // set up the application data
     *appstate = new AppContext{
@@ -321,6 +326,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .backgroundTex = backgroundTex,
        .game = game,
        .basePathSOS = basePathSOS,
+       .camera = camera,
        .enableMultiplayer = enableMultiplayer,
        .serverAddress = serverAddress,
        .serverPort = serverPort,
@@ -398,6 +404,20 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         app->accumulator_us -= app->fixed_timestep_us;
     }
 
+    // Find player object to center camera on
+    Player* playerObject = nullptr;
+    for (const auto& entity : app->game->getObjects()) {
+        if (entity && entity->type == ObjectType::PLAYER) {
+            playerObject = static_cast<Player*>(entity.get());
+            break;
+        }
+    }
+    
+    // Update camera to follow player
+    if (playerObject) {
+        app->camera->update(playerObject);
+    }
+
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
@@ -407,11 +427,18 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     for(const auto& entity : app->game->getObjects()) {
         
         if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
+        
+        // Skip rendering objects that are outside the camera view (viewport culling)
+        float entityX = entity->getcollider().position.x - (entity->getCurrentSpriteData()->getSpriteRect(0).w / 2);
+        float entityY = entity->getcollider().position.y - (entity->getCurrentSpriteData()->getSpriteRect(0).h / 2);
+        float entityWidth = entity->getCurrentSpriteData()->getSpriteRect(0).w;
+        float entityHeight = entity->getCurrentSpriteData()->getSpriteRect(0).h;
+        
+        if (!app->camera->isVisible(entityX, entityY, entityWidth, entityHeight)) {
+            continue; // Skip rendering this object
+        }
+        
         SDL_Texture* sprite_tex = nullptr;
-        // if(printID)
-        // {
-        //     SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
-        // }
         // Get the pre-loaded sprite info from the map
         auto it = spriteMap2.find(entity->getCurrentSpriteData()->getid_());
         if (it == spriteMap2.end()) {
@@ -447,10 +474,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             default:
                 break;
         }
+        
+        // Convert world coordinates to screen coordinates using the camera
+        Vec2 screenPos = app->camera->worldToScreen(
+            entity->getcollider().position.x - (currentSpriteRect.w / 2),
+            entity->getcollider().position.y - (currentSpriteRect.h / 2)
+        );
 
         SDL_FRect destRect{
-            .x = static_cast<float>(entity->getcollider().position.x - (currentSpriteRect.w / 2)),
-            .y = static_cast<float>(entity->getcollider().position.y - (currentSpriteRect.h / 2)),
+            .x = screenPos.x,
+            .y = screenPos.y,
             .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };
@@ -462,7 +495,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
         // Normal rendering without flip
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
-        
     }
 
     for(const auto& actor : app->game->getActors()) {
@@ -485,10 +517,19 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(charSpriteRect.h)
         };
 
+        // Note: For UI elements like actors, we might want to keep them in screen space
+        // rather than applying the camera transform. This depends on whether they're
+        // part of the HUD or part of the game world.
+        
+        // Convert world coordinates to screen coordinates using the camera
+        Vec2 screenPos = app->camera->worldToScreen(
+            actor->getposition().x,
+            actor->getposition().y
+        );
 
         SDL_FRect destRect{
-            .x = static_cast<float>(actor->getposition().x),
-            .y = static_cast<float>(actor->getposition().y),
+            .x = screenPos.x,
+            .y = screenPos.y,
             .w = static_cast<float>(charSpriteRect.w),
             .h = static_cast<float>(charSpriteRect.h)
         };
