@@ -14,7 +14,7 @@ Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, 
     basePath /= "SOS/assets/spriteatlas";
     std::cout << "Got base path for tile" << std::endl;
 
-    addSpriteSheet(AnimationState::IDLE, basePath / "tilemap_flat.tpsheet");
+    addSpriteSheet(AnimationState::IDLE, basePath / "Tilemap_Flat.tpsheet");
     // addAnimation(AnimationState::IDLE, tileIndex, 1, columns, 250, true);
 
 }
