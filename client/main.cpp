@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
+    Renderer *renderer;
     
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -151,7 +152,7 @@ int main(int argc, char *argv[]) {
 
     if(!devMode)
     {
-        Renderer renderer(path_sprites + imageName);
+        renderer = new Renderer(path_sprites + imageName);
         if(debugMode) {
             std::cout << "Debug mode: Loaded image." << std::endl;
             return 0;
