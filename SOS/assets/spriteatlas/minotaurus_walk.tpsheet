@@ -1,498 +1,498 @@
 {
-	"textures": [
-		{
-			"image": "minotaurus_walk",
-			"size": {
-				"w": 226,
-				"h": 866
-			},
-			"sprites": [
-				{
-					"filename": "minotaurus_walk",
-					"region": {
-						"x": 1,
-						"y": 781,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-1.png",
-					"region": {
-						"x": 57,
-						"y": 694,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-2.png",
-					"region": {
-						"x": 168,
-						"y": 91,
-						"w": 55,
-						"h": 80
-					},
-					"margin": {
-						"x": 66,
-						"y": 65,
-						"w": 137,
-						"h": 112
-					}
-				},
-				{
-					"filename": "minotaurus_walk-3.png",
-					"region": {
-						"x": 57,
-						"y": 778,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-4.png",
-					"region": {
-						"x": 113,
-						"y": 699,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-5.png",
-					"region": {
-						"x": 113,
-						"y": 783,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-6.png",
-					"region": {
-						"x": 169,
-						"y": 783,
-						"w": 54,
-						"h": 80
-					},
-					"margin": {
-						"x": 68,
-						"y": 65,
-						"w": 138,
-						"h": 112
-					}
-				},
-				{
-					"filename": "minotaurus_walk-7.png",
-					"region": {
-						"x": 169,
-						"y": 699,
-						"w": 54,
-						"h": 82
-					},
-					"margin": {
-						"x": 68,
-						"y": 63,
-						"w": 138,
-						"h": 110
-					}
-				},
-				{
-					"filename": "minotaurus_walk-8.png",
-					"region": {
-						"x": 1,
-						"y": 521,
-						"w": 74,
-						"h": 83
-					},
-					"margin": {
-						"x": 44,
-						"y": 62,
-						"w": 118,
-						"h": 109
-					}
-				},
-				{
-					"filename": "minotaurus_walk-9.png",
-					"region": {
-						"x": 1,
-						"y": 347,
-						"w": 76,
-						"h": 85
-					},
-					"margin": {
-						"x": 42,
-						"y": 60,
-						"w": 116,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-10.png",
-					"region": {
-						"x": 79,
-						"y": 347,
-						"w": 76,
-						"h": 85
-					},
-					"margin": {
-						"x": 42,
-						"y": 60,
-						"w": 116,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-11.png",
-					"region": {
-						"x": 1,
-						"y": 260,
-						"w": 77,
-						"h": 85
-					},
-					"margin": {
-						"x": 41,
-						"y": 60,
-						"w": 115,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-12.png",
-					"region": {
-						"x": 85,
-						"y": 1,
-						"w": 82,
-						"h": 83
-					},
-					"margin": {
-						"x": 39,
-						"y": 62,
-						"w": 110,
-						"h": 109
-					}
-				},
-				{
-					"filename": "minotaurus_walk-13.png",
-					"region": {
-						"x": 85,
-						"y": 86,
-						"w": 81,
-						"h": 85
-					},
-					"margin": {
-						"x": 38,
-						"y": 60,
-						"w": 111,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-14.png",
-					"region": {
-						"x": 1,
-						"y": 173,
-						"w": 79,
-						"h": 85
-					},
-					"margin": {
-						"x": 39,
-						"y": 60,
-						"w": 113,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-15.png",
-					"region": {
-						"x": 153,
-						"y": 525,
-						"w": 72,
-						"h": 85
-					},
-					"margin": {
-						"x": 44,
-						"y": 60,
-						"w": 120,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-16.png",
-					"region": {
-						"x": 162,
-						"y": 173,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-17.png",
-					"region": {
-						"x": 159,
-						"y": 261,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-18.png",
-					"region": {
-						"x": 132,
-						"y": 612,
-						"w": 54,
-						"h": 85
-					},
-					"margin": {
-						"x": 68,
-						"y": 60,
-						"w": 138,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-19.png",
-					"region": {
-						"x": 157,
-						"y": 349,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-20.png",
-					"region": {
-						"x": 155,
-						"y": 437,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-21.png",
-					"region": {
-						"x": 76,
-						"y": 606,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-22.png",
-					"region": {
-						"x": 169,
-						"y": 1,
-						"w": 55,
-						"h": 88
-					},
-					"margin": {
-						"x": 66,
-						"y": 60,
-						"w": 137,
-						"h": 104
-					}
-				},
-				{
-					"filename": "minotaurus_walk-23.png",
-					"region": {
-						"x": 1,
-						"y": 693,
-						"w": 54,
-						"h": 86
-					},
-					"margin": {
-						"x": 68,
-						"y": 59,
-						"w": 138,
-						"h": 106
-					}
-				},
-				{
-					"filename": "minotaurus_walk-24.png",
-					"region": {
-						"x": 77,
-						"y": 521,
-						"w": 74,
-						"h": 83
-					},
-					"margin": {
-						"x": 74,
-						"y": 62,
-						"w": 118,
-						"h": 109
-					}
-				},
-				{
-					"filename": "minotaurus_walk-25.png",
-					"region": {
-						"x": 1,
-						"y": 434,
-						"w": 75,
-						"h": 85
-					},
-					"margin": {
-						"x": 74,
-						"y": 60,
-						"w": 117,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-26.png",
-					"region": {
-						"x": 78,
-						"y": 434,
-						"w": 75,
-						"h": 85
-					},
-					"margin": {
-						"x": 74,
-						"y": 60,
-						"w": 117,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-27.png",
-					"region": {
-						"x": 80,
-						"y": 260,
-						"w": 77,
-						"h": 85
-					},
-					"margin": {
-						"x": 74,
-						"y": 60,
-						"w": 115,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-28.png",
-					"region": {
-						"x": 1,
-						"y": 88,
-						"w": 81,
-						"h": 83
-					},
-					"margin": {
-						"x": 71,
-						"y": 62,
-						"w": 111,
-						"h": 109
-					}
-				},
-				{
-					"filename": "minotaurus_walk-29.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 82,
-						"h": 85
-					},
-					"margin": {
-						"x": 72,
-						"y": 60,
-						"w": 110,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-30.png",
-					"region": {
-						"x": 82,
-						"y": 173,
-						"w": 78,
-						"h": 85
-					},
-					"margin": {
-						"x": 74,
-						"y": 60,
-						"w": 114,
-						"h": 107
-					}
-				},
-				{
-					"filename": "minotaurus_walk-31.png",
-					"region": {
-						"x": 1,
-						"y": 606,
-						"w": 73,
-						"h": 85
-					},
-					"margin": {
-						"x": 75,
-						"y": 60,
-						"w": 119,
-						"h": 107
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:a26b45ceaab62b31122282fe52fa7841:6abfbf633a9e279e5840634fae6dab36:c4beab68bfe6b30a151d68ca29567856$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:1acc0278d6bbbc05f58274e7b96f93e5:6abfbf633a9e279e5840634fae6dab36:745d79bfed122d84124c8ac3e99b193a$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "minotaurus_walk",
+            "size": {
+                "h": 2030,
+                "w": 1450
+            },
+            "sprites": [
+                {
+                    "filename": "minotaurus_walk-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 871
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1161
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1451
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1741
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 871
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1161
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1451
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1741
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 871
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1161
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1451
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1741
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 871
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 1161
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 1451
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 1741
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-29",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-30",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_walk-31",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 871
+                    }
+                }
+            ]
+        }
+    ]
 }

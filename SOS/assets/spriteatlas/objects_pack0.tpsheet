@@ -1,1932 +1,1932 @@
 {
-	"textures": [
-		{
-			"image": "objects_pack0",
-			"size": {
-				"w": 2048,
-				"h": 2048
-			},
-			"sprites": [
-				{
-					"filename": "Veins_shadow1_1.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 508,
-						"h": 631
-					},
-					"margin": {
-						"x": 130,
-						"y": 67,
-						"w": 260,
-						"h": 137
-					}
-				},
-				{
-					"filename": "Veins_shadow2_1.png",
-					"region": {
-						"x": 511,
-						"y": 1,
-						"w": 508,
-						"h": 631
-					},
-					"margin": {
-						"x": 130,
-						"y": 67,
-						"w": 260,
-						"h": 137
-					}
-				},
-				{
-					"filename": "Veins_shadow1_2.png",
-					"region": {
-						"x": 1021,
-						"y": 1,
-						"w": 499,
-						"h": 517
-					},
-					"margin": {
-						"x": 133,
-						"y": 124,
-						"w": 269,
-						"h": 251
-					}
-				},
-				{
-					"filename": "Veins_shadow2_2.png",
-					"region": {
-						"x": 1021,
-						"y": 520,
-						"w": 499,
-						"h": 517
-					},
-					"margin": {
-						"x": 133,
-						"y": 124,
-						"w": 269,
-						"h": 251
-					}
-				},
-				{
-					"filename": "Veins_shadow1_3.png",
-					"region": {
-						"x": 1,
-						"y": 634,
-						"w": 409,
-						"h": 388
-					},
-					"margin": {
-						"x": 178,
-						"y": 190,
-						"w": 359,
-						"h": 380
-					}
-				},
-				{
-					"filename": "Veins_shadow2_3.png",
-					"region": {
-						"x": 1,
-						"y": 1024,
-						"w": 409,
-						"h": 388
-					},
-					"margin": {
-						"x": 178,
-						"y": 190,
-						"w": 359,
-						"h": 380
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow1_1.png",
-					"region": {
-						"x": 412,
-						"y": 634,
-						"w": 331,
-						"h": 383
-					},
-					"margin": {
-						"x": 25,
-						"y": 0,
-						"w": 53,
-						"h": 1
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow2_1.png",
-					"region": {
-						"x": 412,
-						"y": 1019,
-						"w": 331,
-						"h": 383
-					},
-					"margin": {
-						"x": 25,
-						"y": 0,
-						"w": 53,
-						"h": 1
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow1_1.png",
-					"region": {
-						"x": 745,
-						"y": 1039,
-						"w": 472,
-						"h": 373
-					},
-					"margin": {
-						"x": 148,
-						"y": 196,
-						"w": 296,
-						"h": 395
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow1_2.png",
-					"region": {
-						"x": 745,
-						"y": 634,
-						"w": 229,
-						"h": 280
-					},
-					"margin": {
-						"x": 76,
-						"y": 52,
-						"w": 155,
-						"h": 104
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_4.png",
-					"region": {
-						"x": 745,
-						"y": 916,
-						"w": 142,
-						"h": 115
-					},
-					"margin": {
-						"x": 25,
-						"y": 37,
-						"w": 50,
-						"h": 77
-					}
-				},
-				{
-					"filename": "Bones_shadow1_2.png",
-					"region": {
-						"x": 889,
-						"y": 916,
-						"w": 127,
-						"h": 118
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 65,
-						"h": 74
-					}
-				},
-				{
-					"filename": "Ruins_shadow2_1.png",
-					"region": {
-						"x": 412,
-						"y": 1404,
-						"w": 331,
-						"h": 319
-					},
-					"margin": {
-						"x": 25,
-						"y": 31,
-						"w": 53,
-						"h": 65
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow1_1.png",
-					"region": {
-						"x": 1,
-						"y": 1414,
-						"w": 298,
-						"h": 283
-					},
-					"margin": {
-						"x": 43,
-						"y": 49,
-						"w": 86,
-						"h": 101
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow2_1.png",
-					"region": {
-						"x": 1,
-						"y": 1699,
-						"w": 298,
-						"h": 283
-					},
-					"margin": {
-						"x": 43,
-						"y": 49,
-						"w": 86,
-						"h": 101
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow1_4.png",
-					"region": {
-						"x": 301,
-						"y": 1414,
-						"w": 103,
-						"h": 184
-					},
-					"margin": {
-						"x": 43,
-						"y": 4,
-						"w": 89,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow2_4.png",
-					"region": {
-						"x": 301,
-						"y": 1600,
-						"w": 103,
-						"h": 184
-					},
-					"margin": {
-						"x": 43,
-						"y": 4,
-						"w": 89,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow2_1.png",
-					"region": {
-						"x": 1219,
-						"y": 1039,
-						"w": 472,
-						"h": 373
-					},
-					"margin": {
-						"x": 148,
-						"y": 196,
-						"w": 296,
-						"h": 395
-					}
-				},
-				{
-					"filename": "Bones_shadow1_1.png",
-					"region": {
-						"x": 1522,
-						"y": 1,
-						"w": 415,
-						"h": 346
-					},
-					"margin": {
-						"x": 175,
-						"y": 211,
-						"w": 353,
-						"h": 422
-					}
-				},
-				{
-					"filename": "Bones_shadow2_1.png",
-					"region": {
-						"x": 1522,
-						"y": 349,
-						"w": 415,
-						"h": 346
-					},
-					"margin": {
-						"x": 175,
-						"y": 211,
-						"w": 353,
-						"h": 422
-					}
-				},
-				{
-					"filename": "Veins_shadow1_4.png",
-					"region": {
-						"x": 1522,
-						"y": 697,
-						"w": 352,
-						"h": 214
-					},
-					"margin": {
-						"x": 16,
-						"y": 85,
-						"w": 32,
-						"h": 170
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_4.png",
-					"region": {
-						"x": 1522,
-						"y": 913,
-						"w": 142,
-						"h": 115
-					},
-					"margin": {
-						"x": 25,
-						"y": 37,
-						"w": 50,
-						"h": 77
-					}
-				},
-				{
-					"filename": "Bones_shadow1_3.png",
-					"region": {
-						"x": 1666,
-						"y": 913,
-						"w": 136,
-						"h": 103
-					},
-					"margin": {
-						"x": 28,
-						"y": 43,
-						"w": 56,
-						"h": 89
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow2_2.png",
-					"region": {
-						"x": 1693,
-						"y": 1018,
-						"w": 229,
-						"h": 280
-					},
-					"margin": {
-						"x": 76,
-						"y": 52,
-						"w": 155,
-						"h": 104
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow1_3.png",
-					"region": {
-						"x": 1876,
-						"y": 697,
-						"w": 157,
-						"h": 226
-					},
-					"margin": {
-						"x": 112,
-						"y": 79,
-						"w": 227,
-						"h": 158
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow1_2.png",
-					"region": {
-						"x": 1804,
-						"y": 913,
-						"w": 64,
-						"h": 79
-					},
-					"margin": {
-						"x": 16,
-						"y": 7,
-						"w": 32,
-						"h": 17
-					}
-				},
-				{
-					"filename": "Bones_shadow1_5.png",
-					"region": {
-						"x": 1870,
-						"y": 925,
-						"w": 127,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 49,
-						"w": 65,
-						"h": 101
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow1_2.png",
-					"region": {
-						"x": 1693,
-						"y": 1300,
-						"w": 271,
-						"h": 268
-					},
-					"margin": {
-						"x": 55,
-						"y": 58,
-						"w": 113,
-						"h": 116
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow1_2.png",
-					"region": {
-						"x": 1924,
-						"y": 1018,
-						"w": 121,
-						"h": 175
-					},
-					"margin": {
-						"x": 34,
-						"y": 7,
-						"w": 71,
-						"h": 17
-					}
-				},
-				{
-					"filename": "Bones_shadow1_4.png",
-					"region": {
-						"x": 1924,
-						"y": 1195,
-						"w": 112,
-						"h": 100
-					},
-					"margin": {
-						"x": 40,
-						"y": 46,
-						"w": 80,
-						"h": 92
-					}
-				},
-				{
-					"filename": "Bones_shadow1_10.png",
-					"region": {
-						"x": 1999,
-						"y": 925,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow1_2.png",
-					"region": {
-						"x": 1939,
-						"y": 1,
-						"w": 100,
-						"h": 172
-					},
-					"margin": {
-						"x": 46,
-						"y": 10,
-						"w": 92,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow2_2.png",
-					"region": {
-						"x": 1939,
-						"y": 175,
-						"w": 100,
-						"h": 172
-					},
-					"margin": {
-						"x": 46,
-						"y": 10,
-						"w": 92,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow1_3.png",
-					"region": {
-						"x": 1939,
-						"y": 349,
-						"w": 97,
-						"h": 124
-					},
-					"margin": {
-						"x": 46,
-						"y": 34,
-						"w": 95,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow2_3.png",
-					"region": {
-						"x": 1939,
-						"y": 475,
-						"w": 97,
-						"h": 124
-					},
-					"margin": {
-						"x": 46,
-						"y": 34,
-						"w": 95,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_6.png",
-					"region": {
-						"x": 1939,
-						"y": 601,
-						"w": 106,
-						"h": 88
-					},
-					"margin": {
-						"x": 43,
-						"y": 52,
-						"w": 86,
-						"h": 104
-					}
-				},
-				{
-					"filename": "Veins_shadow2_4.png",
-					"region": {
-						"x": 745,
-						"y": 1414,
-						"w": 352,
-						"h": 214
-					},
-					"margin": {
-						"x": 16,
-						"y": 85,
-						"w": 32,
-						"h": 170
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow2_2.png",
-					"region": {
-						"x": 1099,
-						"y": 1414,
-						"w": 271,
-						"h": 268
-					},
-					"margin": {
-						"x": 55,
-						"y": 58,
-						"w": 113,
-						"h": 116
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow1_2.png",
-					"region": {
-						"x": 745,
-						"y": 1630,
-						"w": 241,
-						"h": 247
-					},
-					"margin": {
-						"x": 70,
-						"y": 67,
-						"w": 143,
-						"h": 137
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow2_2.png",
-					"region": {
-						"x": 406,
-						"y": 1725,
-						"w": 241,
-						"h": 247
-					},
-					"margin": {
-						"x": 70,
-						"y": 67,
-						"w": 143,
-						"h": 137
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow1_3.png",
-					"region": {
-						"x": 301,
-						"y": 1786,
-						"w": 88,
-						"h": 124
-					},
-					"margin": {
-						"x": 52,
-						"y": 34,
-						"w": 104,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow2_3.png",
-					"region": {
-						"x": 301,
-						"y": 1912,
-						"w": 88,
-						"h": 124
-					},
-					"margin": {
-						"x": 52,
-						"y": 34,
-						"w": 104,
-						"h": 68
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow1_1.png",
-					"region": {
-						"x": 649,
-						"y": 1725,
-						"w": 85,
-						"h": 106
-					},
-					"margin": {
-						"x": 52,
-						"y": 43,
-						"w": 107,
-						"h": 86
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow2_1.png",
-					"region": {
-						"x": 649,
-						"y": 1833,
-						"w": 85,
-						"h": 106
-					},
-					"margin": {
-						"x": 52,
-						"y": 43,
-						"w": 107,
-						"h": 86
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow1_4.png",
-					"region": {
-						"x": 1,
-						"y": 1984,
-						"w": 64,
-						"h": 61
-					},
-					"margin": {
-						"x": 16,
-						"y": 16,
-						"w": 32,
-						"h": 35
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow2_4.png",
-					"region": {
-						"x": 67,
-						"y": 1984,
-						"w": 64,
-						"h": 61
-					},
-					"margin": {
-						"x": 16,
-						"y": 16,
-						"w": 32,
-						"h": 35
-					}
-				},
-				{
-					"filename": "Bones_shadow1_11.png",
-					"region": {
-						"x": 133,
-						"y": 1984,
-						"w": 61,
-						"h": 61
-					},
-					"margin": {
-						"x": 16,
-						"y": 16,
-						"w": 35,
-						"h": 35
-					}
-				},
-				{
-					"filename": "Bones_shadow2_11.png",
-					"region": {
-						"x": 196,
-						"y": 1984,
-						"w": 61,
-						"h": 61
-					},
-					"margin": {
-						"x": 16,
-						"y": 16,
-						"w": 35,
-						"h": 35
-					}
-				},
-				{
-					"filename": "Bones_shadow1_6.png",
-					"region": {
-						"x": 988,
-						"y": 1630,
-						"w": 109,
-						"h": 109
-					},
-					"margin": {
-						"x": 40,
-						"y": 40,
-						"w": 83,
-						"h": 83
-					}
-				},
-				{
-					"filename": "Ruins_shadow2_2.png",
-					"region": {
-						"x": 1372,
-						"y": 1414,
-						"w": 235,
-						"h": 235
-					},
-					"margin": {
-						"x": 73,
-						"y": 73,
-						"w": 149,
-						"h": 149
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_1.png",
-					"region": {
-						"x": 1609,
-						"y": 1570,
-						"w": 192,
-						"h": 233
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow2_2.png",
-					"region": {
-						"x": 1609,
-						"y": 1414,
-						"w": 64,
-						"h": 79
-					},
-					"margin": {
-						"x": 16,
-						"y": 7,
-						"w": 32,
-						"h": 17
-					}
-				},
-				{
-					"filename": "Rock1_shadow1_5.png",
-					"region": {
-						"x": 1609,
-						"y": 1495,
-						"w": 70,
-						"h": 70
-					},
-					"margin": {
-						"x": 13,
-						"y": 13,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_1.png",
-					"region": {
-						"x": 1372,
-						"y": 1651,
-						"w": 192,
-						"h": 233
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Jaws_plant_shadow2_3.png",
-					"region": {
-						"x": 1099,
-						"y": 1684,
-						"w": 157,
-						"h": 226
-					},
-					"margin": {
-						"x": 112,
-						"y": 79,
-						"w": 227,
-						"h": 158
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow1_2.png",
-					"region": {
-						"x": 736,
-						"y": 1879,
-						"w": 166,
-						"h": 151
-					},
-					"margin": {
-						"x": 13,
-						"y": 19,
-						"w": 26,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow2_2.png",
-					"region": {
-						"x": 904,
-						"y": 1879,
-						"w": 166,
-						"h": 151
-					},
-					"margin": {
-						"x": 13,
-						"y": 19,
-						"w": 26,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Bones_shadow2_6.png",
-					"region": {
-						"x": 988,
-						"y": 1741,
-						"w": 109,
-						"h": 109
-					},
-					"margin": {
-						"x": 40,
-						"y": 40,
-						"w": 83,
-						"h": 83
-					}
-				},
-				{
-					"filename": "Bones_shadow1_8.png",
-					"region": {
-						"x": 649,
-						"y": 1941,
-						"w": 64,
-						"h": 73
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 32,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Bones_shadow1_7.png",
-					"region": {
-						"x": 391,
-						"y": 1974,
-						"w": 94,
-						"h": 73
-					},
-					"margin": {
-						"x": 1,
-						"y": 10,
-						"w": 2,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Bones_shadow2_7.png",
-					"region": {
-						"x": 487,
-						"y": 1974,
-						"w": 94,
-						"h": 73
-					},
-					"margin": {
-						"x": 1,
-						"y": 10,
-						"w": 2,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Bones_shadow2_8.png",
-					"region": {
-						"x": 583,
-						"y": 1974,
-						"w": 64,
-						"h": 73
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 32,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Rock1_shadow1_1.png",
-					"region": {
-						"x": 1566,
-						"y": 1805,
-						"w": 229,
-						"h": 217
-					},
-					"margin": {
-						"x": 76,
-						"y": 82,
-						"w": 155,
-						"h": 167
-					}
-				},
-				{
-					"filename": "Rock2_shadow2_1.png",
-					"region": {
-						"x": 1797,
-						"y": 1805,
-						"w": 229,
-						"h": 217
-					},
-					"margin": {
-						"x": 76,
-						"y": 82,
-						"w": 155,
-						"h": 167
-					}
-				},
-				{
-					"filename": "Meat_flower_shadow1_1.png",
-					"region": {
-						"x": 1803,
-						"y": 1570,
-						"w": 226,
-						"h": 211
-					},
-					"margin": {
-						"x": 79,
-						"y": 85,
-						"w": 158,
-						"h": 173
-					}
-				},
-				{
-					"filename": "Ruins_shadow1_5.png",
-					"region": {
-						"x": 1258,
-						"y": 1886,
-						"w": 157,
-						"h": 148
-					},
-					"margin": {
-						"x": 16,
-						"y": 22,
-						"w": 35,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Fetus_shadow1_2.png",
-					"region": {
-						"x": 1417,
-						"y": 1886,
-						"w": 130,
-						"h": 130
-					},
-					"margin": {
-						"x": 31,
-						"y": 31,
-						"w": 62,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Bones_shadow2_3.png",
-					"region": {
-						"x": 1072,
-						"y": 1912,
-						"w": 136,
-						"h": 103
-					},
-					"margin": {
-						"x": 28,
-						"y": 43,
-						"w": 56,
-						"h": 89
-					}
-				},
-				{
-					"filename": "Bones_shadow2_4.png",
-					"region": {
-						"x": 1258,
-						"y": 1684,
-						"w": 112,
-						"h": 100
-					},
-					"margin": {
-						"x": 40,
-						"y": 46,
-						"w": 80,
-						"h": 92
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_6.png",
-					"region": {
-						"x": 1258,
-						"y": 1786,
-						"w": 106,
-						"h": 88
-					},
-					"margin": {
-						"x": 43,
-						"y": 52,
-						"w": 86,
-						"h": 104
-					}
-				},
-				{
-					"filename": "Rock2_shadow2_5.png",
-					"region": {
-						"x": 1966,
-						"y": 1297,
-						"w": 70,
-						"h": 70
-					},
-					"margin": {
-						"x": 13,
-						"y": 13,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow1_3.png",
-					"region": {
-						"x": 1966,
-						"y": 1369,
-						"w": 55,
-						"h": 64
-					},
-					"margin": {
-						"x": 19,
-						"y": 16,
-						"w": 41,
-						"h": 32
-					}
-				},
-				{
-					"filename": "Tubular_plant_shadow2_3.png",
-					"region": {
-						"x": 1966,
-						"y": 1435,
-						"w": 55,
-						"h": 64
-					},
-					"margin": {
-						"x": 19,
-						"y": 16,
-						"w": 41,
-						"h": 32
-					}
-				},
-				{
-					"filename": "Pustules_shadow1_3.png",
-					"region": {
-						"x": 1966,
-						"y": 1501,
-						"w": 61,
-						"h": 58
-					},
-					"margin": {
-						"x": 16,
-						"y": 19,
-						"w": 35,
-						"h": 38
-					}
-				}
-			]
-		},
-		{
-			"image": "objects_pack0-1.png",
-			"size": {
-				"w": 1002,
-				"h": 1149
-			},
-			"sprites": [
-				{
-					"filename": "Meat_flower_shadow2_1.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 226,
-						"h": 211
-					},
-					"margin": {
-						"x": 79,
-						"y": 85,
-						"w": 158,
-						"h": 173
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow1_3.png",
-					"region": {
-						"x": 229,
-						"y": 1,
-						"w": 229,
-						"h": 181
-					},
-					"margin": {
-						"x": 76,
-						"y": 100,
-						"w": 155,
-						"h": 203
-					}
-				},
-				{
-					"filename": "Spike_plant_shadow2_3.png",
-					"region": {
-						"x": 460,
-						"y": 1,
-						"w": 229,
-						"h": 181
-					},
-					"margin": {
-						"x": 76,
-						"y": 100,
-						"w": 155,
-						"h": 203
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_2.png",
-					"region": {
-						"x": 1,
-						"y": 214,
-						"w": 205,
-						"h": 196
-					},
-					"margin": {
-						"x": 88,
-						"y": 94,
-						"w": 179,
-						"h": 188
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_2.png",
-					"region": {
-						"x": 1,
-						"y": 412,
-						"w": 205,
-						"h": 196
-					},
-					"margin": {
-						"x": 88,
-						"y": 94,
-						"w": 179,
-						"h": 188
-					}
-				},
-				{
-					"filename": "Fetus_shadow1_1.png",
-					"region": {
-						"x": 691,
-						"y": 1,
-						"w": 211,
-						"h": 178
-					},
-					"margin": {
-						"x": 85,
-						"y": 103,
-						"w": 173,
-						"h": 206
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow1_1.png",
-					"region": {
-						"x": 1,
-						"y": 610,
-						"w": 202,
-						"h": 184
-					},
-					"margin": {
-						"x": 91,
-						"y": 100,
-						"w": 182,
-						"h": 200
-					}
-				},
-				{
-					"filename": "Fetus_shadow2_1.png",
-					"region": {
-						"x": 1,
-						"y": 796,
-						"w": 211,
-						"h": 178
-					},
-					"margin": {
-						"x": 85,
-						"y": 103,
-						"w": 173,
-						"h": 206
-					}
-				},
-				{
-					"filename": "Meat_flower_shadow1_2.png",
-					"region": {
-						"x": 1,
-						"y": 976,
-						"w": 184,
-						"h": 172
-					},
-					"margin": {
-						"x": 4,
-						"y": 10,
-						"w": 8,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Meat_flower_shadow2_2.png",
-					"region": {
-						"x": 187,
-						"y": 976,
-						"w": 184,
-						"h": 172
-					},
-					"margin": {
-						"x": 4,
-						"y": 10,
-						"w": 8,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Ruins_shadow1_3.png",
-					"region": {
-						"x": 229,
-						"y": 184,
-						"w": 192,
-						"h": 169
-					},
-					"margin": {
-						"x": 0,
-						"y": 10,
-						"w": 0,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Ruins_shadow1_4.png",
-					"region": {
-						"x": 229,
-						"y": 184,
-						"w": 192,
-						"h": 169
-					},
-					"margin": {
-						"x": 0,
-						"y": 10,
-						"w": 0,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow2_1.png",
-					"region": {
-						"x": 423,
-						"y": 184,
-						"w": 192,
-						"h": 184
-					},
-					"margin": {
-						"x": 0,
-						"y": 4,
-						"w": 0,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Ruins_shadow2_3.png",
-					"region": {
-						"x": 208,
-						"y": 355,
-						"w": 192,
-						"h": 169
-					},
-					"margin": {
-						"x": 0,
-						"y": 10,
-						"w": 0,
-						"h": 23
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_3.png",
-					"region": {
-						"x": 402,
-						"y": 370,
-						"w": 163,
-						"h": 172
-					},
-					"margin": {
-						"x": 13,
-						"y": 10,
-						"w": 29,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow1_1.png",
-					"region": {
-						"x": 617,
-						"y": 184,
-						"w": 139,
-						"h": 190
-					},
-					"margin": {
-						"x": 25,
-						"y": 1,
-						"w": 53,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Many_eyes_plant_shadow2_1.png",
-					"region": {
-						"x": 758,
-						"y": 181,
-						"w": 139,
-						"h": 190
-					},
-					"margin": {
-						"x": 25,
-						"y": 1,
-						"w": 53,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_3.png",
-					"region": {
-						"x": 567,
-						"y": 376,
-						"w": 163,
-						"h": 172
-					},
-					"margin": {
-						"x": 13,
-						"y": 10,
-						"w": 29,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Rock1_shadow1_2.png",
-					"region": {
-						"x": 208,
-						"y": 526,
-						"w": 157,
-						"h": 181
-					},
-					"margin": {
-						"x": 16,
-						"y": 4,
-						"w": 35,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow1_1.png",
-					"region": {
-						"x": 367,
-						"y": 544,
-						"w": 157,
-						"h": 172
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 35,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Rock2_shadow2_2.png",
-					"region": {
-						"x": 526,
-						"y": 550,
-						"w": 157,
-						"h": 181
-					},
-					"margin": {
-						"x": 16,
-						"y": 4,
-						"w": 35,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow2_2.png",
-					"region": {
-						"x": 685,
-						"y": 550,
-						"w": 121,
-						"h": 175
-					},
-					"margin": {
-						"x": 34,
-						"y": 7,
-						"w": 71,
-						"h": 17
-					}
-				},
-				{
-					"filename": "Eye_plant_shadow2_1.png",
-					"region": {
-						"x": 732,
-						"y": 376,
-						"w": 157,
-						"h": 172
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 35,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow1_3.png",
-					"region": {
-						"x": 808,
-						"y": 550,
-						"w": 157,
-						"h": 172
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 35,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Fetus_shadow1_3.png",
-					"region": {
-						"x": 904,
-						"y": 1,
-						"w": 95,
-						"h": 96
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 1,
-						"h": 0
-					}
-				},
-				{
-					"filename": "Fetus_shadow2_3.png",
-					"region": {
-						"x": 904,
-						"y": 99,
-						"w": 95,
-						"h": 96
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 1,
-						"h": 0
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow1_3.png",
-					"region": {
-						"x": 899,
-						"y": 197,
-						"w": 96,
-						"h": 94
-					},
-					"margin": {
-						"x": 0,
-						"y": 1,
-						"w": 0,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Ruins_shadow1_6.png",
-					"region": {
-						"x": 205,
-						"y": 709,
-						"w": 96,
-						"h": 82
-					},
-					"margin": {
-						"x": 0,
-						"y": 7,
-						"w": 0,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Tentacle_plant_shadow2_3.png",
-					"region": {
-						"x": 214,
-						"y": 793,
-						"w": 157,
-						"h": 172
-					},
-					"margin": {
-						"x": 16,
-						"y": 10,
-						"w": 35,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Fetus_shadow2_2.png",
-					"region": {
-						"x": 373,
-						"y": 718,
-						"w": 130,
-						"h": 130
-					},
-					"margin": {
-						"x": 31,
-						"y": 31,
-						"w": 62,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Ruins_shadow2_4.png",
-					"region": {
-						"x": 373,
-						"y": 850,
-						"w": 157,
-						"h": 148
-					},
-					"margin": {
-						"x": 16,
-						"y": 22,
-						"w": 35,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Bones_shadow2_2.png",
-					"region": {
-						"x": 373,
-						"y": 1000,
-						"w": 127,
-						"h": 118
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 65,
-						"h": 74
-					}
-				},
-				{
-					"filename": "Rock3_shadow1_5.png",
-					"region": {
-						"x": 505,
-						"y": 733,
-						"w": 121,
-						"h": 112
-					},
-					"margin": {
-						"x": 34,
-						"y": 40,
-						"w": 71,
-						"h": 80
-					}
-				},
-				{
-					"filename": "Rock1_shadow1_3.png",
-					"region": {
-						"x": 532,
-						"y": 847,
-						"w": 118,
-						"h": 121
-					},
-					"margin": {
-						"x": 37,
-						"y": 34,
-						"w": 74,
-						"h": 71
-					}
-				},
-				{
-					"filename": "Rock3_shadow2_5.png",
-					"region": {
-						"x": 628,
-						"y": 733,
-						"w": 121,
-						"h": 112
-					},
-					"margin": {
-						"x": 34,
-						"y": 40,
-						"w": 71,
-						"h": 80
-					}
-				},
-				{
-					"filename": "Rock2_shadow2_3.png",
-					"region": {
-						"x": 652,
-						"y": 847,
-						"w": 118,
-						"h": 121
-					},
-					"margin": {
-						"x": 37,
-						"y": 34,
-						"w": 74,
-						"h": 71
-					}
-				},
-				{
-					"filename": "Meat_flower_shadow1_3.png",
-					"region": {
-						"x": 751,
-						"y": 727,
-						"w": 127,
-						"h": 118
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 65,
-						"h": 74
-					}
-				},
-				{
-					"filename": "Meat_flower_shadow2_3.png",
-					"region": {
-						"x": 772,
-						"y": 847,
-						"w": 127,
-						"h": 118
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 65,
-						"h": 74
-					}
-				},
-				{
-					"filename": "Pustules_shadow1_1.png",
-					"region": {
-						"x": 880,
-						"y": 724,
-						"w": 121,
-						"h": 106
-					},
-					"margin": {
-						"x": 34,
-						"y": 43,
-						"w": 71,
-						"h": 86
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow2_3.png",
-					"region": {
-						"x": 901,
-						"y": 832,
-						"w": 96,
-						"h": 94
-					},
-					"margin": {
-						"x": 0,
-						"y": 1,
-						"w": 0,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Ruins_shadow2_5.png",
-					"region": {
-						"x": 899,
-						"y": 293,
-						"w": 96,
-						"h": 82
-					},
-					"margin": {
-						"x": 0,
-						"y": 7,
-						"w": 0,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Rock1_shadow1_4.png",
-					"region": {
-						"x": 891,
-						"y": 377,
-						"w": 91,
-						"h": 91
-					},
-					"margin": {
-						"x": 1,
-						"y": 1,
-						"w": 5,
-						"h": 5
-					}
-				},
-				{
-					"filename": "Bones_shadow2_5.png",
-					"region": {
-						"x": 532,
-						"y": 970,
-						"w": 127,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 49,
-						"w": 65,
-						"h": 101
-					}
-				},
-				{
-					"filename": "Pustules_shadow2_1.png",
-					"region": {
-						"x": 661,
-						"y": 970,
-						"w": 121,
-						"h": 106
-					},
-					"margin": {
-						"x": 34,
-						"y": 43,
-						"w": 71,
-						"h": 86
-					}
-				},
-				{
-					"filename": "Rock2_shadow2_4.png",
-					"region": {
-						"x": 784,
-						"y": 967,
-						"w": 91,
-						"h": 91
-					},
-					"margin": {
-						"x": 1,
-						"y": 1,
-						"w": 5,
-						"h": 5
-					}
-				},
-				{
-					"filename": "Pustules_shadow1_2.png",
-					"region": {
-						"x": 784,
-						"y": 1060,
-						"w": 94,
-						"h": 88
-					},
-					"margin": {
-						"x": 1,
-						"y": 4,
-						"w": 2,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Pustules_shadow2_2.png",
-					"region": {
-						"x": 901,
-						"y": 928,
-						"w": 94,
-						"h": 88
-					},
-					"margin": {
-						"x": 1,
-						"y": 4,
-						"w": 2,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Pustules_shadow2_3.png",
-					"region": {
-						"x": 303,
-						"y": 709,
-						"w": 61,
-						"h": 58
-					},
-					"margin": {
-						"x": 16,
-						"y": 19,
-						"w": 35,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Bones_shadow1_9.png",
-					"region": {
-						"x": 502,
-						"y": 1063,
-						"w": 91,
-						"h": 82
-					},
-					"margin": {
-						"x": 1,
-						"y": 7,
-						"w": 5,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Bones_shadow2_9.png",
-					"region": {
-						"x": 880,
-						"y": 1018,
-						"w": 91,
-						"h": 82
-					},
-					"margin": {
-						"x": 1,
-						"y": 7,
-						"w": 5,
-						"h": 14
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow1_5.png",
-					"region": {
-						"x": 880,
-						"y": 1102,
-						"w": 47,
-						"h": 46
-					},
-					"margin": {
-						"x": 0,
-						"y": 1,
-						"w": 1,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Rock_eyes_shadow2_5.png",
-					"region": {
-						"x": 929,
-						"y": 1102,
-						"w": 47,
-						"h": 46
-					},
-					"margin": {
-						"x": 0,
-						"y": 1,
-						"w": 1,
-						"h": 2
-					}
-				},
-				{
-					"filename": "Bones_shadow2_10.png",
-					"region": {
-						"x": 891,
-						"y": 470,
-						"w": 48,
-						"h": 48
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:12ff08dc08c79b5146d263b6607ead28:11e73ecc1b6176a99c40df9a8fbc2984:0a56945fddf77c96485b95f579f53183$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:12ff08dc08c79b5146d263b6607ead28:11e73ecc1b6176a99c40df9a8fbc2984:0a56945fddf77c96485b95f579f53183$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "objects_pack0",
+            "size": {
+                "h": 2048,
+                "w": 2048
+            },
+            "sprites": [
+                {
+                    "filename": "Veins_shadow1_1",
+                    "margin": {
+                        "h": 137,
+                        "w": 260,
+                        "x": 130,
+                        "y": 67
+                    },
+                    "region": {
+                        "h": 631,
+                        "w": 508,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Veins_shadow2_1",
+                    "margin": {
+                        "h": 137,
+                        "w": 260,
+                        "x": 130,
+                        "y": 67
+                    },
+                    "region": {
+                        "h": 631,
+                        "w": 508,
+                        "x": 511,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow1_1",
+                    "margin": {
+                        "h": 1,
+                        "w": 53,
+                        "x": 25,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 383,
+                        "w": 331,
+                        "x": 412,
+                        "y": 634
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow2_1",
+                    "margin": {
+                        "h": 1,
+                        "w": 53,
+                        "x": 25,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 383,
+                        "w": 331,
+                        "x": 412,
+                        "y": 1019
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow1_1",
+                    "margin": {
+                        "h": 395,
+                        "w": 296,
+                        "x": 148,
+                        "y": 196
+                    },
+                    "region": {
+                        "h": 373,
+                        "w": 472,
+                        "x": 745,
+                        "y": 1039
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow2_1",
+                    "margin": {
+                        "h": 65,
+                        "w": 53,
+                        "x": 25,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 319,
+                        "w": 331,
+                        "x": 412,
+                        "y": 1404
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow1_1",
+                    "margin": {
+                        "h": 101,
+                        "w": 86,
+                        "x": 43,
+                        "y": 49
+                    },
+                    "region": {
+                        "h": 283,
+                        "w": 298,
+                        "x": 1,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow2_1",
+                    "margin": {
+                        "h": 101,
+                        "w": 86,
+                        "x": 43,
+                        "y": 49
+                    },
+                    "region": {
+                        "h": 283,
+                        "w": 298,
+                        "x": 1,
+                        "y": 1699
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow2_1",
+                    "margin": {
+                        "h": 395,
+                        "w": 296,
+                        "x": 148,
+                        "y": 196
+                    },
+                    "region": {
+                        "h": 373,
+                        "w": 472,
+                        "x": 1219,
+                        "y": 1039
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_1",
+                    "margin": {
+                        "h": 422,
+                        "w": 353,
+                        "x": 175,
+                        "y": 211
+                    },
+                    "region": {
+                        "h": 346,
+                        "w": 415,
+                        "x": 1522,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_1",
+                    "margin": {
+                        "h": 422,
+                        "w": 353,
+                        "x": 175,
+                        "y": 211
+                    },
+                    "region": {
+                        "h": 346,
+                        "w": 415,
+                        "x": 1522,
+                        "y": 349
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow1_1",
+                    "margin": {
+                        "h": 86,
+                        "w": 107,
+                        "x": 52,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 85,
+                        "x": 649,
+                        "y": 1725
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow2_1",
+                    "margin": {
+                        "h": 86,
+                        "w": 107,
+                        "x": 52,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 85,
+                        "x": 649,
+                        "y": 1833
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_1",
+                    "margin": {
+                        "h": 7,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 233,
+                        "w": 192,
+                        "x": 1609,
+                        "y": 1570
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_1",
+                    "margin": {
+                        "h": 7,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 233,
+                        "w": 192,
+                        "x": 1372,
+                        "y": 1651
+                    }
+                },
+                {
+                    "filename": "Rock1_shadow1_1",
+                    "margin": {
+                        "h": 167,
+                        "w": 155,
+                        "x": 76,
+                        "y": 82
+                    },
+                    "region": {
+                        "h": 217,
+                        "w": 229,
+                        "x": 1566,
+                        "y": 1805
+                    }
+                },
+                {
+                    "filename": "Rock2_shadow2_1",
+                    "margin": {
+                        "h": 167,
+                        "w": 155,
+                        "x": 76,
+                        "y": 82
+                    },
+                    "region": {
+                        "h": 217,
+                        "w": 229,
+                        "x": 1797,
+                        "y": 1805
+                    }
+                },
+                {
+                    "filename": "Meat_flower_shadow1_1",
+                    "margin": {
+                        "h": 173,
+                        "w": 158,
+                        "x": 79,
+                        "y": 85
+                    },
+                    "region": {
+                        "h": 211,
+                        "w": 226,
+                        "x": 1803,
+                        "y": 1570
+                    }
+                },
+                {
+                    "filename": "Veins_shadow1_2",
+                    "margin": {
+                        "h": 251,
+                        "w": 269,
+                        "x": 133,
+                        "y": 124
+                    },
+                    "region": {
+                        "h": 517,
+                        "w": 499,
+                        "x": 1021,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Veins_shadow2_2",
+                    "margin": {
+                        "h": 251,
+                        "w": 269,
+                        "x": 133,
+                        "y": 124
+                    },
+                    "region": {
+                        "h": 517,
+                        "w": 499,
+                        "x": 1021,
+                        "y": 520
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow1_2",
+                    "margin": {
+                        "h": 104,
+                        "w": 155,
+                        "x": 76,
+                        "y": 52
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 229,
+                        "x": 745,
+                        "y": 634
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_2",
+                    "margin": {
+                        "h": 74,
+                        "w": 65,
+                        "x": 31,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 127,
+                        "x": 889,
+                        "y": 916
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow2_2",
+                    "margin": {
+                        "h": 104,
+                        "w": 155,
+                        "x": 76,
+                        "y": 52
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 229,
+                        "x": 1693,
+                        "y": 1018
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow1_2",
+                    "margin": {
+                        "h": 17,
+                        "w": 32,
+                        "x": 16,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 79,
+                        "w": 64,
+                        "x": 1804,
+                        "y": 913
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow1_2",
+                    "margin": {
+                        "h": 116,
+                        "w": 113,
+                        "x": 55,
+                        "y": 58
+                    },
+                    "region": {
+                        "h": 268,
+                        "w": 271,
+                        "x": 1693,
+                        "y": 1300
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow1_2",
+                    "margin": {
+                        "h": 17,
+                        "w": 71,
+                        "x": 34,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 175,
+                        "w": 121,
+                        "x": 1924,
+                        "y": 1018
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow1_2",
+                    "margin": {
+                        "h": 20,
+                        "w": 92,
+                        "x": 46,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 100,
+                        "x": 1939,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow2_2",
+                    "margin": {
+                        "h": 20,
+                        "w": 92,
+                        "x": 46,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 100,
+                        "x": 1939,
+                        "y": 175
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow2_2",
+                    "margin": {
+                        "h": 116,
+                        "w": 113,
+                        "x": 55,
+                        "y": 58
+                    },
+                    "region": {
+                        "h": 268,
+                        "w": 271,
+                        "x": 1099,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow1_2",
+                    "margin": {
+                        "h": 137,
+                        "w": 143,
+                        "x": 70,
+                        "y": 67
+                    },
+                    "region": {
+                        "h": 247,
+                        "w": 241,
+                        "x": 745,
+                        "y": 1630
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow2_2",
+                    "margin": {
+                        "h": 137,
+                        "w": 143,
+                        "x": 70,
+                        "y": 67
+                    },
+                    "region": {
+                        "h": 247,
+                        "w": 241,
+                        "x": 406,
+                        "y": 1725
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow2_2",
+                    "margin": {
+                        "h": 149,
+                        "w": 149,
+                        "x": 73,
+                        "y": 73
+                    },
+                    "region": {
+                        "h": 235,
+                        "w": 235,
+                        "x": 1372,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow2_2",
+                    "margin": {
+                        "h": 17,
+                        "w": 32,
+                        "x": 16,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 79,
+                        "w": 64,
+                        "x": 1609,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow1_2",
+                    "margin": {
+                        "h": 41,
+                        "w": 26,
+                        "x": 13,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 151,
+                        "w": 166,
+                        "x": 736,
+                        "y": 1879
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow2_2",
+                    "margin": {
+                        "h": 41,
+                        "w": 26,
+                        "x": 13,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 151,
+                        "w": 166,
+                        "x": 904,
+                        "y": 1879
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow1_2",
+                    "margin": {
+                        "h": 62,
+                        "w": 62,
+                        "x": 31,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 130,
+                        "x": 1417,
+                        "y": 1886
+                    }
+                },
+                {
+                    "filename": "Veins_shadow1_3",
+                    "margin": {
+                        "h": 380,
+                        "w": 359,
+                        "x": 178,
+                        "y": 190
+                    },
+                    "region": {
+                        "h": 388,
+                        "w": 409,
+                        "x": 1,
+                        "y": 634
+                    }
+                },
+                {
+                    "filename": "Veins_shadow2_3",
+                    "margin": {
+                        "h": 380,
+                        "w": 359,
+                        "x": 178,
+                        "y": 190
+                    },
+                    "region": {
+                        "h": 388,
+                        "w": 409,
+                        "x": 1,
+                        "y": 1024
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_3",
+                    "margin": {
+                        "h": 89,
+                        "w": 56,
+                        "x": 28,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 103,
+                        "w": 136,
+                        "x": 1666,
+                        "y": 913
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow1_3",
+                    "margin": {
+                        "h": 158,
+                        "w": 227,
+                        "x": 112,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 226,
+                        "w": 157,
+                        "x": 1876,
+                        "y": 697
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow1_3",
+                    "margin": {
+                        "h": 68,
+                        "w": 95,
+                        "x": 46,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 97,
+                        "x": 1939,
+                        "y": 349
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow2_3",
+                    "margin": {
+                        "h": 68,
+                        "w": 95,
+                        "x": 46,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 97,
+                        "x": 1939,
+                        "y": 475
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow1_3",
+                    "margin": {
+                        "h": 68,
+                        "w": 104,
+                        "x": 52,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 88,
+                        "x": 301,
+                        "y": 1786
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow2_3",
+                    "margin": {
+                        "h": 68,
+                        "w": 104,
+                        "x": 52,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 88,
+                        "x": 301,
+                        "y": 1912
+                    }
+                },
+                {
+                    "filename": "Jaws_plant_shadow2_3",
+                    "margin": {
+                        "h": 158,
+                        "w": 227,
+                        "x": 112,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 226,
+                        "w": 157,
+                        "x": 1099,
+                        "y": 1684
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_3",
+                    "margin": {
+                        "h": 89,
+                        "w": 56,
+                        "x": 28,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 103,
+                        "w": 136,
+                        "x": 1072,
+                        "y": 1912
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow1_3",
+                    "margin": {
+                        "h": 32,
+                        "w": 41,
+                        "x": 19,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 55,
+                        "x": 1966,
+                        "y": 1369
+                    }
+                },
+                {
+                    "filename": "Tubular_plant_shadow2_3",
+                    "margin": {
+                        "h": 32,
+                        "w": 41,
+                        "x": 19,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 55,
+                        "x": 1966,
+                        "y": 1435
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow1_3",
+                    "margin": {
+                        "h": 38,
+                        "w": 35,
+                        "x": 16,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 61,
+                        "x": 1966,
+                        "y": 1501
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_4",
+                    "margin": {
+                        "h": 77,
+                        "w": 50,
+                        "x": 25,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 115,
+                        "w": 142,
+                        "x": 745,
+                        "y": 916
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow1_4",
+                    "margin": {
+                        "h": 8,
+                        "w": 89,
+                        "x": 43,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 103,
+                        "x": 301,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow2_4",
+                    "margin": {
+                        "h": 8,
+                        "w": 89,
+                        "x": 43,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 103,
+                        "x": 301,
+                        "y": 1600
+                    }
+                },
+                {
+                    "filename": "Veins_shadow1_4",
+                    "margin": {
+                        "h": 170,
+                        "w": 32,
+                        "x": 16,
+                        "y": 85
+                    },
+                    "region": {
+                        "h": 214,
+                        "w": 352,
+                        "x": 1522,
+                        "y": 697
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_4",
+                    "margin": {
+                        "h": 77,
+                        "w": 50,
+                        "x": 25,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 115,
+                        "w": 142,
+                        "x": 1522,
+                        "y": 913
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_4",
+                    "margin": {
+                        "h": 92,
+                        "w": 80,
+                        "x": 40,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 112,
+                        "x": 1924,
+                        "y": 1195
+                    }
+                },
+                {
+                    "filename": "Veins_shadow2_4",
+                    "margin": {
+                        "h": 170,
+                        "w": 32,
+                        "x": 16,
+                        "y": 85
+                    },
+                    "region": {
+                        "h": 214,
+                        "w": 352,
+                        "x": 745,
+                        "y": 1414
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow1_4",
+                    "margin": {
+                        "h": 35,
+                        "w": 32,
+                        "x": 16,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 61,
+                        "w": 64,
+                        "x": 1,
+                        "y": 1984
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow2_4",
+                    "margin": {
+                        "h": 35,
+                        "w": 32,
+                        "x": 16,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 61,
+                        "w": 64,
+                        "x": 67,
+                        "y": 1984
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_4",
+                    "margin": {
+                        "h": 92,
+                        "w": 80,
+                        "x": 40,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 112,
+                        "x": 1258,
+                        "y": 1684
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_5",
+                    "margin": {
+                        "h": 101,
+                        "w": 65,
+                        "x": 31,
+                        "y": 49
+                    },
+                    "region": {
+                        "h": 91,
+                        "w": 127,
+                        "x": 1870,
+                        "y": 925
+                    }
+                },
+                {
+                    "filename": "Rock1_shadow1_5",
+                    "margin": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 13,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 70,
+                        "w": 70,
+                        "x": 1609,
+                        "y": 1495
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow1_5",
+                    "margin": {
+                        "h": 44,
+                        "w": 35,
+                        "x": 16,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 148,
+                        "w": 157,
+                        "x": 1258,
+                        "y": 1886
+                    }
+                },
+                {
+                    "filename": "Rock2_shadow2_5",
+                    "margin": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 13,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 70,
+                        "w": 70,
+                        "x": 1966,
+                        "y": 1297
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_6",
+                    "margin": {
+                        "h": 104,
+                        "w": 86,
+                        "x": 43,
+                        "y": 52
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 106,
+                        "x": 1939,
+                        "y": 601
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_6",
+                    "margin": {
+                        "h": 83,
+                        "w": 83,
+                        "x": 40,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 109,
+                        "w": 109,
+                        "x": 988,
+                        "y": 1630
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_6",
+                    "margin": {
+                        "h": 83,
+                        "w": 83,
+                        "x": 40,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 109,
+                        "w": 109,
+                        "x": 988,
+                        "y": 1741
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_6",
+                    "margin": {
+                        "h": 104,
+                        "w": 86,
+                        "x": 43,
+                        "y": 52
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 106,
+                        "x": 1258,
+                        "y": 1786
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_7",
+                    "margin": {
+                        "h": 23,
+                        "w": 2,
+                        "x": 1,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 73,
+                        "w": 94,
+                        "x": 391,
+                        "y": 1974
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_7",
+                    "margin": {
+                        "h": 23,
+                        "w": 2,
+                        "x": 1,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 73,
+                        "w": 94,
+                        "x": 487,
+                        "y": 1974
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_8",
+                    "margin": {
+                        "h": 23,
+                        "w": 32,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 73,
+                        "w": 64,
+                        "x": 649,
+                        "y": 1941
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_8",
+                    "margin": {
+                        "h": 23,
+                        "w": 32,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 73,
+                        "w": 64,
+                        "x": 583,
+                        "y": 1974
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 1999,
+                        "y": 925
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_11",
+                    "margin": {
+                        "h": 35,
+                        "w": 35,
+                        "x": 16,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 61,
+                        "w": 61,
+                        "x": 133,
+                        "y": 1984
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_11",
+                    "margin": {
+                        "h": 35,
+                        "w": 35,
+                        "x": 16,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 61,
+                        "w": 61,
+                        "x": 196,
+                        "y": 1984
+                    }
+                }
+            ]
+        },
+        {
+            "image": "objects_pack0-1",
+            "size": {
+                "h": 1149,
+                "w": 1002
+            },
+            "sprites": [
+                {
+                    "filename": "Meat_flower_shadow2_1",
+                    "margin": {
+                        "h": 173,
+                        "w": 158,
+                        "x": 79,
+                        "y": 85
+                    },
+                    "region": {
+                        "h": 211,
+                        "w": 226,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow1_1",
+                    "margin": {
+                        "h": 206,
+                        "w": 173,
+                        "x": 85,
+                        "y": 103
+                    },
+                    "region": {
+                        "h": 178,
+                        "w": 211,
+                        "x": 691,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow1_1",
+                    "margin": {
+                        "h": 200,
+                        "w": 182,
+                        "x": 91,
+                        "y": 100
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 202,
+                        "x": 1,
+                        "y": 610
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow2_1",
+                    "margin": {
+                        "h": 206,
+                        "w": 173,
+                        "x": 85,
+                        "y": 103
+                    },
+                    "region": {
+                        "h": 178,
+                        "w": 211,
+                        "x": 1,
+                        "y": 796
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow2_1",
+                    "margin": {
+                        "h": 8,
+                        "w": 0,
+                        "x": 0,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 192,
+                        "x": 423,
+                        "y": 184
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow1_1",
+                    "margin": {
+                        "h": 2,
+                        "w": 53,
+                        "x": 25,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 190,
+                        "w": 139,
+                        "x": 617,
+                        "y": 184
+                    }
+                },
+                {
+                    "filename": "Many_eyes_plant_shadow2_1",
+                    "margin": {
+                        "h": 2,
+                        "w": 53,
+                        "x": 25,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 190,
+                        "w": 139,
+                        "x": 758,
+                        "y": 181
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow1_1",
+                    "margin": {
+                        "h": 20,
+                        "w": 35,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 157,
+                        "x": 367,
+                        "y": 544
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow2_1",
+                    "margin": {
+                        "h": 20,
+                        "w": 35,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 157,
+                        "x": 732,
+                        "y": 376
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow1_1",
+                    "margin": {
+                        "h": 86,
+                        "w": 71,
+                        "x": 34,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 121,
+                        "x": 880,
+                        "y": 724
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow2_1",
+                    "margin": {
+                        "h": 86,
+                        "w": 71,
+                        "x": 34,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 121,
+                        "x": 661,
+                        "y": 970
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_2",
+                    "margin": {
+                        "h": 188,
+                        "w": 179,
+                        "x": 88,
+                        "y": 94
+                    },
+                    "region": {
+                        "h": 196,
+                        "w": 205,
+                        "x": 1,
+                        "y": 214
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_2",
+                    "margin": {
+                        "h": 188,
+                        "w": 179,
+                        "x": 88,
+                        "y": 94
+                    },
+                    "region": {
+                        "h": 196,
+                        "w": 205,
+                        "x": 1,
+                        "y": 412
+                    }
+                },
+                {
+                    "filename": "Meat_flower_shadow1_2",
+                    "margin": {
+                        "h": 20,
+                        "w": 8,
+                        "x": 4,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 184,
+                        "x": 1,
+                        "y": 976
+                    }
+                },
+                {
+                    "filename": "Meat_flower_shadow2_2",
+                    "margin": {
+                        "h": 20,
+                        "w": 8,
+                        "x": 4,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 184,
+                        "x": 187,
+                        "y": 976
+                    }
+                },
+                {
+                    "filename": "Rock1_shadow1_2",
+                    "margin": {
+                        "h": 11,
+                        "w": 35,
+                        "x": 16,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 181,
+                        "w": 157,
+                        "x": 208,
+                        "y": 526
+                    }
+                },
+                {
+                    "filename": "Rock2_shadow2_2",
+                    "margin": {
+                        "h": 11,
+                        "w": 35,
+                        "x": 16,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 181,
+                        "w": 157,
+                        "x": 526,
+                        "y": 550
+                    }
+                },
+                {
+                    "filename": "Eye_plant_shadow2_2",
+                    "margin": {
+                        "h": 17,
+                        "w": 71,
+                        "x": 34,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 175,
+                        "w": 121,
+                        "x": 685,
+                        "y": 550
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow2_2",
+                    "margin": {
+                        "h": 62,
+                        "w": 62,
+                        "x": 31,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 130,
+                        "x": 373,
+                        "y": 718
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_2",
+                    "margin": {
+                        "h": 74,
+                        "w": 65,
+                        "x": 31,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 127,
+                        "x": 373,
+                        "y": 1000
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow1_2",
+                    "margin": {
+                        "h": 8,
+                        "w": 2,
+                        "x": 1,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 94,
+                        "x": 784,
+                        "y": 1060
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow2_2",
+                    "margin": {
+                        "h": 8,
+                        "w": 2,
+                        "x": 1,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 94,
+                        "x": 901,
+                        "y": 928
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow1_3",
+                    "margin": {
+                        "h": 203,
+                        "w": 155,
+                        "x": 76,
+                        "y": 100
+                    },
+                    "region": {
+                        "h": 181,
+                        "w": 229,
+                        "x": 229,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Spike_plant_shadow2_3",
+                    "margin": {
+                        "h": 203,
+                        "w": 155,
+                        "x": 76,
+                        "y": 100
+                    },
+                    "region": {
+                        "h": 181,
+                        "w": 229,
+                        "x": 460,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow1_3",
+                    "margin": {
+                        "h": 23,
+                        "w": 0,
+                        "x": 0,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 169,
+                        "w": 192,
+                        "x": 229,
+                        "y": 184
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow2_3",
+                    "margin": {
+                        "h": 23,
+                        "w": 0,
+                        "x": 0,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 169,
+                        "w": 192,
+                        "x": 208,
+                        "y": 355
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_3",
+                    "margin": {
+                        "h": 20,
+                        "w": 29,
+                        "x": 13,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 163,
+                        "x": 402,
+                        "y": 370
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_3",
+                    "margin": {
+                        "h": 20,
+                        "w": 29,
+                        "x": 13,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 163,
+                        "x": 567,
+                        "y": 376
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow1_3",
+                    "margin": {
+                        "h": 20,
+                        "w": 35,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 157,
+                        "x": 808,
+                        "y": 550
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow1_3",
+                    "margin": {
+                        "h": 0,
+                        "w": 1,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 95,
+                        "x": 904,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Fetus_shadow2_3",
+                    "margin": {
+                        "h": 0,
+                        "w": 1,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 95,
+                        "x": 904,
+                        "y": 99
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow1_3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 96,
+                        "x": 899,
+                        "y": 197
+                    }
+                },
+                {
+                    "filename": "Tentacle_plant_shadow2_3",
+                    "margin": {
+                        "h": 20,
+                        "w": 35,
+                        "x": 16,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 172,
+                        "w": 157,
+                        "x": 214,
+                        "y": 793
+                    }
+                },
+                {
+                    "filename": "Rock1_shadow1_3",
+                    "margin": {
+                        "h": 71,
+                        "w": 74,
+                        "x": 37,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 121,
+                        "w": 118,
+                        "x": 532,
+                        "y": 847
+                    }
+                },
+                {
+                    "filename": "Rock2_shadow2_3",
+                    "margin": {
+                        "h": 71,
+                        "w": 74,
+                        "x": 37,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 121,
+                        "w": 118,
+                        "x": 652,
+                        "y": 847
+                    }
+                },
+                {
+                    "filename": "Meat_flower_shadow1_3",
+                    "margin": {
+                        "h": 74,
+                        "w": 65,
+                        "x": 31,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 127,
+                        "x": 751,
+                        "y": 727
+                    }
+                },
+                {
+                    "filename": "Meat_flower_shadow2_3",
+                    "margin": {
+                        "h": 74,
+                        "w": 65,
+                        "x": 31,
+                        "y": 37
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 127,
+                        "x": 772,
+                        "y": 847
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow2_3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 96,
+                        "x": 901,
+                        "y": 832
+                    }
+                },
+                {
+                    "filename": "Pustules_shadow2_3",
+                    "margin": {
+                        "h": 38,
+                        "w": 35,
+                        "x": 16,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 61,
+                        "x": 303,
+                        "y": 709
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow1_4",
+                    "margin": {
+                        "h": 23,
+                        "w": 0,
+                        "x": 0,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 169,
+                        "w": 192,
+                        "x": 229,
+                        "y": 184
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow2_4",
+                    "margin": {
+                        "h": 44,
+                        "w": 35,
+                        "x": 16,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 148,
+                        "w": 157,
+                        "x": 373,
+                        "y": 850
+                    }
+                },
+                {
+                    "filename": "Rock1_shadow1_4",
+                    "margin": {
+                        "h": 5,
+                        "w": 5,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 91,
+                        "w": 91,
+                        "x": 891,
+                        "y": 377
+                    }
+                },
+                {
+                    "filename": "Rock2_shadow2_4",
+                    "margin": {
+                        "h": 5,
+                        "w": 5,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 91,
+                        "w": 91,
+                        "x": 784,
+                        "y": 967
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow1_5",
+                    "margin": {
+                        "h": 80,
+                        "w": 71,
+                        "x": 34,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 121,
+                        "x": 505,
+                        "y": 733
+                    }
+                },
+                {
+                    "filename": "Rock3_shadow2_5",
+                    "margin": {
+                        "h": 80,
+                        "w": 71,
+                        "x": 34,
+                        "y": 40
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 121,
+                        "x": 628,
+                        "y": 733
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow2_5",
+                    "margin": {
+                        "h": 14,
+                        "w": 0,
+                        "x": 0,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 96,
+                        "x": 899,
+                        "y": 293
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_5",
+                    "margin": {
+                        "h": 101,
+                        "w": 65,
+                        "x": 31,
+                        "y": 49
+                    },
+                    "region": {
+                        "h": 91,
+                        "w": 127,
+                        "x": 532,
+                        "y": 970
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow1_5",
+                    "margin": {
+                        "h": 2,
+                        "w": 1,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 46,
+                        "w": 47,
+                        "x": 880,
+                        "y": 1102
+                    }
+                },
+                {
+                    "filename": "Rock_eyes_shadow2_5",
+                    "margin": {
+                        "h": 2,
+                        "w": 1,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 46,
+                        "w": 47,
+                        "x": 929,
+                        "y": 1102
+                    }
+                },
+                {
+                    "filename": "Ruins_shadow1_6",
+                    "margin": {
+                        "h": 14,
+                        "w": 0,
+                        "x": 0,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 96,
+                        "x": 205,
+                        "y": 709
+                    }
+                },
+                {
+                    "filename": "Bones_shadow1_9",
+                    "margin": {
+                        "h": 14,
+                        "w": 5,
+                        "x": 1,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 91,
+                        "x": 502,
+                        "y": 1063
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_9",
+                    "margin": {
+                        "h": 14,
+                        "w": 5,
+                        "x": 1,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 91,
+                        "x": 880,
+                        "y": 1018
+                    }
+                },
+                {
+                    "filename": "Bones_shadow2_10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 48,
+                        "x": 891,
+                        "y": 470
+                    }
+                }
+            ]
+        }
+    ]
 }

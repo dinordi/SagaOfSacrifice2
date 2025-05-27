@@ -1,768 +1,768 @@
 {
-	"textures": [
-		{
-			"image": "Props",
-			"size": {
-				"w": 1452,
-				"h": 512
-			},
-			"sprites": [
-				{
-					"filename": "TX Props-36.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 128,
-						"h": 308
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-21.png",
-					"region": {
-						"x": 1,
-						"y": 311,
-						"w": 164,
-						"h": 200
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-7.png",
-					"region": {
-						"x": 131,
-						"y": 1,
-						"w": 148,
-						"h": 292
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-30.png",
-					"region": {
-						"x": 167,
-						"y": 295,
-						"w": 36,
-						"h": 212
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-31.png",
-					"region": {
-						"x": 205,
-						"y": 295,
-						"w": 36,
-						"h": 212
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-10.png",
-					"region": {
-						"x": 131,
-						"y": 295,
-						"w": 8,
-						"h": 8
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-37.png",
-					"region": {
-						"x": 131,
-						"y": 305,
-						"w": 4,
-						"h": 4
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-41.png",
-					"region": {
-						"x": 131,
-						"y": 305,
-						"w": 4,
-						"h": 4
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-56.png",
-					"region": {
-						"x": 137,
-						"y": 305,
-						"w": 4,
-						"h": 4
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-11.png",
-					"region": {
-						"x": 141,
-						"y": 295,
-						"w": 8,
-						"h": 8
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-12.png",
-					"region": {
-						"x": 151,
-						"y": 295,
-						"w": 8,
-						"h": 8
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-40.png",
-					"region": {
-						"x": 161,
-						"y": 295,
-						"w": 4,
-						"h": 8
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-3.png",
-					"region": {
-						"x": 243,
-						"y": 295,
-						"w": 104,
-						"h": 208
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-18.png",
-					"region": {
-						"x": 281,
-						"y": 1,
-						"w": 104,
-						"h": 264
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-6.png",
-					"region": {
-						"x": 349,
-						"y": 267,
-						"w": 108,
-						"h": 244
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-4.png",
-					"region": {
-						"x": 281,
-						"y": 267,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-8.png",
-					"region": {
-						"x": 303,
-						"y": 267,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-9.png",
-					"region": {
-						"x": 325,
-						"y": 267,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-23.png",
-					"region": {
-						"x": 387,
-						"y": 1,
-						"w": 108,
-						"h": 244
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-20.png",
-					"region": {
-						"x": 387,
-						"y": 247,
-						"w": 12,
-						"h": 16
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-39.png",
-					"region": {
-						"x": 401,
-						"y": 247,
-						"w": 12,
-						"h": 16
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-13.png",
-					"region": {
-						"x": 415,
-						"y": 247,
-						"w": 8,
-						"h": 8
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-35.png",
-					"region": {
-						"x": 459,
-						"y": 247,
-						"w": 128,
-						"h": 228
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-22.png",
-					"region": {
-						"x": 459,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-24.png",
-					"region": {
-						"x": 481,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-26.png",
-					"region": {
-						"x": 503,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-27.png",
-					"region": {
-						"x": 525,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-28.png",
-					"region": {
-						"x": 547,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-29.png",
-					"region": {
-						"x": 569,
-						"y": 477,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-38.png",
-					"region": {
-						"x": 497,
-						"y": 1,
-						"w": 128,
-						"h": 228
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-57.png",
-					"region": {
-						"x": 589,
-						"y": 231,
-						"w": 220,
-						"h": 196
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-15.png",
-					"region": {
-						"x": 591,
-						"y": 429,
-						"w": 12,
-						"h": 72
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-14.png",
-					"region": {
-						"x": 627,
-						"y": 1,
-						"w": 128,
-						"h": 196
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-42.png",
-					"region": {
-						"x": 627,
-						"y": 199,
-						"w": 20,
-						"h": 20
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props",
-					"region": {
-						"x": 757,
-						"y": 1,
-						"w": 128,
-						"h": 184
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-2.png",
-					"region": {
-						"x": 811,
-						"y": 187,
-						"w": 128,
-						"h": 184
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-54.png",
-					"region": {
-						"x": 887,
-						"y": 1,
-						"w": 128,
-						"h": 184
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-44.png",
-					"region": {
-						"x": 811,
-						"y": 373,
-						"w": 84,
-						"h": 136
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-32.png",
-					"region": {
-						"x": 897,
-						"y": 373,
-						"w": 108,
-						"h": 128
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-5.png",
-					"region": {
-						"x": 941,
-						"y": 187,
-						"w": 224,
-						"h": 164
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-17.png",
-					"region": {
-						"x": 1007,
-						"y": 353,
-						"w": 104,
-						"h": 156
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-34.png",
-					"region": {
-						"x": 1113,
-						"y": 353,
-						"w": 104,
-						"h": 152
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-45.png",
-					"region": {
-						"x": 1017,
-						"y": 1,
-						"w": 120,
-						"h": 164
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-25.png",
-					"region": {
-						"x": 1139,
-						"y": 1,
-						"w": 88,
-						"h": 152
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-19.png",
-					"region": {
-						"x": 1167,
-						"y": 155,
-						"w": 256,
-						"h": 144
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-33.png",
-					"region": {
-						"x": 1229,
-						"y": 1,
-						"w": 112,
-						"h": 144
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-43.png",
-					"region": {
-						"x": 1343,
-						"y": 1,
-						"w": 108,
-						"h": 128
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-55.png",
-					"region": {
-						"x": 1219,
-						"y": 301,
-						"w": 84,
-						"h": 128
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-1.png",
-					"region": {
-						"x": 1305,
-						"y": 301,
-						"w": 128,
-						"h": 124
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				},
-				{
-					"filename": "TX Props-16.png",
-					"region": {
-						"x": 1425,
-						"y": 131,
-						"w": 4,
-						"h": 112
-					},
-					"margin": {
-						"x": 0,
-						"y": 0,
-						"w": 0,
-						"h": 0
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:ef56617e67bc77f34aa5be2bb1aae6cd:a80a6ad4cdd04c41888dcf90dcaf8110:44b7ea2e06f9eb26f0001441947ba7e7$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:ef56617e67bc77f34aa5be2bb1aae6cd:a80a6ad4cdd04c41888dcf90dcaf8110:44b7ea2e06f9eb26f0001441947ba7e7$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Props",
+            "size": {
+                "h": 512,
+                "w": 1452
+            },
+            "sprites": [
+                {
+                    "filename": "TX Props",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 128,
+                        "x": 757,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 128,
+                        "x": 1305,
+                        "y": 301
+                    }
+                },
+                {
+                    "filename": "TX Props-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 128,
+                        "x": 811,
+                        "y": 187
+                    }
+                },
+                {
+                    "filename": "TX Props-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 208,
+                        "w": 104,
+                        "x": 243,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 281,
+                        "y": 267
+                    }
+                },
+                {
+                    "filename": "TX Props-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 224,
+                        "x": 941,
+                        "y": 187
+                    }
+                },
+                {
+                    "filename": "TX Props-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 244,
+                        "w": 108,
+                        "x": 349,
+                        "y": 267
+                    }
+                },
+                {
+                    "filename": "TX Props-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 292,
+                        "w": 148,
+                        "x": 131,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 303,
+                        "y": 267
+                    }
+                },
+                {
+                    "filename": "TX Props-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 325,
+                        "y": 267
+                    }
+                },
+                {
+                    "filename": "TX Props-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 8,
+                        "x": 131,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 8,
+                        "x": 141,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 8,
+                        "x": 151,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 8,
+                        "x": 415,
+                        "y": 247
+                    }
+                },
+                {
+                    "filename": "TX Props-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 196,
+                        "w": 128,
+                        "x": 627,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 12,
+                        "x": 591,
+                        "y": 429
+                    }
+                },
+                {
+                    "filename": "TX Props-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 4,
+                        "x": 1425,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "TX Props-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 156,
+                        "w": 104,
+                        "x": 1007,
+                        "y": 353
+                    }
+                },
+                {
+                    "filename": "TX Props-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 264,
+                        "w": 104,
+                        "x": 281,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 144,
+                        "w": 256,
+                        "x": 1167,
+                        "y": 155
+                    }
+                },
+                {
+                    "filename": "TX Props-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 12,
+                        "x": 387,
+                        "y": 247
+                    }
+                },
+                {
+                    "filename": "TX Props-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 200,
+                        "w": 164,
+                        "x": 1,
+                        "y": 311
+                    }
+                },
+                {
+                    "filename": "TX Props-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 459,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 244,
+                        "w": 108,
+                        "x": 387,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 481,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 88,
+                        "x": 1139,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 503,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 525,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 547,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-29",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 569,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "TX Props-30",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 36,
+                        "x": 167,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-31",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 36,
+                        "x": 205,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-32",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 108,
+                        "x": 897,
+                        "y": 373
+                    }
+                },
+                {
+                    "filename": "TX Props-33",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 144,
+                        "w": 112,
+                        "x": 1229,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-34",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 104,
+                        "x": 1113,
+                        "y": 353
+                    }
+                },
+                {
+                    "filename": "TX Props-35",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 228,
+                        "w": 128,
+                        "x": 459,
+                        "y": 247
+                    }
+                },
+                {
+                    "filename": "TX Props-36",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 308,
+                        "w": 128,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-37",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 4,
+                        "w": 4,
+                        "x": 131,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "TX Props-38",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 228,
+                        "w": 128,
+                        "x": 497,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-39",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 12,
+                        "x": 401,
+                        "y": 247
+                    }
+                },
+                {
+                    "filename": "TX Props-40",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 4,
+                        "x": 161,
+                        "y": 295
+                    }
+                },
+                {
+                    "filename": "TX Props-41",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 4,
+                        "w": 4,
+                        "x": 131,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "TX Props-42",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 627,
+                        "y": 199
+                    }
+                },
+                {
+                    "filename": "TX Props-43",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 108,
+                        "x": 1343,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-44",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 84,
+                        "x": 811,
+                        "y": 373
+                    }
+                },
+                {
+                    "filename": "TX Props-45",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 120,
+                        "x": 1017,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-54",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 184,
+                        "w": 128,
+                        "x": 887,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Props-55",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 84,
+                        "x": 1219,
+                        "y": 301
+                    }
+                },
+                {
+                    "filename": "TX Props-56",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 4,
+                        "w": 4,
+                        "x": 137,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "TX Props-57",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 196,
+                        "w": 220,
+                        "x": 589,
+                        "y": 231
+                    }
+                }
+            ]
+        }
+    ]
 }
