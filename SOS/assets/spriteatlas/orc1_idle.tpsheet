@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc1_idle-0.png",
+			"image": "orc1_idle",
 			"size": {
 				"w": 1888,
 				"h": 136
@@ -158,7 +158,7 @@
 					}
 				},
 				{
-					"filename": "orc1_idle_full-0.png",
+					"filename": "orc1_idle_full",
 					"region": {
 						"x": 1269,
 						"y": 1,

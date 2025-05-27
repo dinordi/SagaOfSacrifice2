@@ -68,6 +68,8 @@ private:
     void handleChatMessage(const NetworkMessage& message);
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
+
+    std::shared_ptr<Object> updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
@@ -100,6 +102,9 @@ private:
     // Client-side prediction state
     float lastSentInputTime_;
     uint32_t inputSequenceNumber_;
+
+    //Base path for atlas
+    std::filesystem::path atlasBasePath_;
 };
 
 // RemotePlayer class to represent other players in the game

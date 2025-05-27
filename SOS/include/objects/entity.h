@@ -5,6 +5,7 @@
 class Entity : public Object
 {
 public:
-    Entity( BoxCollider collider, std::string objID);
+    Entity( BoxCollider collider, std::string objID, ObjectType type);
 
+    void update(float deltaTime) override; // Updating animation
 };

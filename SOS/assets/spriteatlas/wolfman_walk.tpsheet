@@ -1,490 +1,490 @@
 {
 	"textures": [
 		{
-			"image": "wolfman_walk.tpsheet-0.png",
+			"image": "wolfman_walk",
 			"size": {
-				"w": 1450,
-				"h": 190
+				"w": 1430,
+				"h": 390
 			},
 			"sprites": [
 				{
-					"filename": "wolfman_walk-11.png",
+					"filename": "wolfman_walk-0.png",
 					"region": {
 						"x": 1,
 						"y": 1,
-						"w": 94,
-						"h": 93
+						"w": 128,
+						"h": 128
 					},
 					"margin": {
-						"x": 11,
-						"y": 35,
-						"w": 34,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-27.png",
-					"region": {
-						"x": 1,
-						"y": 96,
-						"w": 94,
-						"h": 93
-					},
-					"margin": {
-						"x": 23,
-						"y": 35,
-						"w": 34,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-10.png",
-					"region": {
-						"x": 97,
-						"y": 1,
-						"w": 92,
-						"h": 93
-					},
-					"margin": {
-						"x": 17,
-						"y": 35,
-						"w": 36,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-14.png",
-					"region": {
-						"x": 97,
-						"y": 96,
-						"w": 92,
-						"h": 93
-					},
-					"margin": {
-						"x": 17,
-						"y": 35,
-						"w": 36,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-26.png",
-					"region": {
-						"x": 191,
-						"y": 1,
-						"w": 92,
-						"h": 93
-					},
-					"margin": {
-						"x": 19,
-						"y": 35,
-						"w": 36,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-30.png",
-					"region": {
-						"x": 191,
-						"y": 96,
-						"w": 92,
-						"h": 93
-					},
-					"margin": {
-						"x": 19,
-						"y": 35,
-						"w": 36,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-15.png",
-					"region": {
-						"x": 285,
-						"y": 1,
-						"w": 86,
-						"h": 93
-					},
-					"margin": {
-						"x": 19,
-						"y": 35,
-						"w": 42,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-31.png",
-					"region": {
-						"x": 285,
-						"y": 96,
-						"w": 86,
-						"h": 93
-					},
-					"margin": {
-						"x": 23,
-						"y": 35,
-						"w": 42,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-13.png",
-					"region": {
-						"x": 373,
-						"y": 1,
-						"w": 84,
-						"h": 93
-					},
-					"margin": {
-						"x": 11,
-						"y": 35,
-						"w": 44,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-29.png",
-					"region": {
-						"x": 373,
-						"y": 96,
-						"w": 84,
-						"h": 93
-					},
-					"margin": {
-						"x": 33,
-						"y": 35,
-						"w": 44,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-9.png",
-					"region": {
-						"x": 459,
-						"y": 1,
-						"w": 76,
-						"h": 93
-					},
-					"margin": {
-						"x": 19,
-						"y": 35,
-						"w": 52,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-25.png",
-					"region": {
-						"x": 459,
-						"y": 96,
-						"w": 76,
-						"h": 93
-					},
-					"margin": {
-						"x": 33,
-						"y": 35,
-						"w": 52,
-						"h": 35
-					}
-				},
-				{
-					"filename": "wolfman_walk-21.png",
-					"region": {
-						"x": 537,
-						"y": 1,
-						"w": 98,
-						"h": 91
-					},
-					"margin": {
-						"x": 27,
-						"y": 37,
-						"w": 30,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-4.png",
-					"region": {
-						"x": 537,
-						"y": 94,
-						"w": 94,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 34,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-12.png",
-					"region": {
-						"x": 633,
-						"y": 94,
-						"w": 94,
-						"h": 91
-					},
-					"margin": {
-						"x": 7,
-						"y": 37,
-						"w": 34,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-20.png",
-					"region": {
-						"x": 637,
-						"y": 1,
-						"w": 94,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 34,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-23.png",
-					"region": {
-						"x": 729,
-						"y": 94,
-						"w": 94,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 34,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-28.png",
-					"region": {
-						"x": 733,
-						"y": 1,
-						"w": 94,
-						"h": 91
-					},
-					"margin": {
-						"x": 27,
-						"y": 37,
-						"w": 34,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-3.png",
-					"region": {
-						"x": 825,
-						"y": 94,
-						"w": 92,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 36,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-5.png",
-					"region": {
-						"x": 829,
-						"y": 1,
-						"w": 92,
-						"h": 91
-					},
-					"margin": {
-						"x": 33,
-						"y": 37,
-						"w": 36,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-7.png",
-					"region": {
-						"x": 919,
-						"y": 94,
-						"w": 92,
-						"h": 91
-					},
-					"margin": {
-						"x": 33,
-						"y": 37,
-						"w": 36,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-19.png",
-					"region": {
-						"x": 923,
-						"y": 1,
-						"w": 90,
-						"h": 91
-					},
-					"margin": {
-						"x": 33,
-						"y": 37,
-						"w": 38,
-						"h": 37
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
 					}
 				},
 				{
 					"filename": "wolfman_walk-1.png",
 					"region": {
-						"x": 1013,
-						"y": 94,
-						"w": 88,
-						"h": 91
+						"x": 1,
+						"y": 131,
+						"w": 128,
+						"h": 128
 					},
 					"margin": {
-						"x": 27,
-						"y": 37,
-						"w": 40,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-0.png",
-					"region": {
-						"x": 1015,
-						"y": 1,
-						"w": 86,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 42,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-16.png",
-					"region": {
-						"x": 1103,
-						"y": 1,
-						"w": 86,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 42,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-17.png",
-					"region": {
-						"x": 1103,
-						"y": 94,
-						"w": 84,
-						"h": 91
-					},
-					"margin": {
-						"x": 31,
-						"y": 37,
-						"w": 44,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-8.png",
-					"region": {
-						"x": 1189,
-						"y": 94,
-						"w": 74,
-						"h": 91
-					},
-					"margin": {
-						"x": 27,
-						"y": 37,
-						"w": 54,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-24.png",
-					"region": {
-						"x": 1191,
-						"y": 1,
-						"w": 74,
-						"h": 91
-					},
-					"margin": {
-						"x": 27,
-						"y": 37,
-						"w": 54,
-						"h": 37
-					}
-				},
-				{
-					"filename": "wolfman_walk-22.png",
-					"region": {
-						"x": 1265,
-						"y": 94,
-						"w": 94,
-						"h": 89
-					},
-					"margin": {
-						"x": 29,
-						"y": 39,
-						"w": 34,
-						"h": 39
-					}
-				},
-				{
-					"filename": "wolfman_walk-6.png",
-					"region": {
-						"x": 1267,
-						"y": 1,
-						"w": 92,
-						"h": 89
-					},
-					"margin": {
-						"x": 33,
-						"y": 39,
-						"w": 36,
-						"h": 39
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
 					}
 				},
 				{
 					"filename": "wolfman_walk-2.png",
 					"region": {
-						"x": 1361,
-						"y": 1,
-						"w": 88,
-						"h": 89
+						"x": 1,
+						"y": 261,
+						"w": 128,
+						"h": 128
 					},
 					"margin": {
-						"x": 29,
-						"y": 39,
-						"w": 40,
-						"h": 39
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-3.png",
+					"region": {
+						"x": 131,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-4.png",
+					"region": {
+						"x": 131,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-5.png",
+					"region": {
+						"x": 131,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-6.png",
+					"region": {
+						"x": 261,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-7.png",
+					"region": {
+						"x": 261,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-8.png",
+					"region": {
+						"x": 261,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-9.png",
+					"region": {
+						"x": 391,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-10.png",
+					"region": {
+						"x": 391,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-11.png",
+					"region": {
+						"x": 391,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-12.png",
+					"region": {
+						"x": 521,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-13.png",
+					"region": {
+						"x": 521,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-14.png",
+					"region": {
+						"x": 521,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-15.png",
+					"region": {
+						"x": 651,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-16.png",
+					"region": {
+						"x": 651,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-17.png",
+					"region": {
+						"x": 651,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
 					}
 				},
 				{
 					"filename": "wolfman_walk-18.png",
 					"region": {
-						"x": 1361,
-						"y": 92,
-						"w": 84,
-						"h": 89
+						"x": 781,
+						"y": 1,
+						"w": 128,
+						"h": 128
 					},
 					"margin": {
-						"x": 33,
-						"y": 39,
-						"w": 44,
-						"h": 39
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-19.png",
+					"region": {
+						"x": 781,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-20.png",
+					"region": {
+						"x": 781,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-21.png",
+					"region": {
+						"x": 911,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-22.png",
+					"region": {
+						"x": 911,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-23.png",
+					"region": {
+						"x": 911,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-24.png",
+					"region": {
+						"x": 1041,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-25.png",
+					"region": {
+						"x": 1041,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-26.png",
+					"region": {
+						"x": 1041,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-27.png",
+					"region": {
+						"x": 1171,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-28.png",
+					"region": {
+						"x": 1171,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-29.png",
+					"region": {
+						"x": 1171,
+						"y": 261,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-30.png",
+					"region": {
+						"x": 1301,
+						"y": 1,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "wolfman_walk-31.png",
+					"region": {
+						"x": 1301,
+						"y": 131,
+						"w": 128,
+						"h": 128
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
 					}
 				}
 			]
@@ -493,6 +493,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:0b0a88c92f864d2cbacdb7d3fa540d70:5c28bd0b22a27f7838c44fd4fa59ce41:eefb42cf26880e3f2a0bf386a44aeed4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:ab8c36b93ad569fd4f835e6d61b1b603:5c28bd0b22a27f7838c44fd4fa59ce41:6c2c01e407abf8b503c9854d0f0e9185$"
 	}
 }

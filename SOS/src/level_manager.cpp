@@ -6,6 +6,14 @@
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
+LevelManager::LevelManager(const std::filesystem::path& basePath)
+    : basePath(basePath)
+{
+    // Initialize the level manager
+    collisionManager = new CollisionManager();
+    currentLevel_ = nullptr;
+}
+
 LevelManager::~LevelManager() {
     // Clean up levels
     for (auto& levelPair : levels_) {
@@ -15,11 +23,10 @@ LevelManager::~LevelManager() {
 }
 bool LevelManager::initialize() {
     // Set the path to the levels directory
-    std::string exec_path = fs::current_path().string();
-    std::cout << "[LevelManager] Executable path: " << exec_path << "\n";
+    std::cout << "[LevelManager] Base SOS project path: " << basePath << "\n";
     //from this directory, go to SOS/assets/levels
-    currentJsonFilePath_ = fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "levels";
-    std::cout << "[LevelManager] Current path: " << exec_path << "\n";
+    currentJsonFilePath_ = basePath / "SOS" / "assets" / "levels";
+    std::cout << "[LevelManager] Current path: " << basePath << "\n";
     std::cout << "[LevelManager] Initializing from directory: "
               << currentJsonFilePath_ << "\n";
 
@@ -74,6 +81,11 @@ bool LevelManager::initialize() {
 
 
 bool LevelManager::loadLevel(const std::string& levelId) {
+    // if current level is already loaded, dont reload it
+    if (currentLevel_ && currentLevel_->getId() == levelId) {
+        //std::cout << "[LevelManager] Level " << levelId << " is already loaded." << std::endl;
+        return true;
+    }
     auto it = levels_.find(levelId);
     bool loaded = false;
     std::cout << "[LevelManager] Loading level: " << levelId << std::endl;  
@@ -100,6 +112,23 @@ bool LevelManager::loadLevel(const std::string& levelId) {
                 loaded = false;
             }
             
+            // Example: Spawn a minotaur in the level near the player start position plus an offset
+            Vec2 playerStart = currentLevel_->getPlayerStartPosition();
+            
+            // Spawn a minotaur slightly to the right of the player start position
+            // if (auto minotaur = currentLevel_->spawnMinotaur(playerStart.x + 300, playerStart.y)) {
+            //     std::cout << "[LevelManager] Spawned a minotaur in level " << levelId << std::endl;
+            // }
+            
+            // Example: Spawn more minotaurs at different positions if desired
+            currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
+            // currentLevel_->spawnMinotaur(playerStart.x - 600, playerStart.y + 200);
+            
+            // Set all enemies in the level to target any existing players
+            for (auto& playerPair : PlayerManager::getInstance().getAllPlayers()) {
+                currentLevel_->setAllEnemiesToTargetPlayer(playerPair.second);
+            }
+            
             // Get all existing players from PlayerManager and add them to this level
             auto& playerManager = PlayerManager::getInstance();
             const auto& players = playerManager.getAllPlayers();
@@ -124,11 +153,18 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             std::cout << "[LevelManager] Loaded level: " << levelId << std::endl;
             return true;
         } catch (json::exception& e) {
-            std::cerr << "JSON parsing error: " << e.what() << std::endl;
-            return false;
+            std::cerr << "[LevelManager] JSON error: " << e.what() << std::endl;
+            loaded = false;
+        } catch (std::exception& e) {
+            std::cerr << "[LevelManager] Error loading level: " << e.what() << std::endl;
+            loaded = false;
         }
+    } else {
+        std::cerr << "[LevelManager] Level ID not found: " << levelId << std::endl;
+        loaded = false;
     }
-    return false;
+    
+    return loaded;
 }
 
 Level* LevelManager::getCurrentLevel() const {
@@ -201,20 +237,23 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
         player = playerManager.createPlayer(playerId, startPos);
     } else {
         // For existing players, update their position to the level's start position
-        player->setposition(startPos);
+        Vec2* playerPos = &player->getcollider().position;
+        playerPos->x = startPos.x;
+        playerPos->y = startPos.y;
         std::cout << "[LevelManager] Repositioned player " << playerId 
-                  << " to level start position: " << startPos.x << "," << startPos.y << std::endl;
+                  << " to level start position: " << playerPos->x << "," << playerPos->y << std::endl;
     }
     
     // Add the player to the current level
     currentLevel_->addObject(player);
+    currentLevel_->setAllEnemiesToTargetPlayer(player);
     std::cout << "[LevelManager] Added player " << playerId << " to current level" << std::endl;
     
     return true;
 }
 
 // Update the active level
-void LevelManager::update(uint64_t deltaTime) {
+void LevelManager::update(float deltaTime) {
     if (currentLevel_) {
         currentLevel_->update(deltaTime);
     }

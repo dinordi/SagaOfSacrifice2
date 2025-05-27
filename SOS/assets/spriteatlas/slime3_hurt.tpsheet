@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime3_hurt-0.png",
+			"image": "slime3_hurt",
 			"size": {
 				"w": 249,
 				"h": 64
@@ -248,7 +248,7 @@
 					}
 				},
 				{
-					"filename": "Slime3_Hurt_body-0.png",
+					"filename": "Slime3_Hurt_body",
 					"region": {
 						"x": 196,
 						"y": 25,

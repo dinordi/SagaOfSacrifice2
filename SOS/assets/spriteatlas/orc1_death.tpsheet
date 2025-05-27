@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "orc1_death-0.png",
+			"image": "orc1_death",
 			"size": {
 				"w": 1660,
 				"h": 256
 			},
 			"sprites": [
 				{
-					"filename": "orc1_death_full-0.png",
+					"filename": "orc1_death_full",
 					"region": {
 						"x": 1,
 						"y": 1,

@@ -1,5 +1,17 @@
 cmake_minimum_required(VERSION 3.16)
 
+
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
+# Conditional policies for newer CMake versions
+if(POLICY CMP0177)
+    cmake_policy(SET CMP0177 NEW)
+endif()
+
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif()
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
@@ -57,8 +69,6 @@ endif()
 
 # Find Boost libraries
 # Hint for Homebrew on Apple Silicon if find_package fails automatically
-# set(Boost_ROOT /opt/homebrew) 
-# set(CMAKE_PREFIX_PATH /opt/homebrew)
 find_package(Boost COMPONENTS system thread chrono REQUIRED) # Added thread component for server/client
 message(STATUS "Boost include dirs found: ${Boost_INCLUDE_DIRS}") # Check if path is found
 message(STATUS "Boost libraries found: ${Boost_LIBRARIES}")     # Check libraries

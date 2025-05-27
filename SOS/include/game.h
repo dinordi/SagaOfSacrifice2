@@ -15,16 +15,19 @@
 #include "object.h"
 #include "interfaces/playerInput.h"
 #include "objects/player.h"
+#include "objects/minotaur.h"
 #include "objects/tile.h"
 #include "collision/CollisionManager.h"
 #include "network/MultiplayerManager.h"
 #include "LocalServerManager.h"
 #include "player_manager.h"
+#include "ServerConfig.h"
 #include "level_manager.h"
 
 enum class GameState {
     RUNNING,
-    MENU
+    MENU,
+    SERVER_SELECTION
 };
 
 enum class MenuOption {
@@ -50,6 +53,12 @@ public:
     // New: Initialize single player mode with embedded server
     bool initializeSinglePlayerEmbeddedServer();
     
+    // Set multiplayer configuration (to be used when menu option is selected)
+    void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
+    
+    // Initialize server configuration from file
+    void initializeServerConfig(const std::string& basePath);
+    
     void shutdownServerConnection();
     bool isServerConnection() const;
     MultiplayerManager* getMultiplayerManager() { return multiplayerManager.get(); }
@@ -65,19 +74,20 @@ public:
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
-    // Level management
-    bool initializeLevel(const std::string& levelId);
-    
     // Static instance getter for singleton access
     static Game* getInstance() { return instance_; }
     static void setInstance(Game* instance) { instance_ = instance; }
 
 private:
-    void drawWord(const std::string& word, int x, int y);
+    void drawWord(const std::string& word, int x, int y, int letterSize = 0);
     void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);
     void handleMenuInput(float deltaTime);
+    
+    // Server selection methods
+    void drawServerSelectionMenu(float deltaTime);
+    void handleServerSelectionInput(float deltaTime);
     
     MenuOption selectedOption = MenuOption::SINGLEPLAYER;
     bool menuOptionChanged = true;
@@ -93,12 +103,11 @@ private:
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
+    SpriteData* letters;
+    SpriteData* letters_small;
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
-    
-    // Level management
-    std::unique_ptr<LevelManager> levelManager;
     
     // Local server management
     std::unique_ptr<LocalServerManager> localServerManager;
@@ -108,6 +117,15 @@ private:
     std::unique_ptr<MultiplayerManager> multiplayerManager;
     bool multiplayerActive;
     
+    // Multiplayer configuration (for deferred connection)
+    bool multiplayerConfigured = false;
+    std::string configuredServerAddress;
+    int configuredServerPort;
+    
+    // Server selection
+    ServerConfig serverConfig;
+    size_t selectedServerIndex = 0;
+    bool serverSelectionOptionChanged = true;
     
     // Update remote players
     void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
@@ -118,8 +136,11 @@ private:
     // Default ports
     static const int LOCAL_SERVER_PORT = 8080;
     
+    std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     static Game* instance_;
+
+    std::unique_ptr<LevelManager> levelManager_;
 };
 
 #endif // GAME_H

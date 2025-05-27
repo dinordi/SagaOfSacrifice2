@@ -3,51 +3,32 @@
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
-SpriteData::SpriteData(std::string id, int width, int height, int columns)
-    : id_(std::move(id)), width(width), height(height), columns(columns)
+SpriteData::SpriteData(std::string atlasPath)
 {
-    std::string exec_path = fs::current_path().string();
-    atlasPath = (fs::path(exec_path).parent_path().parent_path() / "SOS" / "assets" / "spriteatlas" / (id_ + ".tpsheet")).string();
-    
-    std::cout << "[SpriteData] SpriteData created with ID: " << id_
-              << ", Width: " << width << ", Height: " << height 
-              << ", Columns: " << columns << std::endl;
-
-    if (!fs::exists(atlasPath)) {
-        std::cerr << "[SpriteData] Atlas path not found: " << atlasPath<< "\n";
-    } else {
-        std::cout << "[SpriteData] Sprite path found: " << atlasPath << "\n";
-    }
+    addSpriteSheet(atlasPath);
 }
 
-
 SpriteRect SpriteData::getSpriteRect(int index) const {
-    std::ifstream file(atlasPath);
-    if (!file.is_open()) {
-        std::cerr << "[SpriteData] Failed to open sprite JSON: " << atlasPath << std::endl;
-        return SpriteRect(0, 0, 0, 0, id_);
+    auto it = spriteRects.find(index);
+    if (it == spriteRects.end()) {
+        for(const auto& pair : spriteRects) {
+            std::cout << "SpriteRect ID: " << pair.first << ", Rect: (" 
+                      << pair.second.x << ", " << pair.second.y << ", "
+                      << pair.second.w << ", " << pair.second.h << ")\n";
+        }
+        std::cout << "Could not find sprite rect for index: " << index << std::endl;
+        return SpriteRect(); // Return an empty SpriteRect if not found
     }
+    const SpriteRect& spriteRect = it->second;
 
-    json data;
-    try {
-        file >> data;
-    } catch (const std::exception& e) {
-        std::cerr << "[SpriteData] JSON parse error: " << e.what() << std::endl;
-        return SpriteRect(0, 0, 0, 0, id_);
-    }
+    return spriteRect;
+}
 
-    // Navigate to the sprites array
-    if (!data.contains("textures") || !data["textures"].is_array() || data["textures"].empty()) {
-        std::cerr << "[SpriteData] Invalid or missing 'textures' array in JSON." << std::endl;
-        return SpriteRect(0, 0, 0, 0, id_);
-    }
+void SpriteData::makeSpriteRect(json& data, int index) {
+    // Load the sprite sheet image from the given atlas path
+    // load level JSON file
 
     const json& sprites = data["textures"][0]["sprites"];
-    if (!sprites.is_array() || index < 0 || index >= sprites.size()) {
-        std::cerr << "[SpriteData] Invalid index or malformed 'sprites' array." << std::endl;
-        return SpriteRect(0, 0, 0, 0, id_);
-    }
-
     const json& sprite = sprites[index];
     const json& region = sprite["region"];
 
@@ -56,5 +37,34 @@ SpriteRect SpriteData::getSpriteRect(int index) const {
     int w = region["w"].get<int>();
     int h = region["h"].get<int>();
 
-    return SpriteRect(x, y, w, h, id_);
+    SpriteRect(x, y, w, h, "wolfman_idle.png");//Temp png
+}
+
+void SpriteData::addSpriteSheet(std::string atlasPath) 
+{
+    std::fstream file(atlasPath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open sprite sheet file: " + atlasPath);
+    }
+    json data;
+    try {
+        file >> data;
+    } catch (const json::parse_error& e) {
+        throw std::runtime_error("Error parsing sprite sheet JSON: " + std::string(e.what()));
+    }
+
+    // Manual conversion from JSON to std::vector<SpriteRect>
+    int index = 0;
+    std::string image = data["textures"][0]["image"].get<std::string>();
+    setid_(image); // Set the id_ to the image name
+    for (const auto& sprite : data["textures"][0]["sprites"]) {
+        const auto& region = sprite["region"];
+        int x = region["x"].get<int>();
+        int y = region["y"].get<int>();
+        int w = region["w"].get<int>();
+        int h = region["h"].get<int>();
+        spriteRects[index] = SpriteRect(x, y, w, h, image);
+        index++;
+    }
+    // Store the sprite data in the map
 }

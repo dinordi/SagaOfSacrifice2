@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "slime3_attack-0.png",
+			"image": "slime3_attack",
 			"size": {
 				"w": 51,
 				"h": 1578
 			},
 			"sprites": [
 				{
-					"filename": "Slime3_Attack_body-0.png",
+					"filename": "Slime3_Attack_body",
 					"region": {
 						"x": 1,
 						"y": 1,

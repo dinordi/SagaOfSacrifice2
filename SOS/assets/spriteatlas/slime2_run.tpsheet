@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slime2_run-0.png",
+			"image": "slime2_run",
 			"size": {
 				"w": 60,
 				"h": 539
@@ -143,7 +143,7 @@
 					}
 				},
 				{
-					"filename": "Slime2_Run_body-0.png",
+					"filename": "Slime2_Run_body",
 					"region": {
 						"x": 34,
 						"y": 125,

@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "fire_animation2-0.png",
+			"image": "fire_animation2",
 			"size": {
 				"w": 64,
 				"h": 258
@@ -83,7 +83,7 @@
 					}
 				},
 				{
-					"filename": "fire_animation2-0.png",
+					"filename": "fire_animation2",
 					"region": {
 						"x": 1,
 						"y": 77,

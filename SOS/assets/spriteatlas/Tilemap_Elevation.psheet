@@ -1,14 +1,14 @@
 {
 	"textures": [
 		{
-			"image": "Tilemap_Elevation-0.png",
+			"image": "Tilemap_Elevation",
 			"size": {
 				"w": 66,
 				"h": 1582
 			},
 			"sprites": [
 				{
-					"filename": "Tilemap_Elevation-0.png",
+					"filename": "Tilemap_Elevation",
 					"region": {
 						"x": 1,
 						"y": 1,

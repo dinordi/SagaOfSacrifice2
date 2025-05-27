@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#include "level_manager.h"
 #include "collision/CollisionManager.h"
 #endif
 
@@ -23,7 +22,7 @@ LocalServerManager::~LocalServerManager() {
 
 }
 
-bool LocalServerManager::startEmbeddedServer(int port, LevelManager* levelManager, CollisionManager* collisionManager) {
+bool LocalServerManager::startEmbeddedServer(int port, const std::filesystem::path basePath) {
     if (serverRunning_) {
         std::cerr << "[LocalServerManager] Server is already running" << std::endl;
         return false;
@@ -34,7 +33,7 @@ bool LocalServerManager::startEmbeddedServer(int port, LevelManager* levelManage
     std::cout << "[LocalServerManager] Starting embedded server on port " << port << std::endl;
     
     try {
-        embeddedServer_ = std::make_unique<EmbeddedServer>(port, levelManager);
+        embeddedServer_ = std::make_unique<EmbeddedServer>(port, basePath);
         embeddedServer_->start();
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         serverRunning_ = true;

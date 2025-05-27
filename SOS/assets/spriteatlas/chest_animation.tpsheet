@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "chest_animation-0.png",
+			"image": "chest_animation",
 			"size": {
 				"w": 40,
 				"h": 210

@@ -2,10 +2,10 @@
 #include <iostream>
 
 
-Player::Player( BoxCollider collider, std::string objID) : Entity(collider, objID),
+Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
     health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << collider.position.x << ", " << collider.position.y << ")" << std::endl;
+    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -16,27 +16,35 @@ void Player::setupAnimations() {
     // Parameters: (AnimationState, startFrame, frameCount, framesPerRow, frameTime, loop)
 
     // Example animation setup - adjust these based on your actual sprite sheet
+    std::filesystem::path base = std::filesystem::current_path();
+    std::string temp = base.string();
+    std::size_t pos = temp.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePath = std::filesystem::path(temp);
+    basePath /= "SOS/assets/spriteatlas";
+    std::cout << "Got base path for player" << std::endl;
 
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("wolfman_idle", 128, 128, 2), 100, true);
-    // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
+    addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");        // Idle animation (1 frames)
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 2,3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 0, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 6,7);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 4,5);
 
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("wolfman_walk", 128, 128, 8), 150, true);
+    addSpriteSheet(AnimationState::WALKING, basePath / "wolfman_walk.tpsheet");
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
 
-    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("wolfman_slash", 384, 384, 5), 80, false);
+    addSpriteSheet(AnimationState::ATTACKING, basePath / "wolfman_slash.tpsheet", 80);
 
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
     // Set initial state
     setAnimationState(AnimationState::IDLE);
@@ -91,12 +99,8 @@ void Player::update(float deltaTime) {
     Vec2* pos = &pColl->position;
     Vec2 vel = getvelocity();
 
-    // Prints velocity.y every second
-    static uint64_t timems = 0.0f;
-    timems += deltaTime;
 
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    *pos += vel * deltaTime; // Update position based on velocity and delta time
 
 
     // Set direction based on horizontal and vertical velocity
@@ -132,10 +136,8 @@ void Player::update(float deltaTime) {
     updateAnimationState();
 
     // Update the animation controller
-    updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
-
-    vel.x = 0; // Reset horizontal velocity
-    vel.y = 0; // Reset vertical velocity
+    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
+    Entity::update(deltaTime); // Call base class update
 
     setvelocity(vel); // Update velocity
     setcollider(*pColl); // Update position
@@ -144,15 +146,13 @@ void Player::update(float deltaTime) {
 void Player::handleInput(PlayerInput* input, float deltaTime) {
 
     // Handle player input here
-    Vec2 vel = getvelocity();
+    Vec2 vel(0,0);
 
     float movementSpeed = 300.0f; // Set movement speed
 
     if (input->get_left()) {
         vel.x = -movementSpeed; // Move left
-    }
-    if (input->get_right()) {
-        // std::cout << "get_right" << std::endl;
+    } else if (input->get_right()) {
         vel.x = movementSpeed; // Move right
     }
     if (input->get_down()) {
@@ -167,8 +167,7 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
         isAttacking = true;
         attackTimer = 0;
     }
-    
-
+    // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
 }
 
@@ -176,12 +175,10 @@ void Player::takeDamage(int amount) {
     health -= amount;
     if (health <= 0) {
         // Handle player death
-        setAnimationState(AnimationState::DYING);
-        // trigger death sfx
+        // setAnimationState(AnimationState::DYING);
     } else {
         // Briefly show hurt animation
-        setAnimationState(AnimationState::HURT);
-        // trigger hurt sfx
+        // setAnimationState(AnimationState::HURT);
     }
 }
 

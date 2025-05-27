@@ -12,16 +12,26 @@
 
 class Tile;
 
-constexpr float MAX_VELOCITY = 15.0f;
+constexpr float MAX_VELOCITY = 200.0f;
 
 enum class ObjectType {
     PLAYER = 0x1,
-    ENTITY,
     TILE,
     ITEM,
     BULLET,
-    ENEMY
+    MINOTAUR
 };
+
+inline std::ostream& operator<<(std::ostream& os, ObjectType type) {
+    switch (type) {
+        case ObjectType::PLAYER: os << "PLAYER"; break;
+        case ObjectType::TILE: os << "TILE"; break;
+        case ObjectType::ITEM: os << "ITEM"; break;
+        case ObjectType::BULLET: os << "BULLET"; break;
+        case ObjectType::MINOTAUR: os << "MINOTAUR"; break;
+    }
+    return os;
+}
 
 class BoxCollider {
 public:
@@ -39,17 +49,22 @@ public:
 
     virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
+    virtual bool isCollidable() const { return true; } // Default to collidable
     
-    void addSpriteSheet(AnimationState state, SpriteData* spData, uint32_t frameTime, bool loop, int startFrame = 0);
+    void addSpriteSheet(AnimationState state, std::string tpsheet, uint32_t frameTime = 150);
     const SpriteData* getCurrentSpriteData() const;
 
     // Animation methods
     void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
+    AnimationState getAnimationState() const { return animController.getCurrentState(); }
     int getCurrentSpriteIndex() const;
-    void addAnimation(AnimationState state, int startFrame, int frameCount, 
-                     int framesPerRow, uint32_t frameTime = 100, bool loop = true);
+    void addAnimation(AnimationState state, int frameCount, 
+                     uint32_t frameTime = 100, bool loop = true);
+
+
     FacingDirection getDir() const { return dir; }
+    void setDir(FacingDirection direction) { dir = direction; }
 
     Vec2 getposition() const { return collider.position; }
     void setposition(const Vec2& pos) { collider.position = pos; }
@@ -58,7 +73,7 @@ protected:
     AnimationController animController;
     FacingDirection dir;
     
-    std::unordered_map<AnimationState, SpriteData*> spriteSheets;
+    
 private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);

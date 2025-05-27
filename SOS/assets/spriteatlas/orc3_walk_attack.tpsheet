@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "orc3_walk_attack-0.png",
+			"image": "orc3_walk_attack",
 			"size": {
 				"w": 1000,
 				"h": 692
@@ -128,7 +128,7 @@
 					}
 				},
 				{
-					"filename": "orc3_walk_attack_full-0.png",
+					"filename": "orc3_walk_attack_full",
 					"region": {
 						"x": 393,
 						"y": 185,
