@@ -24,24 +24,13 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     instance_ = this;
     
     // Initialize the local server manager
-    localServerManager = std::make_unique<LocalServerManager>();
+    localServerManager = std::make_unique<LocalServerManager>();    //Only used for single-player mode with embedded server
     // Initialize network manager (will be connected later)
-    multiplayerManager = std::make_unique<MultiplayerManager>();
+    multiplayerManager = std::make_unique<MultiplayerManager>();// "Server" manager would be more appropriate, since it is used in both single and multiplayer modes.
     
-    // Initialize collision manager (used for local prediction only)
-    // this->collisionManager = new CollisionManager();;
-    // levelManager_ = std::make_unique<LevelManager>(std::filesystem::path("/Users/dinordi/Documents/GitHub/SagaOfSacrifice2"));  
-    // levelManager_->initialize(); // Initialize the level manager
-    // // Load the first level
-    // if (!levelManager_->loadLevel("level1")) {
-    //     std::cerr << "[Game] Failed to load initial level" << std::endl;
-    //     running = false; // Stop running if level loading fails
-    //     return;
-    // }
+    // Initialize collision manager (used for local checks only)
+    this->collisionManager = new CollisionManager();
 
-    // objects = levelManager_->getCurrentLevel()->getObjects(); // Get the objects from the level manager
-    // Create player using PlayerManager
-    // auto playerSharedPtr = PlayerManager::getInstance().createPlayer(playerID, Vec2(500, 100));
     std::filesystem::path base = std::filesystem::current_path();
     std::string temp = base.string();
     std::size_t pos = temp.find("SagaOfSacrifice2/");
@@ -55,7 +44,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // Set player's input handler
     player = new Player(500, 100, playerID);
     player->setInput(input);
-    mapCharacters();
+    mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
 }
 
@@ -339,6 +328,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
+    collisionManager->detectPlayerCollisions(objects, player);
 }
 
 void Game::reconcileWithServerState(float deltaTime) {
