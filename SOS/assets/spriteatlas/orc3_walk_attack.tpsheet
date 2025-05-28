@@ -1,0 +1,378 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:f1dcbfc77183bc5923975cba464e27b0:c7a6f97d302fca0506f3b52211fccd39:a13696d81d7691fa1d46d9967a2481c0$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc3_walk_attack",
+            "size": {
+                "h": 692,
+                "w": 1000
+            },
+            "sprites": [
+                {
+                    "filename": "orc3_walk_attack_full",
+                    "margin": {
+                        "h": 110,
+                        "w": 86,
+                        "x": 15,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 146,
+                        "w": 170,
+                        "x": 393,
+                        "y": 185
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-1",
+                    "margin": {
+                        "h": 86,
+                        "w": 51,
+                        "x": 0,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 170,
+                        "w": 205,
+                        "x": 1,
+                        "y": 353
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-2",
+                    "margin": {
+                        "h": 74,
+                        "w": 30,
+                        "x": 3,
+                        "y": 47
+                    },
+                    "region": {
+                        "h": 182,
+                        "w": 226,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-3",
+                    "margin": {
+                        "h": 78,
+                        "w": 74,
+                        "x": 43,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 178,
+                        "w": 182,
+                        "x": 413,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-4",
+                    "margin": {
+                        "h": 70,
+                        "w": 130,
+                        "x": 75,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 186,
+                        "w": 126,
+                        "x": 860,
+                        "y": 485
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-5",
+                    "margin": {
+                        "h": 106,
+                        "w": 114,
+                        "x": 47,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 142,
+                        "x": 721,
+                        "y": 173
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-6",
+                    "margin": {
+                        "h": 110,
+                        "w": 102,
+                        "x": 79,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 146,
+                        "w": 154,
+                        "x": 565,
+                        "y": 181
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-7",
+                    "margin": {
+                        "h": 110,
+                        "w": 51,
+                        "x": 51,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 146,
+                        "w": 205,
+                        "x": 193,
+                        "y": 525
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-8",
+                    "margin": {
+                        "h": 90,
+                        "w": 42,
+                        "x": 39,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 166,
+                        "w": 214,
+                        "x": 1,
+                        "y": 185
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-9",
+                    "margin": {
+                        "h": 90,
+                        "w": 82,
+                        "x": 39,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 166,
+                        "w": 174,
+                        "x": 217,
+                        "y": 185
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-10",
+                    "margin": {
+                        "h": 98,
+                        "w": 130,
+                        "x": 55,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 126,
+                        "x": 728,
+                        "y": 325
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-11",
+                    "margin": {
+                        "h": 110,
+                        "w": 122,
+                        "x": 67,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 146,
+                        "w": 134,
+                        "x": 865,
+                        "y": 161
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-12",
+                    "margin": {
+                        "h": 98,
+                        "w": 130,
+                        "x": 71,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 126,
+                        "x": 856,
+                        "y": 325
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-13",
+                    "margin": {
+                        "h": 90,
+                        "w": 66,
+                        "x": 27,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 166,
+                        "w": 190,
+                        "x": 1,
+                        "y": 525
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-14",
+                    "margin": {
+                        "h": 74,
+                        "w": 74,
+                        "x": 19,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 182,
+                        "w": 182,
+                        "x": 229,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-15",
+                    "margin": {
+                        "h": 74,
+                        "w": 110,
+                        "x": 23,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 182,
+                        "w": 146,
+                        "x": 712,
+                        "y": 493
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-16",
+                    "margin": {
+                        "h": 74,
+                        "w": 98,
+                        "x": 7,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 182,
+                        "w": 158,
+                        "x": 400,
+                        "y": 509
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-17",
+                    "margin": {
+                        "h": 98,
+                        "w": 142,
+                        "x": 55,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 114,
+                        "x": 885,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-18",
+                    "margin": {
+                        "h": 94,
+                        "w": 114,
+                        "x": 39,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 142,
+                        "x": 584,
+                        "y": 329
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-19",
+                    "margin": {
+                        "h": 102,
+                        "w": 66,
+                        "x": 51,
+                        "y": 39
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 190,
+                        "x": 208,
+                        "y": 353
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-20",
+                    "margin": {
+                        "h": 82,
+                        "w": 74,
+                        "x": 51,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 182,
+                        "x": 400,
+                        "y": 333
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-21",
+                    "margin": {
+                        "h": 74,
+                        "w": 106,
+                        "x": 87,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 182,
+                        "w": 150,
+                        "x": 560,
+                        "y": 509
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-22",
+                    "margin": {
+                        "h": 86,
+                        "w": 106,
+                        "x": 87,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 170,
+                        "w": 150,
+                        "x": 597,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_walk_attack_full-23",
+                    "margin": {
+                        "h": 98,
+                        "w": 122,
+                        "x": 87,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 134,
+                        "x": 749,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

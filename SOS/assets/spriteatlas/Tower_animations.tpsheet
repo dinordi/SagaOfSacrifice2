@@ -1,0 +1,183 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:a71a7911147f5ab60bf4f01d5958bac5:48f6d27fabf8b8dda59e579b7278e500:ef7b4b07b5594daa76160089fc7119ed$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Tower_animations",
+            "size": {
+                "h": 1692,
+                "w": 404
+            },
+            "sprites": [
+                {
+                    "filename": "RedMoonTower_free_idle_animation-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 203,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 283
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 203,
+                        "y": 283
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 565
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 203,
+                        "y": 565
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 847
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 203,
+                        "y": 847
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 1129
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 203,
+                        "y": 1129
+                    }
+                },
+                {
+                    "filename": "RedMoonTower_free_idle_animation-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 280,
+                        "w": 200,
+                        "x": 1,
+                        "y": 1411
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,618 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:9a2addc3bd6ae64c3843e87545035bcc:359cc1a772ef30b642a7e16561e57e86:e8d90090d1dc61ba2e695289d2725ca0$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "slime3_death",
+            "size": {
+                "h": 64,
+                "w": 460
+            },
+            "sprites": [
+                {
+                    "filename": "Slime3_Death_body",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 173,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-1",
+                    "margin": {
+                        "h": 42,
+                        "w": 46,
+                        "x": 24,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 18,
+                        "x": 93,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-2",
+                    "margin": {
+                        "h": 37,
+                        "w": 47,
+                        "x": 24,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 17,
+                        "x": 286,
+                        "y": 35
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-3",
+                    "margin": {
+                        "h": 34,
+                        "w": 42,
+                        "x": 21,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 22,
+                        "x": 329,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-4",
+                    "margin": {
+                        "h": 32,
+                        "w": 33,
+                        "x": 17,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 31,
+                        "x": 263,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-5",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 12,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 177,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-6",
+                    "margin": {
+                        "h": 28,
+                        "w": 22,
+                        "x": 11,
+                        "y": 5
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 42,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-7",
+                    "margin": {
+                        "h": 40,
+                        "w": 20,
+                        "x": 11,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 44,
+                        "x": 1,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-8",
+                    "margin": {
+                        "h": 39,
+                        "w": 20,
+                        "x": 11,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 44,
+                        "x": 194,
+                        "y": 38
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-9",
+                    "margin": {
+                        "h": 38,
+                        "w": 21,
+                        "x": 12,
+                        "y": 15
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 43,
+                        "x": 390,
+                        "y": 30
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-10",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 440,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-11",
+                    "margin": {
+                        "h": 42,
+                        "w": 46,
+                        "x": 23,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 18,
+                        "x": 113,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-12",
+                    "margin": {
+                        "h": 37,
+                        "w": 47,
+                        "x": 24,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 17,
+                        "x": 305,
+                        "y": 35
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-13",
+                    "margin": {
+                        "h": 34,
+                        "w": 42,
+                        "x": 22,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 22,
+                        "x": 342,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-14",
+                    "margin": {
+                        "h": 32,
+                        "w": 33,
+                        "x": 17,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 31,
+                        "x": 296,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-15",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 12,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 220,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-16",
+                    "margin": {
+                        "h": 28,
+                        "w": 22,
+                        "x": 12,
+                        "y": 5
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 42,
+                        "x": 45,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-17",
+                    "margin": {
+                        "h": 40,
+                        "w": 20,
+                        "x": 10,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 44,
+                        "x": 47,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-18",
+                    "margin": {
+                        "h": 39,
+                        "w": 20,
+                        "x": 10,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 44,
+                        "x": 240,
+                        "y": 38
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-19",
+                    "margin": {
+                        "h": 38,
+                        "w": 21,
+                        "x": 10,
+                        "y": 15
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 43,
+                        "x": 395,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-20",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 440,
+                        "y": 21
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-21",
+                    "margin": {
+                        "h": 43,
+                        "w": 46,
+                        "x": 23,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 18,
+                        "x": 133,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-22",
+                    "margin": {
+                        "h": 37,
+                        "w": 48,
+                        "x": 24,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 16,
+                        "x": 324,
+                        "y": 35
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-23",
+                    "margin": {
+                        "h": 34,
+                        "w": 42,
+                        "x": 21,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 22,
+                        "x": 353,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-24",
+                    "margin": {
+                        "h": 32,
+                        "w": 33,
+                        "x": 17,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 31,
+                        "x": 263,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-25",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 12,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 177,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-26",
+                    "margin": {
+                        "h": 28,
+                        "w": 22,
+                        "x": 11,
+                        "y": 5
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 42,
+                        "x": 89,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-27",
+                    "margin": {
+                        "h": 40,
+                        "w": 20,
+                        "x": 11,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 44,
+                        "x": 1,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-28",
+                    "margin": {
+                        "h": 39,
+                        "w": 20,
+                        "x": 11,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 44,
+                        "x": 194,
+                        "y": 38
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-29",
+                    "margin": {
+                        "h": 38,
+                        "w": 21,
+                        "x": 12,
+                        "y": 15
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 43,
+                        "x": 390,
+                        "y": 30
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-30",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 435,
+                        "y": 41
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-31",
+                    "margin": {
+                        "h": 43,
+                        "w": 46,
+                        "x": 24,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 18,
+                        "x": 153,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-32",
+                    "margin": {
+                        "h": 37,
+                        "w": 48,
+                        "x": 25,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 16,
+                        "x": 377,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-33",
+                    "margin": {
+                        "h": 34,
+                        "w": 42,
+                        "x": 22,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 22,
+                        "x": 366,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-34",
+                    "margin": {
+                        "h": 32,
+                        "w": 33,
+                        "x": 17,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 31,
+                        "x": 296,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-35",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 12,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 220,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-36",
+                    "margin": {
+                        "h": 28,
+                        "w": 22,
+                        "x": 12,
+                        "y": 5
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 42,
+                        "x": 133,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-37",
+                    "margin": {
+                        "h": 40,
+                        "w": 20,
+                        "x": 10,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 44,
+                        "x": 47,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-38",
+                    "margin": {
+                        "h": 39,
+                        "w": 20,
+                        "x": 10,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 44,
+                        "x": 240,
+                        "y": 38
+                    }
+                },
+                {
+                    "filename": "Slime3_Death_body-39",
+                    "margin": {
+                        "h": 38,
+                        "w": 21,
+                        "x": 10,
+                        "y": 15
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 43,
+                        "x": 395,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

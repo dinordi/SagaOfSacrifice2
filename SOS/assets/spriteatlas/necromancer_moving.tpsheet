@@ -1,0 +1,138 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:42a762dcbb5bd6c71ad2c4f82006a5bd:9063e4934834eb0fba75684a74cb1222:3c73f10f9616292a954f31497d82082c$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "necromancer_moving",
+            "size": {
+                "h": 774,
+                "w": 84
+            },
+            "sprites": [
+                {
+                    "filename": "Necromancer_creativekind-Sheet-8",
+                    "margin": {
+                        "h": 162,
+                        "w": 240,
+                        "x": 130,
+                        "y": 138
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 80,
+                        "x": 1,
+                        "y": 493
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-9",
+                    "margin": {
+                        "h": 158,
+                        "w": 240,
+                        "x": 130,
+                        "y": 136
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 80,
+                        "x": 1,
+                        "y": 93
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-10",
+                    "margin": {
+                        "h": 164,
+                        "w": 240,
+                        "x": 130,
+                        "y": 144
+                    },
+                    "region": {
+                        "h": 92,
+                        "w": 80,
+                        "x": 1,
+                        "y": 589
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-11",
+                    "margin": {
+                        "h": 158,
+                        "w": 240,
+                        "x": 130,
+                        "y": 142
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 80,
+                        "x": 1,
+                        "y": 193
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-12",
+                    "margin": {
+                        "h": 158,
+                        "w": 240,
+                        "x": 130,
+                        "y": 140
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 80,
+                        "x": 1,
+                        "y": 293
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-13",
+                    "margin": {
+                        "h": 158,
+                        "w": 240,
+                        "x": 130,
+                        "y": 138
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 80,
+                        "x": 1,
+                        "y": 393
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-14",
+                    "margin": {
+                        "h": 166,
+                        "w": 240,
+                        "x": 130,
+                        "y": 142
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 80,
+                        "x": 1,
+                        "y": 683
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-15",
+                    "margin": {
+                        "h": 166,
+                        "w": 238,
+                        "x": 130,
+                        "y": 140
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 82,
+                        "x": 1,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

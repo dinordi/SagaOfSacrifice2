@@ -1,0 +1,318 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:e6944b8cdfb5091ecdc87f1cd9b92002:bcac5defdf463ffa10d56c1c0935b11d:c1d2a4c50bb8cfccc8095a21aeee6635$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "minotaurus_slash",
+            "size": {
+                "h": 870,
+                "w": 2030
+            },
+            "sprites": [
+                {
+                    "filename": "minotaurus_slash-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 871,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1451,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1741,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1161,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1451,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1741,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_slash-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1451,
+                        "y": 581
+                    }
+                }
+            ]
+        }
+    ]
+}

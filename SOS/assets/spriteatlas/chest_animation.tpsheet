@@ -1,0 +1,93 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:98ebec9b812d5a546a67f3759ed4ee88:483808b5c9f22c69e02d0ed613045ace:4c8e70cdbed7cd15969eea27731292ae$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "chest_animation",
+            "size": {
+                "h": 210,
+                "w": 40
+            },
+            "sprites": [
+                {
+                    "filename": "doors_lever_chest_animation-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 38,
+                        "x": 1,
+                        "y": 173
+                    }
+                },
+                {
+                    "filename": "doors_lever_chest_animation-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 38,
+                        "x": 1,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "doors_lever_chest_animation-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 40,
+                        "w": 38,
+                        "x": 1,
+                        "y": 91
+                    }
+                },
+                {
+                    "filename": "doors_lever_chest_animation-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 42,
+                        "w": 38,
+                        "x": 1,
+                        "y": 47
+                    }
+                },
+                {
+                    "filename": "doors_lever_chest_animation-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 44,
+                        "w": 38,
+                        "x": 1,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

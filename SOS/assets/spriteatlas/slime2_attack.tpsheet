@@ -1,0 +1,678 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:614860c4e69ab291af67e9ddfaa4540d:4809ab9b01d46e55ebfc6a5b450cd41f:3977c82cc7210841bddbafebd773f35b$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "slime2_attack",
+            "size": {
+                "h": 347,
+                "w": 128
+            },
+            "sprites": [
+                {
+                    "filename": "Slime2_Attack_body",
+                    "margin": {
+                        "h": 46,
+                        "w": 39,
+                        "x": 21,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 25,
+                        "x": 75,
+                        "y": 269
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-1",
+                    "margin": {
+                        "h": 50,
+                        "w": 41,
+                        "x": 22,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 23,
+                        "x": 43,
+                        "y": 332
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-2",
+                    "margin": {
+                        "h": 53,
+                        "w": 44,
+                        "x": 23,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 11,
+                        "w": 20,
+                        "x": 91,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-3",
+                    "margin": {
+                        "h": 45,
+                        "w": 44,
+                        "x": 22,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 19,
+                        "w": 20,
+                        "x": 107,
+                        "y": 169
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-4",
+                    "margin": {
+                        "h": 41,
+                        "w": 39,
+                        "x": 20,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 25,
+                        "x": 80,
+                        "y": 169
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-5",
+                    "margin": {
+                        "h": 39,
+                        "w": 35,
+                        "x": 18,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 29,
+                        "x": 44,
+                        "y": 252
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-6",
+                    "margin": {
+                        "h": 32,
+                        "w": 33,
+                        "x": 17,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 31,
+                        "x": 44,
+                        "y": 218
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-7",
+                    "margin": {
+                        "h": 30,
+                        "w": 28,
+                        "x": 14,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 36,
+                        "x": 1,
+                        "y": 264
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-8",
+                    "margin": {
+                        "h": 25,
+                        "w": 25,
+                        "x": 13,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 39,
+                        "w": 39,
+                        "x": 47,
+                        "y": 40
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-9",
+                    "margin": {
+                        "h": 31,
+                        "w": 23,
+                        "x": 12,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 33,
+                        "w": 41,
+                        "x": 1,
+                        "y": 194
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-10",
+                    "margin": {
+                        "h": 27,
+                        "w": 21,
+                        "x": 11,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 37,
+                        "w": 43,
+                        "x": 47,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-11",
+                    "margin": {
+                        "h": 46,
+                        "w": 39,
+                        "x": 19,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 25,
+                        "x": 102,
+                        "y": 272
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-12",
+                    "margin": {
+                        "h": 50,
+                        "w": 41,
+                        "x": 20,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 23,
+                        "x": 68,
+                        "y": 332
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-13",
+                    "margin": {
+                        "h": 53,
+                        "w": 44,
+                        "x": 22,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 11,
+                        "w": 20,
+                        "x": 93,
+                        "y": 320
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-14",
+                    "margin": {
+                        "h": 45,
+                        "w": 44,
+                        "x": 23,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 19,
+                        "w": 20,
+                        "x": 107,
+                        "y": 190
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-15",
+                    "margin": {
+                        "h": 41,
+                        "w": 39,
+                        "x": 20,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 25,
+                        "x": 80,
+                        "y": 194
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-16",
+                    "margin": {
+                        "h": 39,
+                        "w": 35,
+                        "x": 18,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 29,
+                        "x": 39,
+                        "y": 279
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-17",
+                    "margin": {
+                        "h": 35,
+                        "w": 29,
+                        "x": 13,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 35,
+                        "x": 92,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-18",
+                    "margin": {
+                        "h": 33,
+                        "w": 28,
+                        "x": 15,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 36,
+                        "x": 46,
+                        "y": 117
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-19",
+                    "margin": {
+                        "h": 27,
+                        "w": 25,
+                        "x": 13,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 37,
+                        "w": 39,
+                        "x": 88,
+                        "y": 40
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-20",
+                    "margin": {
+                        "h": 31,
+                        "w": 23,
+                        "x": 12,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 33,
+                        "w": 41,
+                        "x": 1,
+                        "y": 229
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-21",
+                    "margin": {
+                        "h": 27,
+                        "w": 21,
+                        "x": 11,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 37,
+                        "w": 43,
+                        "x": 1,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-22",
+                    "margin": {
+                        "h": 48,
+                        "w": 45,
+                        "x": 23,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 19,
+                        "x": 70,
+                        "y": 289
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-23",
+                    "margin": {
+                        "h": 51,
+                        "w": 45,
+                        "x": 23,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 13,
+                        "w": 19,
+                        "x": 70,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-24",
+                    "margin": {
+                        "h": 54,
+                        "w": 45,
+                        "x": 23,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 10,
+                        "w": 19,
+                        "x": 1,
+                        "y": 336
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-25",
+                    "margin": {
+                        "h": 45,
+                        "w": 44,
+                        "x": 22,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 19,
+                        "w": 20,
+                        "x": 107,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-26",
+                    "margin": {
+                        "h": 41,
+                        "w": 39,
+                        "x": 19,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 25,
+                        "x": 77,
+                        "y": 219
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-27",
+                    "margin": {
+                        "h": 40,
+                        "w": 35,
+                        "x": 15,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 29,
+                        "x": 39,
+                        "y": 306
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-28",
+                    "margin": {
+                        "h": 34,
+                        "w": 25,
+                        "x": 5,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 39,
+                        "x": 88,
+                        "y": 79
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-29",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 4,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 1,
+                        "y": 120
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-30",
+                    "margin": {
+                        "h": 26,
+                        "w": 20,
+                        "x": 3,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 44,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-31",
+                    "margin": {
+                        "h": 32,
+                        "w": 30,
+                        "x": 9,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 34,
+                        "x": 44,
+                        "y": 150
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-32",
+                    "margin": {
+                        "h": 30,
+                        "w": 28,
+                        "x": 8,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 36,
+                        "x": 46,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-33",
+                    "margin": {
+                        "h": 47,
+                        "w": 45,
+                        "x": 23,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 17,
+                        "w": 19,
+                        "x": 104,
+                        "y": 253
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-34",
+                    "margin": {
+                        "h": 51,
+                        "w": 45,
+                        "x": 23,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 13,
+                        "w": 19,
+                        "x": 91,
+                        "y": 292
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-35",
+                    "margin": {
+                        "h": 54,
+                        "w": 45,
+                        "x": 23,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 10,
+                        "w": 19,
+                        "x": 22,
+                        "y": 336
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-36",
+                    "margin": {
+                        "h": 45,
+                        "w": 44,
+                        "x": 23,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 19,
+                        "w": 20,
+                        "x": 104,
+                        "y": 232
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-37",
+                    "margin": {
+                        "h": 41,
+                        "w": 39,
+                        "x": 21,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 25,
+                        "x": 77,
+                        "y": 244
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-38",
+                    "margin": {
+                        "h": 40,
+                        "w": 35,
+                        "x": 21,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 29,
+                        "x": 84,
+                        "y": 143
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-39",
+                    "margin": {
+                        "h": 34,
+                        "w": 25,
+                        "x": 21,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 39,
+                        "x": 84,
+                        "y": 111
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-40",
+                    "margin": {
+                        "h": 29,
+                        "w": 23,
+                        "x": 20,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 41,
+                        "x": 1,
+                        "y": 157
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-41",
+                    "margin": {
+                        "h": 26,
+                        "w": 20,
+                        "x": 18,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 44,
+                        "x": 1,
+                        "y": 41
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-42",
+                    "margin": {
+                        "h": 32,
+                        "w": 30,
+                        "x": 22,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 34,
+                        "x": 44,
+                        "y": 184
+                    }
+                },
+                {
+                    "filename": "Slime2_Attack_body-43",
+                    "margin": {
+                        "h": 30,
+                        "w": 28,
+                        "x": 21,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 36,
+                        "x": 1,
+                        "y": 300
+                    }
+                }
+            ]
+        }
+    ]
+}

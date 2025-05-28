@@ -1,0 +1,32 @@
+{
+  "servers": [
+    {
+      "name": "Local Server",
+      "address": "localhost",
+      "port": 8282,
+      "description": "Local development server",
+      "default": true
+    },
+    {
+        "name": "Other Zybo player",
+        "address": "192.168.2.7",
+        "port": 8081,
+        "description": "Another Zybo player on the same network. Change the address to match the player's IP. In the JSON file",
+        "default": false
+    },
+    {
+      "name": "Official Server",
+      "address": "mc.dinordi.nl",
+      "port": 8282,
+      "description": "Official game server",
+      "default": false
+    },
+    {
+      "name": "Development Server",
+      "address": "192.168.1.207",
+      "port": 8282,
+      "description": "Local development server on custom port",
+      "default": false
+    }
+  ]
+}

@@ -7,18 +7,18 @@ class AudioManager {
 public:
     virtual ~AudioManager() = default;
 
-    virtual void initialize(const std::string& basePath) = 0;
-    virtual void loadSound(const std::string& filePath) = 0;
-    virtual void playSound(const std::string& soundName) = 0;
-    virtual void stopSound(const std::string& soundName) = 0;
-    virtual void setVolume(float volume) = 0;
+    virtual bool initialize(const std::string& basePath) = 0;
+    virtual bool loadSound(const std::string& filePath) = 0;
+    virtual bool playSound(const std::string& soundName) = 0;
+    virtual bool stopSound(const std::string& soundName) = 0;
+    virtual bool setVolume(float volume) = 0;
 
     // Methods for managing background music
-    virtual void loadMusic(const std::string& filePath) = 0;
-    virtual void playMusic() = 0;
-    virtual void pauseMusic() = 0;
-    virtual void stopMusic() = 0;
-    virtual void setMusicVolume(float volume) = 0;
+    virtual bool loadMusic(const std::string& filePath) = 0;
+    virtual bool playMusic() = 0;
+    virtual bool pauseMusic() = 0;
+    virtual bool stopMusic() = 0;
+    virtual bool setMusicVolume(float volume) = 0;
 };
 
 #endif // AUDIO_MANAGER_H

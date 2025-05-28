@@ -1,0 +1,573 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:7a7d06a6093cf025803b6a58a2806a2d:67890041fbff95fe54e0f0a2a762b4c0:bc1abc4b1e737590154b8b32e395ada8$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "letters_small",
+            "size": {
+                "h": 165,
+                "w": 249
+            },
+            "sprites": [
+                {
+                    "filename": "letters_small",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-1",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 34,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-2",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 67,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-3",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 100,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-4",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 133,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-5",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 166,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-6",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 199,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-7",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 1,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-8",
+                    "margin": {
+                        "h": 1,
+                        "w": 16,
+                        "x": 10,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 16,
+                        "x": 232,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "letters_small-9",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 34,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-10",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 67,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-11",
+                    "margin": {
+                        "h": 1,
+                        "w": 5,
+                        "x": 4,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 27,
+                        "x": 132,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-12",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 100,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-13",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 133,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-14",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 166,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-15",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 199,
+                        "y": 34
+                    }
+                },
+                {
+                    "filename": "letters_small-16",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 1,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-17",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 34,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-18",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 67,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-19",
+                    "margin": {
+                        "h": 1,
+                        "w": 5,
+                        "x": 4,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 27,
+                        "x": 161,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-20",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 100,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-21",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 133,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-22",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 166,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-23",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 199,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "letters_small-24",
+                    "margin": {
+                        "h": 1,
+                        "w": 5,
+                        "x": 4,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 27,
+                        "x": 190,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-25",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 1,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-26",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 34,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-27",
+                    "margin": {
+                        "h": 1,
+                        "w": 5,
+                        "x": 4,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 27,
+                        "x": 219,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-28",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 67,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-29",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 100,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-30",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 133,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-31",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 166,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-32",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 199,
+                        "y": 100
+                    }
+                },
+                {
+                    "filename": "letters_small-33",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 1,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-34",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 34,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-35",
+                    "margin": {
+                        "h": 1,
+                        "w": 1,
+                        "x": 1,
+                        "y": 1
+                    },
+                    "region": {
+                        "h": 31,
+                        "w": 31,
+                        "x": 67,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "letters_small-36",
+                    "margin": {
+                        "h": 9,
+                        "w": 2,
+                        "x": 2,
+                        "y": 3
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 30,
+                        "x": 100,
+                        "y": 133
+                    }
+                }
+            ]
+        }
+    ]
+}

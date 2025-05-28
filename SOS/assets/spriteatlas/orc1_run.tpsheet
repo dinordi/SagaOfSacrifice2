@@ -1,0 +1,498 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:58515d03c415310881d1c5064e39cc55:4735da7f14c7ca15b987f9158e4f07c8:3a4789af6e57c57b203d837e15f1b126$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc1_run",
+            "size": {
+                "h": 1968,
+                "w": 256
+            },
+            "sprites": [
+                {
+                    "filename": "orc1_run_full",
+                    "margin": {
+                        "h": 126,
+                        "w": 134,
+                        "x": 47,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 122,
+                        "x": 1,
+                        "y": 1549
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-1",
+                    "margin": {
+                        "h": 150,
+                        "w": 130,
+                        "x": 43,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 126,
+                        "x": 1,
+                        "y": 1297
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-2",
+                    "margin": {
+                        "h": 126,
+                        "w": 118,
+                        "x": 43,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 138,
+                        "x": 1,
+                        "y": 769
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-3",
+                    "margin": {
+                        "h": 114,
+                        "w": 106,
+                        "x": 39,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 150,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-4",
+                    "margin": {
+                        "h": 126,
+                        "w": 106,
+                        "x": 43,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 150,
+                        "x": 1,
+                        "y": 289
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-5",
+                    "margin": {
+                        "h": 150,
+                        "w": 114,
+                        "x": 47,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 142,
+                        "x": 1,
+                        "y": 553
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-6",
+                    "margin": {
+                        "h": 126,
+                        "w": 122,
+                        "x": 47,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 134,
+                        "x": 1,
+                        "y": 1033
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-7",
+                    "margin": {
+                        "h": 114,
+                        "w": 134,
+                        "x": 51,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 122,
+                        "x": 1,
+                        "y": 1405
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-8",
+                    "margin": {
+                        "h": 126,
+                        "w": 134,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 122,
+                        "x": 125,
+                        "y": 1597
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-9",
+                    "margin": {
+                        "h": 150,
+                        "w": 130,
+                        "x": 87,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 126,
+                        "x": 129,
+                        "y": 1345
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-10",
+                    "margin": {
+                        "h": 126,
+                        "w": 118,
+                        "x": 75,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 138,
+                        "x": 1,
+                        "y": 901
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-11",
+                    "margin": {
+                        "h": 114,
+                        "w": 106,
+                        "x": 67,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 150,
+                        "x": 1,
+                        "y": 145
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-12",
+                    "margin": {
+                        "h": 126,
+                        "w": 106,
+                        "x": 63,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 150,
+                        "x": 1,
+                        "y": 421
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-13",
+                    "margin": {
+                        "h": 150,
+                        "w": 114,
+                        "x": 67,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 142,
+                        "x": 1,
+                        "y": 661
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-14",
+                    "margin": {
+                        "h": 126,
+                        "w": 122,
+                        "x": 75,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 134,
+                        "x": 1,
+                        "y": 1165
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-15",
+                    "margin": {
+                        "h": 114,
+                        "w": 134,
+                        "x": 83,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 122,
+                        "x": 125,
+                        "y": 1453
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-16",
+                    "margin": {
+                        "h": 126,
+                        "w": 166,
+                        "x": 79,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 90,
+                        "x": 153,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-17",
+                    "margin": {
+                        "h": 150,
+                        "w": 166,
+                        "x": 75,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 90,
+                        "x": 153,
+                        "y": 265
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-18",
+                    "margin": {
+                        "h": 126,
+                        "w": 166,
+                        "x": 75,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 90,
+                        "x": 153,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-19",
+                    "margin": {
+                        "h": 114,
+                        "w": 170,
+                        "x": 79,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 86,
+                        "x": 153,
+                        "y": 373
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-20",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 83,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 141,
+                        "y": 949
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-21",
+                    "margin": {
+                        "h": 150,
+                        "w": 174,
+                        "x": 83,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 82,
+                        "x": 169,
+                        "y": 1729
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-22",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 83,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 137,
+                        "y": 1081
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-23",
+                    "margin": {
+                        "h": 114,
+                        "w": 174,
+                        "x": 87,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 82,
+                        "x": 153,
+                        "y": 517
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-24",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 137,
+                        "y": 1213
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-25",
+                    "margin": {
+                        "h": 150,
+                        "w": 174,
+                        "x": 87,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 82,
+                        "x": 169,
+                        "y": 1837
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-26",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 1,
+                        "y": 1681
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-27",
+                    "margin": {
+                        "h": 114,
+                        "w": 174,
+                        "x": 87,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 82,
+                        "x": 145,
+                        "y": 661
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-28",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 85,
+                        "y": 1729
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-29",
+                    "margin": {
+                        "h": 150,
+                        "w": 174,
+                        "x": 87,
+                        "y": 79
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 82,
+                        "x": 85,
+                        "y": 1861
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-30",
+                    "margin": {
+                        "h": 126,
+                        "w": 174,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 82,
+                        "x": 1,
+                        "y": 1813
+                    }
+                },
+                {
+                    "filename": "orc1_run_full-31",
+                    "margin": {
+                        "h": 114,
+                        "w": 174,
+                        "x": 87,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 82,
+                        "x": 141,
+                        "y": 805
+                    }
+                }
+            ]
+        }
+    ]
+}

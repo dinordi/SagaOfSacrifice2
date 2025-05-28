@@ -1,0 +1,288 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:0e015b9ee26d420304c0e717782bd513:3244f394a8754adf2725c8e0fbb0df09:79f82434c9a18bd19b6840773c153e2f$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "fire_animation2",
+            "size": {
+                "h": 258,
+                "w": 64
+            },
+            "sprites": [
+                {
+                    "filename": "fire_animation2-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1,
+                        "y": 111
+                    }
+                },
+                {
+                    "filename": "fire_animation2-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 39,
+                        "y": 57
+                    }
+                },
+                {
+                    "filename": "fire_animation2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1,
+                        "y": 77
+                    }
+                },
+                {
+                    "filename": "fire_animation2-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1,
+                        "y": 145
+                    }
+                },
+                {
+                    "filename": "fire_animation2-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1,
+                        "y": 179
+                    }
+                },
+                {
+                    "filename": "fire_animation2-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 33,
+                        "y": 233
+                    }
+                },
+                {
+                    "filename": "fire_animation2-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 36,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "fire_animation2-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 24,
+                        "x": 39,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "fire_animation2-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 35,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "fire_animation2-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 36,
+                        "w": 36,
+                        "x": 1,
+                        "y": 39
+                    }
+                },
+                {
+                    "filename": "fire_animation2-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 24,
+                        "x": 39,
+                        "y": 29
+                    }
+                },
+                {
+                    "filename": "fire_animation2-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 26,
+                        "x": 35,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "fire_animation2-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 28,
+                        "x": 35,
+                        "y": 83
+                    }
+                },
+                {
+                    "filename": "fire_animation2-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 35,
+                        "y": 115
+                    }
+                },
+                {
+                    "filename": "fire_animation2-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 30,
+                        "x": 1,
+                        "y": 213
+                    }
+                },
+                {
+                    "filename": "fire_animation2-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 35,
+                        "y": 145
+                    }
+                },
+                {
+                    "filename": "fire_animation2-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 35,
+                        "y": 175
+                    }
+                },
+                {
+                    "filename": "fire_animation2-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 30,
+                        "x": 1,
+                        "y": 213
+                    }
+                }
+            ]
+        }
+    ]
+}

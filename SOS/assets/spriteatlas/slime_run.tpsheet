@@ -1,0 +1,498 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:82fa4d478b8009592a008de0bf03d8ce:7e4a0863a109e7de0611873cd5a9702a:6d60784150f10d3b3e6fd67daf8282cf$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "slime_run",
+            "size": {
+                "h": 63,
+                "w": 332
+            },
+            "sprites": [
+                {
+                    "filename": "Slime1_Run_body",
+                    "margin": {
+                        "h": 49,
+                        "w": 44,
+                        "x": 22,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 20,
+                        "x": 265,
+                        "y": 26
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-1",
+                    "margin": {
+                        "h": 43,
+                        "w": 42,
+                        "x": 20,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 22,
+                        "x": 213,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-2",
+                    "margin": {
+                        "h": 41,
+                        "w": 44,
+                        "x": 20,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 20,
+                        "x": 237,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-3",
+                    "margin": {
+                        "h": 35,
+                        "w": 44,
+                        "x": 20,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 20,
+                        "x": 164,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-4",
+                    "margin": {
+                        "h": 34,
+                        "w": 43,
+                        "x": 22,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 21,
+                        "x": 118,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-5",
+                    "margin": {
+                        "h": 34,
+                        "w": 39,
+                        "x": 20,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 25,
+                        "x": 31,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-6",
+                    "margin": {
+                        "h": 48,
+                        "w": 38,
+                        "x": 20,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 26,
+                        "x": 237,
+                        "y": 26
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-7",
+                    "margin": {
+                        "h": 50,
+                        "w": 41,
+                        "x": 21,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 23,
+                        "x": 240,
+                        "y": 44
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-8",
+                    "margin": {
+                        "h": 49,
+                        "w": 44,
+                        "x": 23,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 20,
+                        "x": 287,
+                        "y": 19
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-9",
+                    "margin": {
+                        "h": 43,
+                        "w": 42,
+                        "x": 23,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 22,
+                        "x": 213,
+                        "y": 24
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-10",
+                    "margin": {
+                        "h": 41,
+                        "w": 44,
+                        "x": 25,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 23,
+                        "w": 20,
+                        "x": 259,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-11",
+                    "margin": {
+                        "h": 35,
+                        "w": 44,
+                        "x": 25,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 20,
+                        "x": 164,
+                        "y": 32
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-12",
+                    "margin": {
+                        "h": 34,
+                        "w": 43,
+                        "x": 22,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 21,
+                        "x": 141,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-13",
+                    "margin": {
+                        "h": 34,
+                        "w": 39,
+                        "x": 20,
+                        "y": 11
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 25,
+                        "x": 58,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-14",
+                    "margin": {
+                        "h": 48,
+                        "w": 38,
+                        "x": 19,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 26,
+                        "x": 281,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-15",
+                    "margin": {
+                        "h": 50,
+                        "w": 41,
+                        "x": 21,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 23,
+                        "x": 265,
+                        "y": 43
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-16",
+                    "margin": {
+                        "h": 49,
+                        "w": 42,
+                        "x": 21,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 22,
+                        "x": 309,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-17",
+                    "margin": {
+                        "h": 43,
+                        "w": 39,
+                        "x": 20,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 25,
+                        "x": 186,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-18",
+                    "margin": {
+                        "h": 42,
+                        "w": 33,
+                        "x": 15,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 31,
+                        "x": 85,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-19",
+                    "margin": {
+                        "h": 36,
+                        "w": 36,
+                        "x": 16,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-20",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 16,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 118,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-21",
+                    "margin": {
+                        "h": 35,
+                        "w": 39,
+                        "x": 19,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 25,
+                        "x": 31,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-22",
+                    "margin": {
+                        "h": 51,
+                        "w": 37,
+                        "x": 20,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 13,
+                        "w": 27,
+                        "x": 85,
+                        "y": 49
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-23",
+                    "margin": {
+                        "h": 49,
+                        "w": 39,
+                        "x": 20,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 25,
+                        "x": 186,
+                        "y": 47
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-24",
+                    "margin": {
+                        "h": 49,
+                        "w": 42,
+                        "x": 22,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 22,
+                        "x": 309,
+                        "y": 18
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-25",
+                    "margin": {
+                        "h": 43,
+                        "w": 39,
+                        "x": 20,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 21,
+                        "w": 25,
+                        "x": 186,
+                        "y": 24
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-26",
+                    "margin": {
+                        "h": 42,
+                        "w": 33,
+                        "x": 19,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 31,
+                        "x": 85,
+                        "y": 25
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-27",
+                    "margin": {
+                        "h": 36,
+                        "w": 36,
+                        "x": 21,
+                        "y": 13
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 1,
+                        "y": 31
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-28",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 28,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 141,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-29",
+                    "margin": {
+                        "h": 35,
+                        "w": 39,
+                        "x": 21,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 25,
+                        "x": 58,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-30",
+                    "margin": {
+                        "h": 51,
+                        "w": 37,
+                        "x": 18,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 13,
+                        "w": 27,
+                        "x": 290,
+                        "y": 36
+                    }
+                },
+                {
+                    "filename": "Slime1_Run_body-31",
+                    "margin": {
+                        "h": 49,
+                        "w": 39,
+                        "x": 20,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 25,
+                        "x": 213,
+                        "y": 47
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,378 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:b030b46f0c5bd7ddfe3906d79c0252fc:0dfbf8024e635f8d85becd7637815921:a8be25576331db0056709526676e3b99$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "slime3_idle",
+            "size": {
+                "h": 772,
+                "w": 24
+            },
+            "sprites": [
+                {
+                    "filename": "Slime3_Idle_body",
+                    "margin": {
+                        "h": 37,
+                        "w": 42,
+                        "x": 23,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 22,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-1",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 23,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 1,
+                        "y": 545
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-2",
+                    "margin": {
+                        "h": 32,
+                        "w": 43,
+                        "x": 22,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 21,
+                        "x": 1,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-3",
+                    "margin": {
+                        "h": 30,
+                        "w": 43,
+                        "x": 23,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 21,
+                        "x": 1,
+                        "y": 265
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-4",
+                    "margin": {
+                        "h": 29,
+                        "w": 43,
+                        "x": 23,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 21,
+                        "x": 1,
+                        "y": 117
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-5",
+                    "margin": {
+                        "h": 40,
+                        "w": 45,
+                        "x": 24,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 19,
+                        "x": 1,
+                        "y": 669
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-6",
+                    "margin": {
+                        "h": 37,
+                        "w": 42,
+                        "x": 20,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 22,
+                        "x": 1,
+                        "y": 30
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-7",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 21,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 1,
+                        "y": 576
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-8",
+                    "margin": {
+                        "h": 32,
+                        "w": 43,
+                        "x": 22,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 21,
+                        "x": 1,
+                        "y": 443
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-9",
+                    "margin": {
+                        "h": 30,
+                        "w": 43,
+                        "x": 21,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 21,
+                        "x": 1,
+                        "y": 301
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-10",
+                    "margin": {
+                        "h": 29,
+                        "w": 43,
+                        "x": 21,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 21,
+                        "x": 1,
+                        "y": 154
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-11",
+                    "margin": {
+                        "h": 40,
+                        "w": 45,
+                        "x": 22,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 19,
+                        "x": 1,
+                        "y": 695
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-12",
+                    "margin": {
+                        "h": 37,
+                        "w": 42,
+                        "x": 23,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 22,
+                        "x": 1,
+                        "y": 59
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-13",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 23,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 1,
+                        "y": 607
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-14",
+                    "margin": {
+                        "h": 32,
+                        "w": 43,
+                        "x": 22,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 21,
+                        "x": 1,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-15",
+                    "margin": {
+                        "h": 30,
+                        "w": 43,
+                        "x": 23,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 21,
+                        "x": 1,
+                        "y": 337
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-16",
+                    "margin": {
+                        "h": 29,
+                        "w": 43,
+                        "x": 23,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 21,
+                        "x": 1,
+                        "y": 191
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-17",
+                    "margin": {
+                        "h": 40,
+                        "w": 45,
+                        "x": 24,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 19,
+                        "x": 1,
+                        "y": 721
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-18",
+                    "margin": {
+                        "h": 37,
+                        "w": 42,
+                        "x": 20,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 27,
+                        "w": 22,
+                        "x": 1,
+                        "y": 88
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-19",
+                    "margin": {
+                        "h": 35,
+                        "w": 43,
+                        "x": 21,
+                        "y": 12
+                    },
+                    "region": {
+                        "h": 29,
+                        "w": 21,
+                        "x": 1,
+                        "y": 638
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-20",
+                    "margin": {
+                        "h": 32,
+                        "w": 43,
+                        "x": 22,
+                        "y": 9
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 21,
+                        "x": 1,
+                        "y": 511
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-21",
+                    "margin": {
+                        "h": 30,
+                        "w": 43,
+                        "x": 21,
+                        "y": 7
+                    },
+                    "region": {
+                        "h": 34,
+                        "w": 21,
+                        "x": 1,
+                        "y": 373
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-22",
+                    "margin": {
+                        "h": 29,
+                        "w": 43,
+                        "x": 21,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 35,
+                        "w": 21,
+                        "x": 1,
+                        "y": 228
+                    }
+                },
+                {
+                    "filename": "Slime3_Idle_body-23",
+                    "margin": {
+                        "h": 40,
+                        "w": 45,
+                        "x": 22,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 19,
+                        "x": 1,
+                        "y": 747
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,228 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:ef073e4ca5b5ac6c6f627d373e8e39bd:9b2094b5f9423424613633ac032e3ed6:997c4fa3cf7fa876f659a52620a201bb$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Golem_Laser",
+            "size": {
+                "h": 510,
+                "w": 906
+            },
+            "sprites": [
+                {
+                    "filename": "Laser_sheet-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 1,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 1,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 1,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 1,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 303,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 605,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 303,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 605,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 303,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 303,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 303,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 605,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Laser_sheet-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 300,
+                        "x": 605,
+                        "y": 307
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,768 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:9854f270ba1034f59e8d33b70d4db7a1:2b2f6398300b32a8d7caddeba2dfb495:b9138226ac8330590d8e1914ac51cb59$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Stonetileset",
+            "size": {
+                "h": 34,
+                "w": 1700
+            },
+            "sprites": [
+                {
+                    "filename": "TX Tileset Stone Ground",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 35,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 69,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 103,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 137,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 171,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 205,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 239,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 273,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 307,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 341,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 375,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 409,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 443,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 477,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 511,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 545,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 579,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 613,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 647,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 681,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 715,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 749,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 783,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 817,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 851,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 885,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 919,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 953,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-29",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 987,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-30",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1021,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-31",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1055,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-32",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1089,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-33",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1123,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-34",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1157,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-35",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1191,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-36",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1225,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-37",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1259,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-38",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1293,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-39",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1327,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-40",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1361,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-41",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1395,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-42",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1429,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-43",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1463,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-44",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1497,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-45",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1531,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-46",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1565,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-47",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1599,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-48",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1633,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Stone Ground-49",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 1667,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

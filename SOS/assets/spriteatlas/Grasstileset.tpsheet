@@ -1,0 +1,258 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:d3e43986b5a7067f3f1e893fc5d18b42:8fb29da94d241b8b1296f0efba5541c6:063edd84e553476507d927064fa3f909$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Grasstileset",
+            "size": {
+                "h": 198,
+                "w": 396
+            },
+            "sprites": [
+                {
+                    "filename": "TX Tileset Grass",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 67,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 67,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 133,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 67,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 133,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 199,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 133,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 199,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 265,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 199,
+                        "y": 133
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 265,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 331,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "TX Tileset Grass-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 265,
+                        "y": 133
+                    }
+                }
+            ]
+        }
+    ]
+}
