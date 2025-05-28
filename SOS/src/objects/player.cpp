@@ -27,10 +27,10 @@ void Player::setupAnimations() {
     std::cout << "Got base path for player" << std::endl;
 
     addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");        // Idle animation (1 frames)
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 2,3);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 0, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 6,7);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 4,5);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
 
     addSpriteSheet(AnimationState::WALKING, basePath / "wolfman_walk.tpsheet");
     // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
