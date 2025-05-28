@@ -11,9 +11,8 @@
 extern uint32_t get_ticks();
 
 // RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string& id) 
-    : Object(BoxCollider(0,0,128,128), ObjectType::PLAYER, id), 
-      id_(id),
+RemotePlayer::RemotePlayer(const std::string id) 
+    : Object(BoxCollider(0,0,128,128), ObjectType::PLAYER, id),
       interpolationTime_(0.0f),
       targetPosition_(Vec2(0, 0)),
       targetVelocity_(Vec2(0, 0)) {
@@ -365,6 +364,7 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
     if (it == remotePlayers_.end()) {
         auto newPlayer = std::make_unique<RemotePlayer>(message.senderId);
         it = remotePlayers_.emplace(message.senderId, std::move(newPlayer)).first;
+        std::cout << "[Client] New remote player added: " << message.senderId << std::endl;
     }
     
     if(it->second->getObjID() == playerId_) {
@@ -469,156 +469,20 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     
     // Process each object
     for (uint16_t i = 0; i < objectCount && pos < gameStateData.size(); i++) {
-        // Read object type
-        if (pos >= gameStateData.size()) break;
-        uint8_t objectType = gameStateData[pos++];
-        
-        // Read object ID length
-        if (pos >= gameStateData.size()) break;
-        uint8_t idLength = gameStateData[pos++];
-        
-        // Read object ID
-        if (pos + idLength > gameStateData.size()) break;
-        std::string objectId(gameStateData.begin() + pos, gameStateData.begin() + pos + idLength);
-        // std::cout << "[Client] Processing object ID: " << objectId 
-        //           << " of type: " << (objectType) << std::endl;
-        pos += idLength;
-        
-        // Read position and velocity (4 floats, 16 bytes total)
-        if (pos + 16 > gameStateData.size()) break;
-        
-        float posX, posY, velX, velY;
-        std::memcpy(&posX, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&posY, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&velX, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&velY, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        
-        // Mark this object as seen
-        objectsSeen[objectId] = true;
-        
-        // Process based on object type
-        switch (static_cast<ObjectType>(objectType)) {
-            case ObjectType::PLAYER: { // Player
-                // Skip if this is our local player
-                // if (objectId == playerId_) {
-                //     // Position and velocity are already handled by the local player and reconciliation
-                // }
-                
-                // Find or create remote player
-                auto it = remotePlayers_.find(objectId);
-                if (it == remotePlayers_.end()) {
-                    // Create new remote player
-                    auto newPlayer = std::make_unique<RemotePlayer>(objectId);
-                    it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
-                    std::cout << "[Client] Created new remote player: " << objectId << std::endl;
-                }
-
-                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
-                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
-
-                
-                // Update remote player state
-                RemotePlayer* player = it->second.get();
-                
-                player->setDir(dir);
-                player->setAnimationState(state);
-                player->setTargetPosition(Vec2(posX, posY));
-                player->setTargetVelocity(Vec2(velX, velY));
-                player->resetInterpolation();
-                break;
-            }
-            case ObjectType::TILE: { // Platform
-                // Read platform width and height (2 floats, 8 bytes total)
-                if (pos + 8 > gameStateData.size()) break;
-                
-                // float width, height;
-                // std::memcpy(&width, &gameStateData[pos], sizeof(float));
-                // pos += sizeof(float);
-                // std::memcpy(&height, &gameStateData[pos], sizeof(float));
-                // pos += sizeof(float);
-
-                // Read tile index (1 byte)
-                if (pos >= gameStateData.size()) break;
-                uint8_t tileIndex = gameStateData[pos++];
-
-                if (pos >= gameStateData.size()) break;
-                uint32_t flags;
-                std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
-                pos += sizeof(uint32_t);
-                
-                // Check if we need to create a new platform object
-                bool found = false;
-                
-                // Let the Game class handle object management
-                if (Game* game = Game::getInstance()) {
-                    // Check if the platform already exists
-                    auto& objects = game->getObjects();
-                    for (auto& obj : objects) {
-                        if (obj->getObjID() == objectId) {
-                            // Update existing platform
-                            obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
-                            obj->setvelocity(Vec2(velX, velY));
-                            found = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!found) {
-                        // Create new platform
-                        std::shared_ptr<Tile> platform = std::make_shared<Tile>(
-                            posX, posY,
-                            objectId,
-                            "Tilemap_Flat", tileIndex, 64, 64, 12
-                        );
-                        platform->setupAnimations(atlasBasePath_);
-                        platform->setFlag(flags);
-                        newObjects.push_back(platform);
-                        // std::cout << "[Client] Created new platform: " << objectId << " at " 
-                        //           << posX << "," << posY << " size: " << width << "x" << height << std::endl;
-                    }
-                }
-                break;
-            }
-            case ObjectType::MINOTAUR: {
-                    // std::cout << "[Client] Minotaur object received: " << objectId 
-                    //     << " at " << posX << "," << posY
-                    //     << " with velocity: " << velX << "," << velY << std::endl; 
-                    AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
-                    FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
-
-                    std::shared_ptr<Object> existingObject = updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY));
-                    if (existingObject == nullptr) {
-                        // Create new platform
-                        auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
-                        newEntity->setupAnimations(atlasBasePath_);
-                        newEntity->setDir(dir);
-                        newEntity->setAnimationState(state);
-                        newEntity->setvelocity(Vec2(velX, velY));
-                        newObjects.push_back(newEntity);
-                    }
-                    else
-                    {
-                        Minotaur* existingMinotaur = static_cast<Minotaur*>(existingObject.get());
-                        existingMinotaur->setDir(dir);
-                        existingMinotaur->setAnimationState(state);
-                    }
-                    break;
-                }
-            default:
-                std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
-                break;
-            }
+        // std::cout << "[Client] Processing object " << i + 1 << " of " << objectCount << ". Pos: " << pos << std::endl;
+        std::shared_ptr<Object> newobj = deserializeObject(gameStateData, pos);
+        if (!newobj) {
+            continue; // Object deserialization failed, skip to next
         }
-        // Add any new objects to the game
-        if (Game* game = Game::getInstance()) {
-            for (auto& obj : newObjects) {
-                game->addObject(obj);
-            }
+        newObjects.push_back(newobj);
+        objectsSeen[newobj->getObjID()] = true;  // Mark this object as seen
+    }
+    // Add any new objects to the game
+    if (Game* game = Game::getInstance()) {
+        for (auto& obj : newObjects) {
+            game->addObject(obj);
         }
+    }
 }
 
 void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameStateData) {
@@ -651,131 +515,12 @@ void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameS
     
     // Process each object
     for (uint16_t i = 0; i < objectCount && pos < gameStateData.size(); i++) {
-        // Read object type
-        if (pos >= gameStateData.size()) break;
-        uint8_t objectType = gameStateData[pos++];
-        
-        // Read object ID length
-        if (pos >= gameStateData.size()) break;
-        uint8_t idLength = gameStateData[pos++];
-        
-        // Read object ID
-        if (pos + idLength > gameStateData.size()) break;
-        std::string objectId(gameStateData.begin() + pos, gameStateData.begin() + pos + idLength);
-        pos += idLength;
-        // std::cout << "[Client] Processing delta object ID: " << objectId 
-        //           << " of type: " << static_cast<int>(objectType) << std::endl;
-        
-        // Read position and velocity (4 floats, 16 bytes total)
-        if (pos + 16 > gameStateData.size()) break;
-        
-        float posX, posY, velX, velY;
-        std::memcpy(&posX, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&posY, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&velX, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        std::memcpy(&velY, &gameStateData[pos], sizeof(float));
-        pos += sizeof(float);
-        
-        // Mark this object as seen
-        objectsSeen[objectId] = true;
-        
-        // Process based on object type
-        switch (static_cast<ObjectType>(objectType)) {
-            case ObjectType::PLAYER: {
-                // Same as in processGameState
-                auto it = remotePlayers_.find(objectId);
-                if (it == remotePlayers_.end()) {
-                    // Create new remote player
-                    auto newPlayer = std::make_unique<RemotePlayer>(objectId);
-                    it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
-                    std::cout << "[Client] Created new remote player: " << objectId << std::endl;
-                }
-
-                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
-                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
-                
-                // Update remote player state
-                RemotePlayer* player = it->second.get();
-                
-                player->setDir(dir);
-                player->setAnimationState(state);
-                player->setTargetPosition(Vec2(posX, posY));
-                player->setTargetVelocity(Vec2(velX, velY));
-                player->resetInterpolation();
-                break;
-            }
-            case ObjectType::TILE: {
-                // Same as in processGameState
-                // Read tile index (1 byte)
-                if (pos >= gameStateData.size()) break;
-                uint8_t tileIndex = gameStateData[pos++];
-
-                if (pos >= gameStateData.size()) break;
-                uint32_t flags;
-                std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
-                pos += sizeof(uint32_t);
-                
-                // Check if we need to create a new platform object
-                bool found = false;
-                
-                // Let the Game class handle object management
-                if (Game* game = Game::getInstance()) {
-                    // Check if the platform already exists
-                    auto& objects = game->getObjects();
-                    for (auto& obj : objects) {
-                        if (obj->getObjID() == objectId) {
-                            // Update existing platform
-                            obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
-                            obj->setvelocity(Vec2(velX, velY));
-                            found = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!found) {
-                        // Create new platform
-                        std::shared_ptr<Tile> platform = std::make_shared<Tile>(
-                            posX, posY,
-                            objectId,
-                            "Tilemap_Flat", tileIndex, 64, 64, 12
-                        );
-                        platform->setupAnimations(atlasBasePath_);
-                        platform->setFlag(flags);
-                        newObjects.push_back(platform);
-                    }
-                }
-                break;
-            }
-            case ObjectType::MINOTAUR: {
-                // Same as in processGameState
-                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
-                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
-
-                std::shared_ptr<Object> existingObject = updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY));
-                if (existingObject == nullptr) {
-                    // Create new entity
-                    auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
-                    newEntity->setupAnimations(atlasBasePath_);
-                    newEntity->setDir(dir);
-                    newEntity->setAnimationState(state);
-                    newEntity->setvelocity(Vec2(velX, velY));
-                    newObjects.push_back(newEntity);
-                }
-                else
-                {
-                    Minotaur* existingMinotaur = static_cast<Minotaur*>(existingObject.get());
-                    existingMinotaur->setDir(dir);
-                    existingMinotaur->setAnimationState(state);
-                }
-                break;
-            }
-            default:
-                std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
-                break;
+        std::shared_ptr<Object> newobj = deserializeObject(gameStateData, pos);
+        if (!newobj) {
+            continue; // Object deserialization success and there was no new object to be added
         }
+        newObjects.push_back(newobj);
+        objectsSeen[newobj->getObjID()] = true;  // Mark this object as seen
     }
     
     // Add any new objects to the game
@@ -1014,6 +759,138 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     player->setTargetPosition(Vec2(posX, posY));
     player->setTargetVelocity(Vec2(velX, velY));
     player->resetInterpolation();
+}
+
+std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<uint8_t>& data, size_t& pos) {
+    if (pos + 2 > data.size()) {
+        std::cerr << "[Client] Not enough data to read object type and ID length" << std::endl;
+        return nullptr;
+    }
+    
+    // Read object type
+    uint8_t objectType = data[pos++];
+    
+    // Read object ID length
+    uint8_t idLength = data[pos++];
+    
+    if (pos + idLength > data.size()) {
+        std::cerr << "[Client] Not enough data to read object ID" << std::endl;
+        return nullptr;
+    }
+    
+    // Read object ID
+    std::string objectId(data.begin() + pos, data.begin() + pos + idLength);
+    pos += idLength;
+    
+    // Read position and velocity (4 floats, 16 bytes total)
+    if (pos + 16 > data.size()) {
+        std::cerr << "[Client] Not enough data to read position and velocity" << std::endl;
+        return nullptr;
+    }
+    
+    float posX, posY, velX, velY;
+    std::memcpy(&posX, &data[pos], sizeof(float));
+    pos += sizeof(float);
+    std::memcpy(&posY, &data[pos], sizeof(float));
+    pos += sizeof(float);
+    std::memcpy(&velX, &data[pos], sizeof(float));
+    pos += sizeof(float);
+    std::memcpy(&velY, &data[pos], sizeof(float));
+    pos += sizeof(float);
+    
+    // Create the appropriate object based on type
+    switch (static_cast<ObjectType>(objectType)) {
+        case ObjectType::PLAYER: {
+            // Find or create a remote player
+            auto it = remotePlayers_.find(objectId);
+            if (it == remotePlayers_.end()) {
+                // Create new remote player
+                auto newPlayer = std::make_unique<RemotePlayer>(objectId);
+                it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
+            }
+            RemotePlayer* player = it->second.get();
+            AnimationState state = static_cast<AnimationState>(data[pos++]);
+            FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
+
+            player->setDir(dir);
+            player->setAnimationState(state);
+            player->setTargetPosition(Vec2(posX, posY));
+            player->setTargetVelocity(Vec2(velX, velY));
+            player->resetInterpolation();
+            return nullptr;
+        }
+        case ObjectType::TILE: {
+            // Find or create a platform object
+            Game* game = Game::getInstance();
+            if (!game) {
+                std::cerr << "[Client] Game instance not found" << std::endl;
+                return nullptr;
+            }
+            auto& objects = game->getObjects();
+            for (auto& obj : objects) {
+                if (obj->getObjID() == objectId) {
+                    // Update existing platform
+                    obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
+                    obj->setvelocity(Vec2(velX, velY));
+                    return obj; // Successfully updated
+                }
+            }
+            
+            uint8_t tileIndex = 0; // Default tile index
+            tileIndex = data[pos++];
+            uint32_t flags;
+            flags = (static_cast<uint32_t>(data[pos+3]) << 24) |
+            (static_cast<uint32_t>(data[pos + 2]) << 16) |
+            (static_cast<uint32_t>(data[pos + 1]) << 8) |
+            static_cast<uint32_t>(data[pos]);
+            pos += 4; // Move past the flags
+            
+            // Create new platform
+            std::shared_ptr<Tile> platform = std::make_shared<Tile>(
+                posX, posY,
+                objectId,
+                "Tilemap_Flat", tileIndex, 64, 64, 12 // Default tile index and size
+            );
+
+            platform->setFlag(flags);
+            
+            platform->setupAnimations(atlasBasePath_);
+            platform->setcollider(BoxCollider(Vec2(posX, posY), Vec2(64, 64))); // Default size
+            platform->setvelocity(Vec2(velX, velY));
+            return platform;
+        }
+        case ObjectType::MINOTAUR: {
+            AnimationState state = static_cast<AnimationState>(data[pos++]);
+            FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
+            // Find or create a minotaur object
+            Game* game = Game::getInstance();
+            if (!game) {
+                std::cerr << "[Client] Game instance not found" << std::endl;
+                return nullptr;
+            }
+            auto& objects = game->getObjects();
+            for (auto& obj : objects) {
+                if (obj->getObjID() == objectId) {
+                    obj->setAnimationState(state);
+                    obj->setDir(dir);
+                    // Update existing minotaur
+                    obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
+                    obj->setvelocity(Vec2(velX, velY));
+                    return obj; // Successfully updated
+                }
+            }
+            // Create new minotaur
+            auto newMinotaur = std::make_shared<Minotaur>(posX, posY, objectId);
+            newMinotaur->setupAnimations(atlasBasePath_);
+            newMinotaur->setcollider(BoxCollider(Vec2(posX, posY), Vec2(64, 64))); // Default size
+            newMinotaur->setvelocity(Vec2(velX, velY));
+            return newMinotaur;
+        }
+        default:
+            std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
+            return nullptr;
+    }
+    
 }
 
 void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
