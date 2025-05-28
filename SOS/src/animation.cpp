@@ -5,6 +5,14 @@ AnimationController::AnimationController()
     // Default constructor - start with IDLE state
 }
 
+void AnimationController::cleanupSharedResources() {
+    // Cleanup all sprite sheets
+    for (auto& pair : SpriteData::spriteCache) {
+        delete pair.second; // Assuming SpriteData is dynamically allocated
+    }
+    SpriteData::spriteCache.clear();
+}
+
 void AnimationController::addAnimation(AnimationState state, const AnimationDef& def) {
     animations[state] = def;
 }
@@ -128,11 +136,11 @@ SpriteData* AnimationController::getCurrentSpriteData() const {
 
 void AnimationController::addSpriteSheet(const std::string& spriteSheetPath, AnimationState spriteState, uint32_t frameTime) {
     // Create a new SpriteData object and add it to the spriteSheets map
-    SpriteData* spriteData = new SpriteData(spriteSheetPath);
+    SpriteData* spriteData = SpriteData::getSharedInstance(spriteSheetPath);
     spriteSheets[spriteState] = spriteData;
+
     AnimationDef def;
     def.frameCount = spriteData->spriteRects.size() / 4;
-    // std::cout << "Adding sprite sheet for state: " << spriteState << " with frame count: " << def.frameCount << std::endl;
     def.frameTime = frameTime; // Default frame time, can be adjusted later
     def.loop = true; // Default to looping animations
     animations[spriteState] = def;

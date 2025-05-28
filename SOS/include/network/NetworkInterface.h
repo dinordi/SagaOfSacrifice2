@@ -4,8 +4,7 @@
 #include <functional>
 #include <vector>
 #include <cstdint>
-
-#include "NetworkMessage.h"
+#include "network/NetworkMessage.h"
 
 // Network interface class that will be implemented for client
 class NetworkInterface {

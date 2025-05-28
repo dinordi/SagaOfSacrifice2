@@ -10,6 +10,8 @@ enum class MessageType {
     PLAYER_ACTION,     // Special action (jump, attack, etc.)
     PLAYER_INPUT,      // Player input state (new type for server-controlled physics)
     GAME_STATE,        // Complete or partial game state update
+    GAME_STATE_DELTA,  // Delta game state update (only changed objects)
+    GAME_STATE_PART,   // Part of a multi-packet game state update
     CHAT_MESSAGE,      // Text chat
     CONNECT,           // Player connected
     DISCONNECT,        // Player disconnected
