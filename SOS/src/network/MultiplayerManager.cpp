@@ -498,6 +498,10 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 if (pos >= gameStateData.size()) break;
                 uint8_t tileIndex = gameStateData[pos++];
 
+                uint8_t tilemapNameLength = gameStateData[pos++];
+                std::string spritemapName(gameStateData.begin() + pos, 
+                                          gameStateData.begin() + pos + tilemapNameLength); // Assuming fixed length for tilemap name
+
                 if (pos >= gameStateData.size()) break;
                 uint32_t flags;
                 std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
@@ -525,7 +529,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                         std::shared_ptr<Tile> platform = std::make_shared<Tile>(
                             posX, posY,
                             objectId,
-                            "Tilemap_Flat", tileIndex, 64, 64, 12
+                            spritemapName, tileIndex, 64, 64, 12
                         );
                         platform->setupAnimations(atlasBasePath_);
                         platform->setFlag(flags);

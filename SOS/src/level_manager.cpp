@@ -113,7 +113,7 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             }
             
             // Example: Spawn a minotaur in the level near the player start position plus an offset
-            Vec2 playerStart = currentLevel_->getPlayerStartPosition();
+            //Vec2 playerStart = currentLevel_->getPlayerStartPosition();
             
             // Spawn a minotaur slightly to the right of the player start position
             // if (auto minotaur = currentLevel_->spawnMinotaur(playerStart.x + 300, playerStart.y)) {
@@ -121,7 +121,7 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             // }
             
             // Example: Spawn more minotaurs at different positions if desired
-            currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
+            //currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
             // currentLevel_->spawnMinotaur(playerStart.x - 600, playerStart.y + 200);
             
             // Set all enemies in the level to target any existing players

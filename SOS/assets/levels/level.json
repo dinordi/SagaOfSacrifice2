@@ -38,24 +38,30 @@
   "playerStart": { "x": 1, "y": 500 },
 
   "enemies": [
-    { "id": "e1", "type": "android_scout",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
-    { "id": "e2", "type": "drone_swarm",    "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
-    { "id": "e3", "type": "cyber_hound",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
-    { "id": "e4", "type": "rogue_soldier", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
-    { "id": "e5", "type": "alien_behemoth", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
-    { "id": "e6", "type": "sentinel_turret", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  }
+    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
+    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  },
+    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
+    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  },
+    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
+    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
+    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  }
+
   ],
+
 
   "objects": [
-    { "id": "objects_pack2-0",   "spriteId": 1, "x":  10, "y":  96 },
-    { "id": "objects_pack2-0",  "spriteId": 2, "x":  2, "y":  640 },
-    { "id": "objects_pack2-0", "spriteId": 3, "x":  300, "y": 160 }
-  ],
-
-  "items": [
-    { "id": "credit_chip",    "type": "currency", "spriteId": 24, "x": 128, "y": 160, "value":50 },
-    { "id": "medkit",         "type": "heal",     "spriteId": 25, "x": 352, "y": 224, "heal":50 },
-    { "id": "energy_cell",    "type": "powerup",  "spriteId": 26, "x": 400, "y": 192, "effect":"shield" }
+    { "id": "objects_pack2",   "type": "currency", "spriteId": 24, "x": 128, "y": 160 }
   ],
 
   "triggers": [

@@ -2,13 +2,16 @@
 #include <filesystem>
 #include <iostream>
 
-Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, (objID)), tileIndex(tileIndex) {
+Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) : Object(BoxCollider(x, y, tileWidth, tileHeight), ObjectType::TILE, (objID)), tileIndex(tileIndex), tileMapName(tileMap) {
     // Initialize Tile-specific attributes here
 }
 
 void Tile::setupAnimations(std::filesystem::path atlasPath)
 {
-    addSpriteSheet(AnimationState::IDLE, atlasPath / "Tilemap_Flat.tpsheet");
+    std::string fileName = tileMapName + ".tpsheet";
+    atlasPath /= fileName;
+    std::cout << "[Tile] Setting up animations for tile: " << tileMapName << " using atlas: " << atlasPath.string() << std::endl;
+    addSpriteSheet(AnimationState::IDLE, atlasPath);
 }
 
 
