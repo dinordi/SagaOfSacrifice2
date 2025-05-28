@@ -3,7 +3,7 @@
 
 
 Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
-    health(100), isAttacking(false), isJumping(false), attackTimer(0.0f) {
+    health(100), isAttackActive(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
     std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
@@ -50,36 +50,6 @@ void Player::setupAnimations() {
     setAnimationState(AnimationState::IDLE);
 }
 
-void Player::updateAnimationState() {
-
-    if(isAttacking) {
-        setAnimationState(AnimationState::ATTACKING);
-        return;
-    }
-    if (isMoving()) {
-        setAnimationState(AnimationState::WALKING);
-    } else {
-        setAnimationState(AnimationState::IDLE);
-    }
-
-
-}
-
-bool Player::isMoving() const {
-    // Check if the player is moving based on velocity
-    Vec2 vel = getvelocity();
-
-    // Define an epsilon for floating point comparison
-    const float EPSILON = 0.001f;
-
-    // Compare with epsilon to handle floating-point precision issues
-    return (std::abs(vel.x) > EPSILON || std::abs(vel.y) > EPSILON);
-}
-
-void Player::accept(CollisionVisitor& visitor) {
-    visitor.visit(this);
-}
-
 void Player::update(float deltaTime) {
     // Update player-specific logic here
     // handleInput(input, deltaTime); // Handle input
@@ -112,10 +82,10 @@ void Player::update(float deltaTime) {
     }
 
     // Handle attack timer
-    if (isAttacking) {
+    if (isAttackActive) {
         attackTimer += deltaTime;
-        if (attackTimer >= 0.4f) { // Attack animation time (ms)
-            isAttacking = false;
+        if (attackTimer >= 0.4f) { // Attack animation time (seconds)
+            isAttackActive = false;
             attackTimer = 0.0f;
         }
     }
@@ -152,12 +122,124 @@ void Player::handleInput(PlayerInput* input, float deltaTime) {
     }
 
     // Handle attack input
-    if (input->get_attack() && !isAttacking) {
-        isAttacking = true;
-        attackTimer = 0;
+    if (input->get_attack() && !isAttackActive) {
+        attack();
     }
+    
     // std::cout << "Player velocity: " << vel.x << ", " << vel.y << std::endl;
     setvelocity(vel);
+}
+
+void Player::attack() {
+    // Only attack if not already attacking
+    if (isAttackActive) return;
+    
+    std::cout << "Player is attacking!" << std::endl;
+    
+    // Start attack sequence
+    isAttackActive = true;
+    attackTimer = 0.0f;
+    
+    // Play attack animation
+    setAnimationState(AnimationState::ATTACKING);
+    
+    // The actual hit registration will be handled in the Game class
+}
+
+bool Player::checkAttackHit(Object* target) {
+    // Only check for hits if we're in the attacking state
+    if (!isAttackActive) return false;
+    
+    // Only register hits in the middle of the attack animation (30-70% through the animation)
+    // This makes the hit feel better timed with the animation
+    if (attackTimer < 0.1f || attackTimer > 0.3f) return false;
+    
+    // Check if target is within range
+    Vec2 myPos = getcollider().position;
+    Vec2 targetPos = target->getposition();
+    
+    // Calculate distance between player and target
+    float distance = std::sqrt(
+        std::pow(targetPos.x - myPos.x, 2) + 
+        std::pow(targetPos.y - myPos.y, 2)
+    );
+    
+    // Check if target is within attack range
+    if (distance > attackRange) return false;
+    
+    // Check if target is in front of the player based on facing direction
+    Vec2 directionVector;
+    switch (dir) {
+        case FacingDirection::NORTH:
+            directionVector = Vec2(0, -1);
+            break;
+        case FacingDirection::SOUTH:
+            directionVector = Vec2(0, 1);
+            break;
+        case FacingDirection::EAST:
+            directionVector = Vec2(1, 0);
+            break;
+        case FacingDirection::WEST:
+            directionVector = Vec2(-1, 0);
+            break;
+        case FacingDirection::NORTH_EAST:
+            directionVector = Vec2(0.7f, -0.7f);
+            break;
+        case FacingDirection::NORTH_WEST:
+            directionVector = Vec2(-0.7f, -0.7f);
+            break;
+        case FacingDirection::SOUTH_EAST:
+            directionVector = Vec2(0.7f, 0.7f);
+            break;
+        case FacingDirection::SOUTH_WEST:
+            directionVector = Vec2(-0.7f, 0.7f);
+            break;
+        default:
+            directionVector = Vec2(0, 0);
+            break;
+    }
+    
+    // Calculate vector from player to target
+    Vec2 toTarget = Vec2(targetPos.x - myPos.x, targetPos.y - myPos.y);
+    if (toTarget.magnitude() > 0) {
+        toTarget.normalize();
+    }
+    
+    // Calculate dot product to determine if target is in front of player
+    float dotProduct = directionVector.x * toTarget.x + directionVector.y * toTarget.y;
+    
+    // Target is in front of player if dot product is positive (angle less than 90 degrees)
+    return dotProduct > 0.0f;
+}
+
+void Player::updateAnimationState() {
+
+    if(isAttackActive) {
+        setAnimationState(AnimationState::ATTACKING);
+        return;
+    }
+    if (isMoving()) {
+        setAnimationState(AnimationState::WALKING);
+    } else {
+        setAnimationState(AnimationState::IDLE);
+    }
+
+
+}
+
+bool Player::isMoving() const {
+    // Check if the player is moving based on velocity
+    Vec2 vel = getvelocity();
+
+    // Define an epsilon for floating point comparison
+    const float EPSILON = 0.001f;
+
+    // Compare with epsilon to handle floating-point precision issues
+    return (std::abs(vel.x) > EPSILON || std::abs(vel.y) > EPSILON);
+}
+
+void Player::accept(CollisionVisitor& visitor) {
+    visitor.visit(this);
 }
 
 void Player::takeDamage(int amount) {

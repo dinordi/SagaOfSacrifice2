@@ -721,6 +721,10 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_POSITION:
             processPlayerPosition(message.senderId, message);
             break;
+        case MessageType::ENEMY_STATE_UPDATE:
+            // Process player actions, including enemy state updates
+            processEnemyState(message.senderId, message);
+            break;
             
         case MessageType::CHAT:
             // Just relay chat messages to all clients
@@ -805,13 +809,34 @@ void EmbeddedServer::sendGameStateToClients() {
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
 
+        // Filter out dead enemies before serializing
+        std::vector<std::shared_ptr<Object>> liveObjects;
+        for (auto& obj : objects) {
+            // Skip null objects
+            if (!obj) {
+                continue;
+            }
+            
+            // If it's an enemy, check if it's dead
+            if (obj->type == ObjectType::MINOTAUR) {
+                Enemy* enemy = static_cast<Enemy*>(obj.get());
+                if (enemy->isDead()) {
+                    // Skip dead enemies
+                    continue;
+                }
+            }
+            
+            // Add this object to the list of live objects
+            liveObjects.push_back(obj);
+        }
+
         // 3) Serialize object count (2 bytes)
-        uint16_t count = static_cast<uint16_t>(objects.size());
+        uint16_t count = static_cast<uint16_t>(liveObjects.size());
         stateMsg.data.push_back(uint8_t(count >> 8));
         stateMsg.data.push_back(uint8_t(count & 0xFF));
 
         // 4) Serialize each object
-        for (auto& obj : objects) {
+        for (auto& obj : liveObjects) {
             if (!obj) {
                 std::cerr << "[EmbeddedServer] Warning: null object in level\n";
                 continue;
@@ -993,10 +1018,6 @@ void EmbeddedServer::processPlayerPosition(
         return;
     }
 
-    // std::cout << "[EmbeddedServer] Received direction: "
-    //             << dir << ", " << static_cast<int>(dir) << ", animation state: "
-    //             << animState << ", " << static_cast<int>(animState) << ", for player: " << playerId << std::endl;
-
     // 4) Update the player’s position and velocity
     BoxCollider* pColl = &player->getcollider();
     Vec2* posPtr = &pColl->position;
@@ -1006,6 +1027,111 @@ void EmbeddedServer::processPlayerPosition(
     player->setDir(dir);
     player->setAnimationState(animState);
 }
+
+
+void EmbeddedServer::processEnemyState(
+    const std::string& playerId,
+    const NetworkMessage& message
+) {
+    // Validate message data
+    if (message.data.empty()) {
+        std::cerr << "[EmbeddedServer] Invalid player action data: empty" << std::endl;
+        return;
+    }
+
+    size_t pos = 0; // Start after action type
+    
+    // Read enemy ID length
+    int idLength = message.data[pos++];
+
+    // Extract enemy ID
+    if (pos >= message.data.size()) {
+        std::cerr << "[EmbeddedServer] Invalid enemy ID in state update" << std::endl;
+        return;
+    }
+    
+    std::string enemyId(message.data.begin() + pos, message.data.begin() + pos + idLength);
+    pos += idLength; // Move position past the ID
+
+    // Read isDead flag (1 byte after the null terminator)
+    if (pos + 1 >= message.data.size()) {
+        std::cerr << "[EmbeddedServer] Missing isDead flag in enemy state update" << std::endl;
+        return;
+    }
+    bool isDead = message.data[pos++] != 0;
+    
+    int health;
+    // Read health (4 bytes)
+    memcpy(&health, message.data.data() + pos, sizeof(int));
+    pos += sizeof(int);
+    
+    std::cout << "[EmbeddedServer] Received enemy state update from " << playerId 
+                << " for enemy " << enemyId << ", isDead: " << (isDead ? "true" : "false") 
+                << ", health: " << health << std::endl;
+    
+    // Get the level and find the enemy
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    Level* level = levelManager_->getCurrentLevel();
+    if (!level) {
+        std::cerr << "[EmbeddedServer] No active level for enemy state update" << std::endl;
+        return;
+    }
+    
+    // Find the enemy by ID
+    auto objects = level->getObjects();
+    for (auto& obj : objects) {
+        if (obj && obj->type == ObjectType::MINOTAUR && obj->getObjID() == enemyId) {
+            Enemy* enemy = static_cast<Enemy*>(obj.get());
+            
+            // Update the enemy state
+            if (isDead) {
+                enemy->setHealth(0);  // Ensure health is set to 0 when dead
+                
+                // Broadcast this enemy state to all clients so everyone knows it's dead
+                NetworkMessage stateUpdateMsg;
+                stateUpdateMsg.type = MessageType::ENEMY_STATE_UPDATE;
+                stateUpdateMsg.senderId = "server";
+                
+                // Format same as client: [1 byte enemy ID length][enemy ID string][1 byte isDead][4 bytes health]
+                std::vector<uint8_t> data;
+                
+                // Add enemy ID length (1 byte)
+                data.push_back(static_cast<uint8_t>(enemyId.size()));
+                // Add enemy ID string
+                data.insert(data.end(), enemyId.begin(), enemyId.end());
+                
+                // Add isDead flag (true)
+                data.push_back(1);
+                
+                // Add health (0)
+                data.push_back(0);
+                data.push_back(0);
+                data.push_back(0);
+                data.push_back(0);
+                
+                stateUpdateMsg.data = data;
+                std::cout << "[EmbeddedServer] Broadcasting enemy state update for " 
+                            << enemyId << ", isDead: true, health: 0" << std::endl;
+                // Broadcast to all clients except the one who sent it
+                std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
+                for (auto& [clientId, sock] : clientSockets_) {
+                    if (clientId != playerId && sock && sock->is_open()) {
+                        sendToClient(sock, stateUpdateMsg);
+                    }
+                }
+            } else {
+                // Update health if not dead
+                enemy->setHealth(health);
+            }
+            
+            std::cout << "[EmbeddedServer] Updated enemy " << enemyId 
+                        << " state, isDead: " << (isDead ? "true" : "false") 
+                        << ", health: " << enemy->getHealth() << std::endl;
+            break;
+        }
+    }
+}
+
 
 
 NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {

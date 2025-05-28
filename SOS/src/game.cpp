@@ -111,12 +111,39 @@ void Game::update(float deltaTime) {
     switch(state)
     {
         case GameState::RUNNING:
+            // Check for and remove dead enemies
+            objects.erase(
+                std::remove_if(objects.begin(), objects.end(), 
+                    [this](const std::shared_ptr<Object>& obj) {
+                        if (obj && obj->type == ObjectType::MINOTAUR) {
+                            Enemy* enemy = static_cast<Enemy*>(obj.get());
+                            
+                            // If the enemy is dead, notify the server before removing it
+                            if (enemy && enemy->isDead()) {
+                                // Only notify if multiplayer is active
+                                if (multiplayerActive && multiplayerManager) {
+                                    multiplayerManager->sendEnemyStateUpdate(
+                                        enemy->getObjID(), 
+                                        true,  // isDead = true
+                                        0      // Health = 0
+                                    );
+                                }
+                                return true; // Remove this enemy
+                            }
+                        }
+                        return false;
+                    }
+                ), 
+                objects.end()
+            );
+            
+            // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
                     if(obj->getObjID() == player->getObjID()) {
                         continue; // Skip updating the local player
                     }
-                    // Update the player object
+                    // Update the object's animation
                     obj->updateAnimation(deltaTime * 1000);
                 }
             }
@@ -329,6 +356,39 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
+    
+    // Handle player attack hit registration
+    if (player->isAttacking()) {
+        // Check for enemies that may have been hit
+        for (auto& obj : objects) {
+            // Skip non-enemy objects
+            if (obj->type != ObjectType::MINOTAUR) continue;
+            
+            // Try to cast to Enemy pointer
+            Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
+            if (!enemy || enemy->isDead()) continue;
+            
+            // Check if the player's attack hits this enemy
+            if (player->checkAttackHit(obj.get())) {
+                // Deal damage to the enemy
+                int damageAmount = player->getAttackDamage();
+                enemy->takeDamage(damageAmount);
+                
+                // If the enemy died from this hit, notify the server immediately
+                if (enemy->isDead() && multiplayerActive && multiplayerManager) {
+                    multiplayerManager->sendEnemyStateUpdate(
+                        enemy->getObjID(), 
+                        true,  // isDead = true
+                        0      // Health = 0
+                    );
+                }
+                // Only hit each enemy once per attack (otherwise we'd hit every frame of the attack animation)
+                break;
+            }
+        }
+    }
+    
+    // Check for regular collisions (like with platforms)
     collisionManager->detectPlayerCollisions(objects, player);
 }
 

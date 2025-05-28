@@ -15,7 +15,7 @@ Enemy::Enemy(BoxCollider collider, std::string objID, ObjectType type) : Entity(
     currentState = EnemyState::IDLE;
     wanderTimer = 0.0f;
     wanderDirection = Vec2(0, 0);
-    isDead = false;
+    isDead_ = false;
     
     // std::cout << "Enemy created with ID: " << objID << " at position (" 
     //           << getcollider().position.x << ", " << getcollider().position.y << ")" << std::endl;
@@ -26,7 +26,7 @@ void Enemy::accept(CollisionVisitor& visitor) {
 }
 
 void Enemy::update(float deltaTime) {
-    if (isDead) return;
+    if (isDead_) return;
     
     // Decrease attack cooldown
     if (attackCooldown > 0) {
@@ -193,4 +193,17 @@ Vec2 Enemy::getDirectionToPlayer(std::shared_ptr<Player> player) {
     }
     
     return direction;
+}
+
+void Enemy::takeDamage(int amount) {
+    if (isDead_) return;
+    
+    health -= amount;
+    std::cout << "Enemy " << getObjID() << " took " << amount << " damage! Health: " << health << std::endl;
+    
+    if (health <= 0) {
+        std::cout << "Enemy " << getObjID() << " health depleted!" << std::endl;
+        currentState = EnemyState::DYING;
+        isDead_ = true;
+    }
 }

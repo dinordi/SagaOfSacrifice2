@@ -18,6 +18,13 @@ public:
     void collectItem();
     void applyPhysicsResponse(const Vec2& resolutionVector);
     
+    // Attack methods
+    void attack();
+    bool checkAttackHit(Object* target);
+    bool isAttacking() const { return isAttackActive; }
+    int getAttackDamage() const { return attackDamage; }
+    float getAttackRange() const { return attackRange; }
+    
 private:
     PlayerInput* input;
     // Define player animation states
@@ -26,7 +33,11 @@ private:
     bool isMoving() const;
     
     int health;
-    bool isAttacking;
+    bool isAttackActive;
     bool isJumping;
     float attackTimer;
+    
+    // Attack properties
+    int attackDamage = 20;
+    float attackRange = 100.0f;
 };

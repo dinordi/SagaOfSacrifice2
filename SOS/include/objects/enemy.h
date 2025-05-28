@@ -35,6 +35,13 @@ public:
     // Set the target player for the enemy to track
     void setTargetPlayer(std::shared_ptr<Player> player) { targetPlayer = player; }
 
+    // Take damage from player attacks
+    virtual void takeDamage(int amount);
+    bool isDead() const { return isDead_; }
+
+    void setHealth(int newHealth) { health = newHealth; }
+    int getHealth() const { return health; }
+
     // Virtual methods to be overridden by derived classes
     virtual void move() = 0; // Move the enemy
     virtual void attack() = 0; // Attack the player
@@ -47,7 +54,7 @@ protected:
     std::shared_ptr<Player> targetPlayer;
     float wanderTimer;
     Vec2 wanderDirection;
-    bool isDead;
+    bool isDead_;
 };
 
 #endif // ENEMY_H

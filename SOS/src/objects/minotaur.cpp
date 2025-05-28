@@ -118,13 +118,13 @@ void Minotaur::attack() {
 }
 
 void Minotaur::die() {
-    if (isDead) return;
+    if (isDead_) return;
     
     std::cout << "Minotaur is dying!" << std::endl;
     // Play death animation or effects here
     
     // Mark as dead
-    isDead = true;
+    isDead_ = true;
     
     // The minotaur object will be removed by the game's cleanup mechanism
 }
