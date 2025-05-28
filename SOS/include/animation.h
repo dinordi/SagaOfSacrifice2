@@ -87,6 +87,9 @@ struct AnimationDef {
 class AnimationController {
 public:
     AnimationController();
+
+    // Cleanup shared resources
+    static void cleanupSharedResources();
     
     void addSpriteSheet(const std::string& spriteSheetPath, AnimationState spriteState, uint32_t frameTime = 150);
 
