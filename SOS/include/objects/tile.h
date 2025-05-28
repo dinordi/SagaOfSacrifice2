@@ -31,4 +31,5 @@ public:
 private:
     uint32_t collisionFlags = 0;
     DEFINE_CONST_GETTER_SETTER(uint8_t, tileIndex);
+    DEFINE_CONST_GETTER_SETTER(std::string, tileMapName);
 };
