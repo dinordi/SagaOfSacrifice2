@@ -1027,6 +1027,11 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             for (int i = 0; i < 4; ++i) {
                 data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
             }
+            // Tilemap name length
+            const std::string& tileMapName = plat->gettileMapName();
+            data.push_back(static_cast<uint8_t>(tileMapName.size()));
+            // Tilemap name content
+            data.insert(data.end(), tileMapName.begin(), tileMapName.end());
             break;
         }
         case ObjectType::MINOTAUR: {

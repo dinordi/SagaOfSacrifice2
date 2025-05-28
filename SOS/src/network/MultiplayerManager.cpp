@@ -845,11 +845,16 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             static_cast<uint32_t>(data[pos]);
             pos += 4; // Move past the flags
             
+            // Tilemap name length
+            uint8_t tilemapNameLength = data[pos++];
+            std::string tilemapName(data.begin() + pos, data.begin() + pos + tilemapNameLength);
+            pos += tilemapNameLength; // Move past the tilemap name
+
             // Create new platform
             std::shared_ptr<Tile> platform = std::make_shared<Tile>(
                 posX, posY,
                 objectId,
-                "Tilemap_Flat", tileIndex, 64, 64, 12 // Default tile index and size
+                tilemapName, tileIndex, 64, 64, 12 // Default tile index and size
             );
 
             platform->setFlag(flags);
