@@ -485,14 +485,6 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 break;
             }
             case ObjectType::TILE: { // Platform
-                // Read platform width and height (2 floats, 8 bytes total)
-                if (pos + 8 > gameStateData.size()) break;
-                
-                // float width, height;
-                // std::memcpy(&width, &gameStateData[pos], sizeof(float));
-                // pos += sizeof(float);
-                // std::memcpy(&height, &gameStateData[pos], sizeof(float));
-                // pos += sizeof(float);
 
                 // Read tile index (1 byte)
                 if (pos >= gameStateData.size()) break;
@@ -501,7 +493,8 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
                 uint8_t tilemapNameLength = gameStateData[pos++];
                 std::string spritemapName(gameStateData.begin() + pos, 
                                           gameStateData.begin() + pos + tilemapNameLength); // Assuming fixed length for tilemap name
-
+                pos += tilemapNameLength;
+                
                 if (pos >= gameStateData.size()) break;
                 uint32_t flags;
                 std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));

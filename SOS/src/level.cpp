@@ -97,7 +97,15 @@ if(levelData.contains("layers")) {
                                                       tileset, tileId, tileWidth, tileHeight, 0);
                     
                         std::cout << "Tile ID: " << tileId << ", Tileset: " << tileset << std::endl;
+
+                    if(tileset != "Grasstileset")
+                    {
                         tile->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
+                    }
+                    else
+                    {
+                        
+                    }
                         
                     
                     // Add to level objects

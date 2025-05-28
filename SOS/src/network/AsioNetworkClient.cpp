@@ -241,7 +241,7 @@ void AsioNetworkClient::startRead() {
 
                 // Sanity check for message size
                 if (header->size <= 0 || header->size >= max_buffer_size) {
-                    std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
+                    // std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
                     startRead(); // Restart reading
                     return;
                 }

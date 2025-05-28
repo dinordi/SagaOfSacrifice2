@@ -518,12 +518,15 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // Add the message body after the header
         std::memcpy(complete_message.data() + sizeof(header), buffer.data(), buffer.size());
         
-        // std::cout << "[EmbeddedServer] Sending message to client - Type: " 
-        //           << static_cast<int>(message.type) 
-        //           << ", Sender ID: " << message.senderId 
-        //           << ", Data size: " << message.data.size() 
-        //           << " bytes, Total size: " << complete_message.size() 
-        //           << " bytes" << std::endl;
+        if(message.type == MessageType::GAME_STATE)
+        {
+            std::cout << "[EmbeddedServer] Sending message to client - Type: " 
+                      << static_cast<int>(message.type) 
+                      << ", Sender ID: " << message.senderId 
+                      << ", Data size: " << message.data.size() 
+                      << " bytes, Total size: " << complete_message.size() 
+                      << " bytes" << std::endl;
+        }
 
         // Store the buffer to keep it alive
         {
@@ -809,6 +812,8 @@ void EmbeddedServer::sendGameStateToClients() {
         uint16_t count = static_cast<uint16_t>(objects.size());
         stateMsg.data.push_back(uint8_t(count >> 8));
         stateMsg.data.push_back(uint8_t(count & 0xFF));
+        std::cout << "[EmbeddedServer] Serializing " << count 
+                  << " objects for game state update" << std::endl;
 
         // 4) Serialize each object
         for (auto& obj : objects) {
@@ -850,10 +855,12 @@ void EmbeddedServer::sendGameStateToClients() {
                     // writeFloat(plat->getCurrentSpriteData()->width);
                     // writeFloat(plat->getCurrentSpriteData()->height);
                     stateMsg.data.push_back(plat->gettileIndex());
-                    stateMsg.data.push_back(plat->gettileMapName().size());
-                    stateMsg.data.insert(stateMsg.data.end(), 
-                                         plat->gettileMapName().begin(), 
-                                         plat->gettileMapName().end());
+                    
+                    // Serialize the tilemap name
+                    const std::string& tilemapset = plat->gettileMapName();
+                    stateMsg.data.push_back(uint8_t(tilemapset.size()));
+                    stateMsg.data.insert(stateMsg.data.end(), tilemapset.begin(), tilemapset.end());
+
                     //send flags uint32_t
                     for (int i = 0; i < 4; ++i) {
                         stateMsg.data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
