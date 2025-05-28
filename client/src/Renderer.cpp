@@ -11,9 +11,6 @@
 
 #define MAX_SPRITE_WIDTH 512
 #define MAX_SPRITE_HEIGHT 512
-#define MAX_SPRITE_PIXELS (MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT)
-
-uint32_t sprite_data[MAX_SPRITE_PIXELS];
 
 Renderer::Renderer(const std::string& img_path)
     : stop_thread(false),
@@ -28,7 +25,7 @@ Renderer::Renderer(const std::string& img_path)
 void Renderer::loadSprite(const std::string& img_path) {
     SpriteLoader spriteLoader;
 
-    uint32_t sprite_data[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT] = {0};
+    uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT]{};
 
     int width = 0, height = 0;
     size_t sprite_size = 0;
@@ -49,6 +46,8 @@ void Renderer::loadSprite(const std::string& img_path) {
         throw std::runtime_error("Failed to map sprite to memory");
     }
 
+    delete[] sprite_data;
+    
     std::cout << "Sprite mapped to physical memory: 0x"
               << std::hex << phys_addr << std::dec << std::endl;
 }
