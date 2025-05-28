@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NetworkMessage.h"
+#include "network/DeltaState.h"
 #include <map>
 #include <memory>
 #include <string>
@@ -74,6 +75,9 @@ private:
     void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
+    void sendPartialGameState(const std::vector<std::shared_ptr<Object>>& objects, 
+                              size_t startIndex, size_t count, 
+                              bool isFirstPacket, bool isLastPacket);
     
     // Process player input message
     void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
@@ -111,6 +115,12 @@ private:
     
     // Last update time for delta calculation
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime_;
+    
+    // Delta state tracking
+    DeltaStateTracker deltaTracker_;
+    
+    // Maximum game state packet size (to avoid overflow)
+    static constexpr size_t MAX_GAMESTATE_PACKET_SIZE = 1024 * 8; // 8 KB
 };
 
 

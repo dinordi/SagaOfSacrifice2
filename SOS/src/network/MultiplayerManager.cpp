@@ -112,7 +112,8 @@ MultiplayerManager::MultiplayerManager()
       playerInput_(nullptr),
       lastUpdateTime_(0),
       lastSentInputTime_(0.0f),
-      inputSequenceNumber_(0) {
+      inputSequenceNumber_(0),
+      partialGameState_(nullptr) {
     // Create the network interface
     network_ = std::make_unique<AsioNetworkClient>();
     std::filesystem::path base = std::filesystem::current_path();
@@ -204,6 +205,19 @@ void MultiplayerManager::update(float deltaTime) {
     
     static uint64_t lastUpdateTime = 0;
     lastUpdateTime += static_cast<uint64_t>(deltaTime*1000);  // Convert to milliseconds
+
+    // Check for timed-out partial game state updates
+    if (partialGameState_) {
+        auto now = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
+            now - partialGameState_->lastUpdateTime).count();
+        
+        // If we haven't received an update for more than 2 seconds, abandon this partial state
+        if (elapsed > 2) {
+            std::cerr << "[Client] Abandoning stale partial game state update" << std::endl;
+            partialGameState_.reset();
+        }
+    }
 
     // Update all remote players
     for (auto& pair : remotePlayers_) {
@@ -317,6 +331,14 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
         case MessageType::GAME_STATE:
             handleGameStateMessage(message);
             break;
+        case MessageType::GAME_STATE_DELTA:
+            // Handle delta game state updates
+            processGameStateDelta(message.data);
+            break;
+        case MessageType::GAME_STATE_PART:
+            // Handle part of a multi-packet game state update
+            processGameStatePart(message.data);
+            break;
         case MessageType::CHAT_MESSAGE:
             handleChatMessage(message);
             break;
@@ -345,6 +367,11 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
         it = remotePlayers_.emplace(message.senderId, std::move(newPlayer)).first;
     }
     
+    if(it->second->getObjID() == playerId_) {
+        // If this is our own player, skip processing
+        return;
+    }
+
     // Get pointer to remote player
     RemotePlayer* remotePlayer = it->second.get();
     
@@ -396,8 +423,28 @@ void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
         return;
     }
     
-    // Parse the game state data
-    processGameState(message.data);
+    // We now have different types of game state messages
+    switch (message.type) {
+        case MessageType::GAME_STATE:
+            // Original full game state
+            processGameState(message.data);
+            break;
+            
+        case MessageType::GAME_STATE_DELTA:
+            // Delta game state (only changed objects)
+            processGameStateDelta(message.data);
+            break;
+            
+        case MessageType::GAME_STATE_PART:
+            // Part of a multi-packet game state update
+            processGameStatePart(message.data);
+            break;
+            
+        default:
+            std::cerr << "[Client] Unknown game state message type: " << 
+                static_cast<int>(message.type) << std::endl;
+            break;
+    }
 }
 
 void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateData) {
@@ -574,27 +621,321 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         }
 }
 
-// Returns true if the position was updated successfully, false if the object was not found
-std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
-    // Update the position of a specific entity
-    Game* game = Game::getInstance();
-    if (!game) {
-        std::cerr << "[Client] Game instance not found" << std::endl;
-        return nullptr;
+void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameStateData) {
+    if (gameStateData.size() < 2) {
+        std::cerr << "[Client] Invalid delta game state data received" << std::endl;
+        return;
     }
-    auto& objects = game->getObjects();
-    for (auto& obj : objects) {
-        if (obj->getObjID() == objectId) {
-            // std::cout << "[Client] Updating position of object: " << objectId 
-            //           << " to " << position.x << "," << position.y 
-            //           << " with velocity: " << velocity.x << "," << velocity.y << std::endl;
-            // Update the object's position and velocity
-            obj->setcollider(BoxCollider(position, obj->getcollider().size));
-            obj->setvelocity(velocity);
-            return obj; // Successfully updated
+    
+    // The first 2 bytes contain the object count
+    uint16_t objectCount = (static_cast<uint16_t>(gameStateData[0]) << 8) | 
+                           static_cast<uint16_t>(gameStateData[1]);
+    
+    // If it's 0, this is just a heartbeat message with no changes
+    if (objectCount == 0) {
+        return;
+    }
+    
+    // std::cout << "[Client] Processing delta game state with " << objectCount 
+    //           << " changed objects" << std::endl;
+    
+    // The rest of the processing is the same as processGameState
+    // We're only receiving changed objects, so the processing logic remains the same
+    
+    // Current position in the data stream
+    size_t pos = 2;
+    
+    // Track objects we've seen
+    std::map<std::string, bool> objectsSeen;
+    std::vector<std::shared_ptr<Object>> newObjects;
+    
+    // Process each object
+    for (uint16_t i = 0; i < objectCount && pos < gameStateData.size(); i++) {
+        // Read object type
+        if (pos >= gameStateData.size()) break;
+        uint8_t objectType = gameStateData[pos++];
+        
+        // Read object ID length
+        if (pos >= gameStateData.size()) break;
+        uint8_t idLength = gameStateData[pos++];
+        
+        // Read object ID
+        if (pos + idLength > gameStateData.size()) break;
+        std::string objectId(gameStateData.begin() + pos, gameStateData.begin() + pos + idLength);
+        pos += idLength;
+        // std::cout << "[Client] Processing delta object ID: " << objectId 
+        //           << " of type: " << static_cast<int>(objectType) << std::endl;
+        
+        // Read position and velocity (4 floats, 16 bytes total)
+        if (pos + 16 > gameStateData.size()) break;
+        
+        float posX, posY, velX, velY;
+        std::memcpy(&posX, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&posY, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&velX, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        std::memcpy(&velY, &gameStateData[pos], sizeof(float));
+        pos += sizeof(float);
+        
+        // Mark this object as seen
+        objectsSeen[objectId] = true;
+        
+        // Process based on object type
+        switch (static_cast<ObjectType>(objectType)) {
+            case ObjectType::PLAYER: {
+                // Same as in processGameState
+                auto it = remotePlayers_.find(objectId);
+                if (it == remotePlayers_.end()) {
+                    // Create new remote player
+                    auto newPlayer = std::make_unique<RemotePlayer>(objectId);
+                    it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
+                    std::cout << "[Client] Created new remote player: " << objectId << std::endl;
+                }
+
+                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
+                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
+                
+                // Update remote player state
+                RemotePlayer* player = it->second.get();
+                
+                player->setDir(dir);
+                player->setAnimationState(state);
+                player->setTargetPosition(Vec2(posX, posY));
+                player->setTargetVelocity(Vec2(velX, velY));
+                player->resetInterpolation();
+                break;
+            }
+            case ObjectType::TILE: {
+                // Same as in processGameState
+                // Read tile index (1 byte)
+                if (pos >= gameStateData.size()) break;
+                uint8_t tileIndex = gameStateData[pos++];
+
+                if (pos >= gameStateData.size()) break;
+                uint32_t flags;
+                std::memcpy(&flags, &gameStateData[pos], sizeof(uint32_t));
+                pos += sizeof(uint32_t);
+                
+                // Check if we need to create a new platform object
+                bool found = false;
+                
+                // Let the Game class handle object management
+                if (Game* game = Game::getInstance()) {
+                    // Check if the platform already exists
+                    auto& objects = game->getObjects();
+                    for (auto& obj : objects) {
+                        if (obj->getObjID() == objectId) {
+                            // Update existing platform
+                            obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
+                            obj->setvelocity(Vec2(velX, velY));
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!found) {
+                        // Create new platform
+                        std::shared_ptr<Tile> platform = std::make_shared<Tile>(
+                            posX, posY,
+                            objectId,
+                            "Tilemap_Flat", tileIndex, 64, 64, 12
+                        );
+                        platform->setupAnimations(atlasBasePath_);
+                        platform->setFlag(flags);
+                        newObjects.push_back(platform);
+                    }
+                }
+                break;
+            }
+            case ObjectType::MINOTAUR: {
+                // Same as in processGameState
+                AnimationState state = static_cast<AnimationState>(gameStateData[pos++]);
+                FacingDirection dir = static_cast<FacingDirection>(gameStateData[pos++]);
+
+                std::shared_ptr<Object> existingObject = updateEntityPosition(objectId, Vec2(posX, posY), Vec2(velX, velY));
+                if (existingObject == nullptr) {
+                    // Create new entity
+                    auto newEntity = std::make_shared<Minotaur>(posX, posY, objectId);
+                    newEntity->setupAnimations(atlasBasePath_);
+                    newEntity->setDir(dir);
+                    newEntity->setAnimationState(state);
+                    newEntity->setvelocity(Vec2(velX, velY));
+                    newObjects.push_back(newEntity);
+                }
+                else
+                {
+                    Minotaur* existingMinotaur = static_cast<Minotaur*>(existingObject.get());
+                    existingMinotaur->setDir(dir);
+                    existingMinotaur->setAnimationState(state);
+                }
+                break;
+            }
+            default:
+                std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
+                break;
         }
     }
-    return nullptr;
+    
+    // Add any new objects to the game
+    if (Game* game = Game::getInstance()) {
+        for (auto& obj : newObjects) {
+            game->addObject(obj);
+        }
+    }
+}
+
+void MultiplayerManager::processGameStatePart(const std::vector<uint8_t>& gameStateData) {
+    if (gameStateData.size() < 7) {
+        std::cerr << "[Client] Invalid partial game state data received (too small)" << std::endl;
+        return;
+    }
+    
+    // Parse metadata
+    // First byte: flags (isFirst | isLast)
+    uint8_t flags = gameStateData[0];
+    bool isFirstPacket = (flags & 0x01) != 0;
+    bool isLastPacket = (flags & 0x02) != 0;
+    
+    // Next 2 bytes: total object count
+    uint16_t totalObjectCount = (static_cast<uint16_t>(gameStateData[1]) << 8) | 
+                                static_cast<uint16_t>(gameStateData[2]);
+    
+    // Next 2 bytes: start index
+    uint16_t startIndex = (static_cast<uint16_t>(gameStateData[3]) << 8) | 
+                          static_cast<uint16_t>(gameStateData[4]);
+    
+    // Next 2 bytes: object count in this packet
+    uint16_t packetObjectCount = (static_cast<uint16_t>(gameStateData[5]) << 8) | 
+                                 static_cast<uint16_t>(gameStateData[6]);
+    
+    std::cout << "[Client] Received game state part: " 
+              << (isFirstPacket ? "first " : "")
+              << (isLastPacket ? "last " : "")
+              << "packet with " << packetObjectCount 
+              << " objects (total: " << totalObjectCount 
+              << ", starting at index: " << startIndex << ")" << std::endl;
+    
+    // If this is the first packet, initialize our partial state storage
+    if (isFirstPacket) {
+        partialGameState_ = std::make_unique<PartialGameState>();
+        partialGameState_->totalObjectCount = totalObjectCount;
+        partialGameState_->complete = false;
+        partialGameState_->parts.clear();
+        partialGameState_->lastUpdateTime = std::chrono::steady_clock::now();
+    }
+    
+    // If we don't have an active partial state or the object count doesn't match,
+    // something is wrong - reset and wait for the next full update
+    if (!partialGameState_ || partialGameState_->totalObjectCount != totalObjectCount) {
+        std::cerr << "[Client] Received partial game state but no valid state accumulator exists" << std::endl;
+        partialGameState_.reset();
+        return;
+    }
+    
+    // Reset timeout
+    partialGameState_->lastUpdateTime = std::chrono::steady_clock::now();
+    
+    // Store this part (we store just the object data part, skipping the header)
+    std::vector<uint8_t> objectData(gameStateData.begin() + 7, gameStateData.end());
+    
+    // Make sure we have room for this part
+    if (startIndex >= partialGameState_->parts.size()) {
+        partialGameState_->parts.resize(startIndex + 1);
+    }
+    
+    // Store the part
+    partialGameState_->parts[startIndex] = objectData;
+    
+    // If this is the last packet, process the complete state
+    if (isLastPacket) {
+        partialGameState_->complete = true;
+        
+        // Check if we have all parts
+        bool allPartsReceived = true;
+        for (size_t i = 0; i < partialGameState_->parts.size(); i++) {
+            if (partialGameState_->parts[i].empty()) {
+                std::cerr << "[Client] Missing part " << i << " of game state update" << std::endl;
+                allPartsReceived = false;
+                break;
+            }
+        }
+        
+        if (allPartsReceived) {
+            // Combine all parts into a single game state
+            std::vector<uint8_t> completeState;
+            
+            // Add total object count
+            completeState.push_back(static_cast<uint8_t>(totalObjectCount >> 8));
+            completeState.push_back(static_cast<uint8_t>(totalObjectCount & 0xFF));
+            
+            // Add all object data
+            for (const auto& part : partialGameState_->parts) {
+                completeState.insert(completeState.end(), part.begin(), part.end());
+            }
+            
+            // Process the complete state
+            processGameState(completeState);
+            
+            // Clear the partial state
+            partialGameState_.reset();
+        }
+    }
+    
+    // Check for timed-out partial game state updates
+    if (partialGameState_) {
+        auto now = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
+            now - partialGameState_->lastUpdateTime).count();
+        
+        // If we haven't received an update for more than 2 seconds, abandon this partial state
+        if (elapsed > 2) {
+            std::cerr << "[Client] Abandoning stale partial game state update" << std::endl;
+            partialGameState_.reset();
+        }
+    }
+    
+    // Update all remote players
+    // for (auto& pair : remotePlayers_) {
+    //     if(pair.second->getObjID() == playerId_) {
+    //         // Skip updating the local player
+    //         continue;
+    //     }
+    //     pair.second->update(deltaTime);
+    // }
+}
+
+void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
+    // Extract chat message from data
+    std::string chatText(message.data.begin(), message.data.end());
+    
+    // Call the chat handler if set
+    if (chatHandler_) {
+        chatHandler_(message.senderId, chatText);
+    }
+}
+
+std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput* input) {
+    std::vector<uint8_t> data;
+    
+    // For now we just use a simple bit field to represent input state
+    uint8_t inputBits = 0;
+    
+    if (input->get_left()) inputBits |= 0x01;
+    if (input->get_right()) inputBits |= 0x02;
+    if (input->get_up()) inputBits |= 0x04;
+    if (input->get_down()) inputBits |= 0x08;
+    if (input->get_attack()) inputBits |= 0x10;
+    
+    // Add the input bits to the data
+    data.push_back(inputBits);
+    
+    // Add sequence number (useful for client-side prediction)
+    data.push_back(static_cast<uint8_t>((inputSequenceNumber_ >> 8) & 0xFF));
+    data.push_back(static_cast<uint8_t>(inputSequenceNumber_ & 0xFF));
+    
+    return data;
 }
 
 std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* player) {
@@ -622,101 +963,82 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     return data;
 }
 
+std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
+    // Update the position of a specific entity
+    Game* game = Game::getInstance();
+    if (!game) {
+        std::cerr << "[Client] Game instance not found" << std::endl;
+        return nullptr;
+    }
+    
+    auto& objects = game->getObjects();
+    for (auto& obj : objects) {
+        if (obj->getObjID() == objectId) {
+            // Update the object's position and velocity
+            obj->setcollider(BoxCollider(position, obj->getcollider().size));
+            obj->setvelocity(velocity);
+            return obj; // Successfully updated
+        }
+    }
+    
+    return nullptr; // Object not found
+}
+
 void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player) {
-    if (data.size() < 16) {
-        std::cerr << "Invalid player state data size" << std::endl;
+    if (data.size() < 18) { // 16 bytes for position/velocity + 2 bytes for state/dir
+        std::cerr << "[Client] Invalid player state data size: " << data.size() << std::endl;
         return;
     }
     
     // Extract position
-    Vec2 pos;
-    std::memcpy(&pos.x, &data[0], sizeof(float));
-    std::memcpy(&pos.y, &data[4], sizeof(float));
+    float posX, posY;
+    std::memcpy(&posX, &data[0], sizeof(float));
+    std::memcpy(&posY, &data[4], sizeof(float));
     
     // Extract velocity
-    Vec2 vel;
-    std::memcpy(&vel.x, &data[8], sizeof(float));
-    std::memcpy(&vel.y, &data[12], sizeof(float));
+    float velX, velY;
+    std::memcpy(&velX, &data[8], sizeof(float));
+    std::memcpy(&velY, &data[12], sizeof(float));
     
-    // Update player state
-    player->setcollider(BoxCollider(pos, player->getcollider().size));
-    player->setvelocity(vel);
-}
-
-std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput* input) {
-    std::vector<uint8_t> data;
+    // Extract direction and animation state
+    FacingDirection dir = static_cast<FacingDirection>(data[16]);
+    AnimationState animState = static_cast<AnimationState>(data[17]);
     
-    // Need to cast away const because PlayerInput getters aren't const methods
-    PlayerInput* nonConstInput = const_cast<PlayerInput*>(input);
-    
-    uint8_t inputState = 0;
-    if (nonConstInput->get_left()) inputState |= 1;
-    if (nonConstInput->get_right()) inputState |= 2;
-    if (nonConstInput->get_up()) inputState |= 4;
-    if (nonConstInput->get_down()) inputState |= 8;
-    if (nonConstInput->get_attack()) inputState |= 16;
-    
-    // Add input state
-    data.push_back(inputState);
-    
-    // Add sequence number (32-bit)
-    data.push_back((inputSequenceNumber_ >> 24) & 0xFF);
-    data.push_back((inputSequenceNumber_ >> 16) & 0xFF);
-    data.push_back((inputSequenceNumber_ >> 8) & 0xFF);
-    data.push_back(inputSequenceNumber_ & 0xFF);
-    
-    return data;
-}
-
-void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
-    // Extract the chat message from the data
-    std::string chatMessage(message.data.begin(), message.data.end());
-    std::cout << "[Client] Received chat message from " << message.senderId << ": " << chatMessage << std::endl;
-    
-    // If we have a chat handler registered, call it
-    if (chatHandler_) {
-        chatHandler_(message.senderId, chatMessage);
-    }
+    // Update the remote player
+    player->setDir(dir);
+    player->setAnimationState(animState);
+    player->setTargetPosition(Vec2(posX, posY));
+    player->setTargetVelocity(Vec2(velX, velY));
+    player->resetInterpolation();
 }
 
 void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
-    std::cout << "[Client] Received player connect message from " << message.senderId << std::endl;
-    // A new player has connected, extract the player info from the message
-    std::string playerId = message.senderId;
-    std::string playerInfo;
+    // Extract player name from data
+    std::string playerName(message.data.begin(), message.data.end());
     
-    if (!message.data.empty()) {
-        playerInfo = std::string(message.data.begin(), message.data.end());
-    }
+    std::cout << "[Client] Player connected: " << message.senderId 
+              << " (" << playerName << ")" << std::endl;
     
-    std::cout << "[Client] New player connected: " << playerId << " - " << playerInfo << std::endl;
-    
-    // Check if this player is already known
-    if (remotePlayers_.find(playerId) != remotePlayers_.end()) {
-        std::cout << "[Client] Player " << playerId << " already exists, not creating a new remote player" << std::endl;
+    // Don't create a remote player for ourselves
+    if (message.senderId == playerId_) {
         return;
     }
     
     // Create a new remote player
-    auto newPlayer = std::make_unique<RemotePlayer>(playerId);
-    remotePlayers_.emplace(playerId, std::move(newPlayer));
-    
-    // Notify any listeners about the new player (e.g., UI updates)
-    if (chatHandler_) {
-        chatHandler_("SYSTEM", "Player " + playerId + " joined the game");
+    auto it = remotePlayers_.find(message.senderId);
+    if (it == remotePlayers_.end()) {
+        remotePlayers_[message.senderId] = std::make_unique<RemotePlayer>(message.senderId);
+        std::cout << "[Client] Created new remote player: " << message.senderId << std::endl;
     }
 }
 
 void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& message) {
-    // A player has disconnected
-    std::string playerId = message.senderId;
-    std::cout << "[Client] Player disconnected: " << playerId << std::endl;
+    std::cout << "[Client] Player disconnected: " << message.senderId << std::endl;
     
-    // Remove the player from our collection of remote players
-    remotePlayers_.erase(playerId);
-    
-    // Notify any listeners about the player leaving
-    if (chatHandler_) {
-        chatHandler_("SYSTEM", "Player " + playerId + " left the game");
+    // Remove the remote player
+    auto it = remotePlayers_.find(message.senderId);
+    if (it != remotePlayers_.end()) {
+        remotePlayers_.erase(it);
+        std::cout << "[Client] Removed remote player: " << message.senderId << std::endl;
     }
 }

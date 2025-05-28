@@ -6,10 +6,10 @@ private:                                   \
     type member;                           \
     type last_##member;                    \
 public:                                    \
-    type& get_##member() { return member; } \
+    const type& get_##member() const { return member; } \
     void set_##member(const type& value) { member = value; } \
     void set_last_##member(const type& value) { last_##member = value; } \
-    type get_last_##member() { return last_##member; } \
+    type get_last_##member() const { return last_##member; } \
 
 
 class PlayerInput {

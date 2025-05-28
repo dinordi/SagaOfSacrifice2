@@ -56,6 +56,12 @@ public:
     
     // Process game state update from server
     void processGameState(const std::vector<uint8_t>& gameStateData);
+    
+    // Process delta game state update (only changed objects)
+    void processGameStateDelta(const std::vector<uint8_t>& gameStateData);
+    
+    // Process part of a multi-packet game state update
+    void processGameStatePart(const std::vector<uint8_t>& gameStateData);
 
 private:
     // Handle network messages received from the server
@@ -105,6 +111,15 @@ private:
 
     //Base path for atlas
     std::filesystem::path atlasBasePath_;
+
+    // Multi-part game state handling
+    struct PartialGameState {
+        std::vector<std::vector<uint8_t>> parts;
+        uint16_t totalObjectCount;
+        bool complete;
+        std::chrono::steady_clock::time_point lastUpdateTime;
+    };
+    std::unique_ptr<PartialGameState> partialGameState_;
 };
 
 // RemotePlayer class to represent other players in the game
