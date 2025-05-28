@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 
 // Forward declaration
 class RemotePlayer;
@@ -114,9 +115,10 @@ private:
 
     // Multi-part game state handling
     struct PartialGameState {
-        std::vector<std::vector<uint8_t>> parts;
         uint16_t totalObjectCount;
         bool complete;
+        std::vector<std::vector<uint8_t>> parts;
+        std::vector<uint16_t> packetIndices;  // Add this line
         std::chrono::steady_clock::time_point lastUpdateTime;
     };
     std::unique_ptr<PartialGameState> partialGameState_;

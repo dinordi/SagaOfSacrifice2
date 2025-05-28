@@ -903,57 +903,7 @@ void EmbeddedServer::sendGameStateToClients() {
         
         // Serialize each object
         for (auto& obj : objectsToSend) {
-            if (!obj) {
-                continue;
-            }
-            
-            // a) Type
-            stateMsg.data.push_back(static_cast<uint8_t>(obj->type));
-            
-            // b) ID
-            const std::string& id = obj->getObjID();
-            stateMsg.data.push_back(uint8_t(id.size()));
-            stateMsg.data.insert(stateMsg.data.end(), id.begin(), id.end());
-            
-            // c) Position & Velocity
-            auto writeFloat = [&](float v) {
-                uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
-                for (size_t i = 0; i < sizeof(float); ++i)
-                    stateMsg.data.push_back(bytes[i]);
-            };
-            
-            const Vec2& p = obj->getposition();
-            const Vec2& v = obj->getvelocity();
-            writeFloat(p.x);
-            writeFloat(p.y);
-            writeFloat(v.x);
-            writeFloat(v.y);
-            
-            // Extra fields for specific object types
-            switch(obj->type) {
-                case ObjectType::TILE: {
-                    auto* plat = static_cast<Tile*>(obj.get());
-                    stateMsg.data.push_back(plat->gettileIndex());
-                    for (int i = 0; i < 4; ++i) {
-                        stateMsg.data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
-                    }
-                    break;
-                }
-                case ObjectType::MINOTAUR: {
-                    auto* mino = static_cast<Minotaur*>(obj.get());
-                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
-                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
-                    break;
-                }
-                case ObjectType::PLAYER: {
-                    auto* player = static_cast<Player*>(obj.get());
-                    stateMsg.data.push_back(static_cast<uint8_t>(player->getAnimationState()));
-                    stateMsg.data.push_back(static_cast<uint8_t>(player->getDir()));
-                    break;
-                }
-                default:
-                    break;
-            }
+            serializeObject(obj, stateMsg.data);
         }
         
         // Broadcast to all clients
@@ -1016,56 +966,7 @@ void EmbeddedServer::sendPartialGameState(
     
     // Serialize each object in this range
     for (size_t i = startIndex; i < startIndex + count && i < objects.size(); i++) {
-        auto& obj = objects[i];
-        if (!obj) continue;
-        
-        // a) Type
-        partMsg.data.push_back(static_cast<uint8_t>(obj->type));
-        
-        // b) ID
-        const std::string& id = obj->getObjID();
-        partMsg.data.push_back(uint8_t(id.size()));
-        partMsg.data.insert(partMsg.data.end(), id.begin(), id.end());
-        
-        // c) Position & Velocity
-        auto writeFloat = [&](float v) {
-            uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
-            for (size_t i = 0; i < sizeof(float); ++i)
-                partMsg.data.push_back(bytes[i]);
-        };
-        
-        const Vec2& p = obj->getposition();
-        const Vec2& v = obj->getvelocity();
-        writeFloat(p.x);
-        writeFloat(p.y);
-        writeFloat(v.x);
-        writeFloat(v.y);
-        
-        // Extra fields for specific object types
-        switch(obj->type) {
-            case ObjectType::TILE: {
-                auto* plat = static_cast<Tile*>(obj.get());
-                partMsg.data.push_back(plat->gettileIndex());
-                for (int i = 0; i < 4; ++i) {
-                    partMsg.data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
-                }
-                break;
-            }
-            case ObjectType::MINOTAUR: {
-                auto* mino = static_cast<Minotaur*>(obj.get());
-                partMsg.data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
-                partMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
-                break;
-            }
-            case ObjectType::PLAYER: {
-                auto* player = static_cast<Player*>(obj.get());
-                partMsg.data.push_back(static_cast<uint8_t>(player->getAnimationState()));
-                partMsg.data.push_back(static_cast<uint8_t>(player->getDir()));
-                break;
-            }
-            default:
-                break;
-        }
+        serializeObject(objects[i], partMsg.data);
     }
     
     // Broadcast to all clients
@@ -1085,5 +986,62 @@ void EmbeddedServer::sendPartialGameState(
     // Fire callback if needed
     if (messageCallback_) {
         messageCallback_(partMsg);
+    }
+}
+
+void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data) {
+
+    Object* obj = object.get();
+    if (!obj) {
+        std::cerr << "[EmbeddedServer] Error: Attempted to serialize a null object" << std::endl;
+        return; // Return empty data if object is null
+    }
+    
+    // a) Type
+    data.push_back(static_cast<uint8_t>(obj->type));
+    
+    // b) ID
+    const std::string& id = obj->getObjID();
+    data.push_back(static_cast<uint8_t>(id.size()));
+    data.insert(data.end(), id.begin(), id.end());
+    
+    // c) Position & Velocity
+    auto writeFloat = [&](float v) {
+        uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
+        for (size_t i = 0; i < sizeof(float); ++i)
+            data.push_back(bytes[i]);
+    };
+    
+    const Vec2& p = obj->getposition();
+    const Vec2& v = obj->getvelocity();
+    writeFloat(p.x);
+    writeFloat(p.y);
+    writeFloat(v.x);
+    writeFloat(v.y);
+    
+    // Extra fields for specific object types
+    switch(obj->type) {
+        case ObjectType::TILE: {
+            auto* plat = static_cast<Tile*>(obj);
+            data.push_back(plat->gettileIndex());
+            for (int i = 0; i < 4; ++i) {
+                data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
+            }
+            break;
+        }
+        case ObjectType::MINOTAUR: {
+            auto* mino = static_cast<Minotaur*>(obj);
+            data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
+            data.push_back(static_cast<uint8_t>(mino->getDir()));
+            break;
+        }
+        case ObjectType::PLAYER: {
+            auto* player = static_cast<Player*>(obj);
+            data.push_back(static_cast<uint8_t>(player->getAnimationState()));
+            data.push_back(static_cast<uint8_t>(player->getDir()));
+            break;
+        }
+        default:
+            break;
     }
 }

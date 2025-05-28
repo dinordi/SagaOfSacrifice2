@@ -69,6 +69,7 @@ private:
                      const NetworkMessage& message);
     // Deserialize message from binary data
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId);
+    void serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data);
 
     // Game logic methods
     void createInitialGameObjects();
@@ -120,7 +121,7 @@ private:
     DeltaStateTracker deltaTracker_;
     
     // Maximum game state packet size (to avoid overflow)
-    static constexpr size_t MAX_GAMESTATE_PACKET_SIZE = 1024 * 8; // 8 KB
+    static constexpr size_t MAX_GAMESTATE_PACKET_SIZE = 1024 * 4; // 4 KB
 };
 
 

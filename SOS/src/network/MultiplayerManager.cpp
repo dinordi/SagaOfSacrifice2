@@ -822,6 +822,7 @@ void MultiplayerManager::processGameStatePart(const std::vector<uint8_t>& gameSt
         partialGameState_ = std::make_unique<PartialGameState>();
         partialGameState_->totalObjectCount = totalObjectCount;
         partialGameState_->complete = false;
+        partialGameState_->packetIndices.clear();
         partialGameState_->parts.clear();
         partialGameState_->lastUpdateTime = std::chrono::steady_clock::now();
     }
@@ -840,70 +841,73 @@ void MultiplayerManager::processGameStatePart(const std::vector<uint8_t>& gameSt
     // Store this part (we store just the object data part, skipping the header)
     std::vector<uint8_t> objectData(gameStateData.begin() + 7, gameStateData.end());
     
-    // Make sure we have room for this part
-    if (startIndex >= partialGameState_->parts.size()) {
-        partialGameState_->parts.resize(startIndex + 1);
-    }
-    
-    // Store the part
-    partialGameState_->parts[startIndex] = objectData;
+    // Store the part with its corresponding start index
+    partialGameState_->parts.push_back(objectData);
+    partialGameState_->packetIndices.push_back(startIndex);
     
     // If this is the last packet, process the complete state
     if (isLastPacket) {
         partialGameState_->complete = true;
         
-        // Check if we have all parts
-        bool allPartsReceived = true;
+        bool hasAllParts = true;
+        std::set<uint16_t> receivedIndices;
+        for (auto idx : partialGameState_->packetIndices) {
+            receivedIndices.insert(idx);
+        }
+        
+        // Sort the indices to see what we have
+        std::vector<uint16_t> sortedIndices(receivedIndices.begin(), receivedIndices.end());
+        std::sort(sortedIndices.begin(), sortedIndices.end());
+        
+        // Check if we have all required parts by ensuring we have packets covering all objects
+        if (sortedIndices.empty() || sortedIndices.back() + packetObjectCount < totalObjectCount) {
+            hasAllParts = false;
+            std::cerr << "[Client] Incomplete game state: highest index " 
+                    << (sortedIndices.empty() ? 0 : sortedIndices.back())
+                    << " doesn't cover all " << totalObjectCount << " objects" << std::endl;
+        }
+        
+        // If we're missing parts, don't process
+        if (!hasAllParts) {
+            std::cerr << "[Client] Missing parts of game state update: received " 
+                    << partialGameState_->parts.size() << " parts" << std::endl;
+            
+            // For debugging, show what parts we do have
+            std::cout << "[Client] Received parts at indices: ";
+            for (auto idx : sortedIndices) {
+                std::cout << idx << " ";
+            }
+            std::cout << std::endl;
+            
+            return;
+        }
+        
+        // Sort parts by start index to ensure correct order
+        std::vector<std::pair<uint16_t, std::vector<uint8_t>>> indexedParts;
         for (size_t i = 0; i < partialGameState_->parts.size(); i++) {
-            if (partialGameState_->parts[i].empty()) {
-                std::cerr << "[Client] Missing part " << i << " of game state update" << std::endl;
-                allPartsReceived = false;
-                break;
-            }
+            indexedParts.push_back({partialGameState_->packetIndices[i], partialGameState_->parts[i]});
+        }
+        std::sort(indexedParts.begin(), indexedParts.end(), 
+                 [](const auto& a, const auto& b) { return a.first < b.first; });
+        
+        // Combine all parts into a single game state
+        std::vector<uint8_t> completeState;
+        
+        // Add total object count
+        completeState.push_back(static_cast<uint8_t>(totalObjectCount >> 8));
+        completeState.push_back(static_cast<uint8_t>(totalObjectCount & 0xFF));
+        
+        // Add all object data in correct order
+        for (const auto& [_, part] : indexedParts) {
+            completeState.insert(completeState.end(), part.begin(), part.end());
         }
         
-        if (allPartsReceived) {
-            // Combine all parts into a single game state
-            std::vector<uint8_t> completeState;
-            
-            // Add total object count
-            completeState.push_back(static_cast<uint8_t>(totalObjectCount >> 8));
-            completeState.push_back(static_cast<uint8_t>(totalObjectCount & 0xFF));
-            
-            // Add all object data
-            for (const auto& part : partialGameState_->parts) {
-                completeState.insert(completeState.end(), part.begin(), part.end());
-            }
-            
-            // Process the complete state
-            processGameState(completeState);
-            
-            // Clear the partial state
-            partialGameState_.reset();
-        }
-    }
-    
-    // Check for timed-out partial game state updates
-    if (partialGameState_) {
-        auto now = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
-            now - partialGameState_->lastUpdateTime).count();
+        // Process the complete state
+        processGameState(completeState);
         
-        // If we haven't received an update for more than 2 seconds, abandon this partial state
-        if (elapsed > 2) {
-            std::cerr << "[Client] Abandoning stale partial game state update" << std::endl;
-            partialGameState_.reset();
-        }
+        // Clear the partial state
+        partialGameState_.reset();
     }
-    
-    // Update all remote players
-    // for (auto& pair : remotePlayers_) {
-    //     if(pair.second->getObjID() == playerId_) {
-    //         // Skip updating the local player
-    //         continue;
-    //     }
-    //     pair.second->update(deltaTime);
-    // }
 }
 
 void MultiplayerManager::handleChatMessage(const NetworkMessage& message) {
