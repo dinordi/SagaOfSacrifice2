@@ -10,202 +10,179 @@ Level::Level(const std::string& id, const std::string& name, CollisionManager* c
     // Initialize player start position to a default value
     playerStartPosition = Vec2(0, 0);
 }
-Level::~Level() {
-    // Clean up level objects
+
+Level::~Level()
+{
     unload();
-    
 }
-bool Level::load(json& levelData ) {
-    // Load level data from JSON
-    if (levelData.contains("background")) {
-        backgroundPath = levelData["background"];
 
+/* --------------------------------------------------------------------
+   Level::load  —  understands Tiled JSON and passes LOCAL sprite index
+   ------------------------------------------------------------------ */
+bool Level::load(json& levelData)
+{
+    /* ---- root properties ------------------------------------------------ */
+    backgroundPath = levelData.value("background", "");
+
+    const int tileWidth  = levelData.value("tileWidth",
+                             levelData.value("tilewidth",  32));
+    const int tileHeight = levelData.value("tileHeight",
+                             levelData.value("tileheight", 32));
+
+    if (levelData.contains("playerStart"))
+    {
+        playerStartPosition = Vec2(
+            levelData["playerStart"].value("x", 0),
+            levelData["playerStart"].value("y", 0));
     }
-    
-    if (levelData.contains("playerStart")) {
-        playerStartPosition.x = levelData["playerStart"]["x"];
-        playerStartPosition.y = levelData["playerStart"]["y"];
-        std::cout << "Player start position: (" << playerStartPosition.x << ", " << playerStartPosition.y << ")" << std::endl;
 
-    }
-    else {
-        std::cerr << "Player start position not found in level data" << std::endl;
-    }
+    /* ---- build GID → tileset table -------------------------------------- */
+    struct Range { int first, last; std::string name; };
+    std::vector<Range> gidMap;
 
-        // Load enemies separately
-    if(levelData.contains("enemies")) {
-        for (const auto& obj : levelData["enemies"]) {
-            // Extract common enemy values
-            int x = obj["x"];
-            int y = obj["y"];
-            std::string objID = obj["id"];
-            std::string type = obj["type"];
-            int hp = obj["hp"];
-            int speed = obj["speed"];
-            
-            // Create different enemy types based on the type field
-            if (type == "minotaur") {
-                spawnMinotaur(playerStartPosition.x + x, playerStartPosition.y + y );
-                // Example: Create a basic enemy
-                // auto enemy = std::make_shared<AndroidScout>(x, y, 
-                //     new SpriteData("enemies", spriteId, 32, 32), objID, hp, speed);
-                // levelObjects.push_back(enemy);
-
-            } else {
-                // Generic enemy handling
-                std::cout << "Found enemy of type " << type << " at position (" << x << ", " << y << "), HP: " << hp << std::endl;
-            }
+    if (levelData.contains("tilesets"))
+    {
+        for (const auto& ts : levelData["tilesets"])
+        {
+            Range r;
+            r.first = ts.at("firstgid").get<int>();
+            r.name  = ts.contains("name")
+                      ? ts["name"].get<std::string>()
+                      : std::filesystem::path(
+                            ts["source"].get<std::string>())
+                            .stem().string();
+            gidMap.push_back(r);
         }
+        std::sort(gidMap.begin(), gidMap.end(),
+                  [](auto& a, auto& b){ return a.first < b.first; });
+        for (std::size_t i = 0; i < gidMap.size(); ++i)
+            gidMap[i].last = (i + 1 < gidMap.size())
+                           ? gidMap[i+1].first - 1 : INT_MAX;
     }
-// Load layers from the layers array
-if(levelData.contains("layers")) {
-    std::cout << "Loading " << levelData["layers"].size() << " layers..." << std::endl;
-    
-    // Get tile dimensions from level data
-    int tileWidth = levelData.contains("tileWidth") ? levelData["tileWidth"].get<int>() : 32;
-    int tileHeight = levelData.contains("tileHeight") ? levelData["tileHeight"].get<int>() : 32;
-    
-    
-    for (const auto& layer : levelData["layers"]) {
-        std::string layerId = layer["id"];
-        std::string layerType = layer["type"];
-        
-        
-        std::cout << "Loading layer: " << layerId << " (type: " << layerType << ")" << std::endl;
-        
-        if (layerType == "tilemap" && layer.contains("data")) {
-            const auto& tileData = layer["data"];
-            std::string tileset = layer["tileset"];
-            // Process each row
-            for (int row = 0; row < tileData.size(); row++) {
-                const auto& rowData = tileData[row];
+
+    auto gidToTileset =
+        [&](int gid, std::string& tsName, int& localId) -> bool
+    {
+        for (const auto& r : gidMap)
+            if (gid >= r.first && gid <= r.last)
+            {
+                tsName  = r.name;
+                localId = gid - r.first;   // frame index in that sheet
+                return true;
+            }
+        return false;
+    };
+
+    /* ---- tile layers ---------------------------------------------------- */
+    if (levelData.contains("layers"))
+    {
+        for (const auto& layer : levelData["layers"])
+        {
+            if (layer.value("type", "") != "tilelayer")
+                continue;                              // ignore non-tile layers
+
+            const int width  = layer.at("width");
+            const int height = layer.at("height");
+            const auto& data = layer.at("data");
+            const std::string layerName = layer.value("name", "layer");
+
+            for (int row = 0; row < height; ++row)
+            for (int col = 0; col < width;  ++col)
+            {
+                const int index = row * width + col;
+                const int gid   = data[index];
+                if (gid == 0) continue;               // empty cell
+
+                std::string tileset;
+                int spriteIndex = 0;                  // 0-based frame
+                if (!gidToTileset(gid, tileset, spriteIndex))
+                    continue;                         // orphan GID – skip
+
+                const int worldX = col * tileWidth;
+                const int worldY = row * tileHeight;
+
+                const std::string objId =
+                    layerName + "_" +
+                    std::to_string(row) + "_" +
+                    std::to_string(col);
+
+                auto tile = std::make_shared<Tile>(
+                    worldX, worldY, objId,
+                    tileset, spriteIndex,
+                    tileWidth, tileHeight, 0);
+
                 
-                // Process each column in the row
-                for (int col = 0; col < rowData.size(); col++) {
-                    int tileId = rowData[col];
-                    
-                    // Skip empty tiles (tile ID 0)
-                    if (tileId == 0) continue;
-                    
-                    // Calculate world position
-                    int worldX = col * tileWidth;
-                    int worldY = row * tileHeight;
-                    
-                    // Create tile object
-                    std::string tileObjectId = layerId + "_" + std::to_string(row) + "_" + std::to_string(col);
-                    auto tile = std::make_shared<Tile>(worldX, worldY, tileObjectId, 
-                                                      tileset, tileId, tileWidth, tileHeight, 0);
-                    
-                        std::cout << "Tile ID: " << tileId << ", Tileset: " << tileset << std::endl;
-
-                    if(tileset != "Grasstileset")
-                    {
-                        tile->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
-                    }
-                    else
-                    {
-                        
-                    }
-                        
-                    
-                    // Add to level objects
-                    levelObjects.push_back(tile);
-                    
-                    std::cout << "[Level] Created tile: " << tileObjectId << " at (" << worldX << ", " << worldY 
-                              << ") with tileId " << tileId << std::endl;
-                }
+                    tile->setFlag(Tile::BLOCKS_HORIZONTAL |
+                                  Tile::BLOCKS_VERTICAL);
+                std::cout << "[Level] Adding tile: "
+                          << objId << " at (" << worldX
+                          << ", " << worldY << ") with sprite index "
+                          << spriteIndex << " from tileset "
+                          << tileset << '\n';
+                // levelObjects.push_back(tile);
             }
         }
     }
-    
-    std::cout << "Loaded " << levelObjects.size() << " total tile objects." << std::endl;
-} else {
-    std::cerr << "No layers found in level data" << std::endl;
-}
-    // Load objects from the objects array
-    // if(levelData.contains("objects")) {
-    //     static int objectCounter = 0; // Static counter for unique IDs
-    //     for (const auto& obj : levelData["objects"]) {
-    //         // Extract values from JSON
-    //         int x = obj["x"];
-    //         int y = obj["y"];
-    //         std::string baseId = obj["id"];
-    //         int spriteId = obj["spriteId"];
-    //         // Generate a unique object ID
-    //         std::string uniqueObjID = baseId + "_" + std::to_string(objectCounter++);
-    //         std::cout << "Found object: " << uniqueObjID << " at position (" << x << ", " << y << ")" << std::endl;
-    //         // Create platform object
-    //         auto object = std::make_shared<Tile>(x, y, uniqueObjID, baseId, spriteId, 64, 64, 0);
-    //         levelObjects.push_back(object);
-    //         std::cout << "[Level] Created object: " << uniqueObjID << " at (" << x << ", " << y 
-    //                   << ") with spriteId " << spriteId << std::endl;
-    //     }
-    // }
 
-    if(levelData.contains("playerStart")) {
-        // Extract player start position
-        playerStartPosition.x = levelData["playerStart"]["x"];
-        playerStartPosition.y = levelData["playerStart"]["y"];
-        std::cout << "Player start position: (" << playerStartPosition.x << ", " << playerStartPosition.y << ")" << std::endl;
-    } else {
-        std::cerr << "Player start position not found in level data" << std::endl;
-    }
-
-    if(levelData.contains("enemies")){
-
-
-    }
-    // Load items
-    if(levelData.contains("items")) {
-        for (const auto& item : levelData["items"]) {
-            int x = item["x"];
-            int y = item["y"];
-            int spriteId = item["spriteId"];
-            std::string itemID = item["id"];
-            std::string type = item["type"];
-            
-            std::cout << "Found item " << itemID << " of type " << type << " at position (" << x << ", " << y << ")" << std::endl;
-            
-
+    /* ---- enemies -------------------------------------------------------- */
+    if (levelData.contains("enemies"))
+    {
+        for (const auto& e : levelData["enemies"])
+        {
+            const int x = e.value("x", 0);
+            const int y = e.value("y", 0);
+            const std::string type = e.value("type", "");
+            if (type == "minotaur")
+                spawnMinotaur(x, y);                  // world coords
         }
     }
-    
-    if(levelData.contains("music")) {
-        std::string musicPath = levelData["music"];
-        //check if the music path is valid
-        if (musicPath.empty()) {
-            std::cerr << "Music path is empty" << std::endl;
+
+    /* ---- items (placeholder) ------------------------------------------- */
+    if (levelData.contains("items"))
+    {
+        for (const auto& item : levelData["items"])
+        {
+            std::cout << "Found item "
+                      << item.value("id","") << " of type "
+                      << item.value("type","")
+                      << " at (" << item.value("x",0)
+                      << ", " << item.value("y",0) << ")\n";
+            // … create item sprites here …
+        }
+    }
+
+    /* ---- music + SFX ---------------------------------------------------- */
+    if (levelData.contains("music"))
+    {
+        const std::string& musicPath = levelData["music"];
+        if (musicPath.empty() || !std::ifstream(musicPath))
+        {
+            std::cerr << "[Level] Music file not found: "
+                      << musicPath << '\n';
             return false;
         }
-        // Check if the music file exists
-        std::ifstream musicFile(musicPath);
-        if (!musicFile) {
-            std::cerr << "Music file not found: " << musicPath << std::endl;
-            return false;
-        }
-        musicFile.close();
-        // Load music file
-        std::cout << "Loading music: " << musicPath << std::endl;
+        std::cout << "Loading music: " << musicPath << '\n';
     }
-    
-    if(levelData.contains("soundEffects")) {
-        for (const auto& sound : levelData["soundEffects"]) {
-            std::string soundPath = sound;
-            // Load all sound effects in the class with audio instance
-            // Check if the sound file exists
-            std::ifstream soundFile(soundPath);
-            if (!soundFile) {
-                std::cerr << "Sound effect file not found: " << soundPath << std::endl;
+
+    if (levelData.contains("soundEffects"))
+    {
+        for (const std::string& sfx : levelData["soundEffects"])
+        {
+            if (!std::ifstream(sfx))
+            {
+                std::cerr << "[Level] SFX file not found: "
+                          << sfx << '\n';
                 return false;
             }
-            soundFile.close();
-            
-            std::cout << "Loading sound effect: " << soundPath << std::endl;
+            std::cout << "Loading SFX: " << sfx << '\n';
         }
     }
-    
-    // Load tilemap layers
+
+    /* ---- success -------------------------------------------------------- */
+    loaded = true;
+    return true;                                     // explicit!
 }
+
 bool Level::isCollidableTile(int tileIndex, const std::string& tileset) {
     // Define which tiles should have collision
     // This could be enhanced to load from a configuration file

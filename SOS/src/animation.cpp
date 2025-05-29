@@ -32,6 +32,7 @@ void AnimationController::setState(AnimationState state) {
         std::cerr << "Direction " << static_cast<int>(lastDirection) << " not found in animation definition!" << std::endl;
         return;
     }
+ 
     FacingDirFrames& fdf = dirIt->second;
     if(finished || targetState != currentState)
     {

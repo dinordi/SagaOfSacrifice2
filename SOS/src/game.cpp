@@ -412,7 +412,7 @@ void Game::addObject(std::shared_ptr<Object> object) {
         if (it == objects.end()) {
             // Add new object if it doesn't exist
             objects.push_back(object);
-            std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
+            //std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
         } 
         // else {
         //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;

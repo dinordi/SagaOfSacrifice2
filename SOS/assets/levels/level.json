@@ -4,58 +4,13 @@
   "description": "An abandoned cyberpunk outpost on the edge of the Neon Wastes—filled with rogue androids, energy caches, and ancient alien ruins under a blood-red sky.",
   "difficulty": "Hard",
 
-  "tileWidth": 64,
-  "tileHeight": 64,
 
-  "tilesets": [
-    "NeonFloor",
-    "AlienRock",
-    "CircuitPath",
-    "AcidPools",
-    "HoloPanels",
-    "TechRuins",
-    "CyberProps",
-    "HologramPlants"
-  ],
 
-  "layers": [
-    {
-      "id": "floor",
-      "type": "tilemap",
-      "tileset": "Grasstileset",
-      "data": [
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-        [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
-        [0,1,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,1,0],
-        [0,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1,0],
-        [0,1,0,2,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,2,0,1,0]
 
-      ]
-    }
-  ],
-
-  "playerStart": { "x": 1, "y": 500 },
+  "playerStart": { "x": 80, "y": 100 },
 
   "enemies": [
-    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
-    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  },
-    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
-    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  },
-    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 13, "x": 224, "y": 192, "hp":60,  "speed":90 },
-    { "id": "minotaurus", "type": "minotaur",    "spriteId": 14, "x": 384, "y": 128, "hp":80,  "speed":100 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 15, "x": 448, "y": 192, "hp":100, "speed":60 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 16, "x": 544, "y":  96, "hp":200, "speed":30 },
-    { "id": "minotaurus", "type": "minotaur", "spriteId": 17, "x": 128, "y":  64, "hp":150, "speed":0  }
+    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  96, "y": 160, "hp":40,  "speed":70 }
 
   ],
 
@@ -84,5 +39,47 @@
     "audio/energy_impact.wav",
     "audio/credit_pickup.wav",
     "audio/heal_charge.wav"
-  ]
+  ],
+ 
+
+ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+            7, 8, 9, 10, 11, 7, 8, 9, 10, 11,
+            13, 14, 15, 16, 17, 13, 14, 15, 16, 17,
+            1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+            7, 8, 9, 10, 11, 7, 8, 9, 10, 11,
+            13, 14, 15, 16, 17, 16, 14, 15, 16, 17,
+            1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+            7, 8, 9, 10, 11, 7, 8, 9, 10, 11,
+            13, 14, 15, 16, 17, 13, 14, 15, 16, 17,
+            1, 2, 3, 4, 5, 1, 2, 3, 4, 5],
+         "height":10,
+         "id":1,
+         "name":"Grasstileset",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.11.2",
+ "tileheight":64,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"Grasstileset.tsx"
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":1.1,
+ "width":10
 }
