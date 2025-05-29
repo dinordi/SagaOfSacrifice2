@@ -299,10 +299,6 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
         return;
     }
     
-    std::cout << "[MultiplayerManager] Sending enemy state update for " << enemyId 
-              << ", isDead: " << (isDead ? "true" : "false") 
-              << ", health: " << currentHealth << std::endl;
-    
     // Create a message to inform the server about the enemy state
     NetworkMessage enemyStateMsg;
     enemyStateMsg.type = MessageType::ENEMY_STATE_UPDATE; // Reuse existing message type
@@ -313,18 +309,19 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     std::vector<uint8_t> data; 
     // Add enemy ID length (1 byte)
     data.push_back(static_cast<uint8_t>(enemyId.size()));
-    // Add enemy ID string
+
+    // Add enemy ID string after the length
     data.insert(data.end(), enemyId.begin(), enemyId.end());
-    
+
     // Add isDead flag
     data.push_back(isDead ? 1 : 0);
     
     // Add current health (4 bytes)
-    data.push_back((currentHealth >> 24) & 0xFF);
-    data.push_back((currentHealth >> 16) & 0xFF);
+    data.push_back((currentHealth) & 0xFF);
     data.push_back((currentHealth >> 8) & 0xFF);
-    data.push_back(currentHealth & 0xFF);
-    
+    data.push_back((currentHealth >> 16) & 0xFF);
+    data.push_back((currentHealth >> 24) & 0xFF);
+
     enemyStateMsg.data = data;
     
     // Send the message to the server
@@ -362,9 +359,7 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
                  (message.data[pos + 2] << 8) |
                   message.data[pos + 3];
     pos += 4;
-    std::cout << "[Client] Received enemy state update for " << enemyId 
-              << ", isDead: " << (isDead ? "true" : "false") 
-              << ", health: " << health << std::endl;
+
     // Find the remote player or enemy object
     Game * game = Game::getInstance();
     if (!game) {
@@ -394,11 +389,9 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     }
     // Update the enemy state
     if (isDead) {
-        std::cout << "[Client] Enemy " << enemyId << " has died" << std::endl;
         // Handle enemy death logic here, e.g., remove from game, play death animation, etc.
         enemyObject->die();  // Assuming die() method handles cleanup
     } else {
-        std::cout << "[Client] Enemy " << enemyId << " is alive with health: " << health << std::endl;
         // Update health or other properties as needed
         enemyObject->setHealth(health);  // Assuming setHealth() method exists
     }

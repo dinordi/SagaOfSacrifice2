@@ -134,8 +134,6 @@ void Player::attack() {
     // Only attack if not already attacking
     if (isAttackActive) return;
     
-    std::cout << "Player is attacking!" << std::endl;
-    
     // Start attack sequence
     isAttackActive = true;
     attackTimer = 0.0f;

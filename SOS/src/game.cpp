@@ -353,16 +353,29 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
 
 void Game::predictLocalPlayerMovement(float deltaTime) {
     // Apply local input immediately for responsive gameplay
-    // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
     
     // Handle player attack hit registration
+    static bool wasAttacking = false;
+    static std::set<std::string> hitEnemiesThisAttack;
+    
+    // Check if player just started attacking this frame
+    bool justStartedAttacking = player->isAttacking() && !wasAttacking;
+    
+    // Clear hit tracking when starting a new attack
+    if (justStartedAttacking) {
+        hitEnemiesThisAttack.clear();
+    }
+    
     if (player->isAttacking()) {
         // Check for enemies that may have been hit
         for (auto& obj : objects) {
             // Skip non-enemy objects
             if (obj->type != ObjectType::MINOTAUR) continue;
+            
+            // Skip enemies we've already hit in this attack
+            if (hitEnemiesThisAttack.find(obj->getObjID()) != hitEnemiesThisAttack.end()) continue;
             
             // Try to cast to Enemy pointer
             Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
@@ -370,6 +383,9 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
             
             // Check if the player's attack hits this enemy
             if (player->checkAttackHit(obj.get())) {
+                // Mark this enemy as hit for this attack
+                hitEnemiesThisAttack.insert(obj->getObjID());
+                
                 // Deal damage to the enemy
                 int damageAmount = player->getAttackDamage();
                 enemy->takeDamage(damageAmount);
@@ -382,11 +398,14 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                         0      // Health = 0
                     );
                 }
-                // Only hit each enemy once per attack (otherwise we'd hit every frame of the attack animation)
+                // Only hit each enemy once per attack frame
                 break;
             }
         }
     }
+    
+    // Update attack tracking state
+    wasAttacking = player->isAttacking();
     
     // Check for regular collisions (like with platforms)
     collisionManager->detectPlayerCollisions(objects, player);

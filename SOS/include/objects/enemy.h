@@ -37,9 +37,8 @@ public:
 
     // Take damage from player attacks
     virtual void takeDamage(int amount);
-    bool isDead() const { return isDead_; }
 
-    void setHealth(int newHealth) { health = newHealth; }
+    void setHealth(int newHealth);
     int getHealth() const { return health; }
 
     // Virtual methods to be overridden by derived classes
@@ -54,7 +53,6 @@ protected:
     std::shared_ptr<Player> targetPlayer;
     float wanderTimer;
     Vec2 wanderDirection;
-    bool isDead_;
 };
 
 #endif // ENEMY_H

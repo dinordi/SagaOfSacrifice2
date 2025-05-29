@@ -120,7 +120,6 @@ void Minotaur::attack() {
 void Minotaur::die() {
     if (isDead_) return;
     
-    std::cout << "Minotaur is dying!" << std::endl;
     // Play death animation or effects here
     
     // Mark as dead

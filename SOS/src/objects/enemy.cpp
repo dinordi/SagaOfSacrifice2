@@ -26,7 +26,6 @@ void Enemy::accept(CollisionVisitor& visitor) {
 }
 
 void Enemy::update(float deltaTime) {
-    if (isDead_) return;
     
     // Decrease attack cooldown
     if (attackCooldown > 0) {
@@ -122,7 +121,7 @@ void Enemy::update(float deltaTime) {
             }
             
             // Return to chasing if player is out of attack range
-            if (targetPlayer && !isPlayerInRange(targetPlayer, attackRange)) {
+            if (targetPlayer && !isPlayerInRange(targetPlayer, attackRange) && !isDead_) {
                 currentState = EnemyState::CHASING;
             }
             break;
@@ -155,7 +154,8 @@ void Enemy::update(float deltaTime) {
 
 void Enemy::detectPlayer(std::shared_ptr<Player> player) {
     if (!player) return;
-    
+    if (isDead_) return;
+
     if (isPlayerInRange(player, detectionRange)) {
         currentState = EnemyState::CHASING;
         targetPlayer = player;
@@ -203,6 +203,15 @@ void Enemy::takeDamage(int amount) {
     
     if (health <= 0) {
         std::cout << "Enemy " << getObjID() << " health depleted!" << std::endl;
+        currentState = EnemyState::DYING;
+        isDead_ = true;
+    }
+}
+
+
+void Enemy::setHealth(int newHealth) {
+    health = newHealth;
+    if (health <= 0) {
         currentState = EnemyState::DYING;
         isDead_ = true;
     }

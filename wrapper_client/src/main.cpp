@@ -600,12 +600,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
-        // --- Shutdown Multiplayer ---
-        // if (app->game && app->game->isMultiplayerActive()) {
-        //     app->game->shutdownMultiplayer();
-        // }
-        // --- End Shutdown Multiplayer ---
-
+        
         // Clean up game object
         delete app->game; // Delete the game instance
 
