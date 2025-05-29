@@ -18,7 +18,6 @@ class Enemy : public Entity {
 public:
     Enemy(BoxCollider collider, std::string objID, ObjectType type);
 
-    int health;
     float attackCooldown;
     float attackRange;
     float detectionRange;
@@ -39,7 +38,6 @@ public:
     virtual void takeDamage(int amount);
 
     void setHealth(int newHealth);
-    int getHealth() const { return health; }
 
     // Virtual methods to be overridden by derived classes
     virtual void move() = 0; // Move the enemy

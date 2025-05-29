@@ -553,42 +553,93 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     for(const auto& actor : app->game->getActors()) {
-         if (!actor || !actor->spriteData) continue; // Basic safety check
+         if (!actor) continue; // Basic safety check
 
-        // Get the pre-loaded sprite info for the character texture (ID 11)
-        auto it_char_tex = spriteMap2.find(actor->spriteData->getid_()); // Should be ID 11 for letters
-         if (it_char_tex == spriteMap2.end()) {
-             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", actor->spriteData->getid_().c_str());
-             continue;
-         }
-        SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
+         const SpriteData* spriteData = actor->getCurrentSpriteData();
+         // Get the pre-loaded sprite info for the character texture (ID 11)
+         auto it_char_tex = spriteMap2.find(spriteData->getid_()); // Should be ID 11 for letters
+          if (it_char_tex == spriteMap2.end()) {
+              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", spriteData->getid_().c_str());
+              continue;
+          }
+         SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
 
-        // Get the specific source rect for this character index
-        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
-        SDL_FRect srcRect = {
-            static_cast<float>(charSpriteRect.x),
-            static_cast<float>(charSpriteRect.y),
-            static_cast<float>(charSpriteRect.w),
-            static_cast<float>(charSpriteRect.h)
-        };
+        ActorType actorType = actor->gettype();
+        if(actorType == ActorType::HEALTHBAR) {
+            std::vector<SpriteRect> spriteRects = static_cast<Healthbar*>(actor)->getSpriteRects();
+            int count = 0;
+            int maxCount = spriteRects.size();
+            std::vector<float> offsets = static_cast<Healthbar*>(actor)->getOffsets(maxCount); // Get personal offsets
+            for(int count = 0; count < maxCount; count++)
+            {
+                auto rect = spriteRects[count];
+                // Note: We assume the healthbar sprite rects are already in the correct format
+                SDL_FRect srcRect = {
+                    static_cast<float>(rect.x),
+                    static_cast<float>(rect.y),
+                    static_cast<float>(rect.w),
+                    static_cast<float>(rect.h)
+                };
 
-        // Note: For UI elements like actors, we might want to keep them in screen space
-        // rather than applying the camera transform. This depends on whether they're
-        // part of the HUD or part of the game world.
-        
-        // Convert world coordinates to screen coordinates using the camera
-        Vec2 screenPos = app->camera->worldToScreen(
-            actor->getposition().x,
-            actor->getposition().y
-        );
+                // Use personal offset for this specific count/part
+                float centerOffset = 0.0f;
+                if (count < offsets.size()) {
+                    centerOffset = offsets[count];
+                } else {
+                    // Fallback to old calculation if offset not provided
+                    if (count == 2 || count == maxCount - 1) {
+                        centerOffset = 0.0f;
+                    } else {
+                        centerOffset = (count - 2) * rect.w;
+                    }
+                }
 
-        SDL_FRect destRect{
-            .x = screenPos.x,
-            .y = screenPos.y,
-            .w = static_cast<float>(charSpriteRect.w),
-            .h = static_cast<float>(charSpriteRect.h)
-        };
-        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+                float x = actor->getposition().x + centerOffset;
+
+                Vec2 screenPos = app->camera->worldToScreen(
+                    x - (rect.w / 2),
+                    actor->getposition().y - (rect.h / 2)
+                );
+
+                SDL_FRect destRect{
+                    .x = screenPos.x,
+                    .y = screenPos.y,
+                    .w = static_cast<float>(rect.w),
+                    .h = static_cast<float>(rect.h)
+                };
+                SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+            }
+        }
+        else    //Render text
+        {
+    
+            // Get the specific source rect for this character index
+            const SpriteRect& charSpriteRect = spriteData->getSpriteRect(actor->getdefaultIndex());
+            SDL_FRect srcRect = {
+                static_cast<float>(charSpriteRect.x),
+                static_cast<float>(charSpriteRect.y),
+                static_cast<float>(charSpriteRect.w),
+                static_cast<float>(charSpriteRect.h)
+            };
+            
+            // Note: For UI elements like actors, we might want to keep them in screen space
+            // rather than applying the camera transform. This depends on whether they're
+            // part of the HUD or part of the game world.
+            
+            // Convert world coordinates to screen coordinates using the camera
+            Vec2 screenPos = app->camera->worldToScreen(
+                actor->getposition().x,
+                actor->getposition().y
+            );
+            
+            SDL_FRect destRect{
+                .x = screenPos.x,
+                .y = screenPos.y,
+                .w = static_cast<float>(charSpriteRect.w),
+                .h = static_cast<float>(charSpriteRect.h)
+            };
+            SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+        }
     }
     // app->game->clearActors(); // Clear actors after rendering
 

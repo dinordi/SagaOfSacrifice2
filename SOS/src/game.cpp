@@ -128,6 +128,7 @@ void Game::update(float deltaTime) {
                                         0      // Health = 0
                                     );
                                 }
+                                clearActors();
                                 return true; // Remove this enemy
                             }
                         }
@@ -145,6 +146,24 @@ void Game::update(float deltaTime) {
                     }
                     // Update the object's animation
                     obj->updateAnimation(deltaTime * 1000);
+                    // Update healthbar if it exists
+                    if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
+                        Entity* entity = static_cast<Entity*>(obj.get());
+                        if (entity) {
+                            entity->updateHealthbar();
+                            Healthbar* healthbar = entity->getHealthbar();
+                            if(healthbar) {
+                                //Check if healthbar is already in actors
+                                auto it = std::find_if(actors.begin(), actors.end(),
+                                    [&healthbar](Actor* actor) {
+                                        return actor->getObjID() == healthbar->getObjID();
+                                    });
+                                if (it == actors.end()) {
+                                    actors.push_back(healthbar); // Add healthbar to actors for rendering
+                                }
+                            }
+                        }
+                    }
                 }
             }
             break;
@@ -554,11 +573,11 @@ void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
             Actor* character;
             if(letterSize == 0)
             {
-                character = new Actor(Vec2(x,y), new SpriteData(*letters), index);
+                character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", index);
             }
             else
             {
-                character = new Actor(Vec2(x,y), new SpriteData(*letters_small), index);
+                character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters_small.tpsheet", index);
             }
             actors.push_back(character);
             x += letterWidth; // Move to the right for the next character
@@ -579,7 +598,7 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     // Clear any existing actors at this position (to refresh selection highlight)
     if (isSelected) {
         // Add a simple visual indicator for the selected item
-        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData(*this->letters), 36);
+        Actor* selector = new Actor(Vec2(x - 80, y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", characterMap['>']);
         actors.push_back(selector);
     }
     

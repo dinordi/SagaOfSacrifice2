@@ -56,10 +56,15 @@ const SpriteData* Object::getCurrentSpriteData() const {
     return nullptr; // No sprite data found for the current state
 }
 
-Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteIndex(spriteIndex)
+uint16_t Actor::actorCount = 0; // Initialize static actor count
+Actor::Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type) : position(pos), type(type), tpsheet(tpsheet), defaultIndex(defaultIndex)
 {
-    this->position = pos;
-    this->spriteData = spData;
+    ObjID = actorCount++;
+}
+
+const SpriteData* Actor::getCurrentSpriteData() const
+{
+    return SpriteData::getSharedInstance(tpsheet);
 }
 
 BoxCollider::BoxCollider(Vec2 pos, Vec2 size) : position(pos), size(size) {}

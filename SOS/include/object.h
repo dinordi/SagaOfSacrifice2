@@ -22,6 +22,11 @@ enum class ObjectType {
     MINOTAUR
 };
 
+enum class ActorType {
+    TEXT,
+    HEALTHBAR
+};
+
 inline std::ostream& operator<<(std::ostream& os, ObjectType type) {
     switch (type) {
         case ObjectType::PLAYER: os << "PLAYER"; break;
@@ -82,9 +87,14 @@ private:
 
 class Actor {
 public:
-    const SpriteData* spriteData;
-    const int spriteIndex;  //Current image in spritesheet, SpriteData handles index to srcrect
-    Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex = 1);
+    Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type = ActorType::TEXT);
+    const SpriteData* getCurrentSpriteData() const;
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(uint16_t, defaultIndex);
+    DEFINE_CONST_GETTER_SETTER(ActorType, type);
+    DEFINE_GETTER_SETTER(std::string, tpsheet);
+    DEFINE_GETTER_SETTER(uint16_t, ObjID);
+
+    static uint16_t actorCount; // Static counter to assign unique IDs to actors
 };
