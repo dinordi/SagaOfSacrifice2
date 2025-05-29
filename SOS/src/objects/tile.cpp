@@ -16,6 +16,9 @@ void Tile::setupAnimations(std::filesystem::path atlasPath)
     std::string fileName = tileMapName + ".tpsheet";
     atlasPath /= fileName;
     addSpriteSheet(AnimationState::IDLE, atlasPath);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 0);
+    setAnimationState(AnimationState::IDLE);
+
 }
 
 
