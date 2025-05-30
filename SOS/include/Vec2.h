@@ -47,6 +47,9 @@ public:
         float len = length();
         return Vec2(x / len, y / len);
     }
+    float magnitude() const {
+        return (std::sqrt(x * x + y * y));
+    }
 };
 
 #endif // VEC2_H

@@ -18,7 +18,6 @@ class Enemy : public Entity {
 public:
     Enemy(BoxCollider collider, std::string objID, ObjectType type);
 
-    int health;
     float attackCooldown;
     float attackRange;
     float detectionRange;
@@ -35,6 +34,11 @@ public:
     // Set the target player for the enemy to track
     void setTargetPlayer(std::shared_ptr<Player> player) { targetPlayer = player; }
 
+    // Take damage from player attacks
+    virtual void takeDamage(int amount);
+
+    void setHealth(int newHealth);
+
     // Virtual methods to be overridden by derived classes
     virtual void move() = 0; // Move the enemy
     virtual void attack() = 0; // Attack the player
@@ -47,7 +51,6 @@ protected:
     std::shared_ptr<Player> targetPlayer;
     float wanderTimer;
     Vec2 wanderDirection;
-    bool isDead;
 };
 
 #endif // ENEMY_H

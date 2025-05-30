@@ -151,3 +151,65 @@ void EmbeddedServer::processPlayerPosition(const std::string& playerId, const Ne
         player->setAnimationState(animState);
     }
 }
+
+void EmbeddedServer::processEnemyState(
+    const std::string& playerId,
+    const NetworkMessage& message
+) {
+    // Validate message data
+    if (message.data.empty()) {
+        std::cerr << "[EmbeddedServer] Invalid player action data: empty" << std::endl;
+        return;
+    }
+
+    size_t pos = 4; // Start after action type
+
+    // Read enemy ID length
+    int idLength = message.data[pos++];
+
+    // Extract enemy ID
+    if (pos >= message.data.size()) {
+        std::cerr << "[EmbeddedServer] Invalid enemy ID in state update" << std::endl;
+        return;
+    }
+    
+    std::string enemyId(message.data.begin() + pos, message.data.begin() + pos + idLength);
+    pos += idLength; // Move position past the ID
+
+    // Read isDead flag (1 byte after the null terminator)
+    if (pos + 1 >= message.data.size()) {
+        std::cerr << "[EmbeddedServer] Missing isDead flag in enemy state update" << std::endl;
+        return;
+    }
+    bool isDead = message.data[pos++] != 0;
+    
+    int health;
+    // Read health (4 bytes)
+    memcpy(&health, message.data.data() + pos, sizeof(int));
+    pos += sizeof(int);
+    
+    // Get the level and find the enemy
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    Level* level = levelManager_->getCurrentLevel();
+    if (!level) {
+        std::cerr << "[EmbeddedServer] No active level for enemy state update" << std::endl;
+        return;
+    }
+    
+    // Find the enemy by ID
+    const auto& objects = level->getObjects();
+    for (auto& obj : objects) {
+        if (obj && obj->type == ObjectType::MINOTAUR && obj->getObjID() == enemyId) {
+            Enemy* enemy = static_cast<Enemy*>(obj.get());
+            
+            // Update the enemy state
+            if (isDead) {
+                enemy->setHealth(0);  // Ensure health is set to 0 when dead
+            } else {
+                // Update health if not dead
+                enemy->setHealth(health);
+            }
+            break;
+        }
+    }
+}

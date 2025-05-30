@@ -151,19 +151,6 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         // Copy the message body
         std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
 
-        // Debug output for CONNECT messages
-        if (message.type == MessageType::CONNECT) {
-            std::cout << "[AsioNetworkClient] Sending CONNECT message:" << std::endl;
-            std::cout << "  - Sender ID: " << message.senderId << std::endl;
-            std::cout << "  - Data size: " << message.data.size() << " bytes" << std::endl;
-            std::cout << "  - Total message size: " << completeMessage.size() << " bytes" << std::endl;
-            
-            if (!message.data.empty()) {
-                std::string playerInfo(message.data.begin(), message.data.end());
-                std::cout << "  - Player info: " << playerInfo << std::endl;
-            }
-        }
-
         //Store the buffer in collection to keep alive
         {
             std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);

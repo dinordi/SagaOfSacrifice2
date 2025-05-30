@@ -19,6 +19,7 @@ enum class MessageType {
     PLAYER_JOINED,     // Player joined the game
     PLAYER_LEFT,       // Player left the game
     CHAT,            // Chat message
+    ENEMY_STATE_UPDATE, // Update enemy state (e.g., health, dead)
 };
 
 // Base message structure - same as client side
