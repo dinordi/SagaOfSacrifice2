@@ -13,13 +13,13 @@
 #define MAX_SPRITE_HEIGHT 512
 
 Renderer::Renderer(const std::string& img_path)
-    : stop_thread(false),
-      uio_fd(-1)
+    : uio_fd(-1)
 {
+    init_frame_infos();
     loadSprite(img_path);
-    //init_lookup_tables();
-    //init_frame_infos();
-    //initUIO();
+    init_lookup_tables();
+    
+    initUIO();
 }
 
 void Renderer::loadSprite(const std::string& img_path) {
@@ -79,16 +79,30 @@ void Renderer::initUIO() {
 
 Renderer::~Renderer()
 {
-    // Unmap the DMA virtual address
-    
+    // Signal thread to stop
     stop_thread = true;
-    if (irq_thread.joinable()) {
-        irq_thread.join();
+    
+    // Wait for thread to finish first
+   if (irq_thread.joinable()) {
+       irq_thread.join();
+   }
+
+    // NOW it's safe to close the fd
+    if (uio_fd >= 0) {
+        close(uio_fd);
+        uio_fd = -1;
     }
 
-
-    close(uio_fd);
-
+    
+    // Clean up memory mappings
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        if (frame_info_ptrs[i] != nullptr && frame_info_ptrs[i] != MAP_FAILED) {
+            munmap(frame_info_ptrs[i], FRAME_INFO_SIZE);
+            frame_info_ptrs[i] = nullptr;
+        }
+    }
+    
+    std::cout << "Renderer cleanup completed" << std::endl;
 }
 
 void Renderer::handleIRQ()
@@ -114,23 +128,28 @@ void Renderer::irqHandlerThread()
     struct pollfd fds;
     fds.fd = uio_fd;
     fds.events = POLLIN;
-    stop_thread = false;
+    stop_thread = 0;
+    std::cout << "IRQ thread running, waiting for interrupts on fd: " << uio_fd << " " << stop_thread << std::endl;
 
-    std::cout << "IRQ thread running, waiting for interrupts on fd: " << uio_fd << std::endl;
-
-    while (stop_thread == false) {
-        std::cout << "Waiting for interrupt..." << std::endl;
-        int ret = poll(&fds, 1, -1); // Wait indefinitely for an event
-        if (ret > 0 && (fds.revents & POLLIN)) {
-            if (fds.revents & POLLIN) {
+    while (!stop_thread) {
+        if (uio_fd >= 0)
+        {
+            int ret = poll(&fds, 1, 1000); // 1 second timeout instead of -1
+            
+            if (ret > 0 && (fds.revents & POLLIN)) {
                 std::cout << "Interrupt detected!" << std::endl;
                 handleIRQ();
+            } else if (ret < 0) {
+                if (!stop_thread) {  // Only log if not shutting down
+                    perror("poll");
+                }
+                break;
             }
-        } else if (ret < 0) {
-            perror("poll");
-            break;
+            // ret == 0 means timeout, check stop_thread and continue
         }
     }
+    
+    std::cout << "IRQ thread exiting" << std::endl;
 }
 
 void Renderer::init_lookup_tables() {
@@ -153,6 +172,9 @@ void Renderer::init_lookup_tables() {
         write_lookup_table_entry(lookup_tables[i], 1, SPRITE_DATA_BASE, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
 
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        munmap(lookup_table_ptrs[i], LOOKUP_TABLE_SIZE);
+    }
     close(fd);
 }
 
@@ -172,6 +194,7 @@ void Renderer::init_frame_infos() {
         }
 
         frame_infos[i] = (volatile uint64_t *)(frame_info_ptrs[i]);
+        frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF; // Initialize first entry to end marker
     }
 
     close(fd);

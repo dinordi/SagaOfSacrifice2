@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
         audio->playSound("001");
         audio->playSound("jump");
     }
-
+    renderer = new Renderer(path_sprites + imageName);
     if(!devMode)
     {
         renderer = new Renderer(path_sprites + imageName);
@@ -232,11 +232,11 @@ int main(int argc, char *argv[]) {
     
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    
+    while(running){}
     // Clean up
     if (game->isServerConnection()) {
         game->shutdownServerConnection();
     }
-    
+    delete renderer;
     return 0;
 }

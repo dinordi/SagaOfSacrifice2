@@ -10,7 +10,7 @@ constexpr size_t FRAME_INFO_SIZE = 0x2000;    // Pas aan indien nodig
 
 constexpr uint16_t SPRITE_WIDTH = 400;
 constexpr uint16_t SPRITE_HEIGHT = 400;
-constexpr uint32_t SPRITE_DATA_BASE = 0x0E000000; // Voorbeeld, pas aan naar jouw situatie
+constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jouw situatie
 
 class Renderer {
 public:
@@ -35,14 +35,14 @@ private:
     int uio_fd;
 
     std::thread irq_thread;
-    volatile bool stop_thread;
+    volatile bool stop_thread = false;
 
     static constexpr uint32_t LOOKUP_TABLE_ADDRS[NUM_PIPELINES] = {
-        0x40000000, 0x46000000, 0x80002000, 0x80006000
+        0x82000000, 0x86000000, 0x8A000000, 0x8E000000
     };
 
     static constexpr uint32_t FRAME_INFO_ADDRS[NUM_PIPELINES] = {
-        0x42000000, 0x44000000, 0x80000000, 0x80004000
+        0x80000000, 0x84000000, 0x88000000, 0x8C000000
     };
 
 
