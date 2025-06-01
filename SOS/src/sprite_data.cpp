@@ -35,33 +35,19 @@ SpriteRect SpriteData::getSpriteRect(int index) const {
     auto it = spriteRects.find(index);
     if (it == spriteRects.end()) {
         for(const auto& pair : spriteRects) {
-            std::cout << "SpriteRect ID: " << pair.first << ", Rect: (" 
+            std::cout << "[SpriteData] SpriteRect ID: " << pair.first << ", Rect: (" 
                       << pair.second.x << ", " << pair.second.y << ", "
                       << pair.second.w << ", " << pair.second.h << ")\n";
         }
         std::cout << "Could not find sprite rect for index: " << index << std::endl;
         return SpriteRect(); // Return an empty SpriteRect if not found
     }
+    
     const SpriteRect& spriteRect = it->second;
 
     return spriteRect;
 }
 
-void SpriteData::makeSpriteRect(json& data, int index) {
-    // Load the sprite sheet image from the given atlas path
-    // load level JSON file
-
-    const json& sprites = data["textures"][0]["sprites"];
-    const json& sprite = sprites[index];
-    const json& region = sprite["region"];
-
-    int x = region["x"].get<int>();
-    int y = region["y"].get<int>();
-    int w = region["w"].get<int>();
-    int h = region["h"].get<int>();
-
-    SpriteRect(x, y, w, h, "wolfman_idle.png");//Temp png
-}
 
 void SpriteData::addSpriteSheet(std::string atlasPath) 
 {
@@ -86,7 +72,7 @@ void SpriteData::addSpriteSheet(std::string atlasPath)
         int y = region["y"].get<int>();
         int w = region["w"].get<int>();
         int h = region["h"].get<int>();
-        spriteRects[index] = SpriteRect(x, y, w, h, image);
+        spriteRects[index] = SpriteRect(x, y, w, h, image, index);
         index++;
     }
     // Store the sprite data in the map

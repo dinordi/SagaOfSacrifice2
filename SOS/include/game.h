@@ -58,6 +58,9 @@ public:
     
     // Initialize server configuration from file
     void initializeServerConfig(const std::string& basePath);
+
+    // Initialize SpriteSheets
+    void initializeSpriteSheets();
     
     void shutdownServerConnection();
     bool isServerConnection() const;

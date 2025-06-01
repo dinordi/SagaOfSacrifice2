@@ -45,6 +45,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // Set player's input handler
     player = new Player(500, 100, playerID);
     player->setInput(input);
+    initializeSpriteSheets();
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
 }
@@ -98,10 +99,23 @@ void Game::mapCharacters()
     for (const auto& pair : characterMap) {
         std::cout << pair.first << " -> " << pair.second << std::endl;
     }
-    this->letters = new SpriteData(basePath_ / "letters.tpsheet");
-    this->letters_small = new SpriteData(basePath_ / "letters_small.tpsheet");
+    this->letters = SpriteData::getSharedInstance(basePath_ / "letters.tpsheet");
+    this->letters_small = SpriteData::getSharedInstance(basePath_ / "letters_small.tpsheet");
 
     characterMap['>'] = 36;
+}
+
+void Game::initializeSpriteSheets()
+{
+    // For all tpsheets in basePath_, load them
+    std::cout << "[Game] Initializing sprite sheets from: " << basePath_ << std::endl;
+    for (const auto& entry : std::filesystem::directory_iterator(basePath_)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".tpsheet") {
+            std::string tpsheetPath = entry.path().string();
+            std::cout << "[Game] Loading sprite sheet: " << tpsheetPath << std::endl;
+            SpriteData::getSharedInstance(tpsheetPath);
+        }
+    }
 }
 
 void Game::update(float deltaTime) {
@@ -482,14 +496,14 @@ void Game::reconcileWithServerState(float deltaTime) {
         const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
         const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
         
-        if (distSquared > TELEPORT_THRESHOLD) {
-            // Potential cheating or severe desync - force correction
-            clientPosition->x = serverPosition.x;
-            clientPosition->y = serverPosition.y;
+        // if (distSquared > TELEPORT_THRESHOLD) {
+        //     // Potential cheating or severe desync - force correction
+        //     clientPosition->x = serverPosition.x;
+        //     clientPosition->y = serverPosition.y;
             
-            // Log potential cheating attempt
-            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
-        }
+        //     // Log potential cheating attempt
+        //     std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
+        // }
         // Server side validation check, can be implemented later
         // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
         //     // Server validation failed - report to server we need validation
@@ -510,7 +524,7 @@ void Game::addObject(std::shared_ptr<Object> object) {
         if (it == objects.end()) {
             // Add new object if it doesn't exist
             objects.push_back(object);
-            std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
+            //std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
         } 
         // else {
         //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;

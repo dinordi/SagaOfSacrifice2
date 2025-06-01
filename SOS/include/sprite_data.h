@@ -26,9 +26,10 @@ struct SpriteRect {
     int w; // Width of the sprite
     int h; // Height of the sprite
     std::string id_; // ID of the sprite, i.e. player.png, enemy.png, etc.
+    uint8_t count;
 
-    SpriteRect() : x(0), y(0), w(0), h(0), id_("") {}
-    SpriteRect(int x, int y, int w, int h, std::string id)
+    SpriteRect() : x(0), y(0), w(0), h(0), id_(""), count(0) {}
+    SpriteRect(int x, int y, int w, int h, std::string id, uint8_t index)
         : x(x), y(y), w(w), h(h), id_(std::move(id)) {}
 };
 
@@ -44,7 +45,6 @@ public:
 
     SpriteRect getSpriteRect(int index) const;
 
-    void makeSpriteRect(json& atlas, int index);
     void addSpriteSheet(std::string atlasPath);
 
     int width;  // Width of the sprite, consistent in a single sprite sheet
