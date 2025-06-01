@@ -721,6 +721,10 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_POSITION:
             processPlayerPosition(message.senderId, message);
             break;
+        case MessageType::ENEMY_STATE_UPDATE:
+            // Process player actions, including enemy state updates
+            processEnemyState(message.senderId, message);
+            break;
             
         case MessageType::CHAT:
             // Just relay chat messages to all clients

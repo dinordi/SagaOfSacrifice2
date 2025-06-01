@@ -42,6 +42,9 @@ void Minotaur::setupAnimations(std::filesystem::path atlasPath)
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
+    std::cout << "Setting up healthbar" << std::endl;
+    //Setup healthbar
+    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
@@ -118,13 +121,12 @@ void Minotaur::attack() {
 }
 
 void Minotaur::die() {
-    if (isDead) return;
+    if (isDead_) return;
     
-    std::cout << "Minotaur is dying!" << std::endl;
     // Play death animation or effects here
     
     // Mark as dead
-    isDead = true;
+    isDead_ = true;
     
     // The minotaur object will be removed by the game's cleanup mechanism
 }

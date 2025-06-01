@@ -6,6 +6,7 @@
 #include "utils/TimeUtils.h"  // Include proper header for get_ticks()
 #include "interfaces/playerInput.h"  // Add player input header
 #include "game.h"
+#include <algorithm>
 
 // External function declaration
 extern uint32_t get_ticks();
@@ -293,6 +294,110 @@ void MultiplayerManager::sendPlayerAction(int actionType) {
     network_->sendMessage(actionMsg);
 }
 
+void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth) {
+    if (!network_ || !network_->isConnected()) {
+        return;
+    }
+    
+    // Create a message to inform the server about the enemy state
+    NetworkMessage enemyStateMsg;
+    enemyStateMsg.type = MessageType::ENEMY_STATE_UPDATE; // Reuse existing message type
+    enemyStateMsg.senderId = playerId_; // Send as the local player
+    
+    // Encode the enemy state in the data payload
+    // Format: [enemy ID length][enemy ID string][1 byte isDead][4 bytes health]
+    std::vector<uint8_t> data; 
+    // Add enemy ID length (1 byte)
+    data.push_back(static_cast<uint8_t>(enemyId.size()));
+
+    // Add enemy ID string after the length
+    data.insert(data.end(), enemyId.begin(), enemyId.end());
+
+    // Add isDead flag
+    data.push_back(isDead ? 1 : 0);
+    
+    // Add current health (4 bytes)
+    data.push_back((currentHealth) & 0xFF);
+    data.push_back((currentHealth >> 8) & 0xFF);
+    data.push_back((currentHealth >> 16) & 0xFF);
+    data.push_back((currentHealth >> 24) & 0xFF);
+
+    enemyStateMsg.data = data;
+    
+    // Send the message to the server
+    network_->sendMessage(enemyStateMsg);
+}
+
+void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) {
+    // This method is called by the server to handle enemy state updates
+    // It updates enemy health, dead status, etc.
+    if (message.data.size() < 2) {
+        std::cerr << "[Client] Invalid enemy state update message received" << std::endl;
+        return;
+    }
+    // Format same as server: [1 byte action type][enemy ID string][1 byte isDead][4 bytes health]
+    size_t pos = 0;
+
+    // Read enemy ID length
+    size_t idLength = message.data[pos++];
+    std::string enemyId(message.data.begin() + pos, message.data.begin() + pos + idLength);
+    pos += idLength;
+
+    // Read isDead flag
+    if (pos >= message.data.size()) {
+        std::cerr << "[Client] Missing isDead flag in enemy state update" << std::endl;
+        return;
+    }
+    bool isDead = message.data[pos++] != 0;
+    // Read health (4 bytes)
+    if (pos + 4 > message.data.size()) {
+        std::cerr << "[Client] Missing health value in enemy state update" << std::endl;
+        return;
+    }
+    int health = (message.data[pos] << 24) |
+                 (message.data[pos + 1] << 16) |
+                 (message.data[pos + 2] << 8) |
+                  message.data[pos + 3];
+    pos += 4;
+
+    // Find the remote player or enemy object
+    Game * game = Game::getInstance();
+    if (!game) {
+        std::cerr << "[Client] Game instance not found" << std::endl;
+        return;
+    }
+    // Find the enemy object by ID in gameObjects
+    std::shared_ptr<Enemy> enemyObject = nullptr;
+    auto& objects = game->getObjects();
+    for (auto& obj : objects) {
+        if (obj->getObjID() == enemyId) {
+            switch(obj->type) {
+                case ObjectType::MINOTAUR:
+                    // Cast to Enemy type
+                    enemyObject = std::static_pointer_cast<Minotaur>(obj);
+                    break;
+                default:
+                    std::cerr << "[Client] Object with ID " << enemyId << " is not recognized as an enemy type" << std::endl;
+                    return;
+            }
+            break;
+        }
+    }
+    if (!enemyObject) {
+        std::cerr << "[Client] Enemy object not found: " << enemyId << std::endl;
+        return;
+    }
+    // Update the enemy state
+    if (isDead) {
+        // Handle enemy death logic here, e.g., remove from game, play death animation, etc.
+        enemyObject->die();  // Assuming die() method handles cleanup
+    } else {
+        // Update health or other properties as needed
+        enemyObject->setHealth(health);  // Assuming setHealth() method exists
+    }
+
+}
+
 bool MultiplayerManager::isConnected() const {
     return network_ && network_->isConnected();
 }
@@ -346,6 +451,12 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
             break;
         case MessageType::DISCONNECT:
             handlePlayerDisconnectMessage(message);
+            break;
+        case MessageType::ENEMY_STATE_UPDATE:
+            // Handle enemy state updates (e.g., when an enemy dies)
+            // This is a new message type for server-controlled physics
+            // We can process this in the same way as player actions
+            handleEnemyStateMessage(message);
             break;
         default:
             std::cerr << "[Client] Unknown message type received: " << static_cast<int>(message.type) << std::endl;

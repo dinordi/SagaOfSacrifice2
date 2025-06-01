@@ -43,6 +43,10 @@ public:
     // Send player action
     void sendPlayerAction(int actionType);
     
+    // Send enemy state update to server (e.g., when enemy dies)
+    void sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth);
+    void handleEnemyStateMessage(const NetworkMessage& message);
+
     // Check if connected to server
     bool isConnected() const;
     
