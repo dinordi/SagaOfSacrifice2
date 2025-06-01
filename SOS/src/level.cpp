@@ -202,11 +202,27 @@ bool Level::isCollidableTile(int tileIndex, const std::string& tileset) {
 }
 
 void Level::update(float deltaTime) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    std::vector<std::shared_ptr<Object>> objectsToRemove;
+
     {
+        std::lock_guard<std::mutex> lock(gameStateMutex_);
+    
         // Update all game objects
         for (auto& object : levelObjects) {
             object->update(deltaTime);
+            // Check if object is an entity that has health
+            if (object->type == ObjectType::PLAYER || object->type == ObjectType::MINOTAUR) {
+                std::shared_ptr<Entity> entity = std::static_pointer_cast<Entity>(object);
+                if(entity->isDead())
+                {
+                    objectsToRemove.push_back(object);  // Mark for removal if dead, removing directly here will cause iteration issues
+                }
+            }
+        }
+
+        // Remove dead entities from the level
+        for (const auto& obj : objectsToRemove) {
+            removeObject(obj);
         }
         
         // Detect and resolve collisions
@@ -259,14 +275,13 @@ void Level::unload() {
     levelObjects.clear();
     loaded = false;
     //unload all audio
-    
 }
+
 void Level::removeObject(std::shared_ptr<Object> object) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
     auto it = std::remove(levelObjects.begin(), levelObjects.end(), object);
     if (it != levelObjects.end()) {
         levelObjects.erase(it, levelObjects.end());
-        std::cout << "[Level] Removed object with ID: " << object->getObjID() << std::endl;
+        // std::cout << "[Level] Removed object with ID: " << object->getObjID() << std::endl;
     } else {
         std::cerr << "[Level] Object with ID: " << object->getObjID() << " not found in level" << std::endl;
     }

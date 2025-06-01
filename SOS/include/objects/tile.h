@@ -15,6 +15,10 @@ public:
     
     void setupAnimations(std::filesystem::path atlasPath);
     
+    int getCurrentSpriteIndex() const override {
+        return tileIndex;
+    }
+    
     bool hasFlag(uint32_t flag) const { return (collisionFlags & flag) != 0; }
     void setFlag(uint32_t flag) { collisionFlags |= flag; }
     void clearFlag(uint32_t flag) { collisionFlags &= ~flag; }

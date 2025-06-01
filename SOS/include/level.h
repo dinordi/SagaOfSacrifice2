@@ -32,7 +32,7 @@ public:
     /* -------- getters ---------- */
     std::string                          getId()       const { return id;   }
     std::string                          getName()     const { return name; }
-    std::vector<std::shared_ptr<Object>> getObjects()  const { return levelObjects; }
+    const std::vector<std::shared_ptr<Object>>& getObjects()  const { return levelObjects; }
     std::string                          getBackgroundPath() const { return backgroundPath; }
     Vec2                                 getPlayerStartPosition() const { return playerStartPosition; }
 
