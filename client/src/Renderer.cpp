@@ -13,11 +13,11 @@
 #define MAX_SPRITE_WIDTH 512
 #define MAX_SPRITE_HEIGHT 512
 
-Renderer::Renderer()
+Renderer::Renderer(const std::filesystem::path& basePath)
     : uio_fd(-1)
 {
     init_frame_infos();
-    renderer.loadAllSprites(std::filesystem::current_path());
+    loadAllSprites(basePath);
     init_lookup_tables();
     
     initUIO();
@@ -46,14 +46,12 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uin
 }
 
 void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
-    namespace fs = std::filesystem;
-    fs::path spriteDir = basePath / "SOS/assets/sprites/";
 
     uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT];
 
-    for (const auto& entry : fs::directory_iterator(spriteDir)) {
+    for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".png") {
-            fs::path fullPath = entry.path();
+            std::filesystem::path fullPath = entry.path();
             std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
 
             uint32_t phys_addr = 0;
@@ -77,7 +75,7 @@ void Renderer::initUIO() {
         throw std::runtime_error("Failed to open UIO device");
     }
 
-    uint32_t clear_value = 1;s
+    uint32_t clear_value = 1;
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
         perror("Failed to clear pending interrupt");
         close(uio_fd);

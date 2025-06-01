@@ -16,13 +16,13 @@ constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jou
 
 class Renderer {
 public:
-    Renderer();
+    Renderer(const std::filesystem::path& basePath);
     ~Renderer();
 
     void handleIRQ();
 
 private:
-    void loadSprite(const std::string& img_path);
+    int loadSprite(const std::string& img_path, uint32_t* sprite_data, uint32_t* phys_addr_out);
     void loadAllSprites(const std::filesystem::path& basePath);
     void init_lookup_tables();
     void init_frame_infos();

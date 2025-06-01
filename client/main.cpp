@@ -149,10 +149,9 @@ int main(int argc, char *argv[]) {
         audio->playSound("001");
         audio->playSound("jump");
     }
-    renderer = new Renderer(path_sprites + imageName);
     if(!devMode)
     {
-        renderer = new Renderer(path_sprites + imageName);
+        renderer = new Renderer(std::filesystem::path(path_sprites));
         if(debugMode) {
             std::cout << "Debug mode: Loaded image." << std::endl;
             return 0;
