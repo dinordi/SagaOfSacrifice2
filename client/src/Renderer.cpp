@@ -28,20 +28,22 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
     int width = 0, height = 0;
     size_t sprite_size = 0;
 
-    // Create the PNG file path by replacing "spriteatlas/*.tpsheet" with "sprites/*.png"
+    // Remove "/spriteatlas/<name>.tpsheet" at the end of the string
     std::string png_path = img_path;
-    size_t atlas_pos = png_path.find("spriteatlas/");
-    if (atlas_pos != std::string::npos) {
-        png_path.replace(atlas_pos, 12, "sprites/");  // Replace "spriteatlas/" with "sprites/"
+    size_t pos = png_path.rfind("/spriteatlas/");
+    size_t ext_pos = png_path.rfind(".tpsheet");
+    if (pos != std::string::npos && ext_pos != std::string::npos && ext_pos > pos) {
+        png_path.erase(pos);
     }
-    
-    
-    
     SpriteData* spData = SpriteData::getSharedInstance(img_path);
+    std::string pngName = spData->getSpriteRect(0).id_;
     
-    png_path += spData->getSpriteRect(0).id_ + ".png"; // Assuming the first sprite rect is representative
-    const char* png_file = png_path.c_str();
+    png_path += "/" + pngName + ".png"; // Assuming the PNG file is named like the sprite rect ID
 
+    const char* png_file = png_path.c_str();
+    
+    
+    
     std::cout << "Mapping " << spData->getSpriteRects().size() << " sprites from " << png_file << std::endl;
     for(const auto& pair : spData->getSpriteRects()) {
         const SpriteRect& rect = pair.second;
