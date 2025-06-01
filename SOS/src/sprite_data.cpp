@@ -28,6 +28,12 @@ SpriteData* SpriteData::getSharedInstance(const std::string& atlasPath)
     // If not, create a new instance and cache it
     SpriteData* newInstance = new SpriteData(atlasPath);
     spriteCache[atlasPath] = newInstance;
+    static int spriteDataCount = 0;
+    spriteDataCount += newInstance->getSpriteRects().size();
+    // Every 50 sprite data instances, print the count
+    if (spriteDataCount % 50 == 0) {
+        std::cout << "[SpriteData] Total sprite rects: " << spriteDataCount << std::endl;
+    }
     return newInstance;
 }
 

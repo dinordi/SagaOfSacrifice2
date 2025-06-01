@@ -37,6 +37,7 @@ private:
     volatile uint64_t* lookup_tables[NUM_PIPELINES] = {nullptr};
     volatile uint64_t* frame_infos[NUM_PIPELINES] = {nullptr};
     std::unordered_map<std::string, std::map<int, uint32_t>> spriteSheetMap;
+    std::map<std::string, int> lookup_table_map;
 
     int uio_fd;
 
