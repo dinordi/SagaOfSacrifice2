@@ -99,8 +99,6 @@ void Game::mapCharacters()
     for (const auto& pair : characterMap) {
         std::cout << pair.first << " -> " << pair.second << std::endl;
     }
-    this->letters = SpriteData::getSharedInstance(basePath_ / "letters.tpsheet");
-    this->letters_small = SpriteData::getSharedInstance(basePath_ / "letters_small.tpsheet");
 
     characterMap['>'] = 36;
 }

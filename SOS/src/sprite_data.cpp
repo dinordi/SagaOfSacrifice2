@@ -19,17 +19,18 @@ SpriteData::~SpriteData() {
 
 SpriteData* SpriteData::getSharedInstance(const std::string& atlasPath)
 {
+    std::string imageName = fs::path(atlasPath).filename().string();
     // Check if we already have this sprite sheet loaded
-    auto it = spriteCache.find(atlasPath);
+    auto it = spriteCache.find(imageName);
     if (it != spriteCache.end()) {
         return it->second;
     }
-    
+
     // If not, create a new instance and cache it
     SpriteData* newInstance = new SpriteData(atlasPath);
-    spriteCache[atlasPath] = newInstance;
     static int spriteDataCount = 0;
     spriteDataCount += newInstance->getSpriteRects().size();
+    spriteCache[imageName] = newInstance;
     // Every 50 sprite data instances, print the count
     if (spriteDataCount % 50 == 0) {
         std::cout << "[SpriteData] Total sprite rects: " << spriteDataCount << std::endl;
