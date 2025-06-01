@@ -384,14 +384,14 @@ void Game::reconcileWithServerState(float deltaTime) {
         const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
         const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
         
-        if (distSquared > TELEPORT_THRESHOLD) {
-            // Potential cheating or severe desync - force correction
-            clientPosition->x = serverPosition.x;
-            clientPosition->y = serverPosition.y;
+        // if (distSquared > TELEPORT_THRESHOLD) {
+        //     // Potential cheating or severe desync - force correction
+        //     clientPosition->x = serverPosition.x;
+        //     clientPosition->y = serverPosition.y;
             
-            // Log potential cheating attempt
-            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
-        }
+        //     // Log potential cheating attempt
+        //     std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
+        // }
         // Server side validation check, can be implemented later
         // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
         //     // Server validation failed - report to server we need validation

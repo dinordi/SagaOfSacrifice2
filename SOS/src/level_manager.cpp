@@ -231,7 +231,8 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
     
     // Get the level's player start position
     Vec2 startPos = currentLevel_->getPlayerStartPosition();
-    
+    std::cout << "[LevelManager] Player start position for level " << currentLevel_->getId() 
+              << ": " << startPos.x << "," << startPos.y << std::endl;
     // If the player doesn't exist yet, create a new one
     if (!player) {
         player = playerManager.createPlayer(playerId, startPos);

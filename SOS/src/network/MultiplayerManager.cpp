@@ -832,11 +832,12 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                     // Update existing platform
                     obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
                     obj->setvelocity(Vec2(velX, velY));
+                    
                     return obj; // Successfully updated
                 }
             }
             
-            uint8_t tileIndex = 0; // Default tile index
+            uint8_t tileIndex = 2; // Default tile index
             tileIndex = data[pos++];
             uint32_t flags;
             flags = (static_cast<uint32_t>(data[pos+3]) << 24) |

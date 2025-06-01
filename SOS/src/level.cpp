@@ -112,14 +112,14 @@ bool Level::load(json& levelData)
                     tileWidth, tileHeight, 0);
 
                 
-                    tile->setFlag(Tile::BLOCKS_HORIZONTAL |
-                                  Tile::BLOCKS_VERTICAL);
-                std::cout << "[Level] Adding tile: "
-                          << objId << " at (" << worldX
-                          << ", " << worldY << ") with sprite index "
-                          << spriteIndex << " from tileset "
-                          << tileset << '\n';
-                // levelObjects.push_back(tile);
+                    // tile->setFlag(Tile::BLOCKS_HORIZONTAL |
+                    //               Tile::BLOCKS_VERTICAL);
+                // std::cout << "[Level] Adding tile: "
+                //           << objId << " at (" << worldX
+                //           << ", " << worldY << ") with sprite index "
+                //           << spriteIndex << " from tileset "
+                //           << tileset << '\n';
+                 levelObjects.push_back(tile);
             }
         }
     }
