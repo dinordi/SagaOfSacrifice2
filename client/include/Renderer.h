@@ -22,7 +22,7 @@ public:
     void handleIRQ();
 
 private:
-    int loadSprite(const std::string& img_path, uint32_t* sprite_data, uint32_t* phys_addr_out);
+    int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map* spriteAddressMap, uint32_t* phys_addr_out);
     void loadAllSprites(const std::filesystem::path& basePath);
     void init_lookup_tables();
     void init_frame_infos();
@@ -34,7 +34,7 @@ private:
     void* frame_info_ptrs[NUM_PIPELINES] = {nullptr};
     volatile uint64_t* lookup_tables[NUM_PIPELINES] = {nullptr};
     volatile uint64_t* frame_infos[NUM_PIPELINES] = {nullptr};
-    std::unordered_map<std::string, uint32_t> spriteAddressMap;
+    std::unordered_map<std::string, std::map> spriteSheetMap;
 
     int uio_fd;
 
