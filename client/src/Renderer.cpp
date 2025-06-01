@@ -38,7 +38,7 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
     SpriteData* spData = SpriteData::getSharedInstance(img_path);
     std::string pngName = spData->getSpriteRect(0).id_;
     
-    png_path += "/" + pngName + ".png"; // Assuming the PNG file is named like the sprite rect ID
+    png_path += "/sprites/" + pngName + ".png"; // Assuming the PNG file is named like the sprite rect ID
 
     const char* png_file = png_path.c_str();
     
