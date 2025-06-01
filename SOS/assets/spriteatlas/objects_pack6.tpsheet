@@ -1,0 +1,678 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:9db3898b107a584e1c5943f6239d3927:e678ab22f58c3c04803e8051f0199a46:030c09bf48225d0581ec5bba8473e750$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "objects_pack6",
+            "size": {
+                "h": 1608,
+                "w": 254
+            },
+            "sprites": [
+                {
+                    "filename": "Dinosaur_skeleton_head_dark_shadow",
+                    "margin": {
+                        "h": 46,
+                        "w": 56,
+                        "x": 28,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 72,
+                        "x": 157,
+                        "y": 1263
+                    }
+                },
+                {
+                    "filename": "Dinosaur_skeleton_light_dark_shadow",
+                    "margin": {
+                        "h": 46,
+                        "w": 56,
+                        "x": 28,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 72,
+                        "x": 83,
+                        "y": 1293
+                    }
+                },
+                {
+                    "filename": "Bonefire_dark_shadow",
+                    "margin": {
+                        "h": 74,
+                        "w": 54,
+                        "x": 26,
+                        "y": 36
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 74,
+                        "x": 125,
+                        "y": 1521
+                    }
+                },
+                {
+                    "filename": "Bonefire_light_shadow",
+                    "margin": {
+                        "h": 74,
+                        "w": 54,
+                        "x": 26,
+                        "y": 36
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 74,
+                        "x": 1,
+                        "y": 1537
+                    }
+                },
+                {
+                    "filename": "caveman_statue_dark_shadow1",
+                    "margin": {
+                        "h": 4,
+                        "w": 16,
+                        "x": 8,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 112,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "caveman_statue_light_shadow1",
+                    "margin": {
+                        "h": 4,
+                        "w": 16,
+                        "x": 8,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 112,
+                        "x": 115,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Gates_dark_shadow1",
+                    "margin": {
+                        "h": 14,
+                        "w": 8,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 120,
+                        "x": 1,
+                        "y": 127
+                    }
+                },
+                {
+                    "filename": "white_crystal_dark_shadow1",
+                    "margin": {
+                        "h": 18,
+                        "w": 4,
+                        "x": 2,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 124,
+                        "x": 1,
+                        "y": 243
+                    }
+                },
+                {
+                    "filename": "white_crystal_light_shadow1-1",
+                    "margin": {
+                        "h": 18,
+                        "w": 4,
+                        "x": 2,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 124,
+                        "x": 127,
+                        "y": 243
+                    }
+                },
+                {
+                    "filename": "mushroom1_dark_shadow1",
+                    "margin": {
+                        "h": 4,
+                        "w": 36,
+                        "x": 18,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 92,
+                        "x": 1,
+                        "y": 593
+                    }
+                },
+                {
+                    "filename": "mushroom1_light_shadow1",
+                    "margin": {
+                        "h": 4,
+                        "w": 36,
+                        "x": 18,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 92,
+                        "x": 95,
+                        "y": 593
+                    }
+                },
+                {
+                    "filename": "mushroom4_dark_shadow1",
+                    "margin": {
+                        "h": 40,
+                        "w": 58,
+                        "x": 28,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 70,
+                        "x": 183,
+                        "y": 921
+                    }
+                },
+                {
+                    "filename": "Blue-green_crystal_dark_shadow1",
+                    "margin": {
+                        "h": 32,
+                        "w": 36,
+                        "x": 18,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 92,
+                        "x": 1,
+                        "y": 915
+                    }
+                },
+                {
+                    "filename": "Blue-green_crystal_light_shadow1",
+                    "margin": {
+                        "h": 32,
+                        "w": 36,
+                        "x": 18,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 92,
+                        "x": 1,
+                        "y": 1013
+                    }
+                },
+                {
+                    "filename": "mushroom4_light_shadow1",
+                    "margin": {
+                        "h": 40,
+                        "w": 58,
+                        "x": 28,
+                        "y": 20
+                    },
+                    "region": {
+                        "h": 88,
+                        "w": 70,
+                        "x": 95,
+                        "y": 1103
+                    }
+                },
+                {
+                    "filename": "crystal_blue-green_vertical1",
+                    "margin": {
+                        "h": 46,
+                        "w": 48,
+                        "x": 24,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 80,
+                        "x": 167,
+                        "y": 1179
+                    }
+                },
+                {
+                    "filename": "white_crystal_light_shadow2-1",
+                    "margin": {
+                        "h": 48,
+                        "w": 36,
+                        "x": 18,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 92,
+                        "x": 1,
+                        "y": 1193
+                    }
+                },
+                {
+                    "filename": "white_crystal_vertical1",
+                    "margin": {
+                        "h": 50,
+                        "w": 58,
+                        "x": 28,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 70,
+                        "x": 63,
+                        "y": 1377
+                    }
+                },
+                {
+                    "filename": "Gates_light_shadow2",
+                    "margin": {
+                        "h": 14,
+                        "w": 8,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 120,
+                        "x": 123,
+                        "y": 127
+                    }
+                },
+                {
+                    "filename": "mushroom2_dark_shadow2",
+                    "margin": {
+                        "h": 10,
+                        "w": 20,
+                        "x": 10,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 108,
+                        "x": 1,
+                        "y": 355
+                    }
+                },
+                {
+                    "filename": "mushroom2_light_shadow2",
+                    "margin": {
+                        "h": 10,
+                        "w": 20,
+                        "x": 10,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 118,
+                        "w": 108,
+                        "x": 111,
+                        "y": 355
+                    }
+                },
+                {
+                    "filename": "Gates_dark_shadow2",
+                    "margin": {
+                        "h": 12,
+                        "w": 20,
+                        "x": 10,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 116,
+                        "w": 108,
+                        "x": 1,
+                        "y": 475
+                    }
+                },
+                {
+                    "filename": "Beige_rpck_dark_shadow2",
+                    "margin": {
+                        "h": 16,
+                        "w": 70,
+                        "x": 34,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 58,
+                        "x": 189,
+                        "y": 593
+                    }
+                },
+                {
+                    "filename": "Beige_rpck_light_shadow2",
+                    "margin": {
+                        "h": 16,
+                        "w": 70,
+                        "x": 34,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 112,
+                        "w": 58,
+                        "x": 189,
+                        "y": 707
+                    }
+                },
+                {
+                    "filename": "caveman_statue_dark_shadow2",
+                    "margin": {
+                        "h": 32,
+                        "w": 24,
+                        "x": 12,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 104,
+                        "x": 1,
+                        "y": 719
+                    }
+                },
+                {
+                    "filename": "caveman_statue_light_shadow2",
+                    "margin": {
+                        "h": 32,
+                        "w": 24,
+                        "x": 12,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 104,
+                        "x": 1,
+                        "y": 817
+                    }
+                },
+                {
+                    "filename": "mushroom1_dark_shadow2",
+                    "margin": {
+                        "h": 34,
+                        "w": 54,
+                        "x": 26,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 74,
+                        "x": 107,
+                        "y": 911
+                    }
+                },
+                {
+                    "filename": "mushroom1_light_shadow2",
+                    "margin": {
+                        "h": 34,
+                        "w": 54,
+                        "x": 26,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 74,
+                        "x": 95,
+                        "y": 1007
+                    }
+                },
+                {
+                    "filename": "Blue-green_crystal_dark_shadow2",
+                    "margin": {
+                        "h": 46,
+                        "w": 48,
+                        "x": 24,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 80,
+                        "x": 171,
+                        "y": 1011
+                    }
+                },
+                {
+                    "filename": "Blue-green_crystal_light_shadow2",
+                    "margin": {
+                        "h": 46,
+                        "w": 48,
+                        "x": 24,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 80,
+                        "x": 171,
+                        "y": 1095
+                    }
+                },
+                {
+                    "filename": "white_crystal_dark_shadow2",
+                    "margin": {
+                        "h": 48,
+                        "w": 36,
+                        "x": 18,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 80,
+                        "w": 92,
+                        "x": 1,
+                        "y": 1111
+                    }
+                },
+                {
+                    "filename": "mushroom4_dark_shadow2",
+                    "margin": {
+                        "h": 50,
+                        "w": 68,
+                        "x": 34,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 60,
+                        "x": 1,
+                        "y": 1453
+                    }
+                },
+                {
+                    "filename": "mushroom4_light_shadow2",
+                    "margin": {
+                        "h": 50,
+                        "w": 68,
+                        "x": 34,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 60,
+                        "x": 63,
+                        "y": 1457
+                    }
+                },
+                {
+                    "filename": "Gates_light_shadow3",
+                    "margin": {
+                        "h": 12,
+                        "w": 20,
+                        "x": 10,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 116,
+                        "w": 108,
+                        "x": 111,
+                        "y": 475
+                    }
+                },
+                {
+                    "filename": "mushroom3_dark_shadow3",
+                    "margin": {
+                        "h": 30,
+                        "w": 68,
+                        "x": 34,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 60,
+                        "x": 189,
+                        "y": 821
+                    }
+                },
+                {
+                    "filename": "mushroom3_light_shadow3",
+                    "margin": {
+                        "h": 30,
+                        "w": 68,
+                        "x": 34,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 60,
+                        "x": 95,
+                        "y": 1193
+                    }
+                },
+                {
+                    "filename": "crystal_blue-green_vertical3",
+                    "margin": {
+                        "h": 46,
+                        "w": 48,
+                        "x": 24,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 80,
+                        "x": 1,
+                        "y": 1275
+                    }
+                },
+                {
+                    "filename": "mushroom2_dark_shadow3",
+                    "margin": {
+                        "h": 36,
+                        "w": 68,
+                        "x": 34,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 92,
+                        "w": 60,
+                        "x": 1,
+                        "y": 1359
+                    }
+                },
+                {
+                    "filename": "mushroom2_light_shadow3",
+                    "margin": {
+                        "h": 36,
+                        "w": 68,
+                        "x": 34,
+                        "y": 18
+                    },
+                    "region": {
+                        "h": 92,
+                        "w": 60,
+                        "x": 157,
+                        "y": 1347
+                    }
+                },
+                {
+                    "filename": "white_crystal_vertical3",
+                    "margin": {
+                        "h": 50,
+                        "w": 58,
+                        "x": 28,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 70,
+                        "x": 135,
+                        "y": 1441
+                    }
+                },
+                {
+                    "filename": "Beige_rpck_dark_shadow3",
+                    "margin": {
+                        "h": 46,
+                        "w": 82,
+                        "x": 40,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 46,
+                        "x": 207,
+                        "y": 1441
+                    }
+                },
+                {
+                    "filename": "Beige_rpck_light_shadow3",
+                    "margin": {
+                        "h": 46,
+                        "w": 82,
+                        "x": 40,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 46,
+                        "x": 201,
+                        "y": 1525
+                    }
+                },
+                {
+                    "filename": "Dark_totem_dark_shadow5",
+                    "margin": {
+                        "h": 34,
+                        "w": 48,
+                        "x": 24,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 80,
+                        "x": 107,
+                        "y": 719
+                    }
+                },
+                {
+                    "filename": "white_crystal_light_shadow5",
+                    "margin": {
+                        "h": 34,
+                        "w": 48,
+                        "x": 24,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 80,
+                        "x": 107,
+                        "y": 815
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,438 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:5d6062c34e7feafcb56272ff6498d731:cd719f739c0e788d4b0b8d1c5a61e885:eec6941c97e0ebfe0d833d38bdbf1bd7$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "bridges",
+            "size": {
+                "h": 1396,
+                "w": 968
+            },
+            "sprites": [
+                {
+                    "filename": "bridges",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 267,
+                        "w": 231,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "bridges-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 267,
+                        "w": 231,
+                        "x": 1,
+                        "y": 270
+                    }
+                },
+                {
+                    "filename": "bridges-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 210,
+                        "w": 279,
+                        "x": 234,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "bridges-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 210,
+                        "w": 279,
+                        "x": 234,
+                        "y": 213
+                    }
+                },
+                {
+                    "filename": "bridges-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 282,
+                        "w": 207,
+                        "x": 1,
+                        "y": 539
+                    }
+                },
+                {
+                    "filename": "bridges-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 282,
+                        "w": 207,
+                        "x": 515,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "bridges-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 285,
+                        "w": 177,
+                        "x": 1,
+                        "y": 823
+                    }
+                },
+                {
+                    "filename": "bridges-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 285,
+                        "w": 177,
+                        "x": 1,
+                        "y": 1110
+                    }
+                },
+                {
+                    "filename": "bridges-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 243,
+                        "x": 724,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "bridges-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 174,
+                        "w": 243,
+                        "x": 180,
+                        "y": 938
+                    }
+                },
+                {
+                    "filename": "bridges-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 198,
+                        "w": 162,
+                        "x": 789,
+                        "y": 177
+                    }
+                },
+                {
+                    "filename": "bridges-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 198,
+                        "w": 162,
+                        "x": 789,
+                        "y": 377
+                    }
+                },
+                {
+                    "filename": "bridges-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 153,
+                        "w": 273,
+                        "x": 491,
+                        "y": 605
+                    }
+                },
+                {
+                    "filename": "bridges-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 153,
+                        "w": 273,
+                        "x": 210,
+                        "y": 783
+                    }
+                },
+                {
+                    "filename": "bridges-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 204,
+                        "w": 174,
+                        "x": 180,
+                        "y": 1114
+                    }
+                },
+                {
+                    "filename": "bridges-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 204,
+                        "w": 174,
+                        "x": 356,
+                        "y": 1114
+                    }
+                },
+                {
+                    "filename": "bridges-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 318,
+                        "w": 135,
+                        "x": 515,
+                        "y": 285
+                    }
+                },
+                {
+                    "filename": "bridges-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 318,
+                        "w": 135,
+                        "x": 652,
+                        "y": 285
+                    }
+                },
+                {
+                    "filename": "bridges-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 273,
+                        "x": 491,
+                        "y": 760
+                    }
+                },
+                {
+                    "filename": "bridges-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 273,
+                        "x": 485,
+                        "y": 888
+                    }
+                },
+                {
+                    "filename": "bridges-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 177,
+                        "w": 279,
+                        "x": 234,
+                        "y": 425
+                    }
+                },
+                {
+                    "filename": "bridges-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 177,
+                        "w": 279,
+                        "x": 210,
+                        "y": 604
+                    }
+                },
+                {
+                    "filename": "bridges-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 165,
+                        "w": 153,
+                        "x": 735,
+                        "y": 1016
+                    }
+                },
+                {
+                    "filename": "bridges-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 165,
+                        "w": 153,
+                        "x": 735,
+                        "y": 1183
+                    }
+                },
+                {
+                    "filename": "bridges-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 159,
+                        "x": 789,
+                        "y": 577
+                    }
+                },
+                {
+                    "filename": "bridges-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 159,
+                        "x": 766,
+                        "y": 729
+                    }
+                },
+                {
+                    "filename": "bridges-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 171,
+                        "w": 201,
+                        "x": 532,
+                        "y": 1016
+                    }
+                },
+                {
+                    "filename": "bridges-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 171,
+                        "w": 201,
+                        "x": 532,
+                        "y": 1189
+                    }
+                }
+            ]
+        }
+    ]
+}

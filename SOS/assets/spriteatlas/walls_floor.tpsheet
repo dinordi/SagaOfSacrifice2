@@ -1,0 +1,408 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:270ef8dbe10fef69377cfb38dd6304a1:b1a85c8e8f775665afcbfefff86dce7b:20c85ec39801df8ed147c6d7b08241f4$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "walls_floor",
+            "size": {
+                "h": 456,
+                "w": 676
+            },
+            "sprites": [
+                {
+                    "filename": "walls_floor",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 160,
+                        "w": 96,
+                        "x": 511,
+                        "y": 253
+                    }
+                },
+                {
+                    "filename": "walls_floor-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 160,
+                        "w": 96,
+                        "x": 395,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "walls_floor-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 224,
+                        "x": 1,
+                        "y": 93
+                    }
+                },
+                {
+                    "filename": "walls_floor-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 96,
+                        "x": 227,
+                        "y": 93
+                    }
+                },
+                {
+                    "filename": "walls_floor-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 96,
+                        "x": 1,
+                        "y": 321
+                    }
+                },
+                {
+                    "filename": "walls_floor-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 224,
+                        "x": 1,
+                        "y": 223
+                    }
+                },
+                {
+                    "filename": "walls_floor-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 66,
+                        "w": 166,
+                        "x": 227,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "walls_floor-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 38,
+                        "x": 637,
+                        "y": 69
+                    }
+                },
+                {
+                    "filename": "walls_floor-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 66,
+                        "w": 32,
+                        "x": 637,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "walls_floor-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 42,
+                        "w": 32,
+                        "x": 637,
+                        "y": 135
+                    }
+                },
+                {
+                    "filename": "walls_floor-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 44,
+                        "x": 325,
+                        "y": 93
+                    }
+                },
+                {
+                    "filename": "walls_floor-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 128,
+                        "x": 227,
+                        "y": 223
+                    }
+                },
+                {
+                    "filename": "walls_floor-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 82,
+                        "x": 577,
+                        "y": 179
+                    }
+                },
+                {
+                    "filename": "walls_floor-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 609,
+                        "y": 253
+                    }
+                },
+                {
+                    "filename": "walls_floor-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 122,
+                        "x": 387,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "walls_floor-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 176,
+                        "w": 58,
+                        "x": 577,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "walls_floor-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 26,
+                        "w": 32,
+                        "x": 493,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "walls_floor-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 250,
+                        "w": 64,
+                        "x": 511,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "walls_floor-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 96,
+                        "x": 99,
+                        "y": 321
+                    }
+                },
+                {
+                    "filename": "walls_floor-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 609,
+                        "y": 351
+                    }
+                },
+                {
+                    "filename": "walls_floor-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 197,
+                        "y": 359
+                    }
+                },
+                {
+                    "filename": "walls_floor-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 263,
+                        "y": 359
+                    }
+                },
+                {
+                    "filename": "walls_floor-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 329,
+                        "y": 359
+                    }
+                },
+                {
+                    "filename": "walls_floor-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 46,
+                        "w": 42,
+                        "x": 325,
+                        "y": 159
+                    }
+                },
+                {
+                    "filename": "walls_floor-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 46,
+                        "w": 42,
+                        "x": 325,
+                        "y": 159
+                    }
+                },
+                {
+                    "filename": "walls_floor-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 90,
+                        "w": 384,
+                        "x": 1,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

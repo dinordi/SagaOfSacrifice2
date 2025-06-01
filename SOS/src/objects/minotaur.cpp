@@ -3,8 +3,9 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <filesystem>
 
-Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96, 96), objID, ObjectType::MINOTAUR) {
+Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR) {
     // Call the other constructor's setup code
     setvelocity(Vec2(0, 0));
     
@@ -14,32 +15,38 @@ Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 96
     attackRange = 120.0f;
     detectionRange = 400.0f;
     moveSpeed = 100.0f;
-
-    // Set up animations
-    addSpriteSheet(AnimationState::IDLE, new SpriteData("minotaurus_idle", 192, 192, 2), 100, true);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 3);
-
-    addSpriteSheet(AnimationState::WALKING, new SpriteData("minotaurus_walk", 192, 192, 8), 150, true);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 3);
-
-    addSpriteSheet(AnimationState::ATTACKING, new SpriteData("minotaurus_slash", 192, 192, 5), 80, false);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 1);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 2);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 3);
-
-    // Set initial state
-    setAnimationState(AnimationState::IDLE);
 }
 
 Minotaur::~Minotaur() {
     // Clean up any resources
+}
+
+void Minotaur::setupAnimations(std::filesystem::path atlasPath)
+{
+    // Set up animations
+    addSpriteSheet(AnimationState::IDLE, atlasPath / "minotaurus_idle.tpsheet");
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
+    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
+
+    addSpriteSheet(AnimationState::WALKING, atlasPath / "minotaurus_walk.tpsheet");
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
+    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
+
+    addSpriteSheet(AnimationState::ATTACKING, atlasPath / "minotaurus_slash.tpsheet");
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
+    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
+
+    std::cout << "Setting up healthbar" << std::endl;
+    //Setup healthbar
+    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
+    // Set initial state
+    setAnimationState(AnimationState::IDLE);
 }
 
 void Minotaur::move() {
@@ -59,9 +66,9 @@ void Minotaur::move() {
         } else {
             // Vertical movement is dominant
             if (velocity.y > 0) {
-                // dir = FacingDirection::SOUTH;
+                dir = FacingDirection::SOUTH;
             } else {
-                // dir = FacingDirection::NORTH;
+                dir = FacingDirection::NORTH;
             }
         }
     }
@@ -114,13 +121,12 @@ void Minotaur::attack() {
 }
 
 void Minotaur::die() {
-    if (isDead) return;
+    if (isDead_) return;
     
-    std::cout << "Minotaur is dying!" << std::endl;
     // Play death animation or effects here
     
     // Mark as dead
-    isDead = true;
+    isDead_ = true;
     
     // The minotaur object will be removed by the game's cleanup mechanism
 }

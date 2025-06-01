@@ -1,0 +1,498 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:b2f841b94d5d6be277f9cef6c74b7fd3:39a1154ab5f02e0f250e2cb20895e571:c0b1d73989056e4c775444ba8fbdc885$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "slime_walk",
+            "size": {
+                "h": 162,
+                "w": 119
+            },
+            "sprites": [
+                {
+                    "filename": "Slime1_Walk_body",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 23,
+                        "y": 35
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-1",
+                    "margin": {
+                        "h": 44,
+                        "w": 46,
+                        "x": 24,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 18,
+                        "x": 65,
+                        "y": 37
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-2",
+                    "margin": {
+                        "h": 42,
+                        "w": 44,
+                        "x": 23,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 20,
+                        "x": 41,
+                        "y": 57
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-3",
+                    "margin": {
+                        "h": 40,
+                        "w": 42,
+                        "x": 22,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 24,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-4",
+                    "margin": {
+                        "h": 39,
+                        "w": 41,
+                        "x": 21,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 23,
+                        "x": 1,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-5",
+                    "margin": {
+                        "h": 39,
+                        "w": 38,
+                        "x": 19,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 26,
+                        "x": 26,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-6",
+                    "margin": {
+                        "h": 49,
+                        "w": 37,
+                        "x": 19,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 27,
+                        "x": 53,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-7",
+                    "margin": {
+                        "h": 47,
+                        "w": 42,
+                        "x": 21,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 17,
+                        "w": 22,
+                        "x": 49,
+                        "y": 18
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-8",
+                    "margin": {
+                        "h": 46,
+                        "w": 45,
+                        "x": 23,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 18,
+                        "w": 19,
+                        "x": 44,
+                        "y": 37
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-9",
+                    "margin": {
+                        "h": 44,
+                        "w": 46,
+                        "x": 23,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 18,
+                        "x": 85,
+                        "y": 37
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-10",
+                    "margin": {
+                        "h": 42,
+                        "w": 44,
+                        "x": 22,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 20,
+                        "x": 63,
+                        "y": 59
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-11",
+                    "margin": {
+                        "h": 40,
+                        "w": 42,
+                        "x": 21,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 48,
+                        "y": 83
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-12",
+                    "margin": {
+                        "h": 39,
+                        "w": 41,
+                        "x": 21,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 23,
+                        "x": 54,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-13",
+                    "margin": {
+                        "h": 39,
+                        "w": 38,
+                        "x": 20,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 26,
+                        "x": 79,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-14",
+                    "margin": {
+                        "h": 49,
+                        "w": 37,
+                        "x": 19,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 15,
+                        "w": 27,
+                        "x": 82,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-15",
+                    "margin": {
+                        "h": 47,
+                        "w": 42,
+                        "x": 22,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 17,
+                        "w": 22,
+                        "x": 73,
+                        "y": 18
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-16",
+                    "margin": {
+                        "h": 47,
+                        "w": 44,
+                        "x": 23,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 17,
+                        "w": 20,
+                        "x": 97,
+                        "y": 18
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-17",
+                    "margin": {
+                        "h": 44,
+                        "w": 46,
+                        "x": 21,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 18,
+                        "x": 1,
+                        "y": 54
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-18",
+                    "margin": {
+                        "h": 42,
+                        "w": 43,
+                        "x": 17,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 21,
+                        "x": 85,
+                        "y": 59
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-19",
+                    "margin": {
+                        "h": 40,
+                        "w": 42,
+                        "x": 17,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 72,
+                        "y": 83
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-20",
+                    "margin": {
+                        "h": 39,
+                        "w": 39,
+                        "x": 14,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 25,
+                        "x": 1,
+                        "y": 136
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-21",
+                    "margin": {
+                        "h": 39,
+                        "w": 39,
+                        "x": 17,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 25,
+                        "x": 28,
+                        "y": 136
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-22",
+                    "margin": {
+                        "h": 50,
+                        "w": 40,
+                        "x": 20,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 24,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-23",
+                    "margin": {
+                        "h": 48,
+                        "w": 42,
+                        "x": 23,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 22,
+                        "x": 1,
+                        "y": 17
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-24",
+                    "margin": {
+                        "h": 47,
+                        "w": 44,
+                        "x": 22,
+                        "y": 24
+                    },
+                    "region": {
+                        "h": 17,
+                        "w": 20,
+                        "x": 1,
+                        "y": 35
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-25",
+                    "margin": {
+                        "h": 44,
+                        "w": 46,
+                        "x": 25,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 20,
+                        "w": 18,
+                        "x": 21,
+                        "y": 55
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-26",
+                    "margin": {
+                        "h": 42,
+                        "w": 43,
+                        "x": 26,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 22,
+                        "w": 21,
+                        "x": 1,
+                        "y": 77
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-27",
+                    "margin": {
+                        "h": 40,
+                        "w": 42,
+                        "x": 25,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 24,
+                        "w": 22,
+                        "x": 96,
+                        "y": 83
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-28",
+                    "margin": {
+                        "h": 39,
+                        "w": 39,
+                        "x": 25,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 25,
+                        "x": 55,
+                        "y": 136
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-29",
+                    "margin": {
+                        "h": 39,
+                        "w": 39,
+                        "x": 22,
+                        "y": 16
+                    },
+                    "region": {
+                        "h": 25,
+                        "w": 25,
+                        "x": 82,
+                        "y": 136
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-30",
+                    "margin": {
+                        "h": 50,
+                        "w": 40,
+                        "x": 20,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 24,
+                        "x": 27,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Slime1_Walk_body-31",
+                    "margin": {
+                        "h": 48,
+                        "w": 42,
+                        "x": 19,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 16,
+                        "w": 22,
+                        "x": 25,
+                        "y": 17
+                    }
+                }
+            ]
+        }
+    ]
+}

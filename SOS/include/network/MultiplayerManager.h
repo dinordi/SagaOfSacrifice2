@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 
 // Forward declaration
 class RemotePlayer;
@@ -42,6 +43,10 @@ public:
     // Send player action
     void sendPlayerAction(int actionType);
     
+    // Send enemy state update to server (e.g., when enemy dies)
+    void sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth);
+    void handleEnemyStateMessage(const NetworkMessage& message);
+
     // Check if connected to server
     bool isConnected() const;
     
@@ -56,6 +61,12 @@ public:
     
     // Process game state update from server
     void processGameState(const std::vector<uint8_t>& gameStateData);
+    
+    // Process delta game state update (only changed objects)
+    void processGameStateDelta(const std::vector<uint8_t>& gameStateData);
+    
+    // Process part of a multi-packet game state update
+    void processGameStatePart(const std::vector<uint8_t>& gameStateData);
 
 private:
     // Handle network messages received from the server
@@ -74,6 +85,9 @@ private:
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
     void deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player);
+
+    // Deserialize object from game state data
+    std::shared_ptr<Object> deserializeObject(const std::vector<uint8_t>& data, size_t& pos);
     
     // Serialize player input
     std::vector<uint8_t> serializePlayerInput(const PlayerInput* input);
@@ -102,13 +116,26 @@ private:
     // Client-side prediction state
     float lastSentInputTime_;
     uint32_t inputSequenceNumber_;
+
+    //Base path for atlas
+    std::filesystem::path atlasBasePath_;
+
+    // Multi-part game state handling
+    struct PartialGameState {
+        uint16_t totalObjectCount;
+        bool complete;
+        std::vector<std::vector<uint8_t>> parts;
+        std::vector<uint16_t> packetIndices;  // Add this line
+        std::chrono::steady_clock::time_point lastUpdateTime;
+    };
+    std::unique_ptr<PartialGameState> partialGameState_;
 };
 
 // RemotePlayer class to represent other players in the game
 class RemotePlayer : public Object
 {
 public:
-    RemotePlayer(const std::string& id);
+    RemotePlayer(const std::string id);
     
     void update(float deltaTime) override;
     
@@ -131,7 +158,6 @@ public:
 private:
     float orientation_;
     int state_;
-    const std::string id_;
     
     // Client-side interpolation variables
     Vec2 targetPosition_;

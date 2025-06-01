@@ -4,6 +4,12 @@
 #include <string>
 #include <vector>
 #include <ostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include "sprite_data.h"
+
+
+using json = nlohmann::json;
 
 enum class FacingDirection {
     WEST,
@@ -60,26 +66,33 @@ inline std::ostream& operator<<(std::ostream& os, AnimationState state) {
     return os;
 }
 
+struct FacingDirFrames{
+    int firstFrame; // First frame index for this direction
+    int lastFrame;  // Last frame index for this direction
+};
+
 // Animation definition that stores information about a specific animation
 struct AnimationDef {
-    int startFrame;        // First frame in the spritesheet for this animation
     int frameCount;        // Number of frames in this animation
-    int framesPerRow;      // Frames per row in the spritesheet (usually same as columns in SpriteData)
     uint32_t frameTime;    // Time per frame in milliseconds
     bool loop;             // Whether the animation should loop
-    
-    std::map<FacingDirection, int> directionRows;
+    std::map<FacingDirection, FacingDirFrames> directionRows;
 
     // Constructor
-    AnimationDef(int start = 0, int count = 1, int fpr = 1, uint32_t time = 100, bool doLoop = true)
-        : startFrame(start), frameCount(count), framesPerRow(fpr), frameTime(time), loop(doLoop) {}
+    AnimationDef(int count = 1, uint32_t time = 100, bool doLoop = true)
+        : frameCount(count), frameTime(time), loop(doLoop) {}
 };
 
 // Animation controller class to manage entity animations
 class AnimationController {
 public:
     AnimationController();
+
+    // Cleanup shared resources
+    static void cleanupSharedResources();
     
+    void addSpriteSheet(const std::string& spriteSheetPath, AnimationState spriteState, uint32_t frameTime = 150);
+
     // Add an animation definition for a specific state
     void addAnimation(AnimationState state, const AnimationDef& def);
     
@@ -96,14 +109,20 @@ public:
     AnimationState getCurrentState() const;
 
     // Set direction row map
-    void setDirectionRow(AnimationState state, FacingDirection dir, int row);
+    void setDirectionRow(AnimationState state, FacingDirection dir, int firstFrame, int lastFrame);
 
     // Check if the animation has completed (useful for non-looping animations)
     bool isFinished() const;
+
+    SpriteData* getCurrentSpriteData() const;
     
 private:
     std::map<AnimationState, AnimationDef> animations;
+    std::unordered_map<AnimationState, SpriteData*> spriteSheets;
+    
+    FacingDirection lastDirection;
     AnimationState currentState;
+    AnimationState targetState;
     int currentFrame;
     uint32_t elapsedTime;
     bool finished;

@@ -1,0 +1,498 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:089b88bd2acbd4b02c18720b2dc3705c:7e7ad40a8d22997c70914a02ab60b9b0:8e5f99c37a292ebba1d488c68a7d0dac$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc3_death",
+            "size": {
+                "h": 676,
+                "w": 1008
+            },
+            "sprites": [
+                {
+                    "filename": "orc3_death_full",
+                    "margin": {
+                        "h": 98,
+                        "w": 106,
+                        "x": 35,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 150,
+                        "x": 437,
+                        "y": 505
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-1",
+                    "margin": {
+                        "h": 102,
+                        "w": 98,
+                        "x": 27,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 158,
+                        "x": 1,
+                        "y": 449
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-2",
+                    "margin": {
+                        "h": 106,
+                        "w": 98,
+                        "x": 27,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 158,
+                        "x": 449,
+                        "y": 353
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-3",
+                    "margin": {
+                        "h": 114,
+                        "w": 98,
+                        "x": 27,
+                        "y": 43
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 158,
+                        "x": 289,
+                        "y": 333
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-4",
+                    "margin": {
+                        "h": 118,
+                        "w": 94,
+                        "x": 27,
+                        "y": 59
+                    },
+                    "region": {
+                        "h": 138,
+                        "w": 162,
+                        "x": 1,
+                        "y": 309
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-5",
+                    "margin": {
+                        "h": 150,
+                        "w": 94,
+                        "x": 27,
+                        "y": 87
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 162,
+                        "x": 773,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-6",
+                    "margin": {
+                        "h": 150,
+                        "w": 94,
+                        "x": 27,
+                        "y": 87
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 162,
+                        "x": 1,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-7",
+                    "margin": {
+                        "h": 150,
+                        "w": 94,
+                        "x": 27,
+                        "y": 87
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 162,
+                        "x": 165,
+                        "y": 85
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-8",
+                    "margin": {
+                        "h": 98,
+                        "w": 102,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 154,
+                        "x": 589,
+                        "y": 517
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-9",
+                    "margin": {
+                        "h": 102,
+                        "w": 98,
+                        "x": 71,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 158,
+                        "x": 277,
+                        "y": 477
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-10",
+                    "margin": {
+                        "h": 106,
+                        "w": 98,
+                        "x": 71,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 158,
+                        "x": 609,
+                        "y": 365
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-11",
+                    "margin": {
+                        "h": 126,
+                        "w": 98,
+                        "x": 71,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 158,
+                        "x": 453,
+                        "y": 221
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-12",
+                    "margin": {
+                        "h": 134,
+                        "w": 94,
+                        "x": 67,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 162,
+                        "x": 289,
+                        "y": 209
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-13",
+                    "margin": {
+                        "h": 162,
+                        "w": 94,
+                        "x": 67,
+                        "y": 91
+                    },
+                    "region": {
+                        "h": 94,
+                        "w": 162,
+                        "x": 329,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-14",
+                    "margin": {
+                        "h": 174,
+                        "w": 94,
+                        "x": 67,
+                        "y": 103
+                    },
+                    "region": {
+                        "h": 82,
+                        "w": 162,
+                        "x": 165,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-15",
+                    "margin": {
+                        "h": 178,
+                        "w": 94,
+                        "x": 67,
+                        "y": 107
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 162,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-16",
+                    "margin": {
+                        "h": 98,
+                        "w": 142,
+                        "x": 75,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 114,
+                        "x": 161,
+                        "y": 461
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-17",
+                    "margin": {
+                        "h": 102,
+                        "w": 146,
+                        "x": 83,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 110,
+                        "x": 897,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-18",
+                    "margin": {
+                        "h": 106,
+                        "w": 134,
+                        "x": 79,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 122,
+                        "x": 877,
+                        "y": 265
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-19",
+                    "margin": {
+                        "h": 118,
+                        "w": 126,
+                        "x": 51,
+                        "y": 47
+                    },
+                    "region": {
+                        "h": 138,
+                        "w": 130,
+                        "x": 613,
+                        "y": 221
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-20",
+                    "margin": {
+                        "h": 142,
+                        "w": 114,
+                        "x": 35,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 142,
+                        "x": 609,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-21",
+                    "margin": {
+                        "h": 142,
+                        "w": 114,
+                        "x": 35,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 142,
+                        "x": 753,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-22",
+                    "margin": {
+                        "h": 146,
+                        "w": 118,
+                        "x": 35,
+                        "y": 75
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 138,
+                        "x": 329,
+                        "y": 97
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-23",
+                    "margin": {
+                        "h": 154,
+                        "w": 118,
+                        "x": 35,
+                        "y": 83
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 138,
+                        "x": 493,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-24",
+                    "margin": {
+                        "h": 98,
+                        "w": 150,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 106,
+                        "x": 769,
+                        "y": 365
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-25",
+                    "margin": {
+                        "h": 102,
+                        "w": 146,
+                        "x": 63,
+                        "y": 31
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 110,
+                        "x": 877,
+                        "y": 417
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-26",
+                    "margin": {
+                        "h": 106,
+                        "w": 134,
+                        "x": 55,
+                        "y": 35
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 122,
+                        "x": 165,
+                        "y": 309
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-27",
+                    "margin": {
+                        "h": 118,
+                        "w": 126,
+                        "x": 75,
+                        "y": 47
+                    },
+                    "region": {
+                        "h": 138,
+                        "w": 130,
+                        "x": 745,
+                        "y": 225
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-28",
+                    "margin": {
+                        "h": 142,
+                        "w": 114,
+                        "x": 79,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 142,
+                        "x": 1,
+                        "y": 189
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-29",
+                    "margin": {
+                        "h": 142,
+                        "w": 114,
+                        "x": 79,
+                        "y": 71
+                    },
+                    "region": {
+                        "h": 114,
+                        "w": 142,
+                        "x": 145,
+                        "y": 193
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-30",
+                    "margin": {
+                        "h": 146,
+                        "w": 118,
+                        "x": 83,
+                        "y": 75
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 138,
+                        "x": 469,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "orc3_death_full-31",
+                    "margin": {
+                        "h": 154,
+                        "w": 118,
+                        "x": 83,
+                        "y": 83
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 138,
+                        "x": 633,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

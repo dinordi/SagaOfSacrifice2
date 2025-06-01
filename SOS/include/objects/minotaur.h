@@ -11,6 +11,7 @@ public:
     Minotaur(BoxCollider collider, std::string objID);
     Minotaur(int x, int y, std::string objID);
     ~Minotaur() override;
+    void setupAnimations(std::filesystem::path atlasPath);
 
     void move() override;
     void attack() override;

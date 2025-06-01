@@ -22,6 +22,22 @@ enum class ObjectType {
     MINOTAUR
 };
 
+enum class ActorType {
+    TEXT,
+    HEALTHBAR
+};
+
+inline std::ostream& operator<<(std::ostream& os, ObjectType type) {
+    switch (type) {
+        case ObjectType::PLAYER: os << "PLAYER"; break;
+        case ObjectType::TILE: os << "TILE"; break;
+        case ObjectType::ITEM: os << "ITEM"; break;
+        case ObjectType::BULLET: os << "BULLET"; break;
+        case ObjectType::MINOTAUR: os << "MINOTAUR"; break;
+    }
+    return os;
+}
+
 class BoxCollider {
 public:
 BoxCollider(Vec2 pos, Vec2 size);
@@ -38,17 +54,21 @@ public:
 
     virtual void update(float deltaTime) = 0;
     virtual void accept(CollisionVisitor& visitor) = 0;
+    virtual bool isCollidable() const { return true; } // Default to collidable
     
-    void addSpriteSheet(AnimationState state, SpriteData* spData, uint32_t frameTime, bool loop, int startFrame = 0);
+    void addSpriteSheet(AnimationState state, std::string tpsheet, uint32_t frameTime = 150);
     const SpriteData* getCurrentSpriteData() const;
 
     // Animation methods
     void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
     AnimationState getAnimationState() const { return animController.getCurrentState(); }
-    int getCurrentSpriteIndex() const;
-    void addAnimation(AnimationState state, int startFrame, int frameCount, 
-                     int framesPerRow, uint32_t frameTime = 100, bool loop = true);
+    virtual int getCurrentSpriteIndex() const;  //Virtual function because Tile returns a static index
+
+    void addAnimation(AnimationState state, int frameCount, 
+                     uint32_t frameTime = 100, bool loop = true);
+
+
     FacingDirection getDir() const { return dir; }
     void setDir(FacingDirection direction) { dir = direction; }
 
@@ -59,7 +79,7 @@ protected:
     AnimationController animController;
     FacingDirection dir;
     
-    std::unordered_map<AnimationState, SpriteData*> spriteSheets;
+    
 private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
@@ -68,9 +88,14 @@ private:
 
 class Actor {
 public:
-    const SpriteData* spriteData;
-    const int spriteIndex;  //Current image in spritesheet, SpriteData handles index to srcrect
-    Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex = 1);
+    Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type = ActorType::TEXT);
+    const SpriteData* getCurrentSpriteData() const;
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
+    DEFINE_GETTER_SETTER(uint16_t, defaultIndex);
+    DEFINE_CONST_GETTER_SETTER(ActorType, type);
+    DEFINE_GETTER_SETTER(std::string, tpsheet);
+    DEFINE_GETTER_SETTER(uint16_t, ObjID);
+
+    static uint16_t actorCount; // Static counter to assign unique IDs to actors
 };

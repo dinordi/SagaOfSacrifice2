@@ -1,0 +1,498 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:e6a8d02b1ca3d556e63b1840591049ae:dfb9eebbe7a8b469e037a1af279b1726:b4fd16097568d624dca478bf508afebd$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc2_run_attack",
+            "size": {
+                "h": 762,
+                "w": 1020
+            },
+            "sprites": [
+                {
+                    "filename": "orc2_run_attack_full",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 140,
+                        "x": 135,
+                        "y": 123
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 124,
+                        "w": 156,
+                        "x": 317,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 120,
+                        "w": 200,
+                        "x": 115,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 188,
+                        "x": 341,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 168,
+                        "w": 180,
+                        "x": 337,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 144,
+                        "x": 531,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 104,
+                        "x": 277,
+                        "y": 127
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 116,
+                        "x": 237,
+                        "y": 265
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 140,
+                        "x": 473,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 156,
+                        "x": 475,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 144,
+                        "w": 200,
+                        "x": 469,
+                        "y": 269
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 196,
+                        "x": 677,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 164,
+                        "w": 180,
+                        "x": 1,
+                        "y": 565
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 100,
+                        "x": 615,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 144,
+                        "w": 116,
+                        "x": 671,
+                        "y": 269
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 116,
+                        "w": 112,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 88,
+                        "x": 383,
+                        "y": 127
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 108,
+                        "x": 127,
+                        "y": 261
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 188,
+                        "x": 633,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 176,
+                        "w": 152,
+                        "x": 183,
+                        "y": 565
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 180,
+                        "w": 164,
+                        "x": 843,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 168,
+                        "x": 1,
+                        "y": 403
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 132,
+                        "x": 717,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 140,
+                        "w": 112,
+                        "x": 355,
+                        "y": 265
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-32",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 84,
+                        "x": 851,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-33",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 132,
+                        "w": 132,
+                        "x": 1,
+                        "y": 123
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-34",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 196,
+                        "x": 823,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-35",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 176,
+                        "w": 152,
+                        "x": 519,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-36",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 176,
+                        "w": 168,
+                        "x": 673,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-37",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 156,
+                        "w": 168,
+                        "x": 171,
+                        "y": 407
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-38",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 136,
+                        "w": 124,
+                        "x": 1,
+                        "y": 257
+                    }
+                },
+                {
+                    "filename": "orc2_run_attack_full-39",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 144,
+                        "w": 100,
+                        "x": 789,
+                        "y": 269
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,138 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:66a44e9d09961d341d78ad17df2e75f7:de8c964e75e916a7d1fd296661a11bfd:e6bac534c8348b82f2bef13033dbec29$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "wolfman_idle",
+            "size": {
+                "h": 390,
+                "w": 390
+            },
+            "sprites": [
+                {
+                    "filename": "wolfman_idle-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 1,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 1,
+                        "y": 261
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 131,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 261,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 131,
+                        "y": 131
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 131,
+                        "y": 261
+                    }
+                },
+                {
+                    "filename": "wolfman_idle-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 128,
+                        "x": 261,
+                        "y": 131
+                    }
+                }
+            ]
+        }
+    ]
+}

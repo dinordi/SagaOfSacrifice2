@@ -22,6 +22,7 @@
 #include "LocalServerManager.h"
 #include "player_manager.h"
 #include "ServerConfig.h"
+#include "level_manager.h"
 
 enum class GameState {
     RUNNING,
@@ -102,6 +103,8 @@ private:
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
+    SpriteData* letters;
+    SpriteData* letters_small;
     PlayerInput* input;
     CollisionManager* collisionManager;
     Player* player;
@@ -136,6 +139,8 @@ private:
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     static Game* instance_;
+
+    std::unique_ptr<LevelManager> levelManager_;
 };
 
 #endif // GAME_H

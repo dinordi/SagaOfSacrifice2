@@ -1,0 +1,378 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:65dad6ae557f7ed0a102f205e6a2d4f2:3ea88656136780d6beebd8cacfe32626:087f72138a80e0248afd694cc2c8cee6$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc1_walk",
+            "size": {
+                "h": 1580,
+                "w": 228
+            },
+            "sprites": [
+                {
+                    "filename": "orc1_walk_full",
+                    "margin": {
+                        "h": 134,
+                        "w": 118,
+                        "x": 39,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 138,
+                        "x": 1,
+                        "y": 1453
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-1",
+                    "margin": {
+                        "h": 122,
+                        "w": 114,
+                        "x": 39,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 142,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-2",
+                    "margin": {
+                        "h": 126,
+                        "w": 118,
+                        "x": 39,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 138,
+                        "x": 1,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-3",
+                    "margin": {
+                        "h": 134,
+                        "w": 122,
+                        "x": 43,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 134,
+                        "x": 93,
+                        "y": 1205
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-4",
+                    "margin": {
+                        "h": 122,
+                        "w": 118,
+                        "x": 43,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 138,
+                        "x": 1,
+                        "y": 137
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-5",
+                    "margin": {
+                        "h": 126,
+                        "w": 118,
+                        "x": 43,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 138,
+                        "x": 1,
+                        "y": 541
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-6",
+                    "margin": {
+                        "h": 134,
+                        "w": 122,
+                        "x": 83,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 134,
+                        "x": 85,
+                        "y": 1329
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-7",
+                    "margin": {
+                        "h": 122,
+                        "w": 118,
+                        "x": 79,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 138,
+                        "x": 1,
+                        "y": 273
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-8",
+                    "margin": {
+                        "h": 126,
+                        "w": 122,
+                        "x": 83,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 134,
+                        "x": 1,
+                        "y": 673
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-9",
+                    "margin": {
+                        "h": 134,
+                        "w": 126,
+                        "x": 83,
+                        "y": 63
+                    },
+                    "region": {
+                        "h": 122,
+                        "w": 130,
+                        "x": 1,
+                        "y": 1073
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-10",
+                    "margin": {
+                        "h": 122,
+                        "w": 126,
+                        "x": 83,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 130,
+                        "x": 1,
+                        "y": 805
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-11",
+                    "margin": {
+                        "h": 126,
+                        "w": 126,
+                        "x": 83,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 130,
+                        "x": 1,
+                        "y": 941
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-12",
+                    "margin": {
+                        "h": 130,
+                        "w": 178,
+                        "x": 87,
+                        "y": 59
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 78,
+                        "x": 141,
+                        "y": 1453
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-13",
+                    "margin": {
+                        "h": 126,
+                        "w": 170,
+                        "x": 79,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 86,
+                        "x": 141,
+                        "y": 273
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-14",
+                    "margin": {
+                        "h": 122,
+                        "w": 166,
+                        "x": 75,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 90,
+                        "x": 133,
+                        "y": 805
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-15",
+                    "margin": {
+                        "h": 130,
+                        "w": 166,
+                        "x": 75,
+                        "y": 59
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 90,
+                        "x": 1,
+                        "y": 1197
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-16",
+                    "margin": {
+                        "h": 126,
+                        "w": 170,
+                        "x": 79,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 86,
+                        "x": 141,
+                        "y": 405
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-17",
+                    "margin": {
+                        "h": 122,
+                        "w": 174,
+                        "x": 83,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 82,
+                        "x": 145,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-18",
+                    "margin": {
+                        "h": 130,
+                        "w": 174,
+                        "x": 87,
+                        "y": 59
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 82,
+                        "x": 1,
+                        "y": 1325
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-19",
+                    "margin": {
+                        "h": 126,
+                        "w": 170,
+                        "x": 87,
+                        "y": 55
+                    },
+                    "region": {
+                        "h": 130,
+                        "w": 86,
+                        "x": 141,
+                        "y": 537
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-20",
+                    "margin": {
+                        "h": 122,
+                        "w": 166,
+                        "x": 87,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 90,
+                        "x": 133,
+                        "y": 941
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-21",
+                    "margin": {
+                        "h": 130,
+                        "w": 162,
+                        "x": 87,
+                        "y": 59
+                    },
+                    "region": {
+                        "h": 126,
+                        "w": 94,
+                        "x": 133,
+                        "y": 1077
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-22",
+                    "margin": {
+                        "h": 122,
+                        "w": 170,
+                        "x": 87,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 86,
+                        "x": 141,
+                        "y": 137
+                    }
+                },
+                {
+                    "filename": "orc1_walk_full-23",
+                    "margin": {
+                        "h": 122,
+                        "w": 174,
+                        "x": 87,
+                        "y": 51
+                    },
+                    "region": {
+                        "h": 134,
+                        "w": 82,
+                        "x": 141,
+                        "y": 669
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,108 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:633baca8a5c3ffa9b1e8f5da7a7f47aa:8a11cf87b6a24636bfec092804750c03:53d88d1bc75d4556d79e7c6a320d6062$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Golem_projectile",
+            "size": {
+                "h": 16,
+                "w": 148
+            },
+            "sprites": [
+                {
+                    "filename": "arm_projectile_glowing-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "arm_projectile_glowing-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 38,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "arm_projectile_glowing-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 75,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "arm_projectile_glowing-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 112,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "arm_projectile_glowing-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 75,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "arm_projectile_glowing-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 14,
+                        "w": 35,
+                        "x": 38,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NetworkMessage.h"
+#include "network/DeltaState.h"
 #include <map>
 #include <memory>
 #include <string>
@@ -68,16 +69,21 @@ private:
                      const NetworkMessage& message);
     // Deserialize message from binary data
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId);
+    void serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data);
 
     // Game logic methods
     void createInitialGameObjects();
     void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
+    void sendPartialGameState(const std::vector<std::shared_ptr<Object>>& objects, 
+                              size_t startIndex, size_t count, 
+                              bool isFirstPacket, bool isLastPacket);
     
     // Process player input message
     void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
     void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
+    void processEnemyState(const std::string& playerId, const NetworkMessage& message);
     
     // Server configuration
     int port_;
@@ -111,6 +117,12 @@ private:
     
     // Last update time for delta calculation
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime_;
+    
+    // Delta state tracking
+    DeltaStateTracker deltaTracker_;
+    
+    // Maximum game state packet size (to avoid overflow)
+    static constexpr size_t MAX_GAMESTATE_PACKET_SIZE = 1024 * 4; // 4 KB
 };
 
 

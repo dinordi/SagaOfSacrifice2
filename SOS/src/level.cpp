@@ -31,23 +31,92 @@ bool Level::load(json& levelData ) {
     else {
         std::cerr << "Player start position not found in level data" << std::endl;
     }
+// Load layers from the layers array
+if(levelData.contains("layers")) {
+    std::cout << "Loading " << levelData["layers"].size() << " layers..." << std::endl;
     
-    // Load objects from the objects array
-    if(levelData.contains("objects")) {
-        for (const auto& obj : levelData["objects"]) {
-            // Extract values from JSON
-            int x = obj["x"];
-            int y = obj["y"];
-            int spriteId = obj["spriteId"];
-            std::string objID = obj["id"];
-            
-            // Create platform object
-            auto object = std::make_shared<Tile>(x, y, objID, 
-                "Tilemap_Flat", 0, 64, 64, 5);
-            object->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
-            levelObjects.push_back(object);
+    // Get tile dimensions from level data
+    int tileWidth = levelData.contains("tileWidth") ? levelData["tileWidth"].get<int>() : 32;
+    int tileHeight = levelData.contains("tileHeight") ? levelData["tileHeight"].get<int>() : 32;
+    
+    
+    for (const auto& layer : levelData["layers"]) {
+        std::string layerId = layer["id"];
+        std::string layerType = layer["type"];
+        
+        
+        std::cout << "Loading layer: " << layerId << " (type: " << layerType << ")" << std::endl;
+        
+        if (layerType == "tilemap" && layer.contains("data")) {
+            const auto& tileData = layer["data"];
+            std::string tileset = layer["tileset"];
+            // Process each row
+            for (int row = 0; row < tileData.size(); row++) {
+                const auto& rowData = tileData[row];
+                
+                // Process each column in the row
+                for (int col = 0; col < rowData.size(); col++) {
+                    int tileId = rowData[col];
+                    
+                    // Skip empty tiles (tile ID 0)
+                    if (tileId == 0) continue;
+                    
+                    // Calculate world position
+                    int worldX = col * tileWidth;
+                    int worldY = row * tileHeight;
+                    
+                    // Create tile object
+                    std::string tileObjectId = layerId + "_" + std::to_string(row) + "_" + std::to_string(col);
+                    auto tile = std::make_shared<Tile>(worldX, worldY, tileObjectId, 
+                                                      tileset, tileId, tileWidth, tileHeight, 0);
+                    
+                    // // Set collision flags based on layer and tile type
+                    // if (layerId == "floor") {
+                    //     // Floor tiles - walkable but visible
+                    //     tile->setFlag(Tile::WALKABLE);
+                    // }
+                    // else if (layerId == "pools") {
+                    //     // Pool tiles - might slow player down or cause damage
+                    //     tile->setFlag(Tile::WALKABLE | Tile::HAZARD);
+                    // }
+                    // else if (layerId == "path") {
+                    //     // Path tiles - easy movement
+                    //     tile->setFlag(Tile::WALKABLE);
+                    // }
+               
+                        // Ruin tiles - might block movement
+                        tile->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
+                        
+                    
+                    // Add to level objects
+                    levelObjects.push_back(tile);
+                    
+                    std::cout << "Created tile: " << tileObjectId << " at (" << worldX << ", " << worldY 
+                              << ") with tileId " << tileId << std::endl;
+                }
+            }
         }
     }
+    
+    std::cout << "Loaded " << levelObjects.size() << " total tile objects." << std::endl;
+} else {
+    std::cerr << "No layers found in level data" << std::endl;
+}
+    // Load objects from the objects array
+    // if(levelData.contains("objects")) {
+    //     for (const auto& obj : levelData["objects"]) {
+    //         // Extract values from JSON
+    //         int x = obj["x"];
+    //         int y = obj["y"];
+    //         std::string objID = obj["id"];
+            
+    //         // Create platform object
+    //         auto object = std::make_shared<Tile>(x, y, objID, 
+    //             "Tilemap_Flat", 0, 64, 64, 5);
+    //         object->setFlag(Tile::BLOCKS_HORIZONTAL | Tile::BLOCKS_VERTICAL);
+    //         levelObjects.push_back(object);
+    //     }
+    // }
     
     // Load enemies separately
     if(levelData.contains("enemies")) {
@@ -55,7 +124,6 @@ bool Level::load(json& levelData ) {
             // Extract common enemy values
             int x = obj["x"];
             int y = obj["y"];
-            int spriteId = obj["spriteId"];
             std::string objID = obj["id"];
             std::string type = obj["type"];
             int hp = obj["hp"];
@@ -220,11 +288,27 @@ bool Level::isCollidableTile(int tileIndex, const std::string& tileset) {
 }
 
 void Level::update(float deltaTime) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    std::vector<std::shared_ptr<Object>> objectsToRemove;
+
     {
+        std::lock_guard<std::mutex> lock(gameStateMutex_);
+    
         // Update all game objects
         for (auto& object : levelObjects) {
             object->update(deltaTime);
+            // Check if object is an entity that has health
+            if (object->type == ObjectType::PLAYER || object->type == ObjectType::MINOTAUR) {
+                std::shared_ptr<Entity> entity = std::static_pointer_cast<Entity>(object);
+                if(entity->isDead())
+                {
+                    objectsToRemove.push_back(object);  // Mark for removal if dead, removing directly here will cause iteration issues
+                }
+            }
+        }
+
+        // Remove dead entities from the level
+        for (const auto& obj : objectsToRemove) {
+            removeObject(obj);
         }
         
         // Detect and resolve collisions
@@ -277,14 +361,13 @@ void Level::unload() {
     levelObjects.clear();
     loaded = false;
     //unload all audio
-    
 }
+
 void Level::removeObject(std::shared_ptr<Object> object) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
     auto it = std::remove(levelObjects.begin(), levelObjects.end(), object);
     if (it != levelObjects.end()) {
         levelObjects.erase(it, levelObjects.end());
-        std::cout << "[Level] Removed object with ID: " << object->getObjID() << std::endl;
+        // std::cout << "[Level] Removed object with ID: " << object->getObjID() << std::endl;
     } else {
         std::cerr << "[Level] Object with ID: " << object->getObjID() << " not found in level" << std::endl;
     }

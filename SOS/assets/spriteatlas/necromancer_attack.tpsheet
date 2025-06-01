@@ -1,0 +1,213 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:3f674e4740335620b6fe131547c10086:b4013c747ae0f870ce2fcfd3f5c22f86:86b88c22e76d3fcecd9d9664367638e8$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "necromancer_attack",
+            "size": {
+                "h": 510,
+                "w": 470
+            },
+            "sprites": [
+                {
+                    "filename": "Necromancer_creativekind-Sheet-16",
+                    "margin": {
+                        "h": 150,
+                        "w": 234,
+                        "x": 122,
+                        "y": 126
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 86,
+                        "x": 1,
+                        "y": 387
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-17",
+                    "margin": {
+                        "h": 140,
+                        "w": 238,
+                        "x": 122,
+                        "y": 114
+                    },
+                    "region": {
+                        "h": 116,
+                        "w": 82,
+                        "x": 177,
+                        "y": 393
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-18",
+                    "margin": {
+                        "h": 128,
+                        "w": 236,
+                        "x": 122,
+                        "y": 100
+                    },
+                    "region": {
+                        "h": 128,
+                        "w": 84,
+                        "x": 385,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-19",
+                    "margin": {
+                        "h": 106,
+                        "w": 236,
+                        "x": 122,
+                        "y": 76
+                    },
+                    "region": {
+                        "h": 150,
+                        "w": 84,
+                        "x": 377,
+                        "y": 155
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-20",
+                    "margin": {
+                        "h": 108,
+                        "w": 234,
+                        "x": 122,
+                        "y": 76
+                    },
+                    "region": {
+                        "h": 148,
+                        "w": 86,
+                        "x": 289,
+                        "y": 357
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-21",
+                    "margin": {
+                        "h": 108,
+                        "w": 234,
+                        "x": 122,
+                        "y": 74
+                    },
+                    "region": {
+                        "h": 148,
+                        "w": 86,
+                        "x": 377,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-22",
+                    "margin": {
+                        "h": 102,
+                        "w": 234,
+                        "x": 122,
+                        "y": 66
+                    },
+                    "region": {
+                        "h": 154,
+                        "w": 86,
+                        "x": 289,
+                        "y": 201
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-23",
+                    "margin": {
+                        "h": 104,
+                        "w": 234,
+                        "x": 122,
+                        "y": 68
+                    },
+                    "region": {
+                        "h": 152,
+                        "w": 86,
+                        "x": 297,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-24",
+                    "margin": {
+                        "h": 80,
+                        "w": 198,
+                        "x": 122,
+                        "y": 46
+                    },
+                    "region": {
+                        "h": 176,
+                        "w": 122,
+                        "x": 1,
+                        "y": 209
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-25",
+                    "margin": {
+                        "h": 66,
+                        "w": 186,
+                        "x": 122,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 190,
+                        "w": 134,
+                        "x": 153,
+                        "y": 201
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-26",
+                    "margin": {
+                        "h": 58,
+                        "w": 178,
+                        "x": 122,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 198,
+                        "w": 142,
+                        "x": 153,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-27",
+                    "margin": {
+                        "h": 50,
+                        "w": 170,
+                        "x": 120,
+                        "y": 22
+                    },
+                    "region": {
+                        "h": 206,
+                        "w": 150,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Necromancer_creativekind-Sheet-28",
+                    "margin": {
+                        "h": 154,
+                        "w": 234,
+                        "x": 122,
+                        "y": 128
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 86,
+                        "x": 89,
+                        "y": 393
+                    }
+                }
+            ]
+        }
+    ]
+}

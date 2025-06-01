@@ -518,6 +518,13 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // Add the message body after the header
         std::memcpy(complete_message.data() + sizeof(header), buffer.data(), buffer.size());
         
+        // std::cout << "[EmbeddedServer] Sending message to client - Type: " 
+        //           << static_cast<int>(message.type) 
+        //           << ", Sender ID: " << message.senderId 
+        //           << ", Data size: " << message.data.size() 
+        //           << " bytes, Total size: " << complete_message.size() 
+        //           << " bytes" << std::endl;
+
         // Store the buffer to keep it alive
         {
             std::lock_guard<std::mutex> lock(outgoing_buffers_mutex_);
@@ -714,6 +721,10 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_POSITION:
             processPlayerPosition(message.senderId, message);
             break;
+        case MessageType::ENEMY_STATE_UPDATE:
+            // Process player actions, including enemy state updates
+            processEnemyState(message.senderId, message);
+            break;
             
         case MessageType::CHAT:
             // Just relay chat messages to all clients
@@ -778,13 +789,7 @@ void EmbeddedServer::updateGameState(float deltaTime) {
 }
 
 void EmbeddedServer::sendGameStateToClients() {
-    // 1) Build the header
-    NetworkMessage stateMsg;
-    stateMsg.type     = MessageType::GAME_STATE;
-    stateMsg.senderId = "server";
-    stateMsg.data.clear();
-
-    // 2) Get objects from the active level
+    // Get objects from the active level
     Level* lvl = levelManager_->getCurrentLevel();
 
     if (!lvl) {
@@ -792,244 +797,260 @@ void EmbeddedServer::sendGameStateToClients() {
     }
     auto objects = lvl->getObjects();
 
+    // Track which objects to send
+    std::vector<std::shared_ptr<Object>> objectsToSend;
+    
     {
         std::lock_guard<std::mutex> lock(gameStateMutex_);
-
-        // 3) Serialize object count (2 bytes)
-        uint16_t count = static_cast<uint16_t>(objects.size());
-        stateMsg.data.push_back(uint8_t(count >> 8));
-        stateMsg.data.push_back(uint8_t(count & 0xFF));
-
-        // 4) Serialize each object
-        for (auto& obj : objects) {
-            if (!obj) {
-                std::cerr << "[EmbeddedServer] Warning: null object in level\n";
-                continue;
-            }
-
-            // a) Type
-            stateMsg.data.push_back(static_cast<uint8_t>(obj->type));
-
-            // b) ID
-            const std::string& id = obj->getObjID();
-            stateMsg.data.push_back(uint8_t(id.size()));
-            stateMsg.data.insert(stateMsg.data.end(), id.begin(), id.end());
-
-            // c) Position & Velocity
-            auto writeFloat = [&](float v) {
-                uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
-                for (size_t i = 0; i < sizeof(float); ++i)
-                    stateMsg.data.push_back(bytes[i]);
-            };
-
-            const Vec2& p = obj->getposition();
-            const Vec2& v = obj->getvelocity();
-            writeFloat(p.x);
-            writeFloat(p.y);
-            writeFloat(v.x);
-            writeFloat(v.y);
-
-            // Extra fields for specific object types
-            switch(obj->type) {
-                case ObjectType::TILE: {
-                    auto* plat = static_cast<Tile*>(obj.get());
-                    writeFloat(plat->getCurrentSpriteData()->width);
-                    writeFloat(plat->getCurrentSpriteData()->height);
-                    break;
-                }
-                case ObjectType::MINOTAUR: 
-                {
-                    auto* mino = static_cast<Minotaur*>(obj.get());
-                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
-                    stateMsg.data.push_back(static_cast<uint8_t>(mino->getDir()));
-                    break;
-                }
-                case ObjectType::PLAYER: {
-                    auto* player = static_cast<Player*>(obj.get());
-                    stateMsg.data.push_back(static_cast<uint8_t>(player->getAnimationState()));
-                    stateMsg.data.push_back(static_cast<uint8_t>(player->getDir()));
-                    break;
+        
+        // Check if we have previous state to compare against
+        if (deltaTracker_.getAllObjectIds().empty()) {
+            // First time or after reset - send everything
+            objectsToSend = objects;
+            
+            // Update the tracker with the current objects
+            deltaTracker_.updateState(objects);
+        } else {
+            // Get only changed objects for delta update
+            objectsToSend = deltaTracker_.getChangedObjects(objects);
+            
+            // If there are no changes, still send a minimal update (heartbeat)
+            if (objectsToSend.empty()) {
+                // std::cout << "[EmbeddedServer] No changes detected, sending minimal update" << std::endl;
+                // Send a minimal update with just packet type
+                NetworkMessage minimalMsg;
+                minimalMsg.type = MessageType::GAME_STATE_DELTA;
+                minimalMsg.senderId = "server";
+                minimalMsg.data = {0, 0}; // 0 objects
+                
+                // Send to all clients
+                std::lock_guard<std::mutex> lockSockets(clientSocketsMutex_);
+                if (clientSockets_.empty()) {
+                    return;
                 }
                 
-                default:
-                    break;
+                for (auto& [id, sock] : clientSockets_) {
+                    if (sock && sock->is_open()) {
+                        sendToClient(sock, minimalMsg);
+                    }
+                }
+                
+                // Also notify through callback
+                if (messageCallback_) {
+                    messageCallback_(minimalMsg);
+                }
+                
+                return;
             }
-
-
+            
+            // Update the tracker with all current objects
+            deltaTracker_.updateState(objects);
         }
     }
 
-    // 5) Broadcast to all clients
+    // Calculate total message size to determine if we need to split
+    size_t estimatedSize = 2; // Object count (2 bytes)
+    
+    for (const auto& obj : objectsToSend) {
+        if (!obj) continue;
+        
+        // Basic object data
+        size_t objSize = 1 + 1 + obj->getObjID().size() + 16; // Type + ID length + ID + position/velocity
+        
+        // Type-specific data
+        switch (obj->type) {
+            case ObjectType::PLAYER:
+            case ObjectType::MINOTAUR:
+                objSize += 2; // Animation state and direction
+                break;
+            case ObjectType::TILE:
+                objSize += 5; // Tile index (1) + flags (4)
+                break;
+            default:
+                break;
+        }
+        
+        estimatedSize += objSize;
+    }
+    
+    // Check if we need to split the message into multiple packets
+    if (estimatedSize > MAX_GAMESTATE_PACKET_SIZE) {
+        // We need to split the message
+        size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size());
+        size_t totalObjects = objectsToSend.size();
+        size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
+        
+        std::cout << "[EmbeddedServer] Splitting game state update into " << packetCount 
+                  << " packets with ~" << objectsPerPacket << " objects per packet" << std::endl;
+        
+        // Send packets
+        for (size_t i = 0; i < packetCount; i++) {
+            size_t startIndex = i * objectsPerPacket;
+            size_t count = std::min(objectsPerPacket, totalObjects - startIndex);
+            
+            bool isFirstPacket = (i == 0);
+            bool isLastPacket = (i == packetCount - 1);
+            
+            sendPartialGameState(objectsToSend, startIndex, count, isFirstPacket, isLastPacket);
+        }
+    } else {
+        // Message fits in a single packet - use delta state message
+        NetworkMessage stateMsg;
+        stateMsg.type = MessageType::GAME_STATE_DELTA;
+        stateMsg.senderId = "server";
+        stateMsg.data.clear();
+        
+        // Serialize object count (2 bytes)
+        uint16_t count = static_cast<uint16_t>(objectsToSend.size());
+        stateMsg.data.push_back(uint8_t(count >> 8));
+        stateMsg.data.push_back(uint8_t(count & 0xFF));
+        
+        // Serialize each object
+        for (auto& obj : objectsToSend) {
+            serializeObject(obj, stateMsg.data);
+        }
+        
+        // Broadcast to all clients
+        {
+            std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+            if (clientSockets_.empty()) {
+                static auto last = std::chrono::steady_clock::now();
+                auto now = std::chrono::steady_clock::now();
+                if (now - last > std::chrono::seconds(5)) {
+                    last = now;
+                    std::cout << "[EmbeddedServer] No clients connected, skipping update\n";
+                }
+                return;
+            }
+            
+            for (auto& [id, sock] : clientSockets_) {
+                if (sock && sock->is_open()) {
+                    sendToClient(sock, stateMsg);
+                }
+            }
+        }
+        
+        // Fire callback if needed
+        if (messageCallback_) {
+            messageCallback_(stateMsg);
+        }
+    }
+}
+
+
+void EmbeddedServer::sendPartialGameState(
+    const std::vector<std::shared_ptr<Object>>& objects, 
+    size_t startIndex, size_t count, 
+    bool isFirstPacket, bool isLastPacket) {
+    
+    // Create a new message for this part
+    NetworkMessage partMsg;
+    partMsg.type = MessageType::GAME_STATE_PART;
+    partMsg.senderId = "server";
+    partMsg.data.clear();
+    
+    // Packet metadata (3 bytes):
+    // - First byte: isFirstPacket (0x01) | isLastPacket (0x02)
+    // - Second and third bytes: Total object count
+    uint8_t flags = (isFirstPacket ? 0x01 : 0x00) | (isLastPacket ? 0x02 : 0x00);
+    partMsg.data.push_back(flags);
+    
+    uint16_t totalCount = static_cast<uint16_t>(objects.size());
+    partMsg.data.push_back(uint8_t(totalCount >> 8));
+    partMsg.data.push_back(uint8_t(totalCount & 0xFF));
+    
+    // Packet specific data (2 bytes):
+    // - Start index (2 bytes)
+    partMsg.data.push_back(uint8_t(startIndex >> 8));
+    partMsg.data.push_back(uint8_t(startIndex & 0xFF));
+    
+    // - Object count in this packet (2 bytes)
+    partMsg.data.push_back(uint8_t(count >> 8));
+    partMsg.data.push_back(uint8_t(count & 0xFF));
+    
+    // Serialize each object in this range
+    for (size_t i = startIndex; i < startIndex + count && i < objects.size(); i++) {
+        serializeObject(objects[i], partMsg.data);
+    }
+    
+    // Broadcast to all clients
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
         if (clientSockets_.empty()) {
-            static auto last = std::chrono::steady_clock::now();
-            auto now = std::chrono::steady_clock::now();
-            if (now - last > std::chrono::seconds(5)) {
-                last = now;
-                std::cout << "[EmbeddedServer] No clients connected, skipping update\n";
-            }
             return;
         }
-
+        
         for (auto& [id, sock] : clientSockets_) {
             if (sock && sock->is_open()) {
-                sendToClient(sock, stateMsg);
+                sendToClient(sock, partMsg);
             }
         }
     }
-
-    // 6) Finally, still fire your callback if needed
+    
+    // Fire callback if needed
     if (messageCallback_) {
-        messageCallback_(stateMsg);
+        messageCallback_(partMsg);
     }
 }
 
+void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data) {
 
-void EmbeddedServer::processPlayerInput(
-    const std::string& playerId,
-    const NetworkMessage& message
-) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
-
-    // 1) Lookup the player
-    auto player = PlayerManager::getInstance().getPlayer(playerId);
-    if (!player) {
-        std::cerr << "[EmbeddedServer] Player not found for input: "
-                  << playerId << std::endl;
-        return;
-    }
-
-    // 2) Validate payload
-    if (message.data.size() < 1) {
-        std::cerr << "[EmbeddedServer] Invalid input data size: "
-                  << message.data.size() << " bytes" << std::endl;
-        return;
-    }
-
-    // 3) Unpack the bitflags
-    uint8_t bits  = message.data[0];
-    bool    left  = (bits & 1) != 0;
-    bool    right = (bits & 2) != 0;
-    bool    up    = (bits & 4) != 0;
-    bool    down  = (bits & 8) != 0;
-    bool    atk   = (bits & 16) != 0;
-
-    // 4) Feed into a TempInput and give it to the Player
-    auto input = std::make_unique<TempInput>();
-    input->setInputs(up, down, left, right, atk);
-    player->setInput(input.get());
-
-    // 5) Immediately invoke the player’s handleInput (or let your game loop do it)
-    player->handleInput(input.get(), 16);
-}
-
-void EmbeddedServer::processPlayerPosition(
-    const std::string& playerId,
-    const NetworkMessage& message
-) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
-
-    // 1) Lookup the player
-    auto player = PlayerManager::getInstance().getPlayer(playerId);
-    if (!player) {
-        std::cerr << "[EmbeddedServer] Player not found for position update: "
-                  << playerId << std::endl;
-        return;
-    }
-
-    // 2) Validate payload
-    if (message.data.size() < sizeof(float) * 4) {
-        std::cerr << "[EmbeddedServer] Invalid position data size: "
-                  << message.data.size() << " bytes" << std::endl;
-        return;
-    }
-    size_t index;   // Index in the data vector for memcpy
-
-    // 3) Unpack the position and velocity
-    Vec2 pos, vel;
-    FacingDirection dir;
-    AnimationState animState;
-    index = 0;
-    std::memcpy(&pos.x, message.data.data() + index, sizeof(float));
-    index += sizeof(float);
-    std::memcpy(&pos.y, message.data.data() + index, sizeof(float));
-    index += sizeof(float);
-    std::memcpy(&vel.x, message.data.data() + index, sizeof(float));
-    index += sizeof(float);
-    std::memcpy(&vel.y, message.data.data() + index, sizeof(float));
-    index += sizeof(float);
-    if (index + 2 > message.data.size()) {
-        std::cerr << "[EmbeddedServer] Invalid data size for direction and animation state" << std::endl;
-        return;
-    }
-    dir = static_cast<FacingDirection>(message.data[index++]);
-    animState = static_cast<AnimationState>(message.data[index++]);
-    if (index != message.data.size()) {
-        std::cerr << "[EmbeddedServer] Extra data in position update message" << std::endl;
-        return;
-    }
-
-    // std::cout << "[EmbeddedServer] Received direction: "
-    //             << dir << ", " << static_cast<int>(dir) << ", animation state: "
-    //             << animState << ", " << static_cast<int>(animState) << ", for player: " << playerId << std::endl;
-
-    // 4) Update the player’s position and velocity
-    BoxCollider* pColl = &player->getcollider();
-    Vec2* posPtr = &pColl->position;
-    Vec2* velPtr = &player->getvelocity();
-    *posPtr = pos;
-    *velPtr = vel;
-    player->setDir(dir);
-    player->setAnimationState(animState);
-}
-
-
-NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
-    NetworkMessage message;
-    size_t offset = 0;
-    
-    if (data.empty()) {
-        message.senderId = clientId;  // Default to the client ID if we can't read it from the data
-        return message;
+    Object* obj = object.get();
+    if (!obj) {
+        std::cerr << "[EmbeddedServer] Error: Attempted to serialize a null object" << std::endl;
+        return; // Return empty data if object is null
     }
     
-    // 1. Message type (1 byte)
-    message.type = static_cast<MessageType>(data[offset++]);
+    // a) Type
+    data.push_back(static_cast<uint8_t>(obj->type));
     
-    if (offset >= data.size()) {
-        message.senderId = clientId;
-        return message;
+    // b) ID
+    const std::string& id = obj->getObjID();
+    data.push_back(static_cast<uint8_t>(id.size()));
+    data.insert(data.end(), id.begin(), id.end());
+    
+    // c) Position & Velocity
+    auto writeFloat = [&](float v) {
+        uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
+        for (size_t i = 0; i < sizeof(float); ++i)
+            data.push_back(bytes[i]);
+    };
+    
+    const Vec2& p = obj->getposition();
+    const Vec2& v = obj->getvelocity();
+    writeFloat(p.x);
+    writeFloat(p.y);
+    writeFloat(v.x);
+    writeFloat(v.y);
+    
+    // Extra fields for specific object types
+    switch(obj->type) {
+        case ObjectType::TILE: {
+            auto* plat = static_cast<Tile*>(obj);
+            data.push_back(plat->gettileIndex());
+            for (int i = 0; i < 4; ++i) {
+                data.push_back(static_cast<uint8_t>((plat->getFlags() >> (i * 8)) & 0xFF));
+            }
+            // Tilemap name length
+            const std::string& tileMapName = plat->gettileMapName();
+            data.push_back(static_cast<uint8_t>(tileMapName.size()));
+            // Tilemap name content
+            data.insert(data.end(), tileMapName.begin(), tileMapName.end());
+            break;
+        }
+        case ObjectType::MINOTAUR: {
+            auto* mino = static_cast<Minotaur*>(obj);
+            data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
+            data.push_back(static_cast<uint8_t>(mino->getDir()));
+            break;
+        }
+        case ObjectType::PLAYER: {
+            auto* player = static_cast<Player*>(obj);
+            data.push_back(static_cast<uint8_t>(player->getAnimationState()));
+            data.push_back(static_cast<uint8_t>(player->getDir()));
+            break;
+        }
+        default:
+            break;
     }
-    
-    // 2. Sender ID length (1 byte)
-    uint8_t senderIdLength = data[offset++];
-    
-    // 3. Sender ID content
-    if (offset + senderIdLength <= data.size()) {
-        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-        offset += senderIdLength;
-    } else {
-        message.senderId = clientId;  // Use client ID if sender ID is invalid
-    }
-    
-    // If we've reached the end of the data, return what we have
-    if (offset + 4 > data.size()) {
-        return message;
-    }
-    
-    // 4. Data length (4 bytes)
-    uint32_t dataSize = 
-        (static_cast<uint32_t>(data[offset]) << 24) |
-        (static_cast<uint32_t>(data[offset + 1]) << 16) |
-        (static_cast<uint32_t>(data[offset + 2]) << 8) |
-        static_cast<uint32_t>(data[offset + 3]);
-    offset += 4;
-    
-    // 5. Data content
-    if (offset + dataSize <= data.size()) {
-        message.data.assign(data.begin() + offset, data.begin() + offset + dataSize);
-    }
-    
-    return message;
 }
