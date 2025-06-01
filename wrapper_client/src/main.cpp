@@ -507,8 +507,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         }
 
         // Use the current sprite index from animation system
-        int spriteIndex = entity->getCurrentSpriteIndex();
-        const SpriteRect& currentSpriteRect = entity->getCurrentSpriteData()->getSpriteRect(spriteIndex);
+        const SpriteRect& currentSpriteRect = entity->getCurrentSpriteData()->getSpriteRect(entity->getCurrentSpriteIndex());
         
         SDL_FRect srcRect = {
             static_cast<float>(currentSpriteRect.x),
