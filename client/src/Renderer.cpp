@@ -48,13 +48,13 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uin
 void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
 
     uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT];
-
+    uint32_t phys_addr = SPRITE_DATA_BASE;
+    
     for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".png") {
             std::filesystem::path fullPath = entry.path();
             std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
 
-            uint32_t phys_addr = 0;
             int result = loadSprite(fullPath.string(), sprite_data, &phys_addr);
 
             if (result == 0) {
