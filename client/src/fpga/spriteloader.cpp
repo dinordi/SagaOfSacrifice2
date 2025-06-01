@@ -114,6 +114,8 @@ int SpriteLoader::load_png(const char *filename, uint32_t *sprite_data_out, int 
     return 0;
 }
 
+
+
 // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren (Vereenvoudigd)
 int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
     int mem_fd = -1;
@@ -161,6 +163,126 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
     close(mem_fd);
 
     return result;
+}
+
+int SpriteLoader::load_png_spritesheet(const char *filename, uint32_t *sprite_data_out,
+                                       int sprite_width, int sprite_height,
+                                       int *width_out, int *height_out)
+{
+    FILE *fp = fopen(filename, "rb");
+    if (!fp) {
+        perror("Fout bij openen PNG bestand");
+        return 1;
+    }
+
+    unsigned char header[8];
+    if (fread(header, 1, 8, fp) != 8 || png_sig_cmp(header, 0, 8)) {
+        std::cerr << "Invalid PNG signature" << std::endl;
+        fclose(fp);
+        return 1;
+    }
+    fseek(fp, 0, SEEK_SET);
+
+    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    png_infop info = png_create_info_struct(png);
+    if (!png || !info) {
+        std::cerr << "libpng init error" << std::endl;
+        fclose(fp);
+        return 1;
+    }
+
+    if (setjmp(png_jmpbuf(png))) {
+        std::cerr << "libpng read error" << std::endl;
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
+    png_init_io(png, fp);
+    png_read_info(png, info);
+
+    png_uint_32 width, height;
+    int bit_depth, color_type, interlace_type;
+    png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+
+    *width_out = static_cast<int>(width);
+    *height_out = static_cast<int>(height);
+
+    // Formatconversie naar RGBA
+    if (color_type != PNG_COLOR_TYPE_RGBA) {
+        if (color_type == PNG_COLOR_TYPE_PALETTE)
+            png_set_palette_to_rgb(png);
+        if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
+            png_set_expand_gray_1_2_4_to_8(png);
+        if (png_get_valid(png, info, PNG_INFO_tRNS))
+            png_set_tRNS_to_alpha(png);
+        if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_PALETTE)
+            png_set_add_alpha(png, 0xFF, PNG_FILLER_AFTER);
+
+        png_read_update_info(png, info);
+        png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+    }
+
+    if (color_type != PNG_COLOR_TYPE_RGBA || bit_depth != 8) {
+        std::cerr << "Unsupported PNG format after conversion" << std::endl;
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
+    // Volledige spritesheet tijdelijk inlezen
+    png_bytep *rows = (png_bytep *)malloc(sizeof(png_bytep) * height);
+    for (unsigned y = 0; y < height; y++) {
+        rows[y] = (png_bytep)malloc(width * 4); // 4 bytes per pixel (RGBA)
+    }
+
+    png_read_image(png, rows);
+    fclose(fp);
+    png_destroy_read_struct(&png, &info, NULL);
+
+    // Check: passen sprites precies in de afbeelding?
+    if (width % sprite_width != 0 || height % sprite_height != 0) {
+        std::cerr << "Afbeeldingsgrootte is geen veelvoud van sprite-afmetingen" << std::endl;
+        for (unsigned y = 0; y < height; y++) free(rows[y]);
+        free(rows);
+        return 1;
+    }
+
+    int sprites_per_row = width / sprite_width;
+    int sprites_per_col = height / sprite_height;
+    int sprite_count = sprites_per_row * sprites_per_col;
+
+    // Extract sprites
+    for (int sy = 0; sy < sprites_per_col; sy++) {
+        for (int sx = 0; sx < sprites_per_row; sx++) {
+            int sprite_index = sy * sprites_per_row + sx;
+
+            for (int y = 0; y < sprite_height; y++) {
+                png_bytep row = rows[sy * sprite_height + y];
+
+                for (int x = 0; x < sprite_width; x++) {
+                    png_bytep px = &row[(sx * sprite_width + x) * 4];
+
+                    uint32_t rgba =
+                        ((uint32_t)px[0] << 24) |  // R
+                        ((uint32_t)px[1] << 16) |  // G
+                        ((uint32_t)px[2] << 8)  |  // B
+                        ((uint32_t)px[3]);         // A
+
+                    int offset = sprite_index * sprite_width * sprite_height + y * sprite_width + x;
+                    sprite_data_out[offset] = rgba;
+                }
+            }
+        }
+    }
+
+    for (unsigned y = 0; y < height; y++) free(rows[y]);
+    free(rows);
+
+    std::cout << "Spritesheet geladen: " << sprite_count << " sprites van "
+              << sprite_width << "x" << sprite_height << std::endl;
+
+    return 0;
 }
 
 // Verwijder de sprite data
