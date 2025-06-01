@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
+    Renderer *renderer;
     
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -148,23 +149,23 @@ int main(int argc, char *argv[]) {
         audio->playSound("001");
         audio->playSound("jump");
     }
-
+    renderer = new Renderer(path_sprites + imageName);
     if(!devMode)
     {
-        Renderer renderer(path_sprites + imageName);
+        renderer = new Renderer(path_sprites + imageName);
         if(debugMode) {
             std::cout << "Debug mode: Loaded image." << std::endl;
             return 0;
         }
     }
     PlayerInput* controller = new SDL2Input();
-    Game game(controller, playerId);
+    Game *game = new Game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     
     // Initialize network features based on mode
     if (enableRemoteMultiplayer) {
         // Connect to remote server for multiplayer
-        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
+        if (!game->initializeServerConnection(serverAddress, serverPort, playerId)) {
             std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
         } else {
             std::cout << "Multiplayer initialized successfully!" << std::endl;
@@ -172,7 +173,7 @@ int main(int argc, char *argv[]) {
     } else if (!localOnlyMode) {
         if (useEmbeddedServer) {
             // Initialize single player with embedded server (new recommended approach)
-            if (!game.initializeSinglePlayerEmbeddedServer()) {
+            if (!game->initializeSinglePlayerEmbeddedServer()) {
                 std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
             } else {
                 std::cout << "Single player with embedded server initialized successfully!" << std::endl;
@@ -207,7 +208,7 @@ int main(int argc, char *argv[]) {
     uint64_t accumulator_us = 0;
     
     std::cout << "Entering gameloop..." << std::endl;
-    while (running && game.isRunning()) {
+    while (running && game->isRunning()) {
         uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
         uint64_t frame_time_us = current_time_us - last_time_us;
@@ -223,7 +224,7 @@ int main(int argc, char *argv[]) {
         // Fixed timestep update
         while (accumulator_us >= fixed_timestep_us) {
             float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
-            game.update(fixed_delta_seconds);
+            game->update(fixed_delta_seconds);
             accumulator_us -= fixed_timestep_us;
         }
     
@@ -231,11 +232,11 @@ int main(int argc, char *argv[]) {
     
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    
+    while(running){}
     // Clean up
-    if (game.isServerConnection()) {
-        game.shutdownServerConnection();
+    if (game->isServerConnection()) {
+        game->shutdownServerConnection();
     }
-    
+    delete renderer;
     return 0;
 }
