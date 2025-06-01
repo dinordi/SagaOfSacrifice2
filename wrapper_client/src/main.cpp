@@ -304,7 +304,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // Load the background image
-    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background2.png").make_preferred();
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background3.png").make_preferred();
     SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
     if (!backgroundSurface) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
