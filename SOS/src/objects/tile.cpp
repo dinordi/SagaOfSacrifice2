@@ -16,6 +16,7 @@ void Tile::setupAnimations(std::filesystem::path atlasPath)
     std::string fileName = tileMapName + ".tpsheet";
     atlasPath /= fileName;
     addSpriteSheet(AnimationState::IDLE, atlasPath);
+    addAnimation(AnimationState::IDLE, 1, 0, true); // Idle animation (1 frame)
 }
 
 

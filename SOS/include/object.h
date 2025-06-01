@@ -58,7 +58,8 @@ public:
     void updateAnimation(float deltaTime);  //Time in seconds
     void setAnimationState(AnimationState state);
     AnimationState getAnimationState() const { return animController.getCurrentState(); }
-    int getCurrentSpriteIndex() const;
+    virtual int getCurrentSpriteIndex() const;  //Virtual function because Tile returns a static index
+
     void addAnimation(AnimationState state, int frameCount, 
                      uint32_t frameTime = 100, bool loop = true);
 
