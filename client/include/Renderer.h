@@ -10,7 +10,7 @@ constexpr int NUM_PIPELINES = 4;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
 constexpr size_t FRAME_INFO_SIZE = 0x2000;    // Pas aan indien nodig
 
-constexpr uint16_t SPRITE_WIDTH = 400;
+constexpr uint16_t SPRITE_WIDTH = 400; // Voorbeeld, pas aan naar jouw situatie
 constexpr uint16_t SPRITE_HEIGHT = 400;
 constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jouw situatie
 

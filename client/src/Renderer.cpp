@@ -184,7 +184,7 @@ void Renderer::init_lookup_tables() {
 
         lookup_tables[i] = (volatile uint64_t *)(lookup_table_ptrs[i]);
         // <<Write lookup table values here>>
-        write_lookup_table_entry(lookup_tables[i], 1, SPRITE_DATA_BASE, SPRITE_WIDTH, SPRITE_HEIGHT);
+        write_lookup_table_entry(lookup_tables[i], 1, 0x32d23000, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
 
     for (int i = 0; i < NUM_PIPELINES; i++) {
