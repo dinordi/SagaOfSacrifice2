@@ -29,7 +29,7 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uin
     size_t sprite_size = 0;
     const char* png_file = img_path.c_str();
 
-    if (spriteLoader.load_png(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
+    if (spriteLoader.load_png_spritesheet(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
         std::cerr << "Failed to load PNG file: " << img_path << std::endl;
         return -1;
     }
@@ -55,7 +55,7 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
             std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
 
             int result = loadSprite(fullPath.string(), sprite_data, &phys_addr);
-
+                
             if (result == 0) {
                 spriteAddressMap[fileStem] = phys_addr;
             } else {
