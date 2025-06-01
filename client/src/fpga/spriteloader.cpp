@@ -12,8 +12,7 @@ SpriteLoader::SpriteLoader()
 {}
 
 
-#define MAX_WIDTH  512
-#define MAX_HEIGHT 512
+
 
 int SpriteLoader::load_png(const char *filename, uint32_t *sprite_data_out, int *width_out, int *height_out, size_t *sprite_size_out) {
     FILE *fp = fopen(filename, "rb");

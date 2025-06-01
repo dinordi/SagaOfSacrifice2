@@ -10,8 +10,7 @@
 #include "Renderer.h"
 #include "fpga/spriteloader.h"
 
-#define MAX_SPRITE_WIDTH 512
-#define MAX_SPRITE_HEIGHT 512
+
 
 Renderer::Renderer(const std::filesystem::path& basePath)
     : uio_fd(-1)
@@ -47,7 +46,7 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uin
 
 void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
 
-    uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT];
+    uint32_t* sprite_data = new uint32_t[MAX_WIDTH * MAX_HEIGHT];
     uint32_t phys_addr = SPRITE_DATA_BASE;
     
     for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
