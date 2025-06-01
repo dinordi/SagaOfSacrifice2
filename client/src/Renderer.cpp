@@ -47,11 +47,12 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
     std::cout << "Mapping " << spData->getSpriteRects().size() << " sprites from " << png_file << std::endl;
     for(const auto& pair : spData->getSpriteRects()) {
         const SpriteRect& rect = pair.second;
+        sprite_size = rect.w * rect.h * sizeof(uint32_t);
         if (spriteLoader.load_png_spritesheet(png_file, sprite_data, rect.w, rect.h, rect.x, rect.y) != 0) {
             std::cerr << "Failed to load PNG file: " << png_file << std::endl;
             return -1;
         }
-        if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
+        if (spriteLoader.map_sprite_to_memory(png_file, *phys_addr_out, sprite_data, sprite_size) != 0) {
             std::cerr << "Failed to map sprite to memory: " << png_file << std::endl;
             return -2;
         }
