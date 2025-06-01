@@ -10,7 +10,7 @@
 #include "Renderer.h"
 #include "fpga/spriteloader.h"
 
-
+#include "sprite_data.h"
 
 Renderer::Renderer(const std::filesystem::path& basePath)
     : uio_fd(-1)
@@ -22,42 +22,48 @@ Renderer::Renderer(const std::filesystem::path& basePath)
     initUIO();
 }
 
-int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uint32_t* phys_addr_out) {
+int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map* spriteAddessMap, uint32_t* phys_addr_out) {
     SpriteLoader spriteLoader;
 
     int width = 0, height = 0;
     size_t sprite_size = 0;
     const char* png_file = img_path.c_str();
-
-    if (spriteLoader.load_png_spritesheet(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
-        std::cerr << "Failed to load PNG file: " << img_path << std::endl;
-        return -1;
+    
+    
+    SpriteData* spData = SpriteData::getInstance(img_path);
+    
+    for(SpriteRect& rect : spData->getSpriteRects()) {
+        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, &width, &height, rect.x, rect.y) != 0) {
+            std::cerr << "Failed to load PNG file: " << img_path << std::endl;
+            return -1;
+        }
+        if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr_out, sprite_data, sprite_size) != 0) {
+            std::cerr << "Failed to map sprite to memory: " << img_path << std::endl;
+            return -2;
+        }
+        spriteAddressMap[rect.count] = phys_addr_out;
     }
 
-    if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
-        std::cerr << "Failed to map sprite to memory: " << img_path << std::endl;
-        return -2;
-    }
 
     std::cout << "Sprite '" << img_path << "' mapped to address: 0x"
-              << std::hex << *phys_addr_out << std::dec << std::endl;
+              << std::hex << phys_addr_out << std::dec << std::endl;
     return 0;
 }
 
 void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
 
     uint32_t* sprite_data = new uint32_t[MAX_WIDTH * MAX_HEIGHT];
-    uint32_t phys_addr = SPRITE_DATA_BASE;
+    uint32_t phys_addr = SPRITE_DATA_BASE; // Start address for sprite data
     
     for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
-        if (entry.is_regular_file() && entry.path().extension() == ".png") {
+        if (entry.is_regular_file() && entry.path().extension() == ".tpsheet") {
+            std::map<int, uint32_t> spriteAddressMap;
             std::filesystem::path fullPath = entry.path();
             std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
-
-            int result = loadSprite(fullPath.string(), sprite_data, &phys_addr);
+            int result = loadSprite(fullPath.string(), sprite_data, &spriteAddressMap, &phys_addr);
                 
             if (result == 0) {
-                spriteAddressMap[fileStem] = phys_addr;
+                spriteSheetMap[fileStem] = spriteAddressMap;
             } else {
                 std::cerr << "Failed to load sprite: " << fullPath << std::endl;
             }
