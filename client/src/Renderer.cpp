@@ -34,16 +34,14 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
     if (atlas_pos != std::string::npos) {
         png_path.replace(atlas_pos, 12, "sprites/");  // Replace "spriteatlas/" with "sprites/"
     }
-    size_t ext_pos = png_path.rfind(".tpsheet");
-    if (ext_pos != std::string::npos) {
-        png_path.replace(ext_pos, 8, ".png");  // Replace ".tpsheet" with ".png"
-    }
     
-    const char* png_file = png_path.c_str();
     
     
     SpriteData* spData = SpriteData::getSharedInstance(img_path);
     
+    png_path += spData->getSpriteRect(0).id_ + ".png"; // Assuming the first sprite rect is representative
+    const char* png_file = png_path.c_str();
+
     std::cout << "Mapping " << spData->getSpriteRects().size() << " sprites from " << png_file << std::endl;
     for(const auto& pair : spData->getSpriteRects()) {
         const SpriteRect& rect = pair.second;
