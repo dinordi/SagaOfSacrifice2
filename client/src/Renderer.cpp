@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
@@ -12,44 +13,61 @@
 #define MAX_SPRITE_WIDTH 512
 #define MAX_SPRITE_HEIGHT 512
 
-Renderer::Renderer(const std::string& img_path)
+Renderer::Renderer()
     : uio_fd(-1)
 {
     init_frame_infos();
-    loadSprite(img_path);
+    renderer.loadAllSprites(std::filesystem::current_path());
     init_lookup_tables();
     
     initUIO();
 }
 
-void Renderer::loadSprite(const std::string& img_path) {
+int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, uint32_t* phys_addr_out) {
     SpriteLoader spriteLoader;
-
-    uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT]{};
 
     int width = 0, height = 0;
     size_t sprite_size = 0;
-    uint32_t phys_addr = SPRITE_DATA_BASE;  // Zorg dat dit page-aligned is
-
     const char* png_file = img_path.c_str();
-    std::cout << "PNG file path img_path: " << img_path << std::endl;
 
-    // Laad PNG direct in het bestaande sprite_data buffer
     if (spriteLoader.load_png(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
-        std::cerr << "Failed to load PNG file" << std::endl;
-        throw std::runtime_error("Failed to load PNG file");
+        std::cerr << "Failed to load PNG file: " << img_path << std::endl;
+        return -1;
     }
 
-    // Map de sprite naar fysiek geheugen
-    if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr, sprite_data, sprite_size) != 0) {
-        std::cerr << "Failed to map sprite to memory" << std::endl;
-        throw std::runtime_error("Failed to map sprite to memory");
+    if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
+        std::cerr << "Failed to map sprite to memory: " << img_path << std::endl;
+        return -2;
+    }
+
+    std::cout << "Sprite '" << img_path << "' mapped to address: 0x"
+              << std::hex << *phys_addr_out << std::dec << std::endl;
+    return 0;
+}
+
+void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
+    namespace fs = std::filesystem;
+    fs::path spriteDir = basePath / "SOS/assets/sprites/";
+
+    uint32_t* sprite_data = new uint32_t[MAX_SPRITE_WIDTH * MAX_SPRITE_HEIGHT];
+
+    for (const auto& entry : fs::directory_iterator(spriteDir)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".png") {
+            fs::path fullPath = entry.path();
+            std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
+
+            uint32_t phys_addr = 0;
+            int result = loadSprite(fullPath.string(), sprite_data, &phys_addr);
+
+            if (result == 0) {
+                spriteAddressMap[fileStem] = phys_addr;
+            } else {
+                std::cerr << "Failed to load sprite: " << fullPath << std::endl;
+            }
+        }
     }
 
     delete[] sprite_data;
-    
-    std::cout << "Sprite mapped to physical memory: 0x"
-              << std::hex << phys_addr << std::dec << std::endl;
 }
 
 void Renderer::initUIO() {
@@ -59,7 +77,7 @@ void Renderer::initUIO() {
         throw std::runtime_error("Failed to open UIO device");
     }
 
-    uint32_t clear_value = 1;
+    uint32_t clear_value = 1;s
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
         perror("Failed to clear pending interrupt");
         close(uio_fd);

@@ -3,6 +3,8 @@
 
 #include <thread>
 #include <cstdint>
+#include <unordered_map>
+#include <string>
 
 constexpr int NUM_PIPELINES = 4;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
@@ -14,13 +16,14 @@ constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jou
 
 class Renderer {
 public:
-    Renderer(const std::string& img_path);
+    Renderer();
     ~Renderer();
 
     void handleIRQ();
 
 private:
     void loadSprite(const std::string& img_path);
+    void loadAllSprites(const std::filesystem::path& basePath);
     void init_lookup_tables();
     void init_frame_infos();
     void distribute_sprites_over_pipelines();
@@ -31,6 +34,7 @@ private:
     void* frame_info_ptrs[NUM_PIPELINES] = {nullptr};
     volatile uint64_t* lookup_tables[NUM_PIPELINES] = {nullptr};
     volatile uint64_t* frame_infos[NUM_PIPELINES] = {nullptr};
+    std::unordered_map<std::string, uint32_t> spriteAddressMap;
 
     int uio_fd;
 
