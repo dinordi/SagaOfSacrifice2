@@ -22,26 +22,40 @@ Renderer::Renderer(const std::filesystem::path& basePath)
     initUIO();
 }
 
-int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map* spriteAddessMap, uint32_t* phys_addr_out) {
+int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out) {
     SpriteLoader spriteLoader;
 
     int width = 0, height = 0;
     size_t sprite_size = 0;
-    const char* png_file = img_path.c_str();
+
+    // Create the PNG file path by replacing "spriteatlas/*.tpsheet" with "sprites/*.png"
+    std::string png_path = img_path;
+    size_t atlas_pos = png_path.find("spriteatlas/");
+    if (atlas_pos != std::string::npos) {
+        png_path.replace(atlas_pos, 12, "sprites/");  // Replace "spriteatlas/" with "sprites/"
+    }
+    size_t ext_pos = png_path.rfind(".tpsheet");
+    if (ext_pos != std::string::npos) {
+        png_path.replace(ext_pos, 8, ".png");  // Replace ".tpsheet" with ".png"
+    }
+    
+    const char* png_file = png_path.c_str();
     
     
-    SpriteData* spData = SpriteData::getInstance(img_path);
+    SpriteData* spData = SpriteData::getSharedInstance(img_path);
     
-    for(SpriteRect& rect : spData->getSpriteRects()) {
-        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, &width, &height, rect.x, rect.y) != 0) {
-            std::cerr << "Failed to load PNG file: " << img_path << std::endl;
+    std::cout << "Mapping " << spData->getSpriteRects().size() << " sprites from " << png_file << std::endl;
+    for(const auto& pair : spData->getSpriteRects()) {
+        const SpriteRect& rect = pair.second;
+        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, width, height, rect.x, rect.y) != 0) {
+            std::cerr << "Failed to load PNG file: " << png_file << std::endl;
             return -1;
         }
-        if (spriteLoader.map_sprite_to_memory(png_file, &phys_addr_out, sprite_data, sprite_size) != 0) {
-            std::cerr << "Failed to map sprite to memory: " << img_path << std::endl;
+        if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
+            std::cerr << "Failed to map sprite to memory: " << png_file << std::endl;
             return -2;
         }
-        spriteAddressMap[rect.count] = phys_addr_out;
+        (*spriteAddressMap)[rect.count] = *phys_addr_out;
     }
 
 

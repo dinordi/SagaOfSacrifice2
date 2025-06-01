@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <map>
+#include <filesystem>
 using json = nlohmann::json;
 
 #define DEFINE_GETTER_SETTER(type, member) \
@@ -44,6 +45,7 @@ public:
     static SpriteData* getSharedInstance(const std::string& atlasPath);
 
     SpriteRect getSpriteRect(int index) const;
+    const std::map<int, SpriteRect>& getSpriteRects() const { return spriteRects; }
 
     void addSpriteSheet(std::string atlasPath);
 

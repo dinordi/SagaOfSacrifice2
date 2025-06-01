@@ -157,6 +157,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     }
+    return 0;
     PlayerInput* controller = new SDL2Input();
     Game *game = new Game(controller, playerId);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;

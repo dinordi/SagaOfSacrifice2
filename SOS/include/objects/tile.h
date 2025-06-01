@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include "object.h"
 #include "sprite_data.h"
 

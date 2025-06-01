@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cmath>
 #include <random>
-#include <filesystem>
 
 Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR) {
     // Call the other constructor's setup code
