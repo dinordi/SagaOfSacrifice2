@@ -327,6 +327,8 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
             // Add the player to the game using the server-assigned ID
             if (!assignedPlayerId.empty()) {
                 addPlayer(assignedPlayerId);
+                // Send full game state to this new player
+                sendFullGameStateToClient(assignedPlayerId);
             } else {
                 std::cerr << "[EmbeddedServer] Error: Failed to find assigned player ID for connecting client" << std::endl;
             }
@@ -1124,5 +1126,37 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
         }
         default:
             break;
+    }
+}
+
+void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    Level* lvl = levelManager_->getCurrentLevel();
+    if (!lvl) {
+        std::cerr << "[EmbeddedServer] No active level for full game state sync" << std::endl;
+        return;
+    }
+    auto objects = lvl->getObjects();
+    // Serialize all objects into a single message (could split if too large)
+    std::vector<uint8_t> data;
+    // First 2 bytes: object count
+    uint16_t objectCount = static_cast<uint16_t>(objects.size());
+    data.push_back(static_cast<uint8_t>(objectCount >> 8));
+    data.push_back(static_cast<uint8_t>(objectCount & 0xFF));
+    for (const auto& obj : objects) {
+        serializeObject(obj, data);
+    }
+    NetworkMessage msg;
+    msg.type = MessageType::GAME_STATE;
+    msg.senderId = "server";
+    msg.targetId = playerId;
+    msg.data = std::move(data);
+    // Send to the specific client
+    std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
+    auto it = clientSockets_.find(playerId);
+    if (it != clientSockets_.end() && it->second && it->second->is_open()) {
+        sendToClient(it->second, msg);
+    } else {
+        std::cerr << "[EmbeddedServer] Could not send full game state to client: " << playerId << std::endl;
     }
 }

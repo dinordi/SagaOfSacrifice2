@@ -79,6 +79,7 @@ private:
     void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
+    void sendFullGameStateToClient(const std::string& playerId);
     void sendPartialGameState(const std::vector<std::shared_ptr<Object>>& objects, 
                               size_t startIndex, size_t count, 
                               bool isFirstPacket, bool isLastPacket);
