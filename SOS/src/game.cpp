@@ -198,8 +198,11 @@ void Game::update(float deltaTime) {
 
         reconcileWithServerState(deltaTime);
         
-        // Update remote players based on server data
-        updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        if(player)
+        {
+            // Update remote players based on server data
+            updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        }
     }
 }
 
@@ -815,6 +818,9 @@ void Game::updatePlayer(std::string playerId, const Vec2& position) {
     {
         // If player is not initialized, create a new one
         player = new Player(position.x, position.y, playerId);
+        player->setInput(input); // Set input handler for the player
+        multiplayerManager->setLocalPlayer(player); // Set the local player in the multiplayer manager
+        multiplayerManager->setPlayerInput(input); // Set input for multiplayer manager
         objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
     }
 }

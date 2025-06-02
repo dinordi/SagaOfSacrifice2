@@ -28,4 +28,7 @@ public:
     
     // Check if connected to the server
     virtual bool isConnected() const = 0;
+    
+    // Set the client ID for sending messages
+    virtual void setClientId(const std::string& clientId) = 0;
 };

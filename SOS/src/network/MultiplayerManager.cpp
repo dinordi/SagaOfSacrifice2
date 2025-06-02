@@ -45,9 +45,9 @@ MultiplayerManager::~MultiplayerManager() {
     remotePlayers_.clear();
 }
 
-bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& playerId) {
-    // Store player ID
-    playerId_ = playerId;
+bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& initialPlayerId) {
+    // Store an initial temporary player ID
+    playerId_ = "connecting_client"; // Will be replaced by server-assigned ID
     
     // Set message handler
     network_->setMessageHandler([this](const NetworkMessage& msg) {
@@ -60,16 +60,16 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
     if (connected) {
         std::cout << "[Client] Connected to multiplayer server at " << serverAddress << ":" << serverPort << std::endl;
         
-        // Send a connection message to the server
+        // Send a connection message to the server - this time without a specific player ID
         NetworkMessage connectMsg;
         connectMsg.type = MessageType::CONNECT;
-        connectMsg.senderId = playerId_;
+        connectMsg.senderId = "connecting_client"; // Temporary ID that will be replaced by server-assigned ID
         
-        // Add player name to connection data (could include more info)
-        std::string playerName = "Player_" + playerId_;
-        connectMsg.data.assign(playerName.begin(), playerName.end());
+        // Add player info to connection data (could include more info)
+        std::string playerInfo = "Requesting player ID from server";
+        connectMsg.data.assign(playerInfo.begin(), playerInfo.end());
         
-        std::cout << "[Client] Sending CONNECT message with player ID: " << playerId_ << std::endl;
+        std::cout << "[Client] Sending CONNECT message to get server-assigned ID" << std::endl;
         // Sleep for a short time to ensure server is ready
         network_->sendMessage(connectMsg);
     } else {
@@ -961,8 +961,12 @@ void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& mes
 void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message) {
     std::cout << "[Client] Received player assignment from server" << std::endl;
     
-    // Check if this message is intended for us
-    if (message.targetId != playerId_) {
+    // For initial connection, the message might not have a targetId that matches our temporary ID
+    // We'll check if we're in the initial connection phase
+    bool initialAssignment = playerId_ == "connecting_client" || message.targetId.empty();
+    
+    if (!initialAssignment && message.targetId != playerId_) {
+        // This message is not for us
         return;
     }
     
@@ -976,8 +980,19 @@ void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message
     std::memcpy(&posX, &message.data[0], sizeof(float));
     std::memcpy(&posY, &message.data[sizeof(float)], sizeof(float));
     
-    // Extract player ID (should match our ID)
+    // Extract player ID assigned by the server
     std::string assignedId(reinterpret_cast<const char*>(&message.data[sizeof(float) * 2]));
+    
+    // Update our player ID with the server-assigned one
+    if (initialAssignment || playerId_ != assignedId) {
+        std::cout << "[Client] Updating player ID from " << playerId_ << " to server-assigned ID: " << assignedId << std::endl;
+        playerId_ = assignedId;
+        
+        // Update sender ID for future messages
+        if (network_) {
+            network_->setClientId(assignedId);
+        }
+    }
     
     std::cout << "[Client] Assigned player with ID: " << assignedId << " at position (" << posX << ", " << posY << ")" << std::endl;
     

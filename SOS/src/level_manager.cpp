@@ -145,10 +145,10 @@ bool LevelManager::loadLevel(const std::string& levelId) {
                     }
                 }
                 
-                if (!playerExists) {
+                // if (!playerExists) {
 
-                    addPlayerToCurrentLevel(playerPair.first);
-                }
+                //     addPlayerToCurrentLevel(playerPair.first);
+                // }
             }
             std::cout << "[LevelManager] Loaded level: " << levelId << std::endl;
             return true;

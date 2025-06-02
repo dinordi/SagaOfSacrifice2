@@ -100,6 +100,10 @@ private:
     std::map<std::string, std::shared_ptr<boost::asio::ip::tcp::socket>> clientSockets_;
     std::mutex clientSocketsMutex_;
     
+    // Player ID management
+    std::atomic<int> nextPlayerId_{1};  // Counter for generating unique player IDs
+    std::map<std::string, std::string> tempToPlayerIdMap_;  // Maps temporary connection IDs to player IDs
+    
     // Game state data
     //std::vector<std::shared_ptr<Object>> gameObjects_;
     //std::map<std::string, std::shared_ptr<Player>> players_;

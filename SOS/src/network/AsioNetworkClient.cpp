@@ -120,11 +120,14 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         // Add message type (1 byte)
         buffer.push_back(static_cast<uint8_t>(message.type));
         
+        // Use client_id_ instead of message.senderId if it's set
+        std::string senderId = !client_id_.empty() ? client_id_ : message.senderId;
+        
         // Add sender ID length (1 byte)
-        buffer.push_back(static_cast<uint8_t>(message.senderId.size()));
+        buffer.push_back(static_cast<uint8_t>(senderId.size()));
         
         // Add sender ID content
-        buffer.insert(buffer.end(), message.senderId.begin(), message.senderId.end());
+        buffer.insert(buffer.end(), senderId.begin(), senderId.end());
         
         // Add data length (4 bytes)
         uint32_t dataSize = static_cast<uint32_t>(message.data.size());
@@ -184,6 +187,11 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
 
 void AsioNetworkClient::setMessageHandler(std::function<void(const NetworkMessage&)> handler) {
     message_handler_ = handler;
+}
+
+void AsioNetworkClient::setClientId(const std::string& clientId) {
+    client_id_ = clientId;
+    std::cout << "[AsioNetworkClient] Client ID set to: " << clientId << std::endl;
 }
 
 void AsioNetworkClient::update() {

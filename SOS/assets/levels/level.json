@@ -9,10 +9,10 @@
 
 
 
-  "playerStart": { "x": 1, "y": 1 },
+  "playerStart": { "x": 3500, "y": 1500 },
 
   "enemies": [
-    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  1, "y": 1, "hp":40,  "speed":70 }
+    { "id": "minotaurus", "type": "minotaur",  "spriteId": 12, "x":  4500, "y": 1500, "hp":40,  "speed":70 }
 
   ],
 

@@ -274,11 +274,12 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
     // Process based on message type
     switch (message.type) {
         case MessageType::CONNECT: {
-            std::cout << "[EmbeddedServer] Processing connect message from " << message.senderId << std::endl;
+            std::cout << "[EmbeddedServer] Processing connect message from client" << std::endl;
             
             // Find the socket using the temp clientId from the network endpoint
             std::string tempClientId;
             std::shared_ptr<boost::asio::ip::tcp::socket> clientSocket;
+            std::string assignedPlayerId;
             
             {
                 std::lock_guard<std::mutex> lock(clientSocketsMutex_);
@@ -292,6 +293,13 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
                             if (entry.first.find(socketId) != std::string::npos) {
                                 tempClientId = entry.first;
                                 clientSocket = entry.second;
+                                
+                                // Find the assigned player ID for this temp client ID
+                                auto it = tempToPlayerIdMap_.find(tempClientId);
+                                if (it != tempToPlayerIdMap_.end()) {
+                                    assignedPlayerId = it->second;
+                                }
+                                
                                 break;
                             }
                         }
@@ -300,21 +308,28 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
                     }
                 }
                 
-                // If we found the socket with a temporary ID, update the mapping
-                if (!tempClientId.empty() && clientSocket && tempClientId != message.senderId) {
+                // If we found the socket and have an assigned player ID, update the mapping
+                if (!tempClientId.empty() && clientSocket && !assignedPlayerId.empty()) {
                     std::cout << "[EmbeddedServer] Updating socket mapping from " << tempClientId 
-                              << " to " << message.senderId << std::endl;
+                              << " to " << assignedPlayerId << std::endl;
                     
                     // Remove the old temp ID mapping
                     clientSockets_.erase(tempClientId);
                     
-                    // Add the new mapping with the proper player ID
-                    clientSockets_[message.senderId] = clientSocket;
+                    // Add the new mapping with the assigned player ID
+                    clientSockets_[assignedPlayerId] = clientSocket;
+                    
+                    // Remove the temporary mapping
+                    tempToPlayerIdMap_.erase(tempClientId);
                 }
             }
             
-            // Add the player to the game
-            addPlayer(message.senderId);
+            // Add the player to the game using the server-assigned ID
+            if (!assignedPlayerId.empty()) {
+                addPlayer(assignedPlayerId);
+            } else {
+                std::cerr << "[EmbeddedServer] Error: Failed to find assigned player ID for connecting client" << std::endl;
+            }
             break;
         }
             
@@ -335,7 +350,10 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
         case MessageType::PLAYER_POSITION:
             processPlayerPosition(message.senderId, message);
             break;
-            
+        case MessageType::ENEMY_STATE_UPDATE:
+            // Process player actions, including enemy state updates
+            processEnemyState(message.senderId, message);
+            break;
         case MessageType::CHAT:
             // Just relay chat messages to all clients
             if (messageCallback_) {
@@ -418,13 +436,18 @@ void EmbeddedServer::handleClientConnection(std::shared_ptr<boost::asio::ip::tcp
     std::string tempClientId = socket->remote_endpoint().address().to_string() + 
                            ":" + std::to_string(socket->remote_endpoint().port());
     
-    std::cout << "[EmbeddedServer] New connection from: " << tempClientId << std::endl;
-    std::cout << "[EmbeddedServer] Waiting for client's CONNECT message to get real player ID..." << std::endl;
+    // Generate a unique player ID for this client
+    std::string generatedPlayerId = "player_" + std::to_string(nextPlayerId_++);
     
-    // Store the socket using the temporary ID
+    std::cout << "[EmbeddedServer] New connection from: " << tempClientId << std::endl;
+    std::cout << "[EmbeddedServer] Generated player ID: " << generatedPlayerId << std::endl;
+    
+    // Store the socket using the temporary ID, but also remember the generated player ID
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
         clientSockets_[tempClientId] = socket;
+        // Map the temporary ID to the generated player ID
+        tempToPlayerIdMap_[tempClientId] = generatedPlayerId;
     }
     
     // Start the proper async read sequence to get a complete message
@@ -774,6 +797,16 @@ void EmbeddedServer::sendPlayerToClient(const std::string& playerId, Player* pla
     playerMsg.data = std::move(data);
     
     // Send the message
+    
+    std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+    auto it = clientSockets_.find(playerId);
+    if (it != clientSockets_.end() && it->second && it->second->is_open()) {
+        sendToClient(it->second, playerMsg);
+    } else {
+        std::cerr << "[EmbeddedServer] Failed to find socket for player " << playerId << std::endl;
+    }
+
+    // Notify through callback if set
     if (messageCallback_) {
         messageCallback_(playerMsg);
     }
