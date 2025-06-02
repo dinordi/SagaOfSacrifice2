@@ -251,62 +251,62 @@ void Renderer::init_frame_infos() {
     close(fd);
 }
 
-// void Renderer::distribute_sprites_over_pipelines() {
-//     const uint16_t SPRITE_WIDTH = 400;
-//     const uint16_t SPRITE_HEIGHT = 400;
-//     const uint16_t X_START = 133;
-//     const uint16_t Y_START = 50;
-
-//     // Place just one sprite in the first pipeline at X_START, Y_START
-//     int pipeline = 0; // Use the first pipeline
-//     int sprite_id = 1; // Use sprite ID 1
-
-//     // Write the single sprite to the frame info
-//     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
-    
-//     // Add end marker after the sprite
-//     frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
-    
-//     // For other pipelines, ensure they have just end markers
-//     for (int i = 1; i < NUM_PIPELINES; i++) {
-//         frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
-//     }
-// }
-
 void Renderer::distribute_sprites_over_pipelines() {
-    const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
     const uint16_t X_START = 133;
     const uint16_t Y_START = 50;
-    const uint16_t X_MAX = 2050 - SPRITE_WIDTH;
-    const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
- 
-    int sprites_in_pipeline[NUM_PIPELINES] = {0};
-    uint16_t x = X_START;
-    uint16_t y = Y_START;
- 
-    for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
-        int pipeline = sprite_idx % NUM_PIPELINES;
-        int index_in_pipeline = sprites_in_pipeline[pipeline];
- 
-        write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
-        sprites_in_pipeline[pipeline]++;
- 
-        x += SPRITE_WIDTH;
-        if (x > X_MAX) {
-            x = X_START;
-            y += SPRITE_HEIGHT;
-            if (y > Y_MAX) {
-                y = Y_START;
-            }
-        }
-    }
- 
-    for (int i = 0; i < NUM_PIPELINES; i++) {
-        frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
+
+    // Place just one sprite in the first pipeline at X_START, Y_START
+    int pipeline = 0; // Use the first pipeline
+    int sprite_id = 1; // Use sprite ID 1
+
+    // Write the single sprite to the frame info
+    write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
+    
+    // Add end marker after the sprite
+    frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
+    
+    // For other pipelines, ensure they have just end markers
+    for (int i = 1; i < NUM_PIPELINES; i++) {
+        frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
     }
 }
+
+// void Renderer::distribute_sprites_over_pipelines() {
+//     const int TOTAL_STATIC_SPRITES = 15;
+//     const uint16_t SPRITE_WIDTH = 400;
+//     const uint16_t SPRITE_HEIGHT = 400;
+//     const uint16_t X_START = 133;
+//     const uint16_t Y_START = 50;
+//     const uint16_t X_MAX = 2050 - SPRITE_WIDTH;
+//     const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
+ 
+//     int sprites_in_pipeline[NUM_PIPELINES] = {0};
+//     uint16_t x = X_START;
+//     uint16_t y = Y_START;
+ 
+//     for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
+//         int pipeline = sprite_idx % NUM_PIPELINES;
+//         int index_in_pipeline = sprites_in_pipeline[pipeline];
+ 
+//         write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
+//         sprites_in_pipeline[pipeline]++;
+ 
+//         x += SPRITE_WIDTH;
+//         if (x > X_MAX) {
+//             x = X_START;
+//             y += SPRITE_HEIGHT;
+//             if (y > Y_MAX) {
+//                 y = Y_START;
+//             }
+//         }
+//     }
+ 
+//     for (int i = 0; i < NUM_PIPELINES; i++) {
+//         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
+//     }
+// }
 
 // Lookup table entry schrijven
 void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int index, uint32_t sprite_data_base, uint16_t width, uint16_t height) {
