@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "aegis2",
+			"image": "aegis1",
 			"size": {
 				"w": 623,
 				"h": 674
@@ -12,8 +12,8 @@
 					"region": {
 						"x": 1,
 						"y": 1,
-						"w": 370,
-						"h": 400
+						"w": 623,
+						"h": 674
 					},
 					"margin": {
 						"x": 0,
