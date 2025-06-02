@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
     path = path.substr(0, path.find("/client/build"));
     path = path + "/SOS";
 
-    std::string path_sprites = path + "/assets/spriteatlas/";
+    std::string path_sprites = path + "/assets/spriteatlasTest/";
     imageName = imageName + ".png";
 
     AudioManager* audio = new SDL2AudioManager();

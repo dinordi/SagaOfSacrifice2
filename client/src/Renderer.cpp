@@ -30,7 +30,7 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
 
     // Remove "/spriteatlas/<name>.tpsheet" at the end of the string
     std::string png_path = img_path;
-    size_t pos = png_path.rfind("/spriteatlas/");
+    size_t pos = png_path.rfind("/spriteatlasTest/");
     size_t ext_pos = png_path.rfind(".tpsheet");
     if (pos != std::string::npos && ext_pos != std::string::npos && ext_pos > pos) {
         png_path.erase(pos);
@@ -259,8 +259,19 @@ void Renderer::distribute_sprites_over_pipelines() {
 
     // Place just one sprite in the first pipeline at X_START, Y_START
     int pipeline = 0; // Use the first pipeline
-    int sprite_id = 40; // Use sprite ID 1
+    static int sprite_id = 40; // Use sprite ID 1
 
+    static int counter = 0;
+    counter++;
+    if (counter == 20)
+    {
+        sprite_id++;
+        counter = 0;
+    }
+    if (sprite_id > 1023) {
+        sprite_id = 40; // Reset to a lower sprite ID
+    }
+    
     // Write the single sprite to the frame info
     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
     

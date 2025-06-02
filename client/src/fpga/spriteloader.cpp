@@ -152,7 +152,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr
         return 1;
     }
 
-    std::cout << "Initializing mapped region (" << mapped_size << " bytes) to 0xFFFFFFFF..." << std::endl;
+    //std::cout << "Initializing mapped region (" << mapped_size << " bytes) to 0xFFFFFFFF..." << std::endl;
     memset(mapped_mem, 0xFF, mapped_size);
 
     std::memcpy(mapped_mem, sprite_data, sprite_size);
