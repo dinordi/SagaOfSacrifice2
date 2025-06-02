@@ -208,7 +208,7 @@ void Renderer::init_lookup_tables()
     }
         
     int index = 0;
-    for(auto map : spriteSheetMap)  // map.first is the sprite sheet name, map.second is a map of sprite index to address, i.e. minotaurus_idle -> 8 sprites, with addresses
+    for(auto& map : spriteSheetMap)  // map.first is the sprite sheet name, map.second is a map of sprite index to address, i.e. minotaurus_idle -> 8 sprites, with addresses
     {
         lookup_table_map[map.first] = index; // Store the index for this sprite sheet
         for (const auto& sprite : map.second) {// index of sprite in spritesheet, mapped to start address, i.e. index:0 -> 0x32d23000
@@ -251,25 +251,60 @@ void Renderer::init_frame_infos() {
     close(fd);
 }
 
+// void Renderer::distribute_sprites_over_pipelines() {
+//     const uint16_t SPRITE_WIDTH = 400;
+//     const uint16_t SPRITE_HEIGHT = 400;
+//     const uint16_t X_START = 133;
+//     const uint16_t Y_START = 50;
+
+//     // Place just one sprite in the first pipeline at X_START, Y_START
+//     int pipeline = 0; // Use the first pipeline
+//     int sprite_id = 1; // Use sprite ID 1
+
+//     // Write the single sprite to the frame info
+//     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
+    
+//     // Add end marker after the sprite
+//     frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
+    
+//     // For other pipelines, ensure they have just end markers
+//     for (int i = 1; i < NUM_PIPELINES; i++) {
+//         frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
+//     }
+// }
+
 void Renderer::distribute_sprites_over_pipelines() {
+    const int TOTAL_STATIC_SPRITES = 15;
     const uint16_t SPRITE_WIDTH = 400;
     const uint16_t SPRITE_HEIGHT = 400;
     const uint16_t X_START = 133;
     const uint16_t Y_START = 50;
-
-    // Place just one sprite in the first pipeline at X_START, Y_START
-    int pipeline = 0; // Use the first pipeline
-    int sprite_id = 1; // Use sprite ID 1
-
-    // Write the single sprite to the frame info
-    write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
-    
-    // Add end marker after the sprite
-    frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
-    
-    // For other pipelines, ensure they have just end markers
-    for (int i = 1; i < NUM_PIPELINES; i++) {
-        frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
+    const uint16_t X_MAX = 2050 - SPRITE_WIDTH;
+    const uint16_t Y_MAX = 1080 - SPRITE_HEIGHT;
+ 
+    int sprites_in_pipeline[NUM_PIPELINES] = {0};
+    uint16_t x = X_START;
+    uint16_t y = Y_START;
+ 
+    for (int sprite_idx = 0; sprite_idx < TOTAL_STATIC_SPRITES; sprite_idx++) {
+        int pipeline = sprite_idx % NUM_PIPELINES;
+        int index_in_pipeline = sprites_in_pipeline[pipeline];
+ 
+        write_sprite_to_frame_info(frame_infos[pipeline], index_in_pipeline, x, y, 1);
+        sprites_in_pipeline[pipeline]++;
+ 
+        x += SPRITE_WIDTH;
+        if (x > X_MAX) {
+            x = X_START;
+            y += SPRITE_HEIGHT;
+            if (y > Y_MAX) {
+                y = Y_START;
+            }
+        }
+    }
+ 
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
 }
 

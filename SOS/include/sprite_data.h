@@ -31,7 +31,7 @@ struct SpriteRect {
 
     SpriteRect() : x(0), y(0), w(0), h(0), id_(""), count(0) {}
     SpriteRect(int x, int y, int w, int h, std::string id, uint8_t index)
-        : x(x), y(y), w(w), h(h), id_(std::move(id)) {}
+        : x(x), y(y), w(w), h(h), id_(std::move(id)), count(index) {}
 };
 
 

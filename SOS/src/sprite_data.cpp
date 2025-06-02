@@ -19,7 +19,8 @@ SpriteData::~SpriteData() {
 
 SpriteData* SpriteData::getSharedInstance(const std::string& atlasPath)
 {
-    std::string imageName = fs::path(atlasPath).filename().string();
+    
+    std::string imageName = fs::path(atlasPath).stem().string();
     // Check if we already have this sprite sheet loaded
     auto it = spriteCache.find(imageName);
     if (it != spriteCache.end()) {
