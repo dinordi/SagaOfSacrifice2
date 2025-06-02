@@ -214,10 +214,12 @@ void Renderer::init_lookup_tables()
         for (const auto& sprite : map.second) {// index of sprite in spritesheet, mapped to start address, i.e. index:0 -> 0x32d23000
             // 0-1023, baseAddr, width, height
             SpriteData* spData = SpriteData::getSharedInstance(map.first);
-            uint16_t SPRITE_WIDTH = spData->getSpriteRect(sprite.first).w;
-            uint16_t SPRITE_HEIGHT = spData->getSpriteRect(sprite.first).h;
+            uint16_t sprite_width = spData->getSpriteRect(sprite.first).w;
+            uint16_t sprite_height = spData->getSpriteRect(sprite.first).h;
+            uint32_t sprite_data_base = sprite.second; // The physical address of the sprite data
             for(int i = 0; i < NUM_PIPELINES; i++) {
-                write_lookup_table_entry(lookup_tables[i], index, sprite.second, SPRITE_WIDTH, SPRITE_HEIGHT);
+                write_lookup_table_entry(lookup_tables[i], index, sprite_data_base, sprite_width, sprite_height);
+                //write_lookup_table_entry(lookup_tables[i], index, SPRITE_DATA_BASE, 400, 400);
             }
             index++;
         }
@@ -252,14 +254,12 @@ void Renderer::init_frame_infos() {
 }
 
 void Renderer::distribute_sprites_over_pipelines() {
-    const uint16_t SPRITE_WIDTH = 400;
-    const uint16_t SPRITE_HEIGHT = 400;
     const uint16_t X_START = 133;
     const uint16_t Y_START = 50;
 
     // Place just one sprite in the first pipeline at X_START, Y_START
     int pipeline = 0; // Use the first pipeline
-    int sprite_id = 1; // Use sprite ID 1
+    int sprite_id = 40; // Use sprite ID 1
 
     // Write the single sprite to the frame info
     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
@@ -321,11 +321,11 @@ void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int ind
 
     lookup_table[index] = value;
 
-    printf("Lookup Table [%d]:\n", index);
-    printf("  Base Addr = 0x%08X\n", sprite_data_base);
-    printf("  Width     = %u\n", width);
-    printf("  Height    = %u\n", height);
-    printf("  Value(hex)= 0x%016llX\n", value);
+    // printf("Lookup Table [%d]:\n", index);
+    // printf("  Base Addr = 0x%08X\n", sprite_data_base);
+    // printf("  Width     = %u\n", width);
+    // printf("  Height    = %u\n", height);
+    // printf("  Value(hex)= 0x%016llX\n", value);
 }
 
 // ─────────────────────────────────────────────
