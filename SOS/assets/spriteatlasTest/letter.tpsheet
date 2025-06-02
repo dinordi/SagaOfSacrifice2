@@ -1,0 +1,33 @@
+{
+	"textures": [
+		{
+			"image": "letter",
+			"size": {
+				"w": 63,
+				"h": 63
+			},
+			"sprites": [
+				{
+					"filename": "letters-1.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 63,
+						"h": 63
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:9bf76dafd6519440a5ddedae2df6a9ac:45bd9c3ed4306739e4d9f27d1ed49c39:64596834f8249e0ec0588d3e0dab550d$"
+	}
+}
