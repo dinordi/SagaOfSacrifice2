@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "testimg511",
+			"image": "testimg499",
 			"size": {
 				"w": 402,
 				"h": 402
@@ -12,8 +12,8 @@
 					"region": {
 						"x": 1,
 						"y": 1,
-						"w": 511,
-						"h": 511
+						"w": 499,
+						"h": 499
 					},
 					"margin": {
 						"x": 0,
