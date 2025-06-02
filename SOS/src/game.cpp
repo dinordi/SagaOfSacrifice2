@@ -45,7 +45,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     // Set player's input handler
     player = new Player(500, 100, playerID);
     player->setInput(input);
-    initializeSpriteSheets();
+    // initializeSpriteSheets();
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
 }
