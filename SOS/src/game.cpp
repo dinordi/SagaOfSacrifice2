@@ -783,7 +783,6 @@ void Game::handleServerSelectionInput(float deltaTime) {
                 std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
                 // Start multiplayer game
                 state = GameState::RUNNING;
-                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
             }
         }
