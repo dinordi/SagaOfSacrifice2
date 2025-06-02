@@ -259,7 +259,7 @@ void Renderer::distribute_sprites_over_pipelines() {
 
     // Place just one sprite in the first pipeline at X_START, Y_START
     int pipeline = 0; // Use the first pipeline
-    static int sprite_id = 40; // Use sprite ID 1
+    static int sprite_id = 0; // Use sprite ID 1
 
     static int counter = 0;
     counter++;
@@ -268,8 +268,8 @@ void Renderer::distribute_sprites_over_pipelines() {
         sprite_id++;
         counter = 0;
     }
-    if (sprite_id > 1023) {
-        sprite_id = 40; // Reset to a lower sprite ID
+    if (sprite_id > 10) {
+        sprite_id = 0; // Reset to a lower sprite ID
     }
     
     // Write the single sprite to the frame info
