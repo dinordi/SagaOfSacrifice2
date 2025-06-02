@@ -12,8 +12,24 @@ void Entity::update(float deltaTime) {
     updateAnimation(deltaTime*1000);
     Vec2 pos = getposition();
     Vec2 vel = getvelocity();
-    pos += vel * deltaTime; // Update position based on velocity
-    setposition(pos); // Set the new position
+    if (isRemote_) {
+        interpolationTime_ += deltaTime;
+        float t = std::min(interpolationTime_ / 0.1f, 1.0f); // 0.1s default interp period
+        // Only interpolate if we have a different target position
+        if ((targetPosition_.x != pos.x || targetPosition_.y != pos.y) && t < 1.0f) {
+            pos.x = pos.x + (targetPosition_.x - pos.x) * t;
+            pos.y = pos.y + (targetPosition_.y - pos.y) * t;
+            vel.x = vel.x + (targetVelocity_.x - vel.x) * t;
+            vel.y = vel.y + (targetVelocity_.y - vel.y) * t;
+        } else {
+            pos += vel * deltaTime;
+        }
+        setposition(pos);
+        setvelocity(vel);
+    } else {
+        pos += vel * deltaTime;
+        setposition(pos);
+    }
 }
 
 Healthbar::Healthbar(float x, float y, std::string tpsheet, uint16_t maxHealth, bool enemy)

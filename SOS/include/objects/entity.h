@@ -34,8 +34,22 @@ public:
     void updateHealthbar();
     Healthbar* getHealthbar() const { return healthbar_; }
     
+    // Interpolation for remote entities
+    void setTargetPosition(const Vec2& position) { targetPosition_ = position; }
+    void setTargetVelocity(const Vec2& velocity) { targetVelocity_ = velocity; }
+    void resetInterpolation() { interpolationTime_ = 0.0f; }
+    const Vec2& getTargetPosition() const { return targetPosition_; }
+    const Vec2& getTargetVelocity() const { return targetVelocity_; }
+    float getInterpolationTime() const { return interpolationTime_; }
+    void setIsRemote(bool isRemote) { isRemote_ = isRemote; }
+    bool getIsRemote() const { return isRemote_; }
 protected:
     bool isDead_;
     Healthbar* healthbar_;
-    int health; 
+    int health;
+    // Interpolation state
+    Vec2 targetPosition_;
+    Vec2 targetVelocity_;
+    float interpolationTime_ = 0.0f;
+    bool isRemote_ = false;
 };

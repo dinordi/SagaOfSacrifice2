@@ -906,20 +906,11 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                     obj->setAnimationState(state);
                     obj->setDir(dir);
 
-                    //Get old position and velocity
-                    Vec2 oldPos = obj->getcollider().position;
-                    Vec2 oldVel = obj->getvelocity();
-                    // Update existing minotaur
-                    obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
-                    obj->setvelocity(Vec2(velX, velY));
-                    std::cout << "[Client] Updated existing minotaur: " << objectId 
-                    << " at position (" << posX << ", " << posY
-                    << ") with velocity (" << velX << ", " << velY << ")"
-                    << " and state " << (state)
-                    << " and direction " << (dir)
-                    << " from old position (" << oldPos.x << ", " << oldPos.y
-                    << ") and old velocity (" << oldVel.x << ", " << oldVel.y << ")"
-                                << std::endl;
+                    // Apply interpolation
+                    std::shared_ptr<Minotaur> minotaur = std::static_pointer_cast<Minotaur>(obj);
+                    minotaur->setTargetPosition(Vec2(posX, posY));
+                    minotaur->setTargetVelocity(Vec2(velX, velY));
+                    minotaur->resetInterpolation();
                     return obj; // Successfully updated
                 }
             }
@@ -928,6 +919,9 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             newMinotaur->setupAnimations(atlasBasePath_);
             newMinotaur->setcollider(BoxCollider(Vec2(posX, posY), Vec2(64, 64))); // Default size
             newMinotaur->setvelocity(Vec2(velX, velY));
+            newMinotaur->setTargetPosition(Vec2(posX, posY));
+            newMinotaur->setTargetVelocity(Vec2(velX, velY));
+            newMinotaur->setIsRemote(true); // Mark as remote
             return newMinotaur;
         }
         default:

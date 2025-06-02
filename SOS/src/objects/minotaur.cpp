@@ -132,8 +132,7 @@ void Minotaur::die() {
 }
 
 void Minotaur::update(float deltaTime) {
-    // Use base enemy update for AI behavior
+    // Interpolation for remote minotaurs is handled in Entity::update
     Enemy::update(deltaTime);
-    
     // Minotaur-specific updates can be added here
 }
