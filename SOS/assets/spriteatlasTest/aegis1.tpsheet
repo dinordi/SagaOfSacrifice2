@@ -1,0 +1,33 @@
+{
+	"textures": [
+		{
+			"image": "aegis1",
+			"size": {
+				"w": 623,
+				"h": 674
+			},
+			"sprites": [
+				{
+					"filename": "Aegis_The_Destoryer_Of_Worlds-0.png",
+					"region": {
+						"x": 1,
+						"y": 1,
+						"w": 621,
+						"h": 672
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:fd9c3875ccbe84ae6f040a306f9f8239:9049d4785d2a1c0753ea0df29c98708a:87ed57aa8ddd8dc66370d211517d3ec5$"
+	}
+}
