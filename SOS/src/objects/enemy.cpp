@@ -138,12 +138,12 @@ void Enemy::update(float deltaTime) {
     }
 
     //Print old position
-    Vec2 vel = getvelocity();
-    // Update position based on velocity
-    BoxCollider* pColl = &getcollider();
-    Vec2* pos = &pColl->position;
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    // Vec2 vel = getvelocity();
+    // // Update position based on velocity
+    // BoxCollider* pColl = &getcollider();
+    // Vec2* pos = &pColl->position;
+    // pos->x += vel.x * deltaTime;
+    // pos->y += vel.y * deltaTime;
 
     // Update animation
     Entity::update(deltaTime); // Call the base class update

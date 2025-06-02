@@ -705,22 +705,25 @@ void EmbeddedServer::run() {
     unsigned int loopCounter = 0;
 
     while (gameLoopRunning_) {
+        auto before = std::chrono::high_resolution_clock::now();
         try {
             updateGameState(fixedDeltaSeconds); // Always use fixed delta
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception in game update: " << e.what() << std::endl;
         }
-
+        
         // Check flag again before sleeping to respond faster to shutdown requests
         if (!gameLoopRunning_) {
             std::cout << "[EmbeddedServer] Game loop flag set to false, exiting loop" << std::endl;
             break;
         }
-
+        
+        auto after = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(after - before).count();
         // Sleep until next tick
         try {
-            std::this_thread::sleep_for(std::chrono::milliseconds(fixedDeltaMilliseconds));
+            std::this_thread::sleep_for(std::chrono::milliseconds(fixedDeltaMilliseconds- static_cast<uint64_t>(duration / 1000)));
         }
         catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Exception during game loop sleep: " << e.what() << std::endl;
@@ -849,7 +852,7 @@ void EmbeddedServer::updateGameState(float deltaTime) {
     }
     // Send game state to clients periodically
     static float updateTimer = 0;
-    updateTimer += deltaTime*1000;
+    updateTimer += deltaTime;
     
     if (updateTimer*1000 >= NetworkConfig::Server::StateUpdateInterval) {
         updateTimer = 0;

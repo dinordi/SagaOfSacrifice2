@@ -224,9 +224,13 @@ void Level::update(float deltaTime) {
         for (const auto& obj : objectsToRemove) {
             removeObject(obj);
         }
-        
+        auto timeBeforeCollision = std::chrono::steady_clock::now();
         // Detect and resolve collisions
         detectAndResolveCollisions();
+        auto timeAfterCollision = std::chrono::steady_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(timeAfterCollision - timeBeforeCollision);
+        // std::cout << "[Level] Collision detection and resolution took "
+        //           << duration.count() << " microseconds\n";
     }
     
     // Send game state to clients periodically

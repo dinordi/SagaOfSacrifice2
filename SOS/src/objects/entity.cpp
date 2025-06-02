@@ -10,6 +10,10 @@ Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Obje
 void Entity::update(float deltaTime) {
     // Update animation state
     updateAnimation(deltaTime*1000);
+    Vec2 pos = getposition();
+    Vec2 vel = getvelocity();
+    pos += vel * deltaTime; // Update position based on velocity
+    setposition(pos); // Set the new position
 }
 
 Healthbar::Healthbar(float x, float y, std::string tpsheet, uint16_t maxHealth, bool enemy)
