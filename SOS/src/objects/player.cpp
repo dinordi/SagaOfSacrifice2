@@ -1,5 +1,6 @@
 #include "objects/player.h"
 #include <iostream>
+#include "network/NetworkConfig.h"
 
 
 Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
@@ -51,18 +52,72 @@ void Player::setupAnimations() {
 }
 
 void Player::update(float deltaTime) {
-    // Update player-specific logic here
-    // handleInput(input, deltaTime); // Handle input
+    if (isRemote) {
+        // Remote player update logic - similar to RemotePlayer
+        
+        // Update interpolation timer
+        interpolationTime += deltaTime;
+        float t = std::min(interpolationTime / NetworkConfig::Client::InterpolationPeriod, 1.0f);
 
-    BoxCollider* pColl = &getcollider();
-    Vec2* pos = &pColl->position;
-    Vec2 vel = getvelocity();
+        BoxCollider* pColl = &getcollider();
+        Vec2* pos = &pColl->position;
+        Vec2 vel = getvelocity();
+        
+        // Only interpolate if we have a different target position
+        if ((targetPosition.x != pos->x || targetPosition.y != pos->y) && t < 1.0f) {
+            // Linear interpolation
+            pos->x = pos->x + (targetPosition.x - pos->x) * t;
+            pos->y = pos->y + (targetPosition.y - pos->y) * t;
+            
+            // Update velocity based on target velocity
+            vel.x = vel.x + (targetVelocity.x - vel.x) * t;
+            vel.y = vel.y + (targetVelocity.y - vel.y) * t;
+        } else {
+            // We've reached the target or never started interpolating, apply velocity directly
+            pos->x += vel.x * deltaTime;
+            pos->y += vel.y * deltaTime;
+        }
 
+        // Set direction based on velocity
+        updateDirectionFromVelocity(vel);
 
-    *pos += vel * deltaTime; // Update position based on velocity and delta time
+        // Update the animation controller
+        Entity::update(deltaTime);
+        
+        // Update velocity
+        setvelocity(vel);
+    } else {
+        // Local player update logic
+        BoxCollider* pColl = &getcollider();
+        Vec2* pos = &pColl->position;
+        Vec2 vel = getvelocity();
 
+        *pos += vel * deltaTime; // Update position based on velocity and delta time
 
-    // Set direction based on horizontal and vertical velocity
+        // Set direction based on velocity
+        updateDirectionFromVelocity(vel);
+
+        // Handle attack timer
+        if (isAttackActive) {
+            attackTimer += deltaTime;
+            if (attackTimer >= 0.4f) { // Attack animation time (seconds)
+                isAttackActive = false;
+                attackTimer = 0.0f;
+            }
+        }
+
+        // Update animation state based on player state
+        updateAnimationState();
+
+        // Update the animation controller
+        Entity::update(deltaTime);
+
+        setvelocity(vel); // Update velocity
+    }
+}
+
+// Helper method to update direction based on velocity
+void Player::updateDirectionFromVelocity(const Vec2& vel) {
     if (vel.x > 0) {
         dir = FacingDirection::EAST;
     } else if (vel.x < 0) {
@@ -80,26 +135,6 @@ void Player::update(float deltaTime) {
     } else if (vel.x > 0 && vel.y > 0) {
         dir = FacingDirection::SOUTH_EAST;
     }
-
-    // Handle attack timer
-    if (isAttackActive) {
-        attackTimer += deltaTime;
-        if (attackTimer >= 0.4f) { // Attack animation time (seconds)
-            isAttackActive = false;
-            attackTimer = 0.0f;
-        }
-    }
-
-
-    // Update animation state based on player state
-    updateAnimationState();
-
-    // Update the animation controller
-    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
-    Entity::update(deltaTime); // Call base class update
-
-    setvelocity(vel); // Update velocity
-    setcollider(*pColl); // Update position
 }
 
 void Player::handleInput(PlayerInput* input, float deltaTime) {

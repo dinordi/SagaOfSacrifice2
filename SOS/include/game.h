@@ -40,7 +40,7 @@ enum class MenuOption {
 
 class Game {
 public:
-    Game(PlayerInput* input, std::string playerID);
+    Game(PlayerInput* input);
     ~Game();
 
     void update(float deltaTime);
@@ -77,6 +77,8 @@ public:
     // Static instance getter for singleton access
     static Game* getInstance() { return instance_; }
     static void setInstance(Game* instance) { instance_ = instance; }
+
+    void updatePlayer(std::string playerId, const Vec2& position);
 
 private:
     void drawWord(const std::string& word, int x, int y, int letterSize = 0);
@@ -128,7 +130,7 @@ private:
     bool serverSelectionOptionChanged = true;
     
     // Update remote players
-    void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
+    void updateRemotePlayers(const std::map<std::string, std::shared_ptr<Player>>& remotePlayers);
     
     SpriteData* characters;
     std::map<char, int> characterMap;

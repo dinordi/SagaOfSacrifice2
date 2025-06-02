@@ -19,7 +19,7 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8081;
 
-Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
+Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     // Set this as the active instance
     instance_ = this;
     
@@ -42,9 +42,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     basePath_ = basePath; // Store base path for later use
     std::cout << "Got base path for game" << std::endl;
 
-    // Set player's input handler
-    player = new Player(500, 100, playerID);
-    player->setInput(input);
+    // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
 }
@@ -141,8 +139,11 @@ void Game::update(float deltaTime) {
             // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
-                    if(obj->getObjID() == player->getObjID()) {
-                        continue; // Skip updating the local player
+                    if(player)
+                    {
+                        if(obj->getObjID() == player->getObjID()) {
+                            continue; // Skip updating the local player
+                        }
                     }
                     // Update the object's animation
                     obj->updateAnimation(deltaTime * 1000);
@@ -225,7 +226,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     }
     
     // Connect to the local server
-    std::string playerId = player->getObjID();
+    std::string playerId = "player_tempID";
     if (!initializeServerConnection("localhost", LOCAL_SERVER_PORT, playerId)) {
         std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
         localServerManager->stopEmbeddedServer();
@@ -330,7 +331,7 @@ void Game::setChatMessageHandler(std::function<void(const std::string& sender, c
     }
 }
 
-void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers) {
+void Game::updateRemotePlayers(const std::map<std::string, std::shared_ptr<Player>>& remotePlayers) {
     // loop through all remote players
     for (const auto& pair : remotePlayers) {
         //Find the remote player in the gameobjects
@@ -341,20 +342,23 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
         if (it == objects.end()) {
             // Create a new remote player
             std::cout << "[Game] Creating new remote player: " << pair.first << std::endl;
-            RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
+            Vec2 position = pair.second->getposition();
+            Player* remotePlayer = new Player(position.x, position.y, pair.first);
             remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
             remotePlayer->setDir(pair.second->getDir());
             remotePlayer->setAnimationState(pair.second->getAnimationState());
             
-            objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
-            // levelManager_->addPlayerToCurrentLevel(remotePlayer->getObjID()); // Add to level manager
+            objects.push_back(std::shared_ptr<Player>(remotePlayer));
 
         } else {
-            if((*it)->getObjID() == player->getObjID())
+            if(player)
             {
-                // Skip updating the local player
-                continue;
+                if((*it)->getObjID() == player->getObjID())
+                {
+                    // Skip updating the local player
+                    continue;
+                }    
             }
             else
             {
@@ -371,6 +375,9 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
 // New methods for server-authoritative gameplay
 
 void Game::predictLocalPlayerMovement(float deltaTime) {
+    if( !player || !input) {
+        return; // No player or input to process
+    }
     // Apply local input immediately for responsive gameplay
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
@@ -440,7 +447,7 @@ void Game::reconcileWithServerState(float deltaTime) {
     // Get the server position for our player from the MultiplayerManager
     if (multiplayerManager && player) {
 
-        const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
+        const std::map<std::string, std::shared_ptr<Player>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
         static uint64_t lastUpdateTime = 0;
         static uint64_t remotePlayerWaitTime = 0;
@@ -467,7 +474,7 @@ void Game::reconcileWithServerState(float deltaTime) {
         
         // Reset the wait timer once we find our player
         remotePlayerWaitTime = 0;
-        RemotePlayer* remotePlayer = it->second.get();
+        Player* remotePlayer = it->second.get();
 
         Vec2 serverPosition = remotePlayer->getTargetPosition();
         BoxCollider* clientCollider = &player->getcollider();
@@ -647,7 +654,7 @@ void Game::handleMenuInput(float deltaTime) {
                 }
                 // Start single player game
                 state = GameState::RUNNING;
-                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                // objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
@@ -790,5 +797,24 @@ void Game::handleServerSelectionInput(float deltaTime) {
     if (inputDetected) {
         menuInputCooldown = MENU_INPUT_DELAY;
         serverSelectionOptionChanged = true;
+    }
+}
+
+void Game::updatePlayer(std::string playerId, const Vec2& position) {
+    // Find the player object by ID
+    if(player)
+    {
+        if(player->getObjID() != playerId)
+        {
+            std::cerr << "[Game] Player ID mismatch: expected " << player->getObjID() << ", received " << playerId << std::endl;
+            return; // Ignore update if IDs don't match
+        }
+        player->setposition(position);
+    }
+    else
+    {
+        // If player is not initialized, create a new one
+        player = new Player(position.x, position.y, playerId);
+        objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
     }
 }

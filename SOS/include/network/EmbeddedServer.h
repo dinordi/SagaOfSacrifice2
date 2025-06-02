@@ -48,6 +48,9 @@ public:
     // Add a player to the server
     void addPlayer(const std::string& playerId);
     
+    // Send a player to the client
+    void sendPlayerToClient(const std::string& playerId, Player* player);
+    
     // Remove a player from the server
     void removePlayer(const std::string& playerId);
     

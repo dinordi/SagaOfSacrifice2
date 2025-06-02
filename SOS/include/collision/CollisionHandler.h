@@ -13,7 +13,6 @@ private:
     void handleInteraction(Player* player);
     void handleInteraction(Enemy* enemy);
     void handleInteraction(Tile* platform);
-    void handleInteraction(RemotePlayer* remotePlayer);
 
 public:
     CollisionHandler(Object* initiator, const CollisionInfo& info);
@@ -21,7 +20,6 @@ public:
     void visit(Player* player) override;
     void visit(Enemy* enemy) override;
     void visit(Tile* platform) override;
-    void visit(RemotePlayer* remotePlayer) override;
 };
 
 #endif // COLLISION_HANDLER_H

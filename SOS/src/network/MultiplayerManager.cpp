@@ -11,101 +11,6 @@
 // External function declaration
 extern uint32_t get_ticks();
 
-// RemotePlayer implementation
-RemotePlayer::RemotePlayer(const std::string id) 
-    : Object(BoxCollider(0,0,128,128), ObjectType::PLAYER, id),
-      interpolationTime_(0.0f),
-      targetPosition_(Vec2(0, 0)),
-      targetVelocity_(Vec2(0, 0)) {
-    
-    std::filesystem::path base = std::filesystem::current_path();
-    std::string temp = base.string();
-    std::size_t pos = temp.find("SagaOfSacrifice2/");
-    if (pos != std::string::npos) {
-        temp = temp.substr(0, pos + std::string("SagaOfSacrifice2/").length());
-    }
-    auto basePath = std::filesystem::path(temp);
-    basePath /= "SOS/assets/spriteatlas";
-
-    addSpriteSheet(AnimationState::IDLE, basePath / "wolfman_idle.tpsheet");
-    // addAnimation(AnimationState::IDLE, 0, 1, getCurrentSpriteData()->columns, 250, true);        // Idle animation (1 frames)
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::NORTH, 0, 1);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::WEST, 2,3);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::SOUTH, 4,5);
-    animController.setDirectionRow(AnimationState::IDLE, FacingDirection::EAST, 6,7);
-
-    addSpriteSheet(AnimationState::WALKING, basePath / "wolfman_walk.tpsheet");
-    // addAnimation(AnimationState::WALKING, 0, 8, 9, 150, true);      // Walking animation (3 frames)
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::NORTH, 0,7);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::WEST, 8,15);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::SOUTH, 16, 23);
-    animController.setDirectionRow(AnimationState::WALKING, FacingDirection::EAST, 24, 31);
-
-    addSpriteSheet(AnimationState::ATTACKING, basePath / "wolfman_slash.tpsheet");
-
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::NORTH, 0,4);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::WEST, 5,9);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
-    animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
-
-    // Set initial state
-    setAnimationState(AnimationState::IDLE);
-}
-
-void RemotePlayer::update(float deltaTime) {
-    // Smooth interpolation between current position and target position
-    
-    // Update interpolation timer
-    interpolationTime_ += deltaTime;
-    float t = std::min(interpolationTime_ / NetworkConfig::Client::InterpolationPeriod, 1.0f);
-
-    Vec2 velocity_ = getvelocity();
-    Vec2* position_ = &getcollider().position;
-    
-    // Only interpolate if we have a different target position
-    if ((targetPosition_.x != position_->x || targetPosition_.y != position_->y) && t < 1.0f) {
-        // Linear interpolation
-        position_->x = position_->x + (targetPosition_.x - position_->x) * t;
-        position_->y = position_->y + (targetPosition_.y - position_->y) * t;
-        
-        // Update velocity based on target velocity
-        velocity_.x = velocity_.x + (targetVelocity_.x - velocity_.x) * t;
-        velocity_.y = velocity_.y + (targetVelocity_.y - velocity_.y) * t;
-    } else {
-        // We've reached the target or never started interpolating, apply velocity directly
-        position_->x += velocity_.x * deltaTime;
-        position_->y += velocity_.y * deltaTime;
-    }
-
-    // Update the object's position
-    setcollider(BoxCollider(*position_, getcollider().size));
-    setvelocity(velocity_);
-}
-
-void RemotePlayer::setOrientation(float orientation) {
-    orientation_ = orientation;
-}
-
-void RemotePlayer::setState(int state) {
-    state_ = state;
-}
-
-void RemotePlayer::setTargetPosition(const Vec2& position) {
-    targetPosition_ = position;
-}
-
-void RemotePlayer::setTargetVelocity(const Vec2& velocity) {
-    targetVelocity_ = velocity;
-}
-
-void RemotePlayer::resetInterpolation() {
-    interpolationTime_ = 0.0f;
-}
-
-void RemotePlayer::accept(CollisionVisitor& visitor) {
-    visitor.visit(this);
-}
-
 // MultiplayerManager implementation
 MultiplayerManager::MultiplayerManager()
     : localPlayer_(nullptr), 
@@ -238,7 +143,6 @@ void MultiplayerManager::update(float deltaTime) {
 
 void MultiplayerManager::setLocalPlayer(Player* player) {
     localPlayer_ = player;
-    // remotePlayers_[playerId_] = std::make_unique<RemotePlayer>(playerId_);
 }
 
 void MultiplayerManager::setPlayerInput(PlayerInput* input) {
@@ -402,7 +306,7 @@ bool MultiplayerManager::isConnected() const {
     return network_ && network_->isConnected();
 }
 
-const std::map<std::string, std::unique_ptr<RemotePlayer>>& MultiplayerManager::getRemotePlayers() const {
+const std::map<std::string, std::shared_ptr<Player>>& MultiplayerManager::getRemotePlayers() const {
     return remotePlayers_;
 }
 
@@ -449,6 +353,9 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
         case MessageType::CONNECT:
             handlePlayerConnectMessage(message);
             break;
+        case MessageType::PLAYER_ASSIGN:
+            handlePlayerAssignMessage(message);
+            break;
         case MessageType::DISCONNECT:
             handlePlayerDisconnectMessage(message);
             break;
@@ -473,7 +380,8 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
     // Find or create the remote player
     auto it = remotePlayers_.find(message.senderId);
     if (it == remotePlayers_.end()) {
-        auto newPlayer = std::make_unique<RemotePlayer>(message.senderId);
+        auto newPlayer = std::make_shared<Player>(0, 0, message.senderId);
+        newPlayer->setIsRemote(true); // Mark this as a remote player
         it = remotePlayers_.emplace(message.senderId, std::move(newPlayer)).first;
         std::cout << "[Client] New remote player added: " << message.senderId << std::endl;
     }
@@ -484,7 +392,7 @@ void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& messa
     }
 
     // Get pointer to remote player
-    RemotePlayer* remotePlayer = it->second.get();
+    Player* remotePlayer = it->second.get();
     
     // Deserialize the position data
     deserializePlayerState(message.data, remotePlayer);
@@ -844,7 +752,7 @@ std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::stri
     return nullptr; // Object not found
 }
 
-void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player) {
+void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data, Player* player) {
     if (data.size() < 18) { // 16 bytes for position/velocity + 2 bytes for state/dir
         std::cerr << "[Client] Invalid player state data size: " << data.size() << std::endl;
         return;
@@ -869,7 +777,14 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
     player->setAnimationState(animState);
     player->setTargetPosition(Vec2(posX, posY));
     player->setTargetVelocity(Vec2(velX, velY));
-    player->resetInterpolation();
+    
+    // Set the collider position
+    BoxCollider collider = player->getcollider();
+    collider.position = Vec2(posX, posY);
+    player->setcollider(collider);
+    
+    // Set the velocity directly (for initial position)
+    player->setvelocity(Vec2(velX, velY));
 }
 
 std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<uint8_t>& data, size_t& pos) {
@@ -916,10 +831,10 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             auto it = remotePlayers_.find(objectId);
             if (it == remotePlayers_.end()) {
                 // Create new remote player
-                auto newPlayer = std::make_unique<RemotePlayer>(objectId);
+                auto newPlayer = std::make_shared<Player>(posX, posY, objectId);
                 it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
             }
-            RemotePlayer* player = it->second.get();
+            Player* player = it->second.get();
             AnimationState state = static_cast<AnimationState>(data[pos++]);
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
 
@@ -1025,7 +940,9 @@ void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& messag
     // Create a new remote player
     auto it = remotePlayers_.find(message.senderId);
     if (it == remotePlayers_.end()) {
-        remotePlayers_[message.senderId] = std::make_unique<RemotePlayer>(message.senderId);
+        auto newPlayer = std::make_shared<Player>(0, 0, message.senderId);
+        newPlayer->setIsRemote(true); // Mark this as a remote player
+        remotePlayers_[message.senderId] = std::move(newPlayer);
         std::cout << "[Client] Created new remote player: " << message.senderId << std::endl;
     }
 }
@@ -1039,4 +956,32 @@ void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& mes
         remotePlayers_.erase(it);
         std::cout << "[Client] Removed remote player: " << message.senderId << std::endl;
     }
+}
+
+void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message) {
+    std::cout << "[Client] Received player assignment from server" << std::endl;
+    
+    // Check if this message is intended for us
+    if (message.targetId != playerId_) {
+        return;
+    }
+    
+    if (message.data.size() < sizeof(float) * 2) {
+        std::cerr << "[Client] Invalid player assignment data size: " << message.data.size() << std::endl;
+        return;
+    }
+    
+    // Extract position
+    float posX, posY;
+    std::memcpy(&posX, &message.data[0], sizeof(float));
+    std::memcpy(&posY, &message.data[sizeof(float)], sizeof(float));
+    
+    // Extract player ID (should match our ID)
+    std::string assignedId(reinterpret_cast<const char*>(&message.data[sizeof(float) * 2]));
+    
+    std::cout << "[Client] Assigned player with ID: " << assignedId << " at position (" << posX << ", " << posY << ")" << std::endl;
+    
+    // Create our player
+    auto* game = Game::getInstance();
+    game->updatePlayer(assignedId, Vec2(posX, posY));
 }

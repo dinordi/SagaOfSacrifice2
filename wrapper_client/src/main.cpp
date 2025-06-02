@@ -281,7 +281,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_APP_FAILURE;
     }
     //Load game
-    Game* game = new Game(input, playerId);
+    Game* game = new Game(input);
     
     // Initialize server configuration
     game->initializeServerConfig(basePathSOS.string());

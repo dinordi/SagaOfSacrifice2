@@ -38,6 +38,7 @@ std::shared_ptr<Player> PlayerManager::getPlayer(const std::string& playerId) {
 
 
 const std::unordered_map<std::string, std::shared_ptr<Player>>& PlayerManager::getAllPlayers() const {
+    std::cout << "[PlayerManager] Retrieving all players, size: " << players_.size() << std::endl;
     return players_;
 }
 

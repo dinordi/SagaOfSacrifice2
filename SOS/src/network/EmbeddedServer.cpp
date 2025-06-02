@@ -270,6 +270,119 @@ void EmbeddedServer::stop() {
     std::cout << "[EmbeddedServer] Stopped" << std::endl;
 }
 
+void EmbeddedServer::processMessage(const NetworkMessage& message) {
+    // Process based on message type
+    switch (message.type) {
+        case MessageType::CONNECT: {
+            std::cout << "[EmbeddedServer] Processing connect message from " << message.senderId << std::endl;
+            
+            // Find the socket using the temp clientId from the network endpoint
+            std::string tempClientId;
+            std::shared_ptr<boost::asio::ip::tcp::socket> clientSocket;
+            
+            {
+                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+                // Find the socket by checking all entries
+                for (auto& entry : clientSockets_) {
+                    try {
+                        if (entry.second && entry.second->is_open()) {
+                            std::string socketId = entry.second->remote_endpoint().address().to_string() + 
+                                                 ":" + std::to_string(entry.second->remote_endpoint().port());
+                            
+                            if (entry.first.find(socketId) != std::string::npos) {
+                                tempClientId = entry.first;
+                                clientSocket = entry.second;
+                                break;
+                            }
+                        }
+                    } catch (const std::exception& e) {
+                        std::cerr << "[EmbeddedServer] Error checking socket: " << e.what() << std::endl;
+                    }
+                }
+                
+                // If we found the socket with a temporary ID, update the mapping
+                if (!tempClientId.empty() && clientSocket && tempClientId != message.senderId) {
+                    std::cout << "[EmbeddedServer] Updating socket mapping from " << tempClientId 
+                              << " to " << message.senderId << std::endl;
+                    
+                    // Remove the old temp ID mapping
+                    clientSockets_.erase(tempClientId);
+                    
+                    // Add the new mapping with the proper player ID
+                    clientSockets_[message.senderId] = clientSocket;
+                }
+            }
+            
+            // Add the player to the game
+            addPlayer(message.senderId);
+            break;
+        }
+            
+        case MessageType::DISCONNECT:
+            std::cout << "[EmbeddedServer] Processing disconnect message from " << message.senderId << std::endl;
+            // Remove the player from the game
+            removePlayer(message.senderId);
+            // Remove the socket from the clientSockets_ map
+            {
+                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+                clientSockets_.erase(message.senderId);
+            }
+            break;
+            
+        case MessageType::PLAYER_INPUT:
+            processPlayerInput(message.senderId, message);
+            break;
+        case MessageType::PLAYER_POSITION:
+            processPlayerPosition(message.senderId, message);
+            break;
+            
+        case MessageType::CHAT:
+            // Just relay chat messages to all clients
+            if (messageCallback_) {
+                messageCallback_(message);
+            }
+            break;
+            
+        default:
+            std::cerr << "[EmbeddedServer] Unknown message type: " << static_cast<int>(message.type) << std::endl;
+            break;
+    }
+}
+
+
+void EmbeddedServer::removePlayer(const std::string& playerId) {
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    auto& pm = PlayerManager::getInstance();
+    auto playerIt = pm.getPlayer(playerId);
+    if (playerIt == nullptr) {
+        std::cerr << "[EmbeddedServer] Player " << playerId << " not found" << std::endl;
+        return;
+    }
+    
+    std::cout << "[EmbeddedServer] Removing player " << playerId << std::endl;
+    
+    // Remove player from game objects
+    //auto player = playerIt;
+    pm.removePlayer(playerId);
+    //auto objIt = std::find(gameObjects_.begin(), gameObjects_.end(), player);
+    // if (objIt != gameObjects_.end()) {
+    //     gameObjects_.erase(objIt);
+    // }
+    
+    // Remove from players map
+    //players_.erase(playerIt);
+    
+    // Send a player left message to all clients
+    NetworkMessage leaveMsg;
+    leaveMsg.type = MessageType::PLAYER_LEFT;
+    leaveMsg.senderId = playerId;
+    
+    if (messageCallback_) {
+        messageCallback_(leaveMsg);
+    }
+}
+
+
 void EmbeddedServer::startAccept() {
     // Create a new socket for the incoming connection
     auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context_);
@@ -616,6 +729,8 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
         levelManager_->addPlayerToCurrentLevel(playerId);
     }
     
+    // Send the player to the client
+    sendPlayerToClient(playerId, player.get());
     
     // Send a player joined message to all clients
     NetworkMessage joinMsg;
@@ -627,123 +742,41 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     }
 }
 
-void EmbeddedServer::removePlayer(const std::string& playerId) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
-    auto& pm = PlayerManager::getInstance();
-    auto playerIt = pm.getPlayer(playerId);
-    if (playerIt == nullptr) {
-        std::cerr << "[EmbeddedServer] Player " << playerId << " not found" << std::endl;
+void EmbeddedServer::sendPlayerToClient(const std::string& playerId, Player* player) {
+    if (!player) {
         return;
     }
     
-    std::cout << "[EmbeddedServer] Removing player " << playerId << std::endl;
+    // Create a message to send the player to the client
+    NetworkMessage playerMsg;
+    playerMsg.type = MessageType::PLAYER_ASSIGN;
+    playerMsg.senderId = "server";
+    playerMsg.targetId = playerId;
     
-    // Remove player from game objects
-    //auto player = playerIt;
-    pm.removePlayer(playerId);
-    //auto objIt = std::find(gameObjects_.begin(), gameObjects_.end(), player);
-    // if (objIt != gameObjects_.end()) {
-    //     gameObjects_.erase(objIt);
-    // }
+    // Serialize player data
+    // For now we'll use position and ID. In a more advanced implementation,
+    // you would serialize the complete player state.
+    Vec2 position = player->getcollider().position;
     
-    // Remove from players map
-    //players_.erase(playerIt);
+    // Pack position data
+    std::vector<uint8_t> data;
+    data.resize(sizeof(float) * 2 + playerId.length() + 1);
     
-    // Send a player left message to all clients
-    NetworkMessage leaveMsg;
-    leaveMsg.type = MessageType::PLAYER_LEFT;
-    leaveMsg.senderId = playerId;
+    // Position X and Y
+    float posX = position.x;
+    float posY = position.y;
+    std::memcpy(data.data(), &posX, sizeof(float));
+    std::memcpy(data.data() + sizeof(float), &posY, sizeof(float));
     
+    // Player ID
+    std::memcpy(data.data() + sizeof(float) * 2, playerId.c_str(), playerId.length() + 1);
+    
+    playerMsg.data = std::move(data);
+    
+    // Send the message
     if (messageCallback_) {
-        messageCallback_(leaveMsg);
+        messageCallback_(playerMsg);
     }
-}
-
-void EmbeddedServer::processMessage(const NetworkMessage& message) {
-    // Process based on message type
-    switch (message.type) {
-        case MessageType::CONNECT: {
-            std::cout << "[EmbeddedServer] Processing connect message from " << message.senderId << std::endl;
-            
-            // Find the socket using the temp clientId from the network endpoint
-            std::string tempClientId;
-            std::shared_ptr<boost::asio::ip::tcp::socket> clientSocket;
-            
-            {
-                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-                // Find the socket by checking all entries
-                for (auto& entry : clientSockets_) {
-                    try {
-                        if (entry.second && entry.second->is_open()) {
-                            std::string socketId = entry.second->remote_endpoint().address().to_string() + 
-                                                 ":" + std::to_string(entry.second->remote_endpoint().port());
-                            
-                            if (entry.first.find(socketId) != std::string::npos) {
-                                tempClientId = entry.first;
-                                clientSocket = entry.second;
-                                break;
-                            }
-                        }
-                    } catch (const std::exception& e) {
-                        std::cerr << "[EmbeddedServer] Error checking socket: " << e.what() << std::endl;
-                    }
-                }
-                
-                // If we found the socket with a temporary ID, update the mapping
-                if (!tempClientId.empty() && clientSocket && tempClientId != message.senderId) {
-                    std::cout << "[EmbeddedServer] Updating socket mapping from " << tempClientId 
-                              << " to " << message.senderId << std::endl;
-                    
-                    // Remove the old temp ID mapping
-                    clientSockets_.erase(tempClientId);
-                    
-                    // Add the new mapping with the proper player ID
-                    clientSockets_[message.senderId] = clientSocket;
-                }
-            }
-            
-            // Add the player to the game
-            addPlayer(message.senderId);
-            break;
-        }
-            
-        case MessageType::DISCONNECT:
-            std::cout << "[EmbeddedServer] Processing disconnect message from " << message.senderId << std::endl;
-            // Remove the player from the game
-            removePlayer(message.senderId);
-            // Remove the socket from the clientSockets_ map
-            {
-                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-                clientSockets_.erase(message.senderId);
-            }
-            break;
-            
-        case MessageType::PLAYER_INPUT:
-            processPlayerInput(message.senderId, message);
-            break;
-        case MessageType::PLAYER_POSITION:
-            processPlayerPosition(message.senderId, message);
-            break;
-        case MessageType::ENEMY_STATE_UPDATE:
-            // Process player actions, including enemy state updates
-            processEnemyState(message.senderId, message);
-            break;
-            
-        case MessageType::CHAT:
-            // Just relay chat messages to all clients
-            if (messageCallback_) {
-                messageCallback_(message);
-            }
-            break;
-            
-        default:
-            std::cerr << "[EmbeddedServer] Unknown message type: " << static_cast<int>(message.type) << std::endl;
-            break;
-    }
-}
-
-void EmbeddedServer::setMessageCallback(std::function<void(const NetworkMessage&)> callback) {
-    messageCallback_ = callback;
 }
 
 void EmbeddedServer::createInitialGameObjects() {
