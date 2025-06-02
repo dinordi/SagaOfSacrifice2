@@ -139,13 +139,18 @@ void Game::update(float deltaTime) {
             // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
+                    if(obj->getObjID() == player->getObjID())
+                    {
+                        continue;
+                    }
                     // Update the object's animation
                     // obj->updateAnimation(deltaTime * 1000);
                     // Update healthbar if it exists
                     if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
                         Entity* entity = static_cast<Entity*>(obj.get());
                         if (entity) {
-                            entity->update(deltaTime);
+                            entity->Entity::update(deltaTime);
+                            
                             entity->updateHealthbar();
                             Healthbar* healthbar = entity->getHealthbar();
                             if(healthbar) {
@@ -378,7 +383,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     }
     // Apply local input immediately for responsive gameplay
     player->handleInput(input, deltaTime);
-    // player->update(deltaTime);
+    player->update(deltaTime);
     
     // Handle player attack hit registration
     static bool wasAttacking = false;

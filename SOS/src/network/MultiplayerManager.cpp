@@ -905,9 +905,21 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                 if (obj->getObjID() == objectId) {
                     obj->setAnimationState(state);
                     obj->setDir(dir);
+
+                    //Get old position and velocity
+                    Vec2 oldPos = obj->getcollider().position;
+                    Vec2 oldVel = obj->getvelocity();
                     // Update existing minotaur
                     obj->setcollider(BoxCollider(Vec2(posX, posY), obj->getcollider().size));
                     obj->setvelocity(Vec2(velX, velY));
+                    std::cout << "[Client] Updated existing minotaur: " << objectId 
+                    << " at position (" << posX << ", " << posY
+                    << ") with velocity (" << velX << ", " << velY << ")"
+                    << " and state " << (state)
+                    << " and direction " << (dir)
+                    << " from old position (" << oldPos.x << ", " << oldPos.y
+                    << ") and old velocity (" << oldVel.x << ", " << oldVel.y << ")"
+                                << std::endl;
                     return obj; // Successfully updated
                 }
             }

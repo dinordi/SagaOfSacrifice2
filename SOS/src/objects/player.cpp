@@ -92,7 +92,7 @@ void Player::update(float deltaTime) {
         Vec2* pos = &pColl->position;
         Vec2 vel = getvelocity();
 
-        *pos += vel * deltaTime; // Update position based on velocity and delta time
+        // *pos += vel * deltaTime; // Update position based on velocity and delta time
 
         // Set direction based on velocity
         updateDirectionFromVelocity(vel);
@@ -126,14 +126,6 @@ void Player::updateDirectionFromVelocity(const Vec2& vel) {
         dir = FacingDirection::SOUTH;
     } else if (vel.y < 0) {
         dir = FacingDirection::NORTH;
-    } else if (vel.x < 0 && vel.y < 0) {
-        dir = FacingDirection::NORTH_WEST;
-    } else if (vel.x > 0 && vel.y < 0) {
-        dir = FacingDirection::NORTH_EAST;
-    } else if (vel.x < 0 && vel.y > 0) {
-        dir = FacingDirection::SOUTH_WEST;
-    } else if (vel.x > 0 && vel.y > 0) {
-        dir = FacingDirection::SOUTH_EAST;
     }
 }
 
