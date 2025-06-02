@@ -52,11 +52,11 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
             std::cerr << "Failed to load PNG file: " << png_file << std::endl;
             return -1;
         }
+        (*spriteAddressMap)[rect.count] = *phys_addr_out;
         if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
             std::cerr << "Failed to map sprite to memory: " << png_file << std::endl;
             return -2;
         }
-        (*spriteAddressMap)[rect.count] = *phys_addr_out;
     }
 
 
