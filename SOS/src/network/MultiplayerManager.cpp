@@ -571,12 +571,12 @@ void MultiplayerManager::processGameStatePart(const std::vector<uint8_t>& gameSt
     uint16_t packetObjectCount = (static_cast<uint16_t>(gameStateData[5]) << 8) | 
                                  static_cast<uint16_t>(gameStateData[6]);
     
-    std::cout << "[Client] Received game state part: " 
-              << (isFirstPacket ? "first " : "")
-              << (isLastPacket ? "last " : "")
-              << "packet with " << packetObjectCount 
-              << " objects (total: " << totalObjectCount 
-              << ", starting at index: " << startIndex << ")" << std::endl;
+    // std::cout << "[Client] Received game state part: " 
+    //           << (isFirstPacket ? "first " : "")
+    //           << (isLastPacket ? "last " : "")
+    //           << "packet with " << packetObjectCount 
+    //           << " objects (total: " << totalObjectCount 
+    //           << ", starting at index: " << startIndex << ")" << std::endl;
     
     // If this is the first packet, initialize our partial state storage
     if (isFirstPacket) {
@@ -789,7 +789,7 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
         std::cerr << "[Client] Not enough data to read object type and ID length" << std::endl;
         return nullptr;
     }
-    
+    static uint16_t objectCount = 0; // For debugging purposes
     // Read object type
     uint8_t objectType = data[pos++];
     
@@ -804,7 +804,16 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
     // Read object ID
     std::string objectId(data.begin() + pos, data.begin() + pos + idLength);
     pos += idLength;
-    
+    objectCount++;
+    if(objectCount > PRINTNUM)
+    {
+
+        // std::cout << "[Client] Deserializing " << objectCount << "'s "
+        // << "object: Type = " 
+        // << static_cast<int>(objectType) 
+        // << ", ID = " << objectId << std::endl;
+    }
+
     // Read position and velocity (4 floats, 16 bytes total)
     if (pos + 16 > data.size()) {
         std::cerr << "[Client] Not enough data to read position and velocity" << std::endl;
@@ -873,6 +882,12 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             uint8_t tilemapNameLength = data[pos++];
             std::string tilemapName(data.begin() + pos, data.begin() + pos + tilemapNameLength);
             pos += tilemapNameLength; // Move past the tilemap name
+
+            if(tilemapName.find("_26_68") != std::string::npos) {
+                std::cout << "[Client] Detected map_75_64 tilemap for platform: " << tilemapName << std::endl;
+                std::cout << "[Client] Object ID: " << objectId << std::endl;
+                std::cout << "[Client] Position: (" << posX << ", " << posY << ")" << std::endl;
+            }
 
             // Create new platform
             std::shared_ptr<Tile> platform = std::make_shared<Tile>(

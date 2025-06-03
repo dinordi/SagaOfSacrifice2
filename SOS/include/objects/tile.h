@@ -3,6 +3,8 @@
 #include "object.h"
 #include "sprite_data.h"
 
+#define PRINTNUM 7900
+
 class Tile : public Object {
 public:
     Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex,

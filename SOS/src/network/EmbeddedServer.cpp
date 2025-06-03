@@ -876,6 +876,7 @@ void EmbeddedServer::sendGameStateToClients() {
     
     // If we're just sending a heartbeat, no need to continue
     if (objectsToSend.empty()) {
+        std::cout << "[EmbeddedServer] No objects to send, sending minimal heartbeat" << std::endl;
         return;
     }
 
@@ -961,9 +962,19 @@ size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Ob
             case ObjectType::MINOTAUR:
                 objSize += 2; // Animation state and direction
                 break;
-            case ObjectType::TILE:
-                objSize += 5; // Tile index (1) + flags (4)
+            case ObjectType::TILE: {
+                std::shared_ptr<Tile> tile = std::static_pointer_cast<Tile>(obj);
+                objSize += 5; // Tile index (1) + flags (4) + tilemapname length + tilemapname
+                objSize += 1 + tile->gettileMapName().size();
+                if(objSize > 56)
+                {
+                    std::cout << "[EmbeddedServer] Tile size: " << objSize << std::endl;
+                    std::cout << "[EmbeddedServer] Tile name: " << tile->gettileMapName() << std::endl;
+                    std::cout << "object ID: " << obj->getObjID() << std::endl;
+                }
+                
                 break;
+            }
             default:
                 break;
         }
@@ -975,8 +986,14 @@ size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Ob
 }
 
 void EmbeddedServer::sendSplitGameState(const std::vector<std::shared_ptr<Object>>& objectsToSend, size_t estimatedSize) {
+    std::cout << "[EmbeddedServer] Game state too large, estimated size: " 
+              << estimatedSize << " bytes, splitting into packets" << std::endl;
+    std::cout << "[EmbeddedServer] Actual size: " 
+              << objectsToSend.size() << " objects to send" << std::endl;
     // We need to split the message
-    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size());
+    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size()) - 15;
+    std::cout << "[EmbeddedServer] Estimated objects per packet: " 
+              << objectsPerPacket << std::endl;
     size_t totalObjects = objectsToSend.size();
     size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
     
@@ -1007,8 +1024,14 @@ void EmbeddedServer::sendSingleGameStatePacket(const std::vector<std::shared_ptr
     stateMsg.data.push_back(uint8_t(count >> 8));
     stateMsg.data.push_back(uint8_t(count & 0xFF));
     
+    std::cout << "[EmbeddedServer] Sending game state update with " 
+              << count << " objects in a single packet" << std::endl;
+
     // Serialize each object
     for (auto& obj : objectsToSend) {
+        std::cout << "[EmbeddedServer] Serializing object of type " 
+                  << static_cast<int>(obj->type) << " with ID: " 
+                  << obj->getObjID() << std::endl;
         serializeObject(obj, stateMsg.data);
     }
     
@@ -1038,6 +1061,11 @@ void EmbeddedServer::sendSingleGameStatePacket(const std::vector<std::shared_ptr
     }
 }
 
+/**
+ * Sends a partial game state update to all clients.
+ * This is used when the game state is too large to fit in a single packet.
+ * Each part will contain metadata to indicate if it's the first or last part.
+ */
 void EmbeddedServer::sendPartialGameState(
     const std::vector<std::shared_ptr<Object>>& objects, 
     size_t startIndex, size_t count, 
@@ -1068,8 +1096,15 @@ void EmbeddedServer::sendPartialGameState(
     partMsg.data.push_back(uint8_t(count >> 8));
     partMsg.data.push_back(uint8_t(count & 0xFF));
     
+    std::cout << "Serializing " << count << " objects starting from index " 
+              << startIndex << " of total " << objects.size() << " objects." << std::endl;
     // Serialize each object in this range
     for (size_t i = startIndex; i < startIndex + count && i < objects.size(); i++) {
+        // if(i > PRINTNUM)
+        // {
+        //     std::cout << "[EmbeddedServer] Serializing object " << i << " of type " 
+        //             << static_cast<int>(objects[i]->type) << "and ID: " << objects[i]->getObjID() << std::endl;
+        // }
         serializeObject(objects[i], partMsg.data);
     }
     
@@ -1082,9 +1117,9 @@ void EmbeddedServer::sendPartialGameState(
         
         for (auto& [id, sock] : clientSockets_) {
             if (sock && sock->is_open()) {
-                std::cout << "[EmbeddedServer] Sending partial game state to client " 
-                          << id << " - Part: " << (isFirstPacket ? "First" : "Middle") 
-                          << ", Count: " << count << std::endl;
+                // std::cout << "[EmbeddedServer] Sending partial game state to client " 
+                //           << id << " - Part: " << (isFirstPacket ? "First" : "Middle") 
+                //           << ", Count: " << count << std::endl;
                 sendToClient(sock, partMsg);
             }
         }
@@ -1096,6 +1131,116 @@ void EmbeddedServer::sendPartialGameState(
     }
 }
 
+void EmbeddedServer::sendPartialGameStateToClient(
+    const std::vector<std::shared_ptr<Object>>& objects, 
+    size_t startIndex, size_t count, 
+    bool isFirstPacket, bool isLastPacket,
+    const std::string& playerId) {
+    
+    // Create a new message for this part
+    NetworkMessage partMsg;
+    partMsg.type = MessageType::GAME_STATE_PART;
+    partMsg.senderId = "server";
+    partMsg.targetId = playerId;
+    partMsg.data.clear();
+    
+    // Packet metadata (3 bytes):
+    // - First byte: isFirstPacket (0x01) | isLastPacket (0x02)
+    // - Second and third bytes: Total object count
+    uint8_t flags = (isFirstPacket ? 0x01 : 0x00) | (isLastPacket ? 0x02 : 0x00);
+    partMsg.data.push_back(flags);
+    
+    uint16_t totalCount = static_cast<uint16_t>(objects.size());
+    partMsg.data.push_back(uint8_t(totalCount >> 8));
+    partMsg.data.push_back(uint8_t(totalCount & 0xFF));
+    
+    // Packet specific data (4 bytes):
+    // - Start index (2 bytes)
+    partMsg.data.push_back(uint8_t(startIndex >> 8));
+    partMsg.data.push_back(uint8_t(startIndex & 0xFF));
+    
+    // - Object count in this packet (2 bytes)
+    partMsg.data.push_back(uint8_t(count >> 8));
+    partMsg.data.push_back(uint8_t(count & 0xFF));
+    
+    // Serialize each object in this range
+    for (size_t j = startIndex; j < startIndex + count && j < objects.size(); j++) {
+        serializeObject(objects[j], partMsg.data);
+    }
+    
+    // Send to the specific client
+    std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
+    auto it = clientSockets_.find(playerId);
+    if (it != clientSockets_.end() && it->second && it->second->is_open()) {
+        std::cout << "[EmbeddedServer] Sending partial game state to client " 
+                  << playerId << " - Part: " << (isFirstPacket ? "First" : (isLastPacket ? "Last" : "Middle")) 
+                  << ", byte size: " << partMsg.data.size()
+                  << ", objects: " << count << std::endl;
+        sendToClient(it->second, partMsg);
+    } else {
+        std::cerr << "[EmbeddedServer] Could not send partial game state to client: " << playerId << std::endl;
+    }
+}
+
+void EmbeddedServer::sendSplitGameStateToClient(
+    const std::vector<std::shared_ptr<Object>>& objectsToSend, 
+    size_t estimatedSize, 
+    const std::string& playerId) {
+    
+    // We need to split the message
+    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size()) - 15;
+    size_t totalObjects = objectsToSend.size();
+    size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
+    
+    std::cout << "[EmbeddedServer] Splitting game state for client " << playerId
+              << " into " << packetCount << " packets with ~" << objectsPerPacket 
+              << " objects per packet (total objects: " << totalObjects << ")" << std::endl;
+    
+    // Send packets specifically to this client
+    for (size_t i = 0; i < packetCount; i++) {
+        size_t startIndex = i * objectsPerPacket;
+        size_t count = std::min(objectsPerPacket, totalObjects - startIndex);
+        
+        bool isFirstPacket = (i == 0);
+        bool isLastPacket = (i == packetCount - 1);
+        
+        sendPartialGameStateToClient(objectsToSend, startIndex, count, isFirstPacket, isLastPacket, playerId);
+    }
+}
+
+void EmbeddedServer::sendSingleGameStatePacketToClient(
+    const std::vector<std::shared_ptr<Object>>& objectsToSend, 
+    const std::string& playerId) {
+    
+    // Message fits in a single packet
+    std::vector<uint8_t> data;
+    // First 2 bytes: object count
+    uint16_t objectCount = static_cast<uint16_t>(objectsToSend.size());
+    data.push_back(static_cast<uint8_t>(objectCount >> 8));
+    data.push_back(static_cast<uint8_t>(objectCount & 0xFF));
+    for (const auto& obj : objectsToSend) {
+        serializeObject(obj, data);
+    }
+    
+    NetworkMessage msg;
+    // Use GAME_STATE instead of GAME_STATE_DELTA for full game states to a single client
+    // This ensures the client knows to replace its entire state rather than apply a delta
+    msg.type = MessageType::GAME_STATE;
+    msg.senderId = "server";
+    msg.targetId = playerId;
+    msg.data = std::move(data);
+    
+    // Send to the specific client
+    std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
+    auto it = clientSockets_.find(playerId);
+    if (it != clientSockets_.end() && it->second && it->second->is_open()) {
+        std::cout << "[EmbeddedServer] Sending full game state to client " << playerId 
+                  << " in a single packet (" << objectsToSend.size() << " objects)" << std::endl;
+        sendToClient(it->second, msg);
+    } else {
+        std::cerr << "[EmbeddedServer] Could not send game state to client: " << playerId << std::endl;
+    }
+}
 
 void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data) {
 
@@ -1104,7 +1249,8 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
         std::cerr << "[EmbeddedServer] Error: Attempted to serialize a null object" << std::endl;
         return; // Return empty data if object is null
     }
-    
+    static uint16_t objectCount = 0;
+    size_t initialSize = data.size();
     // a) Type
     data.push_back(static_cast<uint8_t>(obj->type));
     
@@ -1112,7 +1258,21 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
     const std::string& id = obj->getObjID();
     data.push_back(static_cast<uint8_t>(id.size()));
     data.insert(data.end(), id.begin(), id.end());
-    
+
+    objectCount++;
+    if(objectCount > PRINTNUM)
+    {
+        // std::cout << "[EmbeddedServer] Serializing object ID: " << id  << ", with type: " << static_cast<int>(object->type) << std::endl;
+    }
+    bool print = false;
+    //if ID contains "Grass" do not print
+    if (id.find("_map_75_64") != std::string::npos)
+    {
+        std::cout << "[EmbeddedServer] Serializing object ID: " << id << std::endl;
+        std::cout << "With length: " << id.size() << std::endl;
+        print = true;
+    }
+
     // c) Position & Velocity
     auto writeFloat = [&](float v) {
         uint8_t* bytes = reinterpret_cast<uint8_t*>(&v);
@@ -1137,9 +1297,13 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             }
             // Tilemap name length
             const std::string& tileMapName = plat->gettileMapName();
+            if(print)
+                std::cout << "[EmbeddedServer] Serializing tilemap name: " << tileMapName << std::endl;
             data.push_back(static_cast<uint8_t>(tileMapName.size()));
             // Tilemap name content
             data.insert(data.end(), tileMapName.begin(), tileMapName.end());
+            size_t sizeAfterTile = data.size();
+            // std::cout << "[EmbeddedServer] Tile serialized, size: " << sizeAfterTile - initialSize << " bytes" << std::endl;
             break;
         }
         case ObjectType::MINOTAUR: {
@@ -1159,28 +1323,32 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
     }
 }
 
-void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) 
-{
-    // Get objects from the active level
-    Level* lvl = levelManager_->getCurrentLevel();
 
+/**
+ * Sends the full game state to a specific client.
+ * If the game state is too large, it will be split into multiple packets.
+ * Each packet will contain metadata to indicate if it's the first or last part.
+ */
+void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
+    return;
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    Level* lvl = levelManager_->getCurrentLevel();
     if (!lvl) {
-        return; // nothing to send if no level loaded
+        std::cerr << "[EmbeddedServer] No active level for full game state sync" << std::endl;
+        return;
     }
     auto objects = lvl->getObjects();
     
-    // If we're just sending a heartbeat, no need to continue
-    if (objects.empty()) {
-        return;
-    }
-
-    // Calculate total message size to determine if we need to split
+    // Calculate estimated size of the serialized data
     size_t estimatedSize = calculateMessageSize(objects);
+    
+    std::cout << "[EmbeddedServer] Sending full game state to client " << playerId 
+              << " with " << objects.size() << " objects" << std::endl;
     
     // Check if we need to split the message into multiple packets
     if (estimatedSize > MAX_GAMESTATE_PACKET_SIZE) {
-        sendSplitGameState(objects, estimatedSize);
+        sendSplitGameStateToClient(objects, estimatedSize, playerId);
     } else {
-        sendSingleGameStatePacket(objects);
+        sendSingleGameStatePacketToClient(objects, playerId);
     }
 }

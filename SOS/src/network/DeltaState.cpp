@@ -56,6 +56,7 @@ bool ObjectState::isDifferentFrom(const ObjectState& other) const {
         std::abs(position.y - other.position.y) > EPSILON ||
         std::abs(velocity.x - other.velocity.x) > EPSILON ||
         std::abs(velocity.y - other.velocity.y) > EPSILON) {
+            std::cout << "[DeltaState] Position or velocity changed for object ID: " << id << std::endl;
         return true;
     }
     
@@ -65,13 +66,21 @@ bool ObjectState::isDifferentFrom(const ObjectState& other) const {
         case static_cast<uint8_t>(ObjectType::MINOTAUR):
             if (player.animState != other.player.animState ||
                 player.direction != other.player.direction) {
+                std::cout << "[DeltaState] Animation state or direction changed for object ID: " << id << std::endl;
                 return true;
             }
             break;
             
         case static_cast<uint8_t>(ObjectType::TILE):
-            if (tile.tileIndex != other.tile.tileIndex ||
-                tile.flags != other.tile.flags) {
+            if (tile.tileIndex != other.tile.tileIndex) {
+                std::cout << "[DeltaState] Tile index changed for object ID: " << id << std::endl;
+                std::cout << "Old index: " << static_cast<int>(tile.tileIndex) 
+                          << ", New index: " << static_cast<int>(other.tile.tileIndex) << std::endl;
+                return true;
+            }
+            else if(tile.flags != other.tile.flags)
+            {
+                std::cout << "[DeltaState] Tile flags changed for object ID: " << id << std::endl;
                 return true;
             }
             break;

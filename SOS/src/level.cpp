@@ -87,39 +87,63 @@ bool Level::load(json& levelData)
             const std::string layerName = layer.value("name", "layer");
 
             for (int row = 0; row < height; ++row)
-            for (int col = 0; col < width;  ++col)
             {
-                const int index = row * width + col;
-                const int gid   = data[index];
-                if (gid == 0) continue;               // empty cell
+                for (int col = 0; col < width;  ++col)
+                {
+                    const int index = row * width + col;
+                    const int gid   = data[index];
+                    if (gid == 0) continue;               // empty cell
 
-                std::string tileset;
-                int spriteIndex = 0;                  // 0-based frame
-                if (!gidToTileset(gid, tileset, spriteIndex))
-                    continue;                         // orphan GID – skip
+                    std::string tileset;
+                    int spriteIndex = 0;                  // 0-based frame
+                    if (!gidToTileset(gid, tileset, spriteIndex))
+                        continue;                         // orphan GID – skip
 
-                const int worldX = col * tileWidth;
-                const int worldY = row * tileHeight;
+                    const int worldX = col * tileWidth;
+                    const int worldY = row * tileHeight;
+                    std::string objId =
+                        "Tile_" +
+                        std::to_string(row) + "_" +
+                        std::to_string(col);
 
-                const std::string objId =
-                    layerName + "_" +
-                    std::to_string(row) + "_" +
-                    std::to_string(col);
+                    // Check if ID already exists
+                    for (const auto& obj : levelObjects)
+                    {
+                        if (obj->getObjID() == objId)   //UGLY SOLUTION, ONLY WORKS FOR 2 LAYERS, NEED TO CHANGE TO COUNTER BASED ID INSTEAD OF STRINGS, SAME FOR TILEMAP
+                           {
+                            static int counter = 0;
+                            counter++;
+                            objId =
+                            "Tile" + std::to_string(counter) + "_" +
+                            std::to_string(row) + "_" +
+                            std::to_string(col);
+                        }
+                    }
 
-                auto tile = std::make_shared<Tile>(
-                    worldX, worldY, objId,
-                    tileset, spriteIndex,
-                    tileWidth, tileHeight, 0);
-
-                
-                    // tile->setFlag(Tile::BLOCKS_HORIZONTAL |
-                    //               Tile::BLOCKS_VERTICAL);
-                // std::cout << "[Level] Adding tile: "
-                //           << objId << " at (" << worldX
-                //           << ", " << worldY << ") with sprite index "
-                //           << spriteIndex << " from tileset "
-                //           << tileset << '\n';
-                 levelObjects.push_back(tile);
+                    auto tile = std::make_shared<Tile>(
+                        worldX, worldY, objId,
+                        tileset, spriteIndex,
+                        tileWidth, tileHeight, 0);
+                    if(tile->gettileIndex() == 13)
+                    {
+                        std::cout << "[Level] Adding tile: "
+                                << objId << " at (" << worldX
+                                << ", " << worldY << ") with sprite index "
+                                << spriteIndex << " from tileset "
+                                << tileset << '\n';
+                                //   throw std::runtime_error(
+                                //       "[Level] Tile with index 13 detected, this is a placeholder tile and should not be used in production.");
+                    }
+                    
+                        // tile->setFlag(Tile::BLOCKS_HORIZONTAL |
+                        //               Tile::BLOCKS_VERTICAL);
+                    // std::cout << "[Level] Adding tile: "
+                    //           << objId << " at (" << worldX
+                    //           << ", " << worldY << ") with sprite index "
+                    //           << spriteIndex << " from tileset "
+                    //           << tileset << '\n';
+                    levelObjects.push_back(tile);
+                }
             }
         }
     }
