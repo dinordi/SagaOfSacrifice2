@@ -17,6 +17,10 @@ Object::Object(BoxCollider collider, ObjectType type, std::string ID)
 
 // Animation methods implementation
 void Object::updateAnimation(float deltaTime) {
+    if(type == ObjectType::TILE) {
+        // Tiles do not have animations, return early
+        return;
+    }
     animController.update(static_cast<uint64_t>(deltaTime), dir);
 }
 

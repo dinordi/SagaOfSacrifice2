@@ -3,6 +3,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp> // Add proper json include
 #include <fstream>
+#include <climits>
 using json = nlohmann::json;
  
 Level::Level(const std::string& id, const std::string& name, CollisionManager* collisionManager)
