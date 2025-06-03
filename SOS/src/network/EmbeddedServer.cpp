@@ -872,6 +872,25 @@ void EmbeddedServer::sendGameStateToClients() {
     auto objects = lvl->getObjects();
 
     // Track which objects to send
+    std::vector<std::shared_ptr<Object>> objectsToSend = collectObjectsToSend(objects);
+    
+    // If we're just sending a heartbeat, no need to continue
+    if (objectsToSend.empty()) {
+        return;
+    }
+
+    // Calculate total message size to determine if we need to split
+    size_t estimatedSize = calculateMessageSize(objectsToSend);
+    
+    // Check if we need to split the message into multiple packets
+    if (estimatedSize > MAX_GAMESTATE_PACKET_SIZE) {
+        sendSplitGameState(objectsToSend, estimatedSize);
+    } else {
+        sendSingleGameStatePacket(objectsToSend);
+    }
+}
+
+std::vector<std::shared_ptr<Object>> EmbeddedServer::collectObjectsToSend(const std::vector<std::shared_ptr<Object>>& allObjects) {
     std::vector<std::shared_ptr<Object>> objectsToSend;
     
     {
@@ -880,49 +899,54 @@ void EmbeddedServer::sendGameStateToClients() {
         // Check if we have previous state to compare against
         if (deltaTracker_.getAllObjectIds().empty()) {
             // First time or after reset - send everything
-            objectsToSend = objects;
+            objectsToSend = allObjects;
             
             // Update the tracker with the current objects
-            deltaTracker_.updateState(objects);
+            deltaTracker_.updateState(allObjects);
         } else {
             // Get only changed objects for delta update
-            objectsToSend = deltaTracker_.getChangedObjects(objects);
+            objectsToSend = deltaTracker_.getChangedObjects(allObjects);
             
             // If there are no changes, still send a minimal update (heartbeat)
             if (objectsToSend.empty()) {
-                // std::cout << "[EmbeddedServer] No changes detected, sending minimal update" << std::endl;
-                // Send a minimal update with just packet type
-                NetworkMessage minimalMsg;
-                minimalMsg.type = MessageType::GAME_STATE_DELTA;
-                minimalMsg.senderId = "server";
-                minimalMsg.data = {0, 0}; // 0 objects
-                
-                // Send to all clients
-                std::lock_guard<std::mutex> lockSockets(clientSocketsMutex_);
-                if (clientSockets_.empty()) {
-                    return;
-                }
-                
-                for (auto& [id, sock] : clientSockets_) {
-                    if (sock && sock->is_open()) {
-                        sendToClient(sock, minimalMsg);
-                    }
-                }
-                
-                // Also notify through callback
-                if (messageCallback_) {
-                    messageCallback_(minimalMsg);
-                }
-                
-                return;
+                sendMinimalHeartbeat();
+                return objectsToSend; // Return empty vector
             }
             
             // Update the tracker with all current objects
-            deltaTracker_.updateState(objects);
+            deltaTracker_.updateState(allObjects);
         }
     }
+    
+    return objectsToSend;
+}
 
-    // Calculate total message size to determine if we need to split
+void EmbeddedServer::sendMinimalHeartbeat() {
+    // Send a minimal update with just packet type
+    NetworkMessage minimalMsg;
+    minimalMsg.type = MessageType::GAME_STATE_DELTA;
+    minimalMsg.senderId = "server";
+    minimalMsg.data = {0, 0}; // 0 objects
+    
+    // Send to all clients
+    std::lock_guard<std::mutex> lockSockets(clientSocketsMutex_);
+    if (clientSockets_.empty()) {
+        return;
+    }
+    
+    for (auto& [id, sock] : clientSockets_) {
+        if (sock && sock->is_open()) {
+            sendToClient(sock, minimalMsg);
+        }
+    }
+    
+    // Also notify through callback
+    if (messageCallback_) {
+        messageCallback_(minimalMsg);
+    }
+}
+
+size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Object>>& objectsToSend) {
     size_t estimatedSize = 2; // Object count (2 bytes)
     
     for (const auto& obj : objectsToSend) {
@@ -947,70 +971,72 @@ void EmbeddedServer::sendGameStateToClients() {
         estimatedSize += objSize;
     }
     
-    // Check if we need to split the message into multiple packets
-    if (estimatedSize > MAX_GAMESTATE_PACKET_SIZE) {
-        // We need to split the message
-        size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size());
-        size_t totalObjects = objectsToSend.size();
-        size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
+    return estimatedSize;
+}
+
+void EmbeddedServer::sendSplitGameState(const std::vector<std::shared_ptr<Object>>& objectsToSend, size_t estimatedSize) {
+    // We need to split the message
+    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size());
+    size_t totalObjects = objectsToSend.size();
+    size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
+    
+    std::cout << "[EmbeddedServer] Splitting game state update into " << packetCount 
+              << " packets with ~" << objectsPerPacket << " objects per packet" << std::endl;
+    
+    // Send packets
+    for (size_t i = 0; i < packetCount; i++) {
+        size_t startIndex = i * objectsPerPacket;
+        size_t count = std::min(objectsPerPacket, totalObjects - startIndex);
         
-        std::cout << "[EmbeddedServer] Splitting game state update into " << packetCount 
-                  << " packets with ~" << objectsPerPacket << " objects per packet" << std::endl;
+        bool isFirstPacket = (i == 0);
+        bool isLastPacket = (i == packetCount - 1);
         
-        // Send packets
-        for (size_t i = 0; i < packetCount; i++) {
-            size_t startIndex = i * objectsPerPacket;
-            size_t count = std::min(objectsPerPacket, totalObjects - startIndex);
-            
-            bool isFirstPacket = (i == 0);
-            bool isLastPacket = (i == packetCount - 1);
-            
-            sendPartialGameState(objectsToSend, startIndex, count, isFirstPacket, isLastPacket);
-        }
-    } else {
-        // Message fits in a single packet - use delta state message
-        NetworkMessage stateMsg;
-        stateMsg.type = MessageType::GAME_STATE_DELTA;
-        stateMsg.senderId = "server";
-        stateMsg.data.clear();
-        
-        // Serialize object count (2 bytes)
-        uint16_t count = static_cast<uint16_t>(objectsToSend.size());
-        stateMsg.data.push_back(uint8_t(count >> 8));
-        stateMsg.data.push_back(uint8_t(count & 0xFF));
-        
-        // Serialize each object
-        for (auto& obj : objectsToSend) {
-            serializeObject(obj, stateMsg.data);
-        }
-        
-        // Broadcast to all clients
-        {
-            std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-            if (clientSockets_.empty()) {
-                static auto last = std::chrono::steady_clock::now();
-                auto now = std::chrono::steady_clock::now();
-                if (now - last > std::chrono::seconds(5)) {
-                    last = now;
-                    std::cout << "[EmbeddedServer] No clients connected, skipping update\n";
-                }
-                return;
-            }
-            
-            for (auto& [id, sock] : clientSockets_) {
-                if (sock && sock->is_open()) {
-                    sendToClient(sock, stateMsg);
-                }
-            }
-        }
-        
-        // Fire callback if needed
-        if (messageCallback_) {
-            messageCallback_(stateMsg);
-        }
+        sendPartialGameState(objectsToSend, startIndex, count, isFirstPacket, isLastPacket);
     }
 }
 
+void EmbeddedServer::sendSingleGameStatePacket(const std::vector<std::shared_ptr<Object>>& objectsToSend) {
+    // Message fits in a single packet - use delta state message
+    NetworkMessage stateMsg;
+    stateMsg.type = MessageType::GAME_STATE_DELTA;
+    stateMsg.senderId = "server";
+    stateMsg.data.clear();
+    
+    // Serialize object count (2 bytes)
+    uint16_t count = static_cast<uint16_t>(objectsToSend.size());
+    stateMsg.data.push_back(uint8_t(count >> 8));
+    stateMsg.data.push_back(uint8_t(count & 0xFF));
+    
+    // Serialize each object
+    for (auto& obj : objectsToSend) {
+        serializeObject(obj, stateMsg.data);
+    }
+    
+    // Broadcast to all clients
+    {
+        std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+        if (clientSockets_.empty()) {
+            static auto last = std::chrono::steady_clock::now();
+            auto now = std::chrono::steady_clock::now();
+            if (now - last > std::chrono::seconds(5)) {
+                last = now;
+                std::cout << "[EmbeddedServer] No clients connected, skipping update\n";
+            }
+            return;
+        }
+        
+        for (auto& [id, sock] : clientSockets_) {
+            if (sock && sock->is_open()) {
+                sendToClient(sock, stateMsg);
+            }
+        }
+    }
+    
+    // Fire callback if needed
+    if (messageCallback_) {
+        messageCallback_(stateMsg);
+    }
+}
 
 void EmbeddedServer::sendPartialGameState(
     const std::vector<std::shared_ptr<Object>>& objects, 
@@ -1056,6 +1082,9 @@ void EmbeddedServer::sendPartialGameState(
         
         for (auto& [id, sock] : clientSockets_) {
             if (sock && sock->is_open()) {
+                std::cout << "[EmbeddedServer] Sending partial game state to client " 
+                          << id << " - Part: " << (isFirstPacket ? "First" : "Middle") 
+                          << ", Count: " << count << std::endl;
                 sendToClient(sock, partMsg);
             }
         }
@@ -1066,6 +1095,7 @@ void EmbeddedServer::sendPartialGameState(
         messageCallback_(partMsg);
     }
 }
+
 
 void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data) {
 
@@ -1129,34 +1159,28 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
     }
 }
 
-void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
-    std::lock_guard<std::mutex> lock(gameStateMutex_);
+void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) 
+{
+    // Get objects from the active level
     Level* lvl = levelManager_->getCurrentLevel();
+
     if (!lvl) {
-        std::cerr << "[EmbeddedServer] No active level for full game state sync" << std::endl;
-        return;
+        return; // nothing to send if no level loaded
     }
     auto objects = lvl->getObjects();
-    // Serialize all objects into a single message (could split if too large)
-    std::vector<uint8_t> data;
-    // First 2 bytes: object count
-    uint16_t objectCount = static_cast<uint16_t>(objects.size());
-    data.push_back(static_cast<uint8_t>(objectCount >> 8));
-    data.push_back(static_cast<uint8_t>(objectCount & 0xFF));
-    for (const auto& obj : objects) {
-        serializeObject(obj, data);
+    
+    // If we're just sending a heartbeat, no need to continue
+    if (objects.empty()) {
+        return;
     }
-    NetworkMessage msg;
-    msg.type = MessageType::GAME_STATE;
-    msg.senderId = "server";
-    msg.targetId = playerId;
-    msg.data = std::move(data);
-    // Send to the specific client
-    std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
-    auto it = clientSockets_.find(playerId);
-    if (it != clientSockets_.end() && it->second && it->second->is_open()) {
-        sendToClient(it->second, msg);
+
+    // Calculate total message size to determine if we need to split
+    size_t estimatedSize = calculateMessageSize(objects);
+    
+    // Check if we need to split the message into multiple packets
+    if (estimatedSize > MAX_GAMESTATE_PACKET_SIZE) {
+        sendSplitGameState(objects, estimatedSize);
     } else {
-        std::cerr << "[EmbeddedServer] Could not send full game state to client: " << playerId << std::endl;
+        sendSingleGameStatePacket(objects);
     }
 }

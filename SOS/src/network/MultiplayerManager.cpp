@@ -922,7 +922,7 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             return newMinotaur;
         }
         default:
-            std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
+            // std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
             return nullptr;
     }
     

@@ -84,6 +84,13 @@ private:
                               size_t startIndex, size_t count, 
                               bool isFirstPacket, bool isLastPacket);
     
+    // Helper methods for game state updates
+    std::vector<std::shared_ptr<Object>> collectObjectsToSend(const std::vector<std::shared_ptr<Object>>& allObjects);
+    size_t calculateMessageSize(const std::vector<std::shared_ptr<Object>>& objectsToSend);
+    void sendSplitGameState(const std::vector<std::shared_ptr<Object>>& objectsToSend, size_t estimatedSize);
+    void sendSingleGameStatePacket(const std::vector<std::shared_ptr<Object>>& objectsToSend);
+    void sendMinimalHeartbeat();
+    
     // Process player input message
     void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
     void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
