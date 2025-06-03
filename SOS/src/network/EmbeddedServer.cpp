@@ -1351,4 +1351,6 @@ void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
     } else {
         sendSingleGameStatePacketToClient(objects, playerId);
     }
+
+    deltaTracker_.updateState(objects);
 }

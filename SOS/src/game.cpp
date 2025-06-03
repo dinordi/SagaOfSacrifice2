@@ -136,6 +136,10 @@ void Game::update(float deltaTime) {
                 objects.end()
             );
             
+            if(!player)
+            {
+                break;
+            }
             // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
