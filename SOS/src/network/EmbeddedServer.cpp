@@ -1330,7 +1330,7 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
  * Each packet will contain metadata to indicate if it's the first or last part.
  */
 void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
-    return;
+
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     Level* lvl = levelManager_->getCurrentLevel();
     if (!lvl) {
