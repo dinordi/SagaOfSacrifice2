@@ -23,12 +23,12 @@ int stop_thread = 0;
 
 
 // Function to write a single sprite's information to the frame_info BRAM
-void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
+void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id) {
     // Construct the 64-bit value (34 bits effective, but stored in uint64_t)
     // X: bits 33-22 (12 bits), Y: bits 21-11 (11 bits), Sprite ID: bits 10-0 (11 bits)
-    uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
+    uint64_t base_value = ((uint64_t)x << 23) | ((uint64_t)y << 11) | sprite_id;
     frame_info_arr[index] = base_value;
-    printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", index, x, y, sprite_id);
+    printf("Frame info [%d]: X=%d, Y=%d, ID=%u\n", index, x, y, sprite_id);
     printf("  Value (hex): 0x%016llX\n", base_value);
 }
 
@@ -36,8 +36,8 @@ void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, ui
 // This function manages its own state for x, y, and direction.
 void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
                                       uint32_t sprite_id_to_use) {
-    static uint16_t s_sprite_x;
-    static uint16_t s_sprite_y;
+    static int16_t s_sprite_x;
+    static int16_t s_sprite_y;
     static int s_direction;
     static int s_initialized = 0;
 
@@ -53,18 +53,18 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
 
     // Update X position for next frame
     if (s_direction == 1) {
-        if (s_sprite_x == 2050) {
+        if (s_sprite_x >= 2050) {
             s_direction = -1;
-            s_sprite_x--;
+            s_sprite_x -= 2;
         } else {
-            s_sprite_x++;
+            s_sprite_x += 2;
         }
     } else { // s_direction == -1
-        if (s_sprite_x == 120) {
+        if (s_sprite_x <= -100) {
             s_direction = 1;
-            s_sprite_x++;
+            s_sprite_x += 2;
         } else {
-            s_sprite_x--;
+            s_sprite_x -= 2;
         }
     }
 }

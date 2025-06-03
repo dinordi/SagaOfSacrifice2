@@ -48,7 +48,11 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
     for(const auto& pair : spData->getSpriteRects()) {
         const SpriteRect& rect = pair.second;
         sprite_size = rect.w * rect.h * sizeof(uint32_t);
-        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, rect.w, rect.h, rect.x, rect.y) != 0) {
+        // if (spriteLoader.load_png_spritesheet(png_file, sprite_data, rect.w, rect.h, rect.x, rect.y) != 0) {
+        //     std::cerr << "Failed to load PNG file: " << png_file << std::endl;
+        //     return -1;
+        // }
+        if(spriteLoader.load_png(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
             std::cerr << "Failed to load PNG file: " << png_file << std::endl;
             return -1;
         }
@@ -254,23 +258,23 @@ void Renderer::init_frame_infos() {
 }
 
 void Renderer::distribute_sprites_over_pipelines() {
-    const uint16_t X_START = 133;
+    const uint16_t X_START = 130;
     const uint16_t Y_START = 50;
 
     // Place just one sprite in the first pipeline at X_START, Y_START
     int pipeline = 0; // Use the first pipeline
     static int sprite_id = 0; // Use sprite ID 1
 
-    static int counter = 0;
-    counter++;
-    if (counter == 20)
-    {
-        sprite_id++;
-        counter = 0;
-    }
-    if (sprite_id > 10) {
-        sprite_id = 0; // Reset to a lower sprite ID
-    }
+    // static int counter = 0;
+    // counter++;
+    // if (counter == 20)
+    // {
+    //     sprite_id++;
+    //     counter = 0;
+    // }
+    // if (sprite_id > 10) {
+    //     sprite_id = 0; // Reset to a lower sprite ID
+    // }
     
     // Write the single sprite to the frame info
     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
