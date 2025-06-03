@@ -41,7 +41,7 @@ Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(
     basePath /= "SOS/assets/spriteatlas";
     basePath_ = basePath; // Store base path for later use
     std::cout << "Got base path for game" << std::endl;
-
+    player = nullptr; // Initialize player to null
     // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
@@ -194,12 +194,12 @@ void Game::update(float deltaTime) {
         // In the server-authoritative model:
         // 1. We still apply local input immediately for responsive feel
         // 2. But the server will correct our position if needed
-        predictLocalPlayerMovement(deltaTime);
-
-        reconcileWithServerState(deltaTime);
-        
         if(player)
         {
+            predictLocalPlayerMovement(deltaTime);
+    
+            reconcileWithServerState(deltaTime);
+            
             // Update remote players based on server data
             updateRemotePlayers(multiplayerManager->getRemotePlayers());
         }

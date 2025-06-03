@@ -876,7 +876,7 @@ void EmbeddedServer::sendGameStateToClients() {
     
     // If we're just sending a heartbeat, no need to continue
     if (objectsToSend.empty()) {
-        std::cout << "[EmbeddedServer] No objects to send, sending minimal heartbeat" << std::endl;
+        // std::cout << "[EmbeddedServer] No objects to send, sending minimal heartbeat" << std::endl;
         return;
     }
 
@@ -1024,14 +1024,14 @@ void EmbeddedServer::sendSingleGameStatePacket(const std::vector<std::shared_ptr
     stateMsg.data.push_back(uint8_t(count >> 8));
     stateMsg.data.push_back(uint8_t(count & 0xFF));
     
-    std::cout << "[EmbeddedServer] Sending game state update with " 
-              << count << " objects in a single packet" << std::endl;
+    // std::cout << "[EmbeddedServer] Sending game state update with " 
+    //           << count << " objects in a single packet" << std::endl;
 
     // Serialize each object
     for (auto& obj : objectsToSend) {
-        std::cout << "[EmbeddedServer] Serializing object of type " 
-                  << static_cast<int>(obj->type) << " with ID: " 
-                  << obj->getObjID() << std::endl;
+        // std::cout << "[EmbeddedServer] Serializing object of type " 
+        //           << static_cast<int>(obj->type) << " with ID: " 
+        //           << obj->getObjID() << std::endl;
         serializeObject(obj, stateMsg.data);
     }
     
