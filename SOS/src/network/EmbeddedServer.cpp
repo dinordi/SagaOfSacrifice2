@@ -1205,6 +1205,10 @@ void EmbeddedServer::sendSplitGameStateToClient(
         bool isLastPacket = (i == packetCount - 1);
         
         sendPartialGameStateToClient(objectsToSend, startIndex, count, isFirstPacket, isLastPacket, playerId);
+        if(!isLastPacket)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Small delay to avoid overwhelming the client
+        }
     }
 }
 
@@ -1297,7 +1301,7 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             }
             // Tilemap name length
             const std::string& tileMapName = plat->gettileMapName();
-            if(print)
+            if(print || true)
                 std::cout << "[EmbeddedServer] Serializing tilemap name: " << tileMapName << std::endl;
             data.push_back(static_cast<uint8_t>(tileMapName.size()));
             // Tilemap name content
