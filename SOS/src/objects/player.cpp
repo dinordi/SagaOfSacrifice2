@@ -54,7 +54,7 @@ void Player::setupAnimations() {
 }
 
 void Player::update(float deltaTime) {
-    if (isRemote) {
+    if (isRemote_) {
         // Remote player update logic - similar to RemotePlayer
         
         // Update the animation controller
@@ -63,7 +63,7 @@ void Player::update(float deltaTime) {
         // Set direction based on velocity
         Vec2 vel = getvelocity();
         updateDirectionFromVelocity(vel);
-        
+
     } else {
         // Local player update logic
         BoxCollider* pColl = &getcollider();

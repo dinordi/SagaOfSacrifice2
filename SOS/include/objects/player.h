@@ -39,10 +39,6 @@ public:
     const Vec2& getTargetVelocity() const { return targetVelocity; }
     float getInterpolationTime() const { return interpolationTime; }
     
-    // Set if player is controlled locally or remotely
-    void setIsRemote(bool isRemote) { this->isRemote = isRemote; }
-    bool getIsRemote() const { return isRemote; }
-    
 private:
     PlayerInput* input;
     // Define player animation states
@@ -61,7 +57,6 @@ private:
     float attackRange = 100.0f;
     
     // Remote player state
-    bool isRemote = false;
     float orientation = 0.0f;
     int state = 0;
     
