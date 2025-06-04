@@ -18,8 +18,6 @@ Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam)
     init_frame_infos();
     loadAllSprites(basePath);
     init_lookup_tables();
-
-    initUIO();
 }
 
 int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out) {
