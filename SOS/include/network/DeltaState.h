@@ -21,6 +21,7 @@ struct ObjectState {
         struct {
             uint8_t animState;
             uint8_t direction;
+            int16_t health; // For player and minotaur
         } player;
         
         struct {

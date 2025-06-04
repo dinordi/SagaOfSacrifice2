@@ -230,7 +230,7 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
         std::cerr << "[Client] Invalid enemy state update message received" << std::endl;
         return;
     }
-    // Format same as server: [1 byte action type][enemy ID string][1 byte isDead][4 bytes health]
+    // Format same as server: [enemy ID len][enemy ID string][1 byte isDead][2 bytes health]
     size_t pos = 0;
 
     // Read enemy ID length
@@ -245,15 +245,12 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     }
     bool isDead = message.data[pos++] != 0;
     // Read health (4 bytes)
-    if (pos + 4 > message.data.size()) {
+    if (pos + 2 > message.data.size()) {
         std::cerr << "[Client] Missing health value in enemy state update" << std::endl;
         return;
     }
-    int health = (message.data[pos] << 24) |
-                 (message.data[pos + 1] << 16) |
-                 (message.data[pos + 2] << 8) |
-                  message.data[pos + 3];
-    pos += 4;
+    int16_t health = (message.data[pos] << 8) | message.data[pos + 1];
+    pos += 2;
 
     // Find the remote player or enemy object
     Game * game = Game::getInstance();
@@ -270,6 +267,7 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
                 case ObjectType::MINOTAUR:
                     // Cast to Enemy type
                     enemyObject = std::static_pointer_cast<Minotaur>(obj);
+                    enemyObject->die();
                     break;
                 default:
                     std::cerr << "[Client] Object with ID " << enemyId << " is not recognized as an enemy type" << std::endl;
@@ -899,6 +897,9 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
             int16_t health = (data[pos] << 8) | data[pos + 1];
             pos += 2; // Move past health
+            std::cout << "[Client] Deserializing Minotaur with ID: " << objectId
+            << ", Health: " << health
+            << std::endl;
             // Find or create a minotaur object
             Game* game = Game::getInstance();
             if (!game) {

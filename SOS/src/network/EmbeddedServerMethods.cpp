@@ -124,7 +124,7 @@ void EmbeddedServer::processPlayerPosition(const std::string& playerId, const Ne
         std::cerr << "[EmbeddedServer] Player not found for position update: " << playerId << std::endl;
         return;
     }
-    
+
     // Need at least 16 bytes for position/velocity
     if (message.data.size() < 16) {
         std::cerr << "[EmbeddedServer] Invalid player position data size: " << message.data.size() << std::endl;
@@ -195,21 +195,58 @@ void EmbeddedServer::processEnemyState(
         std::cerr << "[EmbeddedServer] No active level for enemy state update" << std::endl;
         return;
     }
+
+    std::cout << "[EmbeddedServer] Processing enemy state update for " << enemyId 
+              << ": isDead=" << isDead << ", health=" << health << std::endl;
     
     // Find the enemy by ID
     const auto& objects = level->getObjects();
     for (auto& obj : objects) {
         if (obj && obj->type == ObjectType::MINOTAUR && obj->getObjID() == enemyId) {
             Enemy* enemy = static_cast<Enemy*>(obj.get());
-            
+
             // Update the enemy state
             if (isDead) {
                 enemy->setHealth(0);  // Ensure health is set to 0 when dead
+                // broadcast enemy death to clients
+                {
+
+
+                }
             } else {
+                
                 // Update health if not dead
                 enemy->setHealth(health);
             }
             break;
+        }
+    }
+}
+
+void EmbeddedServer::sendEnemyStateToClients(const std::string& enemyId, bool isDead, int16_t health)
+{
+    NetworkMessage enemyMsg;
+    enemyMsg.type = MessageType::ENEMY_STATE_UPDATE;
+
+
+    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId.size()));
+    enemyMsg.data.insert(enemyMsg.data.end(), enemyId.begin(), enemyId.end());
+
+    enemyMsg.data.push_back(static_cast<uint8_t>(isDead == true ? 1 : 0));
+    enemyMsg.data.push_back(health >> 8);
+    enemyMsg.data.push_back(health & 0xFF);
+    
+    // Broadcast to all clients
+    {
+        std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+        if (clientSockets_.empty()) {
+            return;
+        }
+        
+        for (auto& [id, sock] : clientSockets_) {
+            if (sock && sock->is_open()) {
+                sendToClient(sock, enemyMsg);
+            }
         }
     }
 }

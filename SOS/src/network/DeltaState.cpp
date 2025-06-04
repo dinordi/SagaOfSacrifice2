@@ -21,12 +21,14 @@ ObjectState ObjectState::fromObject(const std::shared_ptr<Object>& obj) {
             Player* player = static_cast<Player*>(obj.get());
             state.player.animState = static_cast<uint8_t>(player->getAnimationState());
             state.player.direction = static_cast<uint8_t>(player->getDir());
+            state.player.health = player->getHealth();
             break;
         }
         case ObjectType::MINOTAUR: {
             Minotaur* minotaur = static_cast<Minotaur*>(obj.get());
             state.player.animState = static_cast<uint8_t>(minotaur->getAnimationState());
             state.player.direction = static_cast<uint8_t>(minotaur->getDir());
+            state.player.health = minotaur->getHealth();
             break;
         }
         case ObjectType::TILE: {
@@ -66,6 +68,9 @@ bool ObjectState::isDifferentFrom(const ObjectState& other) const {
         case static_cast<uint8_t>(ObjectType::MINOTAUR):
             if (player.animState != other.player.animState ||
                 player.direction != other.player.direction) {
+                return true;
+            }
+            if(player.health != other.player.health) {
                 return true;
             }
             break;

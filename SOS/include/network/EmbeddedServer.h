@@ -104,6 +104,9 @@ private:
     void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
     void processEnemyState(const std::string& playerId, const NetworkMessage& message);
     
+    // Send info messages
+    void sendEnemyStateToClients(const std::string& enemyId, bool isDead, int16_t health);
+
     // Server configuration
     int port_;
     std::atomic<bool> running_;
