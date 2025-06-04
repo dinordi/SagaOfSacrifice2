@@ -973,7 +973,7 @@ size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Ob
         switch (obj->type) {
             case ObjectType::PLAYER:
             case ObjectType::MINOTAUR:
-                objSize += 2; // Animation state and direction
+                objSize += 4; // Animation state and direction, health
                 break;
             case ObjectType::TILE: {
                 std::shared_ptr<Tile> tile = std::static_pointer_cast<Tile>(obj);
@@ -1311,12 +1311,18 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             auto* mino = static_cast<Minotaur*>(obj);
             data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
             data.push_back(static_cast<uint8_t>(mino->getDir()));
+            int16_t health = mino->getHealth();
+            data.push_back(static_cast<uint8_t>(health >> 8));
+            data.push_back(static_cast<uint8_t>(health & 0xFF));
             break;
         }
         case ObjectType::PLAYER: {
             auto* player = static_cast<Player*>(obj);
             data.push_back(static_cast<uint8_t>(player->getAnimationState()));
             data.push_back(static_cast<uint8_t>(player->getDir()));
+            int16_t health = player->getHealth();
+            data.push_back(static_cast<uint8_t>(health >> 8));
+            data.push_back(static_cast<uint8_t>(health & 0xFF));
             break;
         }
         default:

@@ -14,6 +14,13 @@ Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Obje
 
 }
 
+Entity::~Entity() {
+    if (healthbar_) {
+        delete healthbar_;
+        healthbar_ = nullptr;
+    }
+}
+
 void Entity::update(float deltaTime) {
     // Update animation state
     updateAnimation(deltaTime*1000);
@@ -39,7 +46,7 @@ void Entity::update(float deltaTime) {
     }
 }
 
-Healthbar::Healthbar(float x, float y, std::string tpsheet, uint16_t maxHealth, bool enemy)
+Healthbar::Healthbar(float x, float y, std::string tpsheet, int16_t maxHealth, bool enemy)
     : Actor(Vec2(x,y), tpsheet, 0, ActorType::HEALTHBAR), enemy_(enemy)
 {
     std::cout << "Healthbar created at position: (" << x << ", " << y << ") with max health: " << maxHealth << ", tpsheet: " << tpsheet << std::endl;
@@ -60,7 +67,7 @@ const SpriteData* Healthbar::getCurrentSpriteData() const
     return SpriteData::getSharedInstance(spriteSheetPath_);
 }
 
-void Healthbar::setHealth(int health)
+void Healthbar::setHealth(int16_t health)
 {
     // Healthbar has 5 parts, each part is 20% of the health
     currentHealth_ = health;

@@ -6,11 +6,11 @@
 class Healthbar : public Actor
 {
 public:
-    Healthbar(float x, float y, std::string tpsheet, uint16_t maxHealth, bool enemy = true);
+    Healthbar(float x, float y, std::string tpsheet, int16_t maxHealth, bool enemy = true);
     void addSpriteSheet(std::string tpsheet);
     const SpriteData* getCurrentSpriteData() const;
     
-    void setHealth(int health);
+    void setHealth(int16_t health);
     std::vector<SpriteRect> getSpriteRects() const { return spriteRects_; }
     std::vector<float> getOffsets(int count) const;
 private:
@@ -26,6 +26,7 @@ class Entity : public Object
 {
 public:
     Entity( BoxCollider collider, std::string objID, ObjectType type);
+    ~Entity();
     
     bool isDead() const { return isDead_; }
     
@@ -33,6 +34,8 @@ public:
 
     void updateHealthbar();
     Healthbar* getHealthbar() const { return healthbar_; }
+    int16_t getHealth() const { return health; }
+
     
     // Interpolation for remote entities
     void setTargetPosition(const Vec2& position) { targetPosition_ = position; }
@@ -46,7 +49,7 @@ public:
 protected:
     bool isDead_;
     Healthbar* healthbar_;
-    int health;
+    int16_t health;
     // Interpolation state
     Vec2 targetPosition_;
     Vec2 targetVelocity_;

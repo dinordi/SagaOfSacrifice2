@@ -837,6 +837,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             Player* player = it->second.get();
             AnimationState state = static_cast<AnimationState>(data[pos++]);
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
+            int16_t health = (data[pos] << 8) | data[pos + 1];
+            pos += 2; // Move past health
 
             player->setDir(dir);
             player->setAnimationState(state);
@@ -895,6 +897,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
         case ObjectType::MINOTAUR: {
             AnimationState state = static_cast<AnimationState>(data[pos++]);
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
+            int16_t health = (data[pos] << 8) | data[pos + 1];
+            pos += 2; // Move past health
             // Find or create a minotaur object
             Game* game = Game::getInstance();
             if (!game) {
