@@ -123,15 +123,6 @@ void MultiplayerManager::update(float deltaTime) {
             partialGameState_.reset();
         }
     }
-
-    // Update all remote players
-    for (auto& pair : remotePlayers_) {
-        if(pair.second->getObjID() == playerId_) {
-            // Skip updating the local player
-            continue;
-        }
-        pair.second->update(deltaTime);
-    }
     
     // Send player input periodically (primary control method now)
     if (playerInput_ && localPlayer_ && lastUpdateTime >= NetworkConfig::Client::UpdateInterval) {
@@ -417,20 +408,7 @@ void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message
         return; // Player not found
     }
     
-    // Process action
-    if (message.data.size() >= 1) {
-        int actionType = message.data[0];
-        // Handle different action types
-        switch (actionType) {
-            case 1: // Jump
-                it->second->setState(1); // Set jumping state
-                break;
-            case 2: // Attack
-                it->second->setState(2); // Set attacking state
-                break;
-            // Add more action types as needed
-        }
-    }
+    std::cout << "[Client] Handling player action message from " << message.senderId << std::endl;
 }
 
 void MultiplayerManager::handleGameStateMessage(const NetworkMessage& message) {
@@ -720,7 +698,6 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     // Copy velocity (8 bytes)
     std::memcpy(&data[8], &vel.x, sizeof(float));
     std::memcpy(&data[12], &vel.y, sizeof(float));
-
     // Add direction and animation state
     data.push_back(static_cast<uint8_t>(player->getDir()));
     data.push_back(static_cast<uint8_t>(player->getAnimationState()));
@@ -839,6 +816,7 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                 // Create new remote player
                 auto newPlayer = std::make_shared<Player>(posX, posY, objectId);
                 it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
+                it->second->setposition(Vec2(posX, posY));
             }
             Player* player = it->second.get();
             AnimationState state = static_cast<AnimationState>(data[pos++]);

@@ -54,40 +54,16 @@ void Player::setupAnimations() {
 }
 
 void Player::update(float deltaTime) {
-    if (isRemote) {
+    if (isRemote_) {
         // Remote player update logic - similar to RemotePlayer
         
-        // Update interpolation timer
-        interpolationTime += deltaTime;
-        float t = std::min(interpolationTime / NetworkConfig::Client::InterpolationPeriod, 1.0f);
-
-        BoxCollider* pColl = &getcollider();
-        Vec2* pos = &pColl->position;
-        Vec2 vel = getvelocity();
-        
-        // Only interpolate if we have a different target position
-        if ((targetPosition.x != pos->x || targetPosition.y != pos->y) && t < 1.0f) {
-            // Linear interpolation
-            pos->x = pos->x + (targetPosition.x - pos->x) * t;
-            pos->y = pos->y + (targetPosition.y - pos->y) * t;
-            
-            // Update velocity based on target velocity
-            vel.x = vel.x + (targetVelocity.x - vel.x) * t;
-            vel.y = vel.y + (targetVelocity.y - vel.y) * t;
-        } else {
-            // We've reached the target or never started interpolating, apply velocity directly
-            pos->x += vel.x * deltaTime;
-            pos->y += vel.y * deltaTime;
-        }
-
-        // Set direction based on velocity
-        updateDirectionFromVelocity(vel);
-
         // Update the animation controller
         Entity::update(deltaTime);
         
-        // Update velocity
-        setvelocity(vel);
+        // Set direction based on velocity
+        Vec2 vel = getvelocity();
+        updateDirectionFromVelocity(vel);
+
     } else {
         // Local player update logic
         BoxCollider* pColl = &getcollider();

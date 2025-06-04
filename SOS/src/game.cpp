@@ -147,6 +147,11 @@ void Game::update(float deltaTime) {
                     {
                         continue;
                     }
+                    if(obj->getObjID() == "player_1")
+                    {
+                        // std::cout << "[Game] Player object found in objects list" << std::endl;
+                        // std::cout << "Position: " << obj->getposition().x << ", " << obj->getposition().y << std::endl;
+                    }
                     // Update the object's animation
                     // obj->updateAnimation(deltaTime * 1000);
                     // Update healthbar if it exists

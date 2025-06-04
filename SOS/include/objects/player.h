@@ -25,23 +25,6 @@ public:
     int getAttackDamage() const { return attackDamage; }
     float getAttackRange() const { return attackRange; }
     
-    // Remote player functionality
-    void setTargetPosition(const Vec2& position) { targetPosition = position; }
-    void setTargetVelocity(const Vec2& velocity) { targetVelocity = velocity; }
-    void resetInterpolation() { interpolationTime = 0.0f; }
-    void setOrientation(float orientation) { this->orientation = orientation; }
-    void setState(int state) { this->state = state; }
-    
-    // Getters for remote player functionality
-    float getOrientation() const { return orientation; }
-    int getState() const { return state; }
-    const Vec2& getTargetPosition() const { return targetPosition; }
-    const Vec2& getTargetVelocity() const { return targetVelocity; }
-    float getInterpolationTime() const { return interpolationTime; }
-    
-    // Set if player is controlled locally or remotely
-    void setIsRemote(bool isRemote) { this->isRemote = isRemote; }
-    bool getIsRemote() const { return isRemote; }
     
 private:
     PlayerInput* input;
@@ -60,13 +43,4 @@ private:
     int attackDamage = 20;
     float attackRange = 100.0f;
     
-    // Remote player state
-    bool isRemote = false;
-    float orientation = 0.0f;
-    int state = 0;
-    
-    // Client-side interpolation variables
-    Vec2 targetPosition;
-    Vec2 targetVelocity;
-    float interpolationTime = 0.0f;
 };
