@@ -211,9 +211,10 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     // Add isDead flag
     data.push_back(isDead ? 1 : 0);
     
-    // Add current health (4 bytes)
-    data.push_back((currentHealth) >> 8); 
-    data.push_back(currentHealth & 0xFF); // Assuming health is 16-bit, adjust if needed
+    // Add current health (2 bytes, proper little-endian encoding)
+    int16_t health16 = static_cast<int16_t>(currentHealth);
+    data.resize(data.size() + sizeof(int16_t));
+    std::memcpy(data.data() + data.size() - sizeof(int16_t), &health16, sizeof(int16_t));
 
     enemyStateMsg.data = data;
     
@@ -247,8 +248,9 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
         std::cerr << "[Client] Missing health value in enemy state update" << std::endl;
         return;
     }
-    int16_t health = (message.data[pos] << 8) | message.data[pos + 1];
-    pos += 2;
+    int16_t health;
+    std::memcpy(&health, message.data.data() + pos, sizeof(int16_t));
+
 
     // Find the remote player or enemy object
     Game * game = Game::getInstance();

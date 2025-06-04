@@ -156,67 +156,76 @@ void EmbeddedServer::processEnemyState(
     const std::string& playerId,
     const NetworkMessage& message
 ) {
-    // Validate message data
-    if (message.data.empty()) {
-        std::cerr << "[EmbeddedServer] Invalid player action data: empty" << std::endl;
-        return;
-    }
-
-    size_t pos = 4; // Start after action type
-
-    // Read enemy ID length
-    int idLength = message.data[pos++];
-
-    // Extract enemy ID
-    if (pos >= message.data.size()) {
-        std::cerr << "[EmbeddedServer] Invalid enemy ID in state update" << std::endl;
-        return;
-    }
-    
-    std::string enemyId(message.data.begin() + pos, message.data.begin() + pos + idLength);
-    pos += idLength; // Move position past the ID
-
-    // Read isDead flag (1 byte after the null terminator)
-    if (pos + 1 >= message.data.size()) {
-        std::cerr << "[EmbeddedServer] Missing isDead flag in enemy state update" << std::endl;
-        return;
-    }
-    bool isDead = message.data[pos++] != 0;
-    
-    int16_t health;
-    memcpy(&health, message.data.data() + pos, sizeof(int16_t));
-    pos += sizeof(int16_t);
-    std::cout << "[EmbeddedServer] Received enemy state update for " << enemyId 
-              << ": isDead=" << isDead << ", health=" << health << std::endl;
-    // Get the level and find the enemy
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-    Level* level = levelManager_->getCurrentLevel();
-    if (!level) {
-        std::cerr << "[EmbeddedServer] No active level for enemy state update" << std::endl;
+
+    // Parse enemy state data from message
+    if (message.data.size() < sizeof(uint32_t) + sizeof(bool) + sizeof(int16_t)) {
+        std::cerr << "[EmbeddedServer] Invalid enemy state message size" << std::endl;
         return;
     }
 
-    std::cout << "[EmbeddedServer] Processing enemy state update for " << enemyId 
-              << ": isDead=" << isDead << ", health=" << health << std::endl;
+    // Extract enemy ID, isDead flag, and health
+    size_t offset = 0;
     
-    // Find the enemy by ID
-    const auto& objects = level->getObjects();
-    for (auto& obj : objects) {
-        if (obj && obj->type == ObjectType::MINOTAUR && obj->getObjID() == enemyId) {
-            Enemy* enemy = static_cast<Enemy*>(obj.get());
+    // Read enemy ID length (4 bytes)
+    uint32_t enemyIdLength;
+    std::memcpy(&enemyIdLength, message.data.data() + offset, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    
+    // Read enemy ID string
+    if (offset + enemyIdLength > message.data.size()) {
+        std::cerr << "[EmbeddedServer] Invalid enemy ID length" << std::endl;
+        return;
+    }
+    std::string enemyId(reinterpret_cast<const char*>(message.data.data() + offset), enemyIdLength);
+    offset += enemyIdLength;
+    
+    // Read isDead flag (1 byte)
+    if (offset >= message.data.size()) {
+        std::cerr << "[EmbeddedServer] Missing isDead flag" << std::endl;
+        return;
+    }
+    bool isDead = message.data[offset] != 0;
+    offset += 1;
+    
+    // Read health (2 bytes)
+    if (offset + sizeof(int16_t) > message.data.size()) {
+        std::cerr << "[EmbeddedServer] Missing health data" << std::endl;
+        return;
+    }
+    int16_t currentHealth;
+    std::memcpy(&currentHealth, message.data.data() + offset, sizeof(int16_t));
 
-            // Update the enemy state
+    std::cout << "[EmbeddedServer] Enemy state update: " << enemyId 
+              << " isDead=" << isDead << " health=" << currentHealth << std::endl;
+
+    // Update enemy state in the level
+    if (levelManager_ && levelManager_->getCurrentLevel()) {
+        Level* currentLevel = levelManager_->getCurrentLevel();
+        
+        // Find the enemy in the level
+        auto& objects = currentLevel->getObjects();
+        auto enemyIt = std::find_if(objects.begin(), objects.end(),
+            [&enemyId](const std::shared_ptr<Object>& obj) {
+                return obj && obj->getObjID() == enemyId;
+            });
+        
+        if (enemyIt != objects.end()) {
             if (isDead) {
-                enemy->setHealth(0);  // Ensure health is set to 0 when dead
-                // broadcast enemy death to clients
-                sendEnemyStateToClients(enemy->getObjID(), true, 0);
+                // Remove the enemy from the level
+                currentLevel->removeObject(*enemyIt);
+                std::cout << "[EmbeddedServer] Removed dead enemy: " << enemyId << std::endl;
             } else {
-                
-                // Update health if not dead
-                enemy->setHealth(health);
-                sendEnemyStateToClients(enemy->getObjID(), true, 0);
+                // Update enemy health
+                Enemy* enemy = dynamic_cast<Enemy*>(enemyIt->get());
+                if (enemy) {
+                    enemy->setHealth(currentHealth);
+                    std::cout << "[EmbeddedServer] Updated enemy " << enemyId << " health to " << currentHealth << std::endl;
+                }
             }
-            break;
+            
+            // Broadcast the enemy state change to ALL other clients
+            sendEnemyStateToClients(enemyId, isDead, currentHealth);
         }
     }
 }
