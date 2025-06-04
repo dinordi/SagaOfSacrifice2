@@ -71,6 +71,8 @@ public:
     std::vector<Actor*>& getActors();
     void clearActors();
 
+    void movePlayerToEnd();
+
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     

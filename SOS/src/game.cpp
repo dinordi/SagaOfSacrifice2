@@ -263,6 +263,24 @@ bool Game::initializeServerConnection(const std::string& serverAddress, int serv
     return success;
 }
 
+// Add this new helper method
+void Game::movePlayerToEnd() {
+    if (!player) return;
+    
+    // Find the player in the objects vector
+    auto playerIt = std::find_if(objects.begin(), objects.end(),
+        [this](const std::shared_ptr<Object>& obj) {
+            return obj.get() == player;
+        });
+    
+    // If found and not already at the end, move it
+    if (playerIt != objects.end() && playerIt != objects.end() - 1) {
+        std::shared_ptr<Object> playerObj = *playerIt;
+        objects.erase(playerIt);
+        objects.push_back(playerObj);
+    }
+}
+
 void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort) {
     multiplayerConfigured = enableMultiplayer;
     configuredServerAddress = serverAddress;
@@ -525,7 +543,11 @@ void Game::addObject(std::shared_ptr<Object> object) {
         if (it == objects.end()) {
             // Add new object if it doesn't exist
             objects.push_back(object);
-            //std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
+
+            if(player)
+            {
+                movePlayerToEnd();
+            }
         } 
         // else {
         //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
