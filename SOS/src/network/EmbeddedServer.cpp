@@ -760,11 +760,24 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     // Send the player to the client
     sendPlayerToClient(playerId, player.get());
     
-    // Send a player joined message to all clients
+    //Broadcast player object to all clients
     NetworkMessage joinMsg;
     joinMsg.type = MessageType::PLAYER_JOINED;
-    joinMsg.senderId = playerId;
-    
+    joinMsg.senderId = "server";
+
+    // Serialize player data
+    serializeObject(player, joinMsg.data);
+
+    // Broadcast joinMsg to all clients, except the one that just joined
+    {
+        std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+        for (const auto& client : clientSockets_) {
+            if (client.first != playerId && client.second && client.second->is_open()) {
+                sendToClient(client.second, joinMsg);
+            }
+        }
+    }
+
     if (messageCallback_) {
         messageCallback_(joinMsg);
     }
@@ -1253,7 +1266,6 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
         std::cerr << "[EmbeddedServer] Error: Attempted to serialize a null object" << std::endl;
         return; // Return empty data if object is null
     }
-    static uint16_t objectCount = 0;
     size_t initialSize = data.size();
     // a) Type
     data.push_back(static_cast<uint8_t>(obj->type));
@@ -1262,20 +1274,6 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
     const std::string& id = obj->getObjID();
     data.push_back(static_cast<uint8_t>(id.size()));
     data.insert(data.end(), id.begin(), id.end());
-
-    objectCount++;
-    if(objectCount > PRINTNUM)
-    {
-        // std::cout << "[EmbeddedServer] Serializing object ID: " << id  << ", with type: " << static_cast<int>(object->type) << std::endl;
-    }
-    bool print = false;
-    //if ID contains "Grass" do not print
-    if (id.find("_map_75_64") != std::string::npos)
-    {
-        std::cout << "[EmbeddedServer] Serializing object ID: " << id << std::endl;
-        std::cout << "With length: " << id.size() << std::endl;
-        print = true;
-    }
 
     // c) Position & Velocity
     auto writeFloat = [&](float v) {
@@ -1301,8 +1299,7 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             }
             // Tilemap name length
             const std::string& tileMapName = plat->gettileMapName();
-            if(print || true)
-                std::cout << "[EmbeddedServer] Serializing tilemap name: " << tileMapName << std::endl;
+
             data.push_back(static_cast<uint8_t>(tileMapName.size()));
             // Tilemap name content
             data.insert(data.end(), tileMapName.begin(), tileMapName.end());
