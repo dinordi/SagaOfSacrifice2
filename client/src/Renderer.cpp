@@ -265,16 +265,16 @@ void Renderer::distribute_sprites_over_pipelines() {
     int pipeline = 0; // Use the first pipeline
     static int sprite_id = 0; // Use sprite ID 1
 
-    // static int counter = 0;
-    // counter++;
-    // if (counter == 20)
-    // {
-    //     sprite_id++;
-    //     counter = 0;
-    // }
-    // if (sprite_id > 10) {
-    //     sprite_id = 0; // Reset to a lower sprite ID
-    // }
+    static int counter = 0;
+    counter++;
+    if (counter == 20)
+    {
+        sprite_id++;
+        counter = 0;
+    }
+    if (sprite_id > 300) {
+        sprite_id = 0; // Reset to a lower sprite ID
+    }
     
     // Write the single sprite to the frame info
     write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
