@@ -72,7 +72,6 @@
                         "y": 67
                     }
                 },
-   
                 {
                     "filename": "Tilemap_Flat-4",
                     "margin": {
@@ -133,7 +132,6 @@
                         "y": 133
                     }
                 },
-
                 {
                     "filename": "Tilemap_Flat-8",
                     "margin": {
@@ -494,7 +492,7 @@
                         "y": 661
                     }
                 },
-                                {
+                {
                     "filename": "Tilemap_Flat-32",
                     "margin": {
                         "h": 49,
