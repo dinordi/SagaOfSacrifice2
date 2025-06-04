@@ -1,43 +1,49 @@
+// ────────────────────────────── Level.cpp ───────────────────────────────
 #include "level.h"
-#include "AudioManager.h" // Include the AudioManager header
+#include "AudioManager.h"
+
 #include <iostream>
-#include <nlohmann/json.hpp> // Add proper json include
 #include <fstream>
 #include <climits>
+#include <algorithm>
+#include <filesystem>
+#include <chrono>
+
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
- 
-Level::Level(const std::string& id, const std::string& name, CollisionManager* collisionManager)
-    : id(id), name(name), loaded(false), completed(false), collisionManager(collisionManager) {
-    // Initialize player start position to a default value
-    playerStartPosition = Vec2(0, 0);
+
+/* Tiled flip/rotation flags (bits 31–29) */
+namespace {
+    constexpr uint32_t FLIP_MASK = 0xE0000000u;
 }
 
-Level::~Level()
-{
-    unload();
-}
+/* ── ctor / dtor ──────────────────────────────────────────────────────── */
+Level::Level(const std::string& id,
+             const std::string& name,
+             CollisionManager*   collisionManager)
+    : id(id),
+      name(name),
+      loaded(false),
+      completed(false),
+      collisionManager(collisionManager),
+      playerStartPosition(0, 0)
+{}
 
-/* --------------------------------------------------------------------
-   Level::load  —  understands Tiled JSON and passes LOCAL sprite index
-   ------------------------------------------------------------------ */
+Level::~Level() { unload(); }
+
+/* ───────────────────────────────  load  ─────────────────────────────── */
 bool Level::load(json& levelData)
 {
-    /* ---- root properties ------------------------------------------------ */
+    /* --- basic map props ------------------------------------------------ */
     backgroundPath = levelData.value("background", "");
-
-    const int tileWidth  = levelData.value("tileWidth",
-                             levelData.value("tilewidth",  32));
-    const int tileHeight = levelData.value("tileHeight",
-                             levelData.value("tileheight", 32));
+    const int tileWidth  = levelData.value("tilewidth",  32);
+    const int tileHeight = levelData.value("tileheight", 32);
 
     if (levelData.contains("playerStart"))
-    {
-        playerStartPosition = Vec2(
-            levelData["playerStart"].value("x", 0),
-            levelData["playerStart"].value("y", 0));
-    }
+        playerStartPosition = Vec2(levelData["playerStart"].value("x", 0),
+                                   levelData["playerStart"].value("y", 0));
 
-    /* ---- build GID → tileset table -------------------------------------- */
+    /* --- build GID → tileset table ------------------------------------- */
     struct Range { int first, last; std::string name; };
     std::vector<Range> gidMap;
 
@@ -49,8 +55,7 @@ bool Level::load(json& levelData)
             r.first = ts.at("firstgid").get<int>();
             r.name  = ts.contains("name")
                       ? ts["name"].get<std::string>()
-                      : std::filesystem::path(
-                            ts["source"].get<std::string>())
+                      : std::filesystem::path(ts["source"].get<std::string>())
                             .stem().string();
             gidMap.push_back(r);
         }
@@ -68,113 +73,88 @@ bool Level::load(json& levelData)
             if (gid >= r.first && gid <= r.last)
             {
                 tsName  = r.name;
-                localId = gid - r.first;   // frame index in that sheet
+                localId = gid - r.first;   // 0-based frame
                 return true;
             }
         return false;
     };
 
-    /* ---- tile layers ---------------------------------------------------- */
+    /* --- tile layers ---------------------------------------------------- */
+    int nextObjId = 0;                           // fast unique ID counter
+
     if (levelData.contains("layers"))
     {
         for (const auto& layer : levelData["layers"])
         {
             if (layer.value("type", "") != "tilelayer")
-                continue;                              // ignore non-tile layers
+                continue;
 
             const int width  = layer.at("width");
             const int height = layer.at("height");
             const auto& data = layer.at("data");
-            const std::string layerName = layer.value("name", "layer");
 
             for (int row = 0; row < height; ++row)
             {
-                for (int col = 0; col < width;  ++col)
+                for (int col = 0; col < width; ++col)
                 {
-                    const int index = row * width + col;
-                    const int gid   = data[index];
-                    if (gid == 0) continue;               // empty cell
+                    const std::size_t index = static_cast<std::size_t>(row) * width + col;
+                    const uint32_t rawGid   = data[index];
+
+                    /* skip empty cells and any tile with flip/rotation bits */
+                    if (rawGid == 0 || (rawGid & FLIP_MASK))
+                        continue;
+
+                    const int gid = static_cast<int>(rawGid);
 
                     std::string tileset;
-                    int spriteIndex = 0;                  // 0-based frame
+                    int spriteIndex = 0;
                     if (!gidToTileset(gid, tileset, spriteIndex))
-                        continue;                         // orphan GID – skip
+                        continue;               // orphan GID – skip
 
                     const int worldX = col * tileWidth;
                     const int worldY = row * tileHeight;
-                    std::string objId =
-                        "Tile_" +
-                        std::to_string(row) + "_" +
-                        std::to_string(col);
 
-                    // Check if ID already exists
-                    for (const auto& obj : levelObjects)
-                    {
-                        if (obj->getObjID() == objId)   //UGLY SOLUTION, ONLY WORKS FOR 2 LAYERS, NEED TO CHANGE TO COUNTER BASED ID INSTEAD OF STRINGS, SAME FOR TILEMAP
-                           {
-                            static int counter = 0;
-                            counter++;
-                            objId =
-                            "Tile" + std::to_string(counter) + "_" +
-                            std::to_string(row) + "_" +
-                            std::to_string(col);
-                        }
-                    }
-
+                    std::string objId = "Tile_" + std::to_string(nextObjId++);
+                    std::cout << "[Level] Adding tile at ("
+                              << worldX << ", " << worldY
+                              << ") with GID " << gid
+                              << " from tileset '" << tileset
+                              << "' and index " << spriteIndex
+                              << " (ID: " << objId << ")\n";
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
                         tileWidth, tileHeight, 0);
-                    if(tile->gettileIndex() == 13)
-                    {
-                        std::cout << "[Level] Adding tile: "
-                                << objId << " at (" << worldX
-                                << ", " << worldY << ") with sprite index "
-                                << spriteIndex << " from tileset "
-                                << tileset << '\n';
-                                //   throw std::runtime_error(
-                                //       "[Level] Tile with index 13 detected, this is a placeholder tile and should not be used in production.");
-                    }
-                    
-                        // tile->setFlag(Tile::BLOCKS_HORIZONTAL |
-                        //               Tile::BLOCKS_VERTICAL);
-                    // std::cout << "[Level] Adding tile: "
-                    //           << objId << " at (" << worldX
-                    //           << ", " << worldY << ") with sprite index "
-                    //           << spriteIndex << " from tileset "
-                    //           << tileset << '\n';
+
                     levelObjects.push_back(tile);
                 }
             }
         }
     }
 
-    /* ---- enemies -------------------------------------------------------- */
+    /* --- enemies -------------------------------------------------------- */
     if (levelData.contains("enemies"))
     {
         for (const auto& e : levelData["enemies"])
-        {
-            const int x = e.value("x", 0);
-            const int y = e.value("y", 0);
-            const std::string type = e.value("type", "");
-            if (type == "minotaur")
-                spawnMinotaur(x, y);                  // world coords
-        }
+            if (e.value("type","") == "minotaur")
+                spawnMinotaur(e.value("x", 0), e.value("y", 0));
     }
 
-    /* ---- items (placeholder) ------------------------------------------- */
-    if (levelData.contains("items"))
-    {
+    /* --- items (placeholder) ------------------------------------------- */
+    if (levelData.contains("items")){
         for (const auto& item : levelData["items"])
-        {
             std::cout << "Found item "
                       << item.value("id","") << " of type "
                       << item.value("type","")
                       << " at (" << item.value("x",0)
                       << ", " << item.value("y",0) << ")\n";
-            // … create item sprites here …
-        }
-    }
+
+    loaded = true;
+    
+}
+
+/* ---------------- rest of Level methods unchanged --------------------- */
+
 
     /* ---- music + SFX ---------------------------------------------------- */
     if (levelData.contains("music"))
