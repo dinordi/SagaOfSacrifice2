@@ -77,6 +77,11 @@ public:
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
+    // Mutex to protect access to game objects
+    std::mutex& getObjectsMutex() { return objectsMutex; }
+    std::mutex& getActorsMutex() { return actorsMutex; }
+    Player* getPlayer() { return player; }
+
     // Static instance getter for singleton access
     static Game* getInstance() { return instance_; }
     static void setInstance(Game* instance) { instance_ = instance; }
@@ -104,7 +109,11 @@ private:
     GameState state;
     bool running;
     bool isPaused = false;
+    
     std::vector<std::shared_ptr<Object>> objects;
+    std::mutex objectsMutex; // Mutex to protect access to objects vector
+    std::mutex actorsMutex; // Mutex to protect access to actors vector
+
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;

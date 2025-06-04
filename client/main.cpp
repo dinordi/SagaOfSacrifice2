@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
     Renderer *renderer;
+    Camera* camera;
     
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -151,7 +152,8 @@ int main(int argc, char *argv[]) {
     }
     if(!devMode)
     {
-        renderer = new Renderer(std::filesystem::path(path_sprites));
+        camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution
+        renderer = new Renderer(std::filesystem::path(path_sprites), camera);
         if(debugMode) {
             std::cout << "Debug mode: Loaded image." << std::endl;
             return 0;
@@ -208,6 +210,8 @@ int main(int argc, char *argv[]) {
     uint64_t accumulator_us = 0;
     
     std::cout << "Entering gameloop..." << std::endl;
+    if(!devMode)
+        renderer->initUIO(); // Initialize UIO for rendering
     while (running && game->isRunning()) {
         uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -225,6 +229,8 @@ int main(int argc, char *argv[]) {
         while (accumulator_us >= fixed_timestep_us) {
             float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
             game->update(fixed_delta_seconds);
+            if(!devMode)
+                camera->update(game->getPlayer());
             accumulator_us -= fixed_timestep_us;
         }
     

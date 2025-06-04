@@ -366,6 +366,10 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
         std::cerr << "[Client] Game instance not found" << std::endl;
         return;
     }
+    
+    // Lock the game objects for thread safety
+    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
+    
     // Find the enemy object by ID in gameObjects
     std::shared_ptr<Enemy> enemyObject = nullptr;
     auto& objects = game->getObjects();
@@ -590,6 +594,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     }
     // Add any new objects to the game
     if (Game* game = Game::getInstance()) {
+        // Lock is handled inside addObject method
         for (auto& obj : newObjects) {
             game->addObject(obj);
         }
@@ -636,6 +641,7 @@ void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameS
     
     // Add any new objects to the game
     if (Game* game = Game::getInstance()) {
+        // Lock is handled inside addObject method
         for (auto& obj : newObjects) {
             game->addObject(obj);
         }
@@ -831,6 +837,7 @@ std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::stri
         return nullptr;
     }
     
+    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
     auto& objects = game->getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == objectId) {
@@ -937,6 +944,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                 std::cerr << "[Client] Game instance not found" << std::endl;
                 return nullptr;
             }
+            
+            std::lock_guard<std::mutex> lock(game->getObjectsMutex());
             auto& objects = game->getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
@@ -984,6 +993,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                 std::cerr << "[Client] Game instance not found" << std::endl;
                 return nullptr;
             }
+            
+            std::lock_guard<std::mutex> lock(game->getObjectsMutex());
             auto& objects = game->getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
@@ -1006,7 +1017,6 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
             return nullptr;
     }
-    
 }
 
 void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {

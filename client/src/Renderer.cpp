@@ -12,13 +12,13 @@
 
 #include "sprite_data.h"
 
-Renderer::Renderer(const std::filesystem::path& basePath)
-    : uio_fd(-1)
+Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam)
+    : uio_fd(-1), camera_(cam)
 {
     init_frame_infos();
     loadAllSprites(basePath);
     init_lookup_tables();
-    
+
     initUIO();
 }
 
@@ -158,6 +158,7 @@ void Renderer::handleIRQ()
         perror("Failed to clear interrupt");
     }
     distribute_sprites_over_pipelines();
+    drawScreen();
     //std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
     //update_and_write_animated_sprite(1);
 
@@ -258,33 +259,225 @@ void Renderer::init_frame_infos() {
 }
 
 void Renderer::distribute_sprites_over_pipelines() {
-    const uint16_t X_START = 130;
-    const uint16_t Y_START = 50;
 
-    // Place just one sprite in the first pipeline at X_START, Y_START
-    int pipeline = 0; // Use the first pipeline
-    static int sprite_id = 0; // Use sprite ID 1
-
-    static int counter = 0;
-    counter++;
-    if (counter == 20)
+    int index = 0;
+    for(auto frame : frame_info_data)
     {
-        sprite_id++;
-        counter = 0;
+        if (frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
+            std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
+            return; // Or handle the error as needed
+        }
+        // Write the sprite to the first pipeline
+        write_sprite_to_frame_info(frame_infos[0], 0, frame.x, frame.y, frame.sprite_id);
+        index++;
+
     }
-    if (sprite_id > 300) {
-        sprite_id = 0; // Reset to a lower sprite ID
-    }
-    
-    // Write the single sprite to the frame info
-    write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
-    
-    // Add end marker after the sprite
-    frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
+
+    frame_infos[0][index] = 0xFFFFFFFFFFFFFFFF; // Add end marker after the last sprite in the first pipeline
     
     // For other pipelines, ensure they have just end markers
     for (int i = 1; i < NUM_PIPELINES; i++) {
         frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
+    }
+
+    // const uint16_t X_START = 130;
+    // const uint16_t Y_START = 50;
+
+    // // Place just one sprite in the first pipeline at X_START, Y_START
+    // int pipeline = 0; // Use the first pipeline
+    // static int sprite_id = 0; // Use sprite ID 1
+
+    // static int counter = 0;
+    // counter++;
+    // if (counter == 5)
+    // {
+    //     sprite_id++;
+    //     counter = 0;
+    // }
+    // if (sprite_id > 800) {
+    //     sprite_id = 0; // Reset to a lower sprite ID
+    // }
+    
+    // // Write the single sprite to the frame info
+    // write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
+    
+    // // Add end marker after the sprite
+    // frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
+}
+
+void Renderer::drawScreen()
+{
+    frame_info_data.clear(); // Clear previous frame info data
+
+    Game* game = Game::getInstance();
+    if (!game) {
+        std::cerr << "Game instance is null, cannot draw screen." << std::endl;
+        return;
+    }
+    renderObjects(game);
+    renderActors(game);
+}
+
+void Renderer::renderObjects(Game* game)
+{
+    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
+    const std::vector<std::shared_ptr<Object>>& objects = game->getObjects();
+
+    for(const auto& entity : objects) {
+        
+        const SpriteData* spriteData = entity->getCurrentSpriteData();
+
+        if (!entity || !spriteData) continue; // Basic safety check
+        
+        // Use the current sprite index from animation system
+        int spriteIndex = entity->getCurrentSpriteIndex();
+        const SpriteRect& spriteRect = spriteData->getSpriteRect(spriteIndex);
+        BoxCollider collider = entity->getcollider();
+
+        // Skip rendering objects that are outside the camera view (viewport culling)
+        float entityX = collider.position.x - (spriteRect.w / 2);
+        float entityY = collider.position.y - (spriteRect.h / 2);
+        float entityWidth = spriteRect.w;
+        float entityHeight = spriteRect.h;
+        
+        if (camera_->isVisible(entityX, entityY, entityWidth, entityHeight)) {
+            continue; // Skip rendering this object
+        }
+        
+        // Get Sprite Address
+        std::map<int, uint32_t>spriterects = spriteSheetMap[spriteRect.id_];
+        int first_index_of_map = lookup_table_map[spriteRect.id_];
+        // Needed index
+        int index = first_index_of_map + spriteRect.count; // Get the index of the sprite in the lookup table
+        
+        
+        // Convert world coordinates to screen coordinates using the camera
+        Vec2 screenPos = camera_->worldToScreen(
+            collider.position.x - (spriteRect.w / 2),
+            collider.position.y - (spriteRect.h / 2)
+        );
+
+        if(frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
+            std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
+            return; // Or handle the error as needed
+        }
+        frame_info_data.push_back({
+            .x = static_cast<int16_t>(screenPos.x),
+            .y = static_cast<int16_t>(screenPos.y),
+            .sprite_id = static_cast<uint16_t>(index) // Use the index as sprite ID
+        });
+
+    }
+}
+
+void Renderer::renderActors(Game* game)
+{
+    if (!game) {
+        std::cerr << "Game instance is null, cannot render actors." << std::endl;
+        return;
+    }
+    
+    std::lock_guard<std::mutex> lock(game->getActorsMutex());
+    const std::vector<Actor*>& actors = game->getActors();
+
+    for(const auto& actor : game->getActors()) {
+        if (!actor) continue; // Basic safety check
+
+        const SpriteData* spriteData = actor->getCurrentSpriteData();
+        
+        ActorType actorType = actor->gettype();
+        Vec2 actorPos = actor->getposition();
+
+        
+        if(actorType == ActorType::HEALTHBAR) {
+            std::vector<SpriteRect> spriteRects = static_cast<Healthbar*>(actor)->getSpriteRects();
+            int count = 0;
+            int maxCount = spriteRects.size();
+            std::vector<float> offsets = static_cast<Healthbar*>(actor)->getOffsets(maxCount); // Get personal offsets
+            for(int count = 0; count < maxCount; count++)
+            {
+                auto rect = spriteRects[count];
+                
+                
+                if(!camera_->isVisible(actorPos.x, actorPos.y, rect.w, rect.h)) // Check if actor is visible
+                {
+                    continue; // Skip rendering this actor if not visible
+                }
+
+                // Use personal offset for this specific count/part
+                float centerOffset = 0.0f;
+                if (count < offsets.size()) {
+                    centerOffset = offsets[count];
+                } else {
+                    // Fallback to old calculation if offset not provided
+                    if (count == 2 || count == maxCount - 1) {
+                        centerOffset = 0.0f;
+                    } else {
+                        centerOffset = (count - 2) * rect.w;
+                    }
+                }
+                float x = actorPos.x + centerOffset;
+
+                // Get Sprite Address
+                std::map<int, uint32_t>spriterects = spriteSheetMap[rect.id_];
+                int first_index_of_map = lookup_table_map[rect.id_];
+                // Needed index
+                int index = first_index_of_map + rect.count; // Get the index of the sprite in the lookup table
+
+                Vec2 screenPos = camera_->worldToScreen(
+                    x - (rect.w / 2),
+                    actorPos.y - (rect.h / 2)
+                );
+
+                if(frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
+                    std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
+                    return; // Or handle the error as needed
+                }
+                frame_info_data.push_back({
+                    .x = static_cast<int16_t>(screenPos.x),
+                    .y = static_cast<int16_t>(screenPos.y),
+                    .sprite_id = static_cast<uint16_t>(index) // Use the index as sprite ID
+                });
+                
+            }
+        }
+        else    //Render text
+        {
+    
+            // Get the specific source rect for this character index
+            const SpriteRect& charSpriteRect = spriteData->getSpriteRect(actor->getdefaultIndex());
+            
+            if(!camera_->isVisible(actorPos.x, actorPos.y, charSpriteRect.w, charSpriteRect.h)) // Check if actor is visible
+            {
+                continue; // Skip rendering this actor if not visible
+            }
+
+            // Note: For UI elements like actors, we might want to keep them in screen space
+            // rather than applying the camera transform. This depends on whether they're
+            // part of the HUD or part of the game world.
+            
+            // Convert world coordinates to screen coordinates using the camera
+            Vec2 screenPos = camera_->worldToScreen(
+                actor->getposition().x,
+                actor->getposition().y
+            );
+
+            // Get Sprite Address
+            std::map<int, uint32_t>spriterects = spriteSheetMap[charSpriteRect.id_];
+            int first_index_of_map = lookup_table_map[charSpriteRect.id_];
+            // Needed index
+            int index = first_index_of_map + charSpriteRect.count; // Get the index of the sprite in the lookup table
+        
+            if(frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
+                std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
+                return; // Or handle the error as needed
+            }
+            frame_info_data.push_back({
+                .x = static_cast<int16_t>(screenPos.x),
+                .y = static_cast<int16_t>(screenPos.y),
+                .sprite_id = static_cast<uint16_t>(index) // Use the sprite rect count as sprite ID
+            });
+        }
     }
 }
 

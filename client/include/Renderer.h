@@ -7,6 +7,11 @@
 #include <string>
 #include <map>
 #include <filesystem>
+#include <mutex>
+
+#include "game.h"
+#include "object.h"
+#include "graphics/Camera.h"
 
 constexpr int NUM_PIPELINES = 4;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
@@ -16,21 +21,32 @@ constexpr uint16_t SPRITE_WIDTH = 400; // Voorbeeld, pas aan naar jouw situatie
 constexpr uint16_t SPRITE_HEIGHT = 400;
 constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jouw situatie
 
+constexpr size_t MAX_FRAME_INFO_SIZE = 4096;
+
+struct FrameInfo {
+    int16_t x;
+    int16_t y;
+    uint16_t sprite_id;
+};
+
 class Renderer {
 public:
-    Renderer(const std::filesystem::path& basePath);
+    Renderer(const std::filesystem::path& basePath, Camera* cam);
     ~Renderer();
 
+    void initUIO();
+    
+    private:
+    void drawScreen();
+    void renderObjects(Game* game);
+    void renderActors(Game* game);
     void handleIRQ();
-
-private:
     int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out);
     void loadAllSprites(const std::filesystem::path& basePath);
     void init_lookup_tables();
     void init_frame_infos();
     void distribute_sprites_over_pipelines();
     void irqHandlerThread();
-    void initUIO();
 
     void* lookup_table_ptrs[NUM_PIPELINES] = {nullptr};
     void* frame_info_ptrs[NUM_PIPELINES] = {nullptr};
@@ -38,6 +54,11 @@ private:
     volatile uint64_t* frame_infos[NUM_PIPELINES] = {nullptr};
     std::unordered_map<std::string, std::map<int, uint32_t>> spriteSheetMap;
     std::map<std::string, int> lookup_table_map;
+
+    std::vector<FrameInfo> frame_info_data;
+    std::mutex frame_info_mutex;
+
+    Camera* camera_;
 
     int uio_fd;
 
