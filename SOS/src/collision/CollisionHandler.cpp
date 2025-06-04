@@ -51,10 +51,10 @@ void CollisionHandler::handleInteraction(Player* player) {
 
 
         // Check flags for platform collision
-        if (platform->hasFlag(Tile::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
+        if ((platform->hasFlag(Tile::BLOCKS_VERTICAL_TOP) || platform->hasFlag(Tile::BLOCKS_VERTICAL_BOTTOM))  && info.penetrationVector.y != 0) {
             // Coming from above
             pos->y -= info.penetrationVector.y;
-        } else if (platform->hasFlag(Tile::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
+        } else if ((platform->hasFlag(Tile::BLOCKS_HORIZONTAL_RIGHT) || platform->hasFlag(Tile::BLOCKS_HORIZONTAL_LEFT)) && info.penetrationVector.x != 0) {
             // Side collision
             pos->x -= info.penetrationVector.x;
         }
@@ -75,10 +75,10 @@ void CollisionHandler::handleInteraction(Enemy* enemy) {
         Vec2* pos = &pCollider->position;
         
         // Check flags for platform collision
-        if (platform->hasFlag(Tile::BLOCKS_VERTICAL) && info.penetrationVector.y != 0) {
+        if ((platform->hasFlag(Tile::BLOCKS_VERTICAL_TOP) || platform->hasFlag(Tile::BLOCKS_VERTICAL_BOTTOM))  && info.penetrationVector.y != 0) {
             // Coming from above
             pos->y -= info.penetrationVector.y;
-        } else if (platform->hasFlag(Tile::BLOCKS_HORIZONTAL) && info.penetrationVector.x != 0) {
+        } else if ((platform->hasFlag(Tile::BLOCKS_HORIZONTAL_RIGHT) || platform->hasFlag(Tile::BLOCKS_HORIZONTAL_LEFT)) && info.penetrationVector.x != 0) {
             // Side collision
             pos->x -= info.penetrationVector.x;
         }

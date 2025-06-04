@@ -25,7 +25,8 @@ void Tile::update(float deltaTime) {
 }
 
 bool Tile::isCollidable() const {
-    if(hasFlag(Tile::BLOCKS_HORIZONTAL) || hasFlag(Tile::BLOCKS_VERTICAL)) {
+    if(hasFlag(Tile::BLOCKS_HORIZONTAL_LEFT) || hasFlag(Tile::BLOCKS_VERTICAL_TOP) ||
+       hasFlag(Tile::BLOCKS_HORIZONTAL_RIGHT) || hasFlag(Tile::BLOCKS_VERTICAL_BOTTOM)) {
         return true; // Tile is collidable if it blocks horizontal or vertical movement
     }
     return false; // Default to not collidable
