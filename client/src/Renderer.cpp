@@ -258,6 +258,9 @@ void Renderer::init_frame_infos() {
         frame_infos[i] = (volatile uint64_t *)(frame_info_ptrs[i]);
         
         // Initialize all indices 0-1023 with end marker for all pipelines
+        for (int j = 0; j <= 1023; j++) {
+            frame_infos[i][j] = 0xFFFFFFFFFFFFFFFF;
+        }
     }
 
     close(fd);
