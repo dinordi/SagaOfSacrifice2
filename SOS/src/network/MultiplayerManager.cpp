@@ -350,6 +350,10 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
         case MessageType::DISCONNECT:
             handlePlayerDisconnectMessage(message);
             break;
+        case MessageType::PLAYER_JOINED:
+            // Handle player joining the game
+            handlePlayerJoinMessage(message);
+            break;
         case MessageType::ENEMY_STATE_UPDATE:
             // Handle enemy state updates (e.g., when an enemy dies)
             // This is a new message type for server-controlled physics
@@ -360,6 +364,26 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
             std::cerr << "[Client] Unknown message type received: " << static_cast<int>(message.type) << std::endl;
             break;
     }
+}
+
+void MultiplayerManager::handlePlayerJoinMessage(const NetworkMessage& message) {
+    // Handle player joining the game
+    if (message.data.size() < 1) {
+        std::cerr << "[Client] Invalid player join message received" << std::endl;
+        return;
+    }
+    size_t pos = 0;
+    std::shared_ptr<Object>obj = deserializeObject(message.data, pos); // Deserialize the player object from the message data
+    if (!obj || obj->type != ObjectType::PLAYER) {
+        std::cerr << "[Client] Invalid player object in join message" << std::endl;
+        return;
+    }
+
+    // Add any new objects to the game
+    if (Game* game = Game::getInstance()) {
+        game->addObject(obj);
+    }
+
 }
 
 void MultiplayerManager::handlePlayerPositionMessage(const NetworkMessage& message) {

@@ -79,6 +79,7 @@ private:
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
     void handlePlayerAssignMessage(const NetworkMessage& message);
+    void handlePlayerJoinMessage(const NetworkMessage& message);
 
     std::shared_ptr<Object> updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
     
