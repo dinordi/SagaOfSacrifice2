@@ -157,8 +157,14 @@ void Renderer::handleIRQ()
     if (write(uio_fd, &clear_value, sizeof(clear_value)) != sizeof(clear_value)) {
         perror("Failed to clear interrupt");
     }
-    distribute_sprites_over_pipelines();
-    drawScreen();
+    
+    // Only proceed if game instance is available and running
+    Game* game = Game::getInstance();
+    if (game && game->isRunning()) {
+        distribute_sprites_over_pipelines();
+        drawScreen();
+    }
+    
     //std::cout << "Interrupt received! IRQ count: " << irq_count << std::endl;
     //update_and_write_animated_sprite(1);
 
@@ -311,9 +317,16 @@ void Renderer::drawScreen()
 
     Game* game = Game::getInstance();
     if (!game) {
-        std::cerr << "Game instance is null, cannot draw screen." << std::endl;
+        // Don't spam the console, just return silently
+        // The game instance might not be ready yet during initialization
         return;
     }
+    
+    // Additional check to see if game is properly initialized
+    if (!game->isRunning()) {
+        return;
+    }
+    
     renderObjects(game);
     renderActors(game);
 }

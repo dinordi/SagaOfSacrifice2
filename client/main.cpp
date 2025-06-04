@@ -210,8 +210,8 @@ int main(int argc, char *argv[]) {
     uint64_t accumulator_us = 0;
     
     std::cout << "Entering gameloop..." << std::endl;
-    if(!devMode)
-        renderer->initUIO(); // Initialize UIO for rendering
+    
+    // Move initUIO() to after game initialization
     while (running && game->isRunning()) {
         uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -232,6 +232,13 @@ int main(int argc, char *argv[]) {
             if(!devMode)
                 camera->update(game->getPlayer());
             accumulator_us -= fixed_timestep_us;
+        }
+    
+        // Initialize UIO only after game is fully set up and running
+        static bool uio_initialized = false;
+        if (!devMode && !uio_initialized && game->isRunning()) {
+            renderer->initUIO();
+            uio_initialized = true;
         }
     
         // Optionally: render here if you want to decouple rendering from update
