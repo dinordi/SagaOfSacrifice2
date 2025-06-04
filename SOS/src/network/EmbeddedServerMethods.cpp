@@ -168,9 +168,8 @@ void EmbeddedServer::processEnemyState(
     size_t offset = 0;
     
     // Read enemy ID length (4 bytes)
-    uint32_t enemyIdLength;
-    std::memcpy(&enemyIdLength, message.data.data() + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+    uint8_t enemyIdLength;
+    enemyIdLength = message.data[offset++];
     
     // Read enemy ID string
     if (offset + enemyIdLength > message.data.size()) {
@@ -195,6 +194,7 @@ void EmbeddedServer::processEnemyState(
     }
     int16_t currentHealth;
     std::memcpy(&currentHealth, message.data.data() + offset, sizeof(int16_t));
+    offset += sizeof(int16_t);
 
     std::cout << "[EmbeddedServer] Enemy state update: " << enemyId 
               << " isDead=" << isDead << " health=" << currentHealth << std::endl;
@@ -240,8 +240,12 @@ void EmbeddedServer::sendEnemyStateToClients(const std::string& enemyId, bool is
     enemyMsg.data.insert(enemyMsg.data.end(), enemyId.begin(), enemyId.end());
 
     enemyMsg.data.push_back(static_cast<uint8_t>(isDead == true ? 1 : 0));
-    enemyMsg.data.push_back(health >> 8);
-    enemyMsg.data.push_back(health & 0xFF);
+    
+    // Add health (2 bytes) - Use memcpy for consistent byte order
+    size_t currentSize = enemyMsg.data.size();
+    enemyMsg.data.resize(currentSize + sizeof(int16_t));
+    std::memcpy(enemyMsg.data.data() + currentSize, &health, sizeof(int16_t));
+    
     
     // Broadcast to all clients
     {
