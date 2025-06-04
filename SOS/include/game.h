@@ -71,6 +71,8 @@ public:
     std::vector<Actor*>& getActors();
     void clearActors();
 
+    Player* getPlayer() const { return player; }
+
     void movePlayerToEnd();
 
     // Method to add a game object dynamically

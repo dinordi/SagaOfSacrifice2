@@ -429,13 +429,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     // Find player object to center camera on
-    Player* playerObject = nullptr;
-    for (const auto& entity : app->game->getObjects()) {
-        if (entity && entity->type == ObjectType::PLAYER) {
-            playerObject = static_cast<Player*>(entity.get());
-            break;
-        }
-    }
+    Player* playerObject = app->game->getPlayer();
     
     // Update camera to follow player
     if (playerObject) {
