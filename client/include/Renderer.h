@@ -38,8 +38,8 @@ public:
     
     private:
     void drawScreen();
-    void renderObjects(Game* game);
-    void renderActors(Game* game);
+    void renderObjects(Game& game);
+    void renderActors(Game& game);
     void handleIRQ();
     int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out);
     void loadAllSprites(const std::filesystem::path& basePath);

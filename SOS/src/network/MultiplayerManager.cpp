@@ -361,18 +361,14 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     pos += 4;
 
     // Find the remote player or enemy object
-    Game * game = Game::getInstance();
-    if (!game) {
-        std::cerr << "[Client] Game instance not found" << std::endl;
-        return;
-    }
+    Game& game = Game::getInstance();
     
     // Lock the game objects for thread safety
-    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
+    std::lock_guard<std::mutex> lock(game.getObjectsMutex());
     
     // Find the enemy object by ID in gameObjects
     std::shared_ptr<Enemy> enemyObject = nullptr;
-    auto& objects = game->getObjects();
+    auto& objects = game.getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == enemyId) {
             switch(obj->type) {
@@ -593,11 +589,10 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         objectsSeen[newobj->getObjID()] = true;  // Mark this object as seen
     }
     // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        // Lock is handled inside addObject method
-        for (auto& obj : newObjects) {
-            game->addObject(obj);
-        }
+    Game& game = Game::getInstance();
+    // Lock is handled inside addObject method
+    for (auto& obj : newObjects) {
+        game.addObject(obj);
     }
 }
 
@@ -640,11 +635,10 @@ void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameS
     }
     
     // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        // Lock is handled inside addObject method
-        for (auto& obj : newObjects) {
-            game->addObject(obj);
-        }
+    Game& game = Game::getInstance();
+    // Lock is handled inside addObject method
+    for (auto& obj : newObjects) {
+        game.addObject(obj);
     }
 }
 
@@ -831,14 +825,10 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
 
 std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
     // Update the position of a specific entity
-    Game* game = Game::getInstance();
-    if (!game) {
-        std::cerr << "[Client] Game instance not found" << std::endl;
-        return nullptr;
-    }
+    Game& game = Game::getInstance();
     
-    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
-    auto& objects = game->getObjects();
+    std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+    auto& objects = game.getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == objectId) {
             // Update the object's position and velocity
@@ -939,14 +929,10 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
         }
         case ObjectType::TILE: {
             // Find or create a platform object
-            Game* game = Game::getInstance();
-            if (!game) {
-                std::cerr << "[Client] Game instance not found" << std::endl;
-                return nullptr;
-            }
+            Game& game = Game::getInstance();
             
-            std::lock_guard<std::mutex> lock(game->getObjectsMutex());
-            auto& objects = game->getObjects();
+            std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+            auto& objects = game.getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
                     // Update existing platform
@@ -988,14 +974,10 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             AnimationState state = static_cast<AnimationState>(data[pos++]);
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
             // Find or create a minotaur object
-            Game* game = Game::getInstance();
-            if (!game) {
-                std::cerr << "[Client] Game instance not found" << std::endl;
-                return nullptr;
-            }
+            Game& game = Game::getInstance();
             
-            std::lock_guard<std::mutex> lock(game->getObjectsMutex());
-            auto& objects = game->getObjects();
+            std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+            auto& objects = game.getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
                     obj->setAnimationState(state);

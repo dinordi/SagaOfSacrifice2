@@ -159,8 +159,8 @@ void Renderer::handleIRQ()
     }
     
     // Only proceed if game instance is available and running
-    Game* game = Game::getInstance();
-    if (game && game->isRunning()) {
+    Game& game = Game::getInstance();
+    if (game.isRunning()) {
         distribute_sprites_over_pipelines();
         drawScreen();
     }
@@ -315,26 +315,16 @@ void Renderer::drawScreen()
 {
     frame_info_data.clear(); // Clear previous frame info data
 
-    Game* game = Game::getInstance();
-    if (!game) {
-        // Don't spam the console, just return silently
-        // The game instance might not be ready yet during initialization
-        return;
-    }
-    
-    // Additional check to see if game is properly initialized
-    if (!game->isRunning()) {
-        return;
-    }
-    
+    Game& game = Game::getInstance();
+   
     renderObjects(game);
     renderActors(game);
 }
 
-void Renderer::renderObjects(Game* game)
+void Renderer::renderObjects(Game& game)
 {
-    std::lock_guard<std::mutex> lock(game->getObjectsMutex());
-    const std::vector<std::shared_ptr<Object>>& objects = game->getObjects();
+    std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+    const std::vector<std::shared_ptr<Object>>& objects = game.getObjects();
 
     for(const auto& entity : objects) {
         
@@ -383,17 +373,14 @@ void Renderer::renderObjects(Game* game)
     }
 }
 
-void Renderer::renderActors(Game* game)
+void Renderer::renderActors(Game& game)
 {
-    if (!game) {
-        std::cerr << "Game instance is null, cannot render actors." << std::endl;
-        return;
-    }
     
-    std::lock_guard<std::mutex> lock(game->getActorsMutex());
-    const std::vector<Actor*>& actors = game->getActors();
+    
+    std::lock_guard<std::mutex> lock(game.getActorsMutex());
+    const std::vector<Actor*>& actors = game.getActors();
 
-    for(const auto& actor : game->getActors()) {
+    for(const auto& actor : game.getActors()) {
         if (!actor) continue; // Basic safety check
 
         const SpriteData* spriteData = actor->getCurrentSpriteData();

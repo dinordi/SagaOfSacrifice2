@@ -11,18 +11,13 @@
 #include <filesystem> // For std::filesystem::path
 #include <mutex> // Add mutex header
 
-// Initialize static instance pointer
-Game* Game::instance_ = nullptr;
-
 // External function declaration
 extern uint32_t get_ticks(); // Declare the get_ticks function
 
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8081;
 
-Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
-    // Set this as the active instance
-    instance_ = this;
+Game::Game() : running(true), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     
     // Initialize the local server manager
     localServerManager = std::make_unique<LocalServerManager>();    //Only used for single-player mode with embedded server
@@ -44,7 +39,7 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     std::cout << "Got base path for game" << std::endl;
 
     // Set player's input handler
-    player = new Player(500, 100, playerID);
+    player = new Player(500, 100, "Player41");
     player->setInput(input);
     // initializeSpriteSheets();
     mapCharacters();    //Map characters to their indices
@@ -52,11 +47,6 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
 }
 
 Game::~Game() {
-    // If we are the current instance, clear the static pointer
-    if (instance_ == this) {
-        instance_ = nullptr;
-    }
-    
     // Clean up game objects
     {
         std::lock_guard<std::mutex> lock(objectsMutex);

@@ -40,7 +40,7 @@ enum class MenuOption {
 
 class Game {
 public:
-    Game(PlayerInput* input, std::string playerID);
+    Game();
     ~Game();
 
     void update(float deltaTime);
@@ -55,7 +55,7 @@ public:
     
     // Set multiplayer configuration (to be used when menu option is selected)
     void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
-    
+    void setPlayerInput(PlayerInput* input) { this->input = input; }
     // Initialize server configuration from file
     void initializeServerConfig(const std::string& basePath);
 
@@ -83,8 +83,7 @@ public:
     Player* getPlayer() { return player; }
 
     // Static instance getter for singleton access
-    static Game* getInstance() { return instance_; }
-    static void setInstance(Game* instance) { instance_ = instance; }
+    static Game& getInstance() { static Game instance_; return instance_; }
 
 private:
     void drawWord(const std::string& word, int x, int y, int letterSize = 0);
@@ -148,9 +147,8 @@ private:
     
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
-    static Game* instance_;
-
     std::unique_ptr<LevelManager> levelManager_;
+    
 };
 
 #endif // GAME_H

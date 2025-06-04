@@ -161,13 +161,14 @@ int main(int argc, char *argv[]) {
     }
 
     PlayerInput* controller = new SDL2Input();
-    Game *game = new Game(controller, playerId);
+    Game& game = Game::getInstance();
+    game.setPlayerInput(controller);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
     
     // Initialize network features based on mode
     if (enableRemoteMultiplayer) {
         // Connect to remote server for multiplayer
-        if (!game->initializeServerConnection(serverAddress, serverPort, playerId)) {
+        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
             std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
         } else {
             std::cout << "Multiplayer initialized successfully!" << std::endl;
@@ -175,7 +176,7 @@ int main(int argc, char *argv[]) {
     } else if (!localOnlyMode) {
         if (useEmbeddedServer) {
             // Initialize single player with embedded server (new recommended approach)
-            if (!game->initializeSinglePlayerEmbeddedServer()) {
+            if (!game.initializeSinglePlayerEmbeddedServer()) {
                 std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
             } else {
                 std::cout << "Single player with embedded server initialized successfully!" << std::endl;
@@ -212,7 +213,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Entering gameloop..." << std::endl;
     
     // Move initUIO() to after game initialization
-    while (running && game->isRunning()) {
+    while (running && game.isRunning()) {
         uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
         uint64_t frame_time_us = current_time_us - last_time_us;
@@ -228,15 +229,15 @@ int main(int argc, char *argv[]) {
         // Fixed timestep update
         while (accumulator_us >= fixed_timestep_us) {
             float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
-            game->update(fixed_delta_seconds);
+            game.update(fixed_delta_seconds);
             if(!devMode)
-                camera->update(game->getPlayer());
+                camera->update(game.getPlayer());
             accumulator_us -= fixed_timestep_us;
         }
     
         // Initialize UIO only after game is fully set up and running
         static bool uio_initialized = false;
-        if (!devMode && !uio_initialized && game->isRunning()) {
+        if (!devMode && !uio_initialized && game.isRunning()) {
             renderer->initUIO();
             uio_initialized = true;
         }
@@ -247,8 +248,8 @@ int main(int argc, char *argv[]) {
     }
     while(running){}
     // Clean up
-    if (game->isServerConnection()) {
-        game->shutdownServerConnection();
+    if (game.isServerConnection()) {
+        game.shutdownServerConnection();
     }
     delete renderer;
     return 0;
