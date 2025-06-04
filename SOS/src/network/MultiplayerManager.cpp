@@ -784,7 +784,7 @@ void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data
 
 std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<uint8_t>& data, size_t& pos) {
     if (pos + 2 > data.size()) {
-        std::cerr << "[Client] Not enough data to read object type and ID length" << std::endl;
+        // std::cerr << "[Client] Not enough data to read object type and ID length" << std::endl;
         return nullptr;
     }
     

@@ -143,22 +143,14 @@ void Game::update(float deltaTime) {
             // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
-                    if(obj->getObjID() == player->getObjID())
-                    {
-                        continue;
-                    }
-                    if(obj->getObjID() == "player_1")
-                    {
-                        // std::cout << "[Game] Player object found in objects list" << std::endl;
-                        // std::cout << "Position: " << obj->getposition().x << ", " << obj->getposition().y << std::endl;
-                    }
-                    // Update the object's animation
-                    // obj->updateAnimation(deltaTime * 1000);
                     // Update healthbar if it exists
                     if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
                         Entity* entity = static_cast<Entity*>(obj.get());
                         if (entity) {
-                            entity->Entity::update(deltaTime);
+                            if(obj->getObjID() != player->getObjID())
+                            {
+                                entity->Entity::update(deltaTime);
+                            }
                             
                             entity->updateHealthbar();
                             Healthbar* healthbar = entity->getHealthbar();
@@ -420,7 +412,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
             if (hitEnemiesThisAttack.find(obj->getObjID()) != hitEnemiesThisAttack.end()) continue;
             
             // Try to cast to Enemy pointer
-            Enemy* enemy = static_cast<Enemy*>(obj.get());
+            Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
             if (!enemy || enemy->isDead()) continue;
             
             // Check if the player's attack hits this enemy
@@ -432,13 +424,12 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                 int damageAmount = player->getAttackDamage();
                 enemy->takeDamage(damageAmount);
                 
-                // If the enemy got hit, notify the server immediately
-                int16_t newHealth = enemy->getHealth();
-                if (multiplayerActive && multiplayerManager) {
+                // If the enemy died from this hit, notify the server immediately
+                if (enemy->isDead() && multiplayerActive && multiplayerManager) {
                     multiplayerManager->sendEnemyStateUpdate(
                         enemy->getObjID(), 
-                        newHealth <= 0 ? true : false,  // isDead = true
-                        enemy->getHealth()      // Health = 0
+                        true,  // isDead = true
+                        0      // Health = 0
                     );
                 }
                 // Only hit each enemy once per attack frame
