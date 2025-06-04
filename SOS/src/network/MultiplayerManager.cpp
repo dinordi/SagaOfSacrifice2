@@ -267,7 +267,6 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
                 case ObjectType::MINOTAUR:
                     // Cast to Enemy type
                     enemyObject = std::static_pointer_cast<Minotaur>(obj);
-                    enemyObject->die();
                     break;
                 default:
                     std::cerr << "[Client] Object with ID " << enemyId << " is not recognized as an enemy type" << std::endl;
