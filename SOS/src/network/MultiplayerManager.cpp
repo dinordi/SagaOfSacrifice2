@@ -189,7 +189,7 @@ void MultiplayerManager::sendPlayerAction(int actionType) {
     network_->sendMessage(actionMsg);
 }
 
-void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth) {
+void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int16_t currentHealth) {
     if (!network_ || !network_->isConnected()) {
         return;
     }
@@ -212,7 +212,7 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     data.push_back(isDead ? 1 : 0);
     
     // Add current health (2 bytes, proper little-endian encoding)
-    int16_t health16 = static_cast<int16_t>(currentHealth);
+    int16_t health16 = (currentHealth);
     data.resize(data.size() + sizeof(int16_t));
     std::memcpy(data.data() + data.size() - sizeof(int16_t), &health16, sizeof(int16_t));
 
