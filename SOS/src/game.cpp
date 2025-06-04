@@ -420,7 +420,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
             if (hitEnemiesThisAttack.find(obj->getObjID()) != hitEnemiesThisAttack.end()) continue;
             
             // Try to cast to Enemy pointer
-            Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
+            Enemy* enemy = static_cast<Enemy*>(obj.get());
             if (!enemy || enemy->isDead()) continue;
             
             // Check if the player's attack hits this enemy
@@ -432,12 +432,13 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                 int damageAmount = player->getAttackDamage();
                 enemy->takeDamage(damageAmount);
                 
-                // If the enemy died from this hit, notify the server immediately
-                if (enemy->isDead() && multiplayerActive && multiplayerManager) {
+                // If the enemy got hit, notify the server immediately
+                int16_t newHealth = enemy->getHealth();
+                if (multiplayerActive && multiplayerManager) {
                     multiplayerManager->sendEnemyStateUpdate(
                         enemy->getObjID(), 
-                        true,  // isDead = true
-                        0      // Health = 0
+                        newHealth <= 0 ? true : false,  // isDead = true
+                        enemy->getHealth()      // Health = 0
                     );
                 }
                 // Only hit each enemy once per attack frame

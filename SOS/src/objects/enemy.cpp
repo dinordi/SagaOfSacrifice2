@@ -195,7 +195,7 @@ Vec2 Enemy::getDirectionToPlayer(std::shared_ptr<Player> player) {
     return direction;
 }
 
-void Enemy::takeDamage(int amount) {
+void Enemy::takeDamage(int16_t amount) {
     if (isDead_) return;
     
     health -= amount;
@@ -209,7 +209,7 @@ void Enemy::takeDamage(int amount) {
 }
 
 
-void Enemy::setHealth(int newHealth) {
+void Enemy::setHealth(int16_t newHealth) {
     health = newHealth;
     if (health <= 0) {
         currentState = EnemyState::DYING;
