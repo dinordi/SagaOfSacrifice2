@@ -14,12 +14,6 @@ Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Obje
 
 }
 
-Entity::~Entity() {
-    if (healthbar_) {
-        delete healthbar_;
-        healthbar_ = nullptr;
-    }
-}
 
 void Entity::update(float deltaTime) {
     // Update animation state

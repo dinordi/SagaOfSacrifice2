@@ -26,14 +26,13 @@ class Entity : public Object
 {
 public:
     Entity( BoxCollider collider, std::string objID, ObjectType type);
-    ~Entity();
     
     bool isDead() const { return isDead_; }
     
     void update(float deltaTime) override; // Updating animation
 
     void updateHealthbar();
-    Healthbar* getHealthbar() const { return healthbar_; }
+    Healthbar* getHealthbar() const { return healthbar_.get(); }
     int16_t getHealth() const { return health; }
 
     
@@ -48,7 +47,7 @@ public:
     bool getIsRemote() const { return isRemote_; }
 protected:
     bool isDead_;
-    Healthbar* healthbar_;
+    std::unique_ptr<Healthbar> healthbar_;
     int16_t health;
     // Interpolation state
     Vec2 targetPosition_;

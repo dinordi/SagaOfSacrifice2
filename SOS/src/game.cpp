@@ -326,6 +326,8 @@ std::vector<Actor*>& Game::getActors() {
 
 void Game::clearActors() {
     for(auto& actor : actors) {
+        if(actor->gettype() == ActorType::HEALTHBAR)
+            continue;   // Healthbar is managed by unique_ptr in Entity, so skip it
         delete actor; // Clean up each actor
     }
     actors.clear();

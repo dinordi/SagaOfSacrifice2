@@ -44,7 +44,7 @@ void Minotaur::setupAnimations(std::filesystem::path atlasPath)
 
     std::cout << "Setting up healthbar" << std::endl;
     //Setup healthbar
-    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }

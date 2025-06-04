@@ -48,7 +48,7 @@ void Player::setupAnimations() {
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
-    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, basePath / "healthbar.tpsheet", health, false); // Create health bar for player
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, basePath / "healthbar.tpsheet", health, false); // Create health bar for player
     
     // Set initial state
     setAnimationState(AnimationState::IDLE);
