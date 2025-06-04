@@ -144,8 +144,8 @@ void EmbeddedServer::processPlayerPosition(const std::string& playerId, const Ne
     
     // Extract animation state and direction if provided
     if (message.data.size() >= 18) {
-        FacingDirection dir = static_cast<FacingDirection>(message.data[16]);
-        AnimationState animState = static_cast<AnimationState>(message.data[17]);
+        FacingDirection dir = static_cast<FacingDirection>(message.data[20]);
+        AnimationState animState = static_cast<AnimationState>(message.data[21]);
         
         player->setDir(dir);
         player->setAnimationState(animState);
@@ -163,15 +163,6 @@ void EmbeddedServer::processEnemyState(
         std::cerr << "[EmbeddedServer] Invalid enemy state message size" << std::endl;
         return;
     }
-
-
-    // print message data in hex format for debugging
-    std::cout << "[EmbeddedServer] Processing enemy state message from player: " << playerId << std::endl;
-    std::cout << "[EmbeddedServer] Message data: ";
-    for (const auto& byte : message.data) {
-        std::cout << std::hex << static_cast<int>(byte) << " ";
-    }
-    std::cout << std::dec << std::endl;
 
     // Extract enemy ID, isDead flag, and health
     size_t offset = 4;
@@ -208,8 +199,6 @@ void EmbeddedServer::processEnemyState(
     std::memcpy(&currentHealth, message.data.data() + offset, sizeof(int16_t));
     offset += sizeof(int16_t);
 
-    std::cout << "[EmbeddedServer] Enemy state update: " << enemyId 
-              << " isDead=" << isDead << " health=" << currentHealth << std::endl;
 
     // Update enemy state in the level
     if (levelManager_ && levelManager_->getCurrentLevel()) {

@@ -896,9 +896,7 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
             int16_t health = (data[pos] << 8) | data[pos + 1];
             pos += 2; // Move past health
-            std::cout << "[Client] Deserializing Minotaur with ID: " << objectId
-            << ", Health: " << health
-            << std::endl;
+            
             // Find or create a minotaur object
             Game* game = Game::getInstance();
             if (!game) {
