@@ -26,6 +26,7 @@ public:
     /* -------- life-cycle -------- */
     bool load(nlohmann::json& levelData);   // read JSON, build level
     void unload();                          // free everything
+    void sortObjects();                     // sort objects by layer
     void reset();                           // start over
     void update(float deltaTime);           // per-frame
 

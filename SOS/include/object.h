@@ -75,6 +75,9 @@ public:
     Vec2 getposition() const { return collider.position; }
     void setposition(const Vec2& pos) { collider.position = pos; }
 
+    void setLayer(int layer) { this->layer = layer; }
+    int getLayer() const { return layer; }
+
 protected:
     AnimationController animController;
     FacingDirection dir;
@@ -84,18 +87,20 @@ private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
     DEFINE_CONST_GETTER_SETTER(std::string, ObjID); // ID of the object, for multiplayer to indicate between players and objects
+private:
+    int layer;
 };
 
 class Actor {
 public:
     Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type = ActorType::TEXT);
     const SpriteData* getCurrentSpriteData() const;
+    
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
     DEFINE_GETTER_SETTER(uint16_t, defaultIndex);
     DEFINE_CONST_GETTER_SETTER(ActorType, type);
     DEFINE_GETTER_SETTER(std::string, tpsheet);
     DEFINE_GETTER_SETTER(uint16_t, ObjID);
-
     static uint16_t actorCount; // Static counter to assign unique IDs to actors
 };

@@ -2,13 +2,15 @@
 #include <filesystem>
 #include <iostream>
 
-Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns) :   
+Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns, int layer) :   
         Object(BoxCollider(x, y, tileWidth, tileHeight), 
         ObjectType::TILE, (objID)), 
         tileIndex(tileIndex), 
         tileMapName(tileMap) 
 {
     // Initialize Tile-specific attributes here
+    setLayer(layer);
+    
 }
 
 void Tile::setupAnimations(std::filesystem::path atlasPath)

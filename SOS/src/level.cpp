@@ -223,6 +223,7 @@ void Level::update(float deltaTime) {
         for (const auto& obj : objectsToRemove) {
             removeObject(obj);
         }
+
         auto timeBeforeCollision = std::chrono::steady_clock::now();
         // Detect and resolve collisions
         detectAndResolveCollisions();
@@ -231,6 +232,7 @@ void Level::update(float deltaTime) {
         // std::cout << "[Level] Collision detection and resolution took "
         //           << duration.count() << " microseconds\n";
     }
+    sortObjects();
     
     // Send game state to clients periodically
     static uint64_t updateTimer = 0;
@@ -244,6 +246,25 @@ void Level::detectAndResolveCollisions() {
     // Detect and resolve collisions using the collision manager
     collisionManager->detectCollisions(levelObjects);
 }   
+
+void Level::sortObjects() {
+    std::sort(levelObjects.begin(), levelObjects.end(),
+        [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+            if (a->getLayer() != b->getLayer())
+                return a->getLayer() < b->getLayer();
+            // If same layer, sort by Y
+            if (a->getposition().y != b->getposition().y)
+                return a->getposition().y < b->getposition().y;
+            // If same Y, draw player last (on top)
+            if (a->type == ObjectType::PLAYER && b->type != ObjectType::PLAYER)
+                return false;
+            if (a->type != ObjectType::PLAYER && b->type == ObjectType::PLAYER)
+                return true;
+            // Fallback: keep original order
+            return false;
+        }
+    );
+}
 
 void Level::addObject(std::shared_ptr<Object> object) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);

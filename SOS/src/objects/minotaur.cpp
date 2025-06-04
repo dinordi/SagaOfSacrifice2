@@ -4,21 +4,29 @@
 #include <cmath>
 #include <random>
 #include <filesystem>
+#include "minotaur.h"
 
-Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR) {
-    // Call the other constructor's setup code
+ Minotaur::Minotaur(BoxCollider collider, std::string objID, int layer): Enemy(collider, objID, ObjectType::MINOTAUR) 
+    {
     setvelocity(Vec2(0, 0));
-    
+    setLayer(layer);
     // Minotaur specific stats
     health = 150;
     attackDamage = 25;
     attackRange = 120.0f;
     detectionRange = 400.0f;
     moveSpeed = 100.0f;
+    }
+
+Minotaur::Minotaur(int x, int y, std::string objID)
+    : Minotaur(BoxCollider(x, y, 64, 64), objID, 3) // Default layer 3
+{
+    // Delegates to main constructor
 }
 
 Minotaur::~Minotaur() {
     // Clean up any resources
+   
 }
 
 void Minotaur::setupAnimations(std::filesystem::path atlasPath)
