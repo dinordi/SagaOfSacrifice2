@@ -211,10 +211,10 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     // Add isDead flag
     data.push_back(isDead ? 1 : 0);
     
-    // Add current health (2 bytes)
-    int16_t health16 = (currentHealth);
-    data.push_back(static_cast<uint8_t>((health16 >> 8) & 0xFF)); // High byte
-    data.push_back(static_cast<uint8_t>(health16 & 0xFF)); // Low byte
+    // Add current health (2 bytes) - Use memcpy for consistent byte order
+    size_t currentSize = data.size();
+    data.resize(currentSize + sizeof(int16_t));
+    std::memcpy(data.data() + currentSize, &currentHealth, sizeof(int16_t));
 
     enemyStateMsg.data = data;
     
