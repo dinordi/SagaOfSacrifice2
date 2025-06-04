@@ -46,7 +46,7 @@ NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& da
 
 void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
-
+    return;
     // Lookup the player
     auto& pm = PlayerManager::getInstance();
     auto player = pm.getPlayer(playerId);
@@ -149,6 +149,9 @@ void EmbeddedServer::processPlayerPosition(const std::string& playerId, const Ne
         
         player->setDir(dir);
         player->setAnimationState(animState);
+        if(animState == AnimationState::ATTACKING) {
+            player->attack();
+        }
     }
 }
 
