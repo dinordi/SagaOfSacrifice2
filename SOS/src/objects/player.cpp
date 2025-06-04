@@ -4,9 +4,10 @@
 
 
 Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
-    health(100), isAttackActive(false), isJumping(false), attackTimer(0.0f) {
+    isAttackActive(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] health initialized to: " << health << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();

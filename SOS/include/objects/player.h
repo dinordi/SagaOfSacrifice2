@@ -34,9 +34,7 @@ private:
     bool isMoving() const;
     void updateDirectionFromVelocity(const Vec2& vel);
     
-    int health;
     bool isAttackActive;
-    bool isJumping;
     float attackTimer;
     
     // Attack properties

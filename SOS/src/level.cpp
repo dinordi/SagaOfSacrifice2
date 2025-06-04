@@ -114,7 +114,7 @@ bool Level::load(json& levelData)
                     const int worldX = col * tileWidth;
                     const int worldY = row * tileHeight;
 
-                    std::string objId = "Tile_" + std::to_string(nextObjId++);
+                    std::string objId = "T_" + std::to_string(nextObjId++);
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
@@ -214,6 +214,7 @@ void Level::update(float deltaTime) {
                 std::shared_ptr<Entity> entity = std::static_pointer_cast<Entity>(object);
                 if(entity->isDead())
                 {
+                    std::cout << "[Level] Object with ID: " << object->getObjID() << " is dead, removing from level." << std::endl;
                     objectsToRemove.push_back(object);  // Mark for removal if dead, removing directly here will cause iteration issues
                 }
             }

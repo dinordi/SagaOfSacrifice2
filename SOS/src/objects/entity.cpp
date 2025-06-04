@@ -2,7 +2,14 @@
 #include "tile.h"
 #include <iostream>
 
-Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Object( collider, type, objID) 
+Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Object( collider, type, objID), 
+    isDead_(false),
+    healthbar_(nullptr),
+    health(100), // Default health value, can be set later
+    targetPosition_(0, 0),
+    targetVelocity_(0, 0),
+    interpolationTime_(0.0f),
+    isRemote_(false)
 {
 
 }
