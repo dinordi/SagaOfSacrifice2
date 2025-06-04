@@ -164,10 +164,19 @@ void EmbeddedServer::processEnemyState(
         return;
     }
 
+
+    // print message data in hex format for debugging
+    std::cout << "[EmbeddedServer] Processing enemy state message from player: " << playerId << std::endl;
+    std::cout << "[EmbeddedServer] Message data: ";
+    for (const auto& byte : message.data) {
+        std::cout << std::hex << static_cast<int>(byte) << " ";
+    }
+    std::cout << std::dec << std::endl;
+
     // Extract enemy ID, isDead flag, and health
-    size_t offset = 0;
+    size_t offset = 4;
     
-    // Read enemy ID length (4 bytes)
+    // Read enemy ID length (1 byte)
     uint8_t enemyIdLength;
     enemyIdLength = message.data[offset++];
     
@@ -176,7 +185,10 @@ void EmbeddedServer::processEnemyState(
         std::cerr << "[EmbeddedServer] Invalid enemy ID length" << std::endl;
         return;
     }
-    std::string enemyId(reinterpret_cast<const char*>(message.data.data() + offset), enemyIdLength);
+    std::string enemyId(
+        message.data.begin() + offset,
+        message.data.begin() + offset + enemyIdLength
+    );
     offset += enemyIdLength;
     
     // Read isDead flag (1 byte)
@@ -240,7 +252,7 @@ void EmbeddedServer::sendEnemyStateToClients(const std::string& enemyId, bool is
     enemyMsg.data.insert(enemyMsg.data.end(), enemyId.begin(), enemyId.end());
 
     enemyMsg.data.push_back(static_cast<uint8_t>(isDead == true ? 1 : 0));
-    
+
     // Add health (2 bytes) - Use memcpy for consistent byte order
     size_t currentSize = enemyMsg.data.size();
     enemyMsg.data.resize(currentSize + sizeof(int16_t));
