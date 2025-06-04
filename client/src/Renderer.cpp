@@ -272,7 +272,7 @@ void Renderer::distribute_sprites_over_pipelines() {
             return; // Or handle the error as needed
         }
         // Write the sprite to the first pipeline
-        write_sprite_to_frame_info(frame_infos[0], 0, frame.x, frame.y, frame.sprite_id);
+        write_sprite_to_frame_info(frame_infos[0], index, frame.x, frame.y, frame.sprite_id);
         index++;
 
     }
