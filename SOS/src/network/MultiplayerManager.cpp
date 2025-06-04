@@ -212,8 +212,8 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     data.push_back(isDead ? 1 : 0);
     
     // Add current health (4 bytes)
-    data.push_back((currentHealth >> 8));
-    data.push_back((currentHealth) & 0xFF);
+    data.push_back((currentHealth) >> 8); 
+    data.push_back(currentHealth & 0xFF); // Assuming health is 16-bit, adjust if needed
 
     enemyStateMsg.data = data;
     

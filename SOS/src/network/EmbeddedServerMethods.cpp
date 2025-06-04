@@ -183,11 +183,11 @@ void EmbeddedServer::processEnemyState(
     }
     bool isDead = message.data[pos++] != 0;
     
-    int health;
-    // Read health (4 bytes)
-    memcpy(&health, message.data.data() + pos, sizeof(int));
-    pos += sizeof(int);
-    
+    int16_t health;
+    memcpy(&health, message.data.data() + pos, sizeof(int16_t));
+    pos += sizeof(int16_t);
+    std::cout << "[EmbeddedServer] Received enemy state update for " << enemyId 
+              << ": isDead=" << isDead << ", health=" << health << std::endl;
     // Get the level and find the enemy
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     Level* level = levelManager_->getCurrentLevel();
@@ -209,14 +209,12 @@ void EmbeddedServer::processEnemyState(
             if (isDead) {
                 enemy->setHealth(0);  // Ensure health is set to 0 when dead
                 // broadcast enemy death to clients
-                {
-
-
-                }
+                sendEnemyStateToClients(enemy->getObjID(), true, 0);
             } else {
                 
                 // Update health if not dead
                 enemy->setHealth(health);
+                sendEnemyStateToClients(enemy->getObjID(), true, 0);
             }
             break;
         }
