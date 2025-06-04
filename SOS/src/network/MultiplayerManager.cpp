@@ -698,8 +698,6 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     // Copy velocity (8 bytes)
     std::memcpy(&data[8], &vel.x, sizeof(float));
     std::memcpy(&data[12], &vel.y, sizeof(float));
-    std::cout << "Client: direction: " << static_cast<int>(player->getDir())
-              << ", animation state: " << static_cast<int>(player->getAnimationState()) << std::endl;
     // Add direction and animation state
     data.push_back(static_cast<uint8_t>(player->getDir()));
     data.push_back(static_cast<uint8_t>(player->getAnimationState()));
