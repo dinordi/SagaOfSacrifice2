@@ -25,13 +25,6 @@ public:
     int getAttackDamage() const { return attackDamage; }
     float getAttackRange() const { return attackRange; }
     
-    // Remote player functionality
-    void setTargetPosition(const Vec2& position) { targetPosition = position; }
-    void setTargetVelocity(const Vec2& velocity) { targetVelocity = velocity; }
-    void resetInterpolation() { interpolationTime = 0.0f; }
-    void setOrientation(float orientation) { this->orientation = orientation; }
-    void setState(int state) { this->state = state; }
-    
     // Getters for remote player functionality
     float getOrientation() const { return orientation; }
     int getState() const { return state; }
