@@ -26,7 +26,7 @@ constexpr size_t MAX_FRAME_INFO_SIZE = 4096;
 struct FrameInfo {
     int16_t x;
     int16_t y;
-    uint16_t sprite_id;
+    uint32_t sprite_id;
 };
 
 class Renderer {

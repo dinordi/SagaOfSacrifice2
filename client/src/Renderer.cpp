@@ -365,7 +365,7 @@ void Renderer::renderObjects(Game& game)
         frame_info_data.push_back({
             .x = static_cast<int16_t>(screenPos.x),
             .y = static_cast<int16_t>(screenPos.y),
-            .sprite_id = static_cast<uint16_t>(index) // Use the index as sprite ID
+            .sprite_id = static_cast<uint32_t>(index) // Use the index as sprite ID
         });
 
     }
@@ -434,7 +434,7 @@ void Renderer::renderActors(Game& game)
                 frame_info_data.push_back({
                     .x = static_cast<int16_t>(screenPos.x),
                     .y = static_cast<int16_t>(screenPos.y),
-                    .sprite_id = static_cast<uint16_t>(index) // Use the index as sprite ID
+                    .sprite_id =  static_cast<uint32_t>(index) // Use the index as sprite ID
                 });
                 
             }
@@ -473,7 +473,7 @@ void Renderer::renderActors(Game& game)
             frame_info_data.push_back({
                 .x = static_cast<int16_t>(screenPos.x),
                 .y = static_cast<int16_t>(screenPos.y),
-                .sprite_id = static_cast<uint16_t>(index) // Use the sprite rect count as sprite ID
+                .sprite_id = static_cast<uint32_t>(index) // Use the sprite rect count as sprite ID
             });
         }
     }
