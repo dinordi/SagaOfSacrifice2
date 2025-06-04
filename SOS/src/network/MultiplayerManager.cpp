@@ -805,7 +805,7 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
     std::string objectId(data.begin() + pos, data.begin() + pos + idLength);
     pos += idLength;
     objectCount++;
-    if(objectCount > PRINTNUM)
+    if(objectCount > PRINTNUM || true)
     {
 
         // std::cout << "[Client] Deserializing " << objectCount << "'s "
@@ -849,7 +849,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             player->setTargetPosition(Vec2(posX, posY));
             player->setTargetVelocity(Vec2(velX, velY));
             player->resetInterpolation();
-            return nullptr;
+            player->setIsRemote(true); // Mark as remote player
+            return it->second; 
         }
         case ObjectType::TILE: {
             // Find or create a platform object
@@ -883,8 +884,8 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             std::string tilemapName(data.begin() + pos, data.begin() + pos + tilemapNameLength);
             pos += tilemapNameLength; // Move past the tilemap name
 
-            if(tilemapName.find("_26_68") != std::string::npos) {
-                std::cout << "[Client] Detected map_75_64 tilemap for platform: " << tilemapName << std::endl;
+            if(tilemapName.find("_26_68") != std::string::npos || true) {
+                std::cout << "[Client] platform: " << tilemapName << std::endl;
                 std::cout << "[Client] Object ID: " << objectId << std::endl;
                 std::cout << "[Client] Position: (" << posX << ", " << posY << ")" << std::endl;
             }

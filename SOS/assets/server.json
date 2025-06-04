@@ -9,7 +9,7 @@
     },
     {
         "name": "Other Zybo player",
-        "address": "192.168.2.7",
+        "address": "192.168.1.112",
         "port": 8081,
         "description": "Another Zybo player on the same network. Change the address to match the player's IP. In the JSON file",
         "default": false

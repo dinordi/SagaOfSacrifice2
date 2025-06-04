@@ -3,7 +3,7 @@
 #include "object.h"
 #include "sprite_data.h"
 
-#define PRINTNUM 7900
+#define PRINTNUM 7200
 
 class Tile : public Object {
 public:

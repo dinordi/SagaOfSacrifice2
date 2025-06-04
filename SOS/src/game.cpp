@@ -205,7 +205,7 @@ void Game::update(float deltaTime) {
             reconcileWithServerState(deltaTime);
             
             // Update remote players based on server data
-            updateRemotePlayers(multiplayerManager->getRemotePlayers());
+            // updateRemotePlayers(multiplayerManager->getRemotePlayers());
         }
     }
 }
@@ -367,14 +367,16 @@ void Game::updateRemotePlayers(const std::map<std::string, std::shared_ptr<Playe
                     continue;
                 }    
             }
-            else
-            {
-                // Update existing remote player
-                (*it)->setcollider(pair.second->getcollider());
-                (*it)->setvelocity(pair.second->getvelocity());
-                (*it)->setDir(pair.second->getDir());
-                (*it)->setAnimationState(pair.second->getAnimationState());
-            }
+            Vec2 position = pair.second->getposition();
+            Vec2 oldPosition = (*it)->getposition();
+            std::cout << "[Game] Updating remote player: " << pair.first 
+                      << " from " << oldPosition.x << "," << oldPosition.y 
+                      << " to " << position.x << "," << position.y << std::endl;
+            // Update existing remote player
+            (*it)->setcollider(pair.second->getcollider());
+            (*it)->setvelocity(pair.second->getvelocity());
+            (*it)->setDir(pair.second->getDir());
+            (*it)->setAnimationState(pair.second->getAnimationState());
         }
     }
 }
