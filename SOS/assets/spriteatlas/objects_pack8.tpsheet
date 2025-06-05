@@ -1,0 +1,618 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:24801e4ea311cd6974ae5bad5d8d6fae:33728f09fc467ef91468e95d598b97b2:73807e367118f68e749c53f97d007738$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "objects_pack8",
+            "size": {
+                "h": 126,
+                "w": 912
+            },
+            "sprites": [
+                {
+                    "filename": "Bush_red_flowers1",
+                    "margin": {
+                        "h": 50,
+                        "w": 46,
+                        "x": 22,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 82,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Fern1_1",
+                    "margin": {
+                        "h": 56,
+                        "w": 44,
+                        "x": 22,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 84,
+                        "x": 85,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_orange_flowers1",
+                    "margin": {
+                        "h": 56,
+                        "w": 54,
+                        "x": 26,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 72,
+                        "w": 74,
+                        "x": 171,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Fern2_1",
+                    "margin": {
+                        "h": 60,
+                        "w": 52,
+                        "x": 28,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 68,
+                        "w": 76,
+                        "x": 247,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Cactus2_1",
+                    "margin": {
+                        "h": 62,
+                        "w": 62,
+                        "x": 32,
+                        "y": 34
+                    },
+                    "region": {
+                        "h": 66,
+                        "w": 66,
+                        "x": 325,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Snow_bush1",
+                    "margin": {
+                        "h": 64,
+                        "w": 60,
+                        "x": 28,
+                        "y": 30
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 68,
+                        "x": 393,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Cactus1_1",
+                    "margin": {
+                        "h": 6,
+                        "w": 2,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 62,
+                        "x": 433,
+                        "y": 67
+                    }
+                },
+                {
+                    "filename": "Autumn_bush1",
+                    "margin": {
+                        "h": 66,
+                        "w": 62,
+                        "x": 30,
+                        "y": 26
+                    },
+                    "region": {
+                        "h": 62,
+                        "w": 66,
+                        "x": 463,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_pink_flowers1",
+                    "margin": {
+                        "h": 68,
+                        "w": 64,
+                        "x": 32,
+                        "y": 32
+                    },
+                    "region": {
+                        "h": 60,
+                        "w": 64,
+                        "x": 497,
+                        "y": 65
+                    }
+                },
+                {
+                    "filename": "Bush_simple2_1",
+                    "margin": {
+                        "h": 2,
+                        "w": 2,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 62,
+                        "w": 62,
+                        "x": 531,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_simple1_1",
+                    "margin": {
+                        "h": 6,
+                        "w": 6,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 58,
+                        "x": 595,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Burned_tree1",
+                    "margin": {
+                        "h": 8,
+                        "w": 20,
+                        "x": 12,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 44,
+                        "x": 625,
+                        "y": 61
+                    }
+                },
+                {
+                    "filename": "Bush_blue_flowers1",
+                    "margin": {
+                        "h": 52,
+                        "w": 54,
+                        "x": 28,
+                        "y": 28
+                    },
+                    "region": {
+                        "h": 76,
+                        "w": 74,
+                        "x": 671,
+                        "y": 49
+                    }
+                },
+                {
+                    "filename": "Broken_tree1",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 795,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Bush_pink_flowers2",
+                    "margin": {
+                        "h": 20,
+                        "w": 16,
+                        "x": 8,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 44,
+                        "w": 48,
+                        "x": 1,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Snow_bush2",
+                    "margin": {
+                        "h": 22,
+                        "w": 14,
+                        "x": 8,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 42,
+                        "w": 50,
+                        "x": 51,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Autumn_bush2",
+                    "margin": {
+                        "h": 16,
+                        "w": 12,
+                        "x": 8,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 52,
+                        "x": 103,
+                        "y": 75
+                    }
+                },
+                {
+                    "filename": "Fern1_2",
+                    "margin": {
+                        "h": 14,
+                        "w": 16,
+                        "x": 8,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 50,
+                        "w": 48,
+                        "x": 157,
+                        "y": 75
+                    }
+                },
+                {
+                    "filename": "Bush_simple2_2",
+                    "margin": {
+                        "h": 16,
+                        "w": 18,
+                        "x": 10,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 48,
+                        "w": 46,
+                        "x": 207,
+                        "y": 75
+                    }
+                },
+                {
+                    "filename": "Bush_red_flowers2",
+                    "margin": {
+                        "h": 10,
+                        "w": 4,
+                        "x": 4,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 60,
+                        "x": 255,
+                        "y": 71
+                    }
+                },
+                {
+                    "filename": "Cactus2_2",
+                    "margin": {
+                        "h": 10,
+                        "w": 8,
+                        "x": 4,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 54,
+                        "w": 56,
+                        "x": 317,
+                        "y": 71
+                    }
+                },
+                {
+                    "filename": "Bush_orange_flowers2",
+                    "margin": {
+                        "h": 8,
+                        "w": 8,
+                        "x": 4,
+                        "y": 2
+                    },
+                    "region": {
+                        "h": 56,
+                        "w": 56,
+                        "x": 375,
+                        "y": 69
+                    }
+                },
+                {
+                    "filename": "Bush_blue_flowers2",
+                    "margin": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 2,
+                        "y": 4
+                    },
+                    "region": {
+                        "h": 58,
+                        "w": 60,
+                        "x": 563,
+                        "y": 65
+                    }
+                },
+                {
+                    "filename": "Cactus1_2",
+                    "margin": {
+                        "h": 18,
+                        "w": 18,
+                        "x": 10,
+                        "y": 6
+                    },
+                    "region": {
+                        "h": 46,
+                        "w": 46,
+                        "x": 655,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_simple1_2",
+                    "margin": {
+                        "h": 20,
+                        "w": 20,
+                        "x": 10,
+                        "y": 8
+                    },
+                    "region": {
+                        "h": 44,
+                        "w": 44,
+                        "x": 703,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Fern2_2",
+                    "margin": {
+                        "h": 24,
+                        "w": 18,
+                        "x": 8,
+                        "y": 10
+                    },
+                    "region": {
+                        "h": 40,
+                        "w": 46,
+                        "x": 747,
+                        "y": 47
+                    }
+                },
+                {
+                    "filename": "Burned_tree2",
+                    "margin": {
+                        "h": 26,
+                        "w": 30,
+                        "x": 16,
+                        "y": 14
+                    },
+                    "region": {
+                        "h": 38,
+                        "w": 34,
+                        "x": 749,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Broken_tree2",
+                    "margin": {
+                        "h": 2,
+                        "w": 2,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 30,
+                        "x": 863,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Cactus2_3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 32,
+                        "x": 747,
+                        "y": 89
+                    }
+                },
+                {
+                    "filename": "Fern1_3",
+                    "margin": {
+                        "h": 0,
+                        "w": 2,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 30,
+                        "x": 781,
+                        "y": 89
+                    }
+                },
+                {
+                    "filename": "Autumn_bush3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 785,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_blue_flowers3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 819,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Bush_orange_flowers3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 813,
+                        "y": 65
+                    }
+                },
+                {
+                    "filename": "Bush_pink_flowers3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 829,
+                        "y": 33
+                    }
+                },
+                {
+                    "filename": "Bush_red_flowers3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 853,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Cactus1_3",
+                    "margin": {
+                        "h": 4,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 32,
+                        "x": 813,
+                        "y": 97
+                    }
+                },
+                {
+                    "filename": "Snow_bush3",
+                    "margin": {
+                        "h": 2,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 32,
+                        "x": 847,
+                        "y": 65
+                    }
+                },
+                {
+                    "filename": "Bush_simple2_3",
+                    "margin": {
+                        "h": 2,
+                        "w": 2,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 30,
+                        "w": 30,
+                        "x": 881,
+                        "y": 65
+                    }
+                },
+                {
+                    "filename": "Bush_simple1_3",
+                    "margin": {
+                        "h": 4,
+                        "w": 4,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 847,
+                        "y": 97
+                    }
+                },
+                {
+                    "filename": "Fern2_3",
+                    "margin": {
+                        "h": 4,
+                        "w": 4,
+                        "x": 2,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 28,
+                        "w": 28,
+                        "x": 877,
+                        "y": 97
+                    }
+                }
+            ]
+        }
+    ]
+}

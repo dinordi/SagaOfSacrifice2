@@ -1,0 +1,138 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:b07b75bfb0e9d7403ff99f8a26fa7854:acb7f2fa271c90580cfaf2991bf36522:700c3ae7f324229b4944b41e66f0f5ca$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "objects_pack4",
+            "size": {
+                "h": 622,
+                "w": 992
+            },
+            "sprites": [
+                {
+                    "filename": "Dinosaur_skeleton_full_dark_shadow",
+                    "margin": {
+                        "h": 322,
+                        "w": 184,
+                        "x": 92,
+                        "y": 160
+                    },
+                    "region": {
+                        "h": 190,
+                        "w": 328,
+                        "x": 1,
+                        "y": 431
+                    }
+                },
+                {
+                    "filename": "Dinosaur_skeleton_full_light_shadow",
+                    "margin": {
+                        "h": 322,
+                        "w": 184,
+                        "x": 92,
+                        "y": 160
+                    },
+                    "region": {
+                        "h": 190,
+                        "w": 328,
+                        "x": 331,
+                        "y": 431
+                    }
+                },
+                {
+                    "filename": "Dark_totem_dark_shadow1",
+                    "margin": {
+                        "h": 230,
+                        "w": 286,
+                        "x": 142,
+                        "y": 114
+                    },
+                    "region": {
+                        "h": 282,
+                        "w": 226,
+                        "x": 765,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "centipede_dark_shadow1",
+                    "margin": {
+                        "h": 298,
+                        "w": 136,
+                        "x": 68,
+                        "y": 148
+                    },
+                    "region": {
+                        "h": 214,
+                        "w": 376,
+                        "x": 1,
+                        "y": 215
+                    }
+                },
+                {
+                    "filename": "centipede_light_shadow1",
+                    "margin": {
+                        "h": 298,
+                        "w": 136,
+                        "x": 68,
+                        "y": 148
+                    },
+                    "region": {
+                        "h": 214,
+                        "w": 376,
+                        "x": 379,
+                        "y": 215
+                    }
+                },
+                {
+                    "filename": "white_crystal_light_shadow1",
+                    "margin": {
+                        "h": 230,
+                        "w": 286,
+                        "x": 142,
+                        "y": 114
+                    },
+                    "region": {
+                        "h": 282,
+                        "w": 226,
+                        "x": 757,
+                        "y": 285
+                    }
+                },
+                {
+                    "filename": "centipede_dark_shadow2",
+                    "margin": {
+                        "h": 300,
+                        "w": 132,
+                        "x": 66,
+                        "y": 150
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 380,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "centipede_light_shadow2",
+                    "margin": {
+                        "h": 300,
+                        "w": 132,
+                        "x": 66,
+                        "y": 150
+                    },
+                    "region": {
+                        "h": 212,
+                        "w": 380,
+                        "x": 383,
+                        "y": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

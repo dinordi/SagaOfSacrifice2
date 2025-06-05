@@ -31,6 +31,10 @@ public:
         return *this;
     }
 
+    Vec2 operator/(float scalar) const {
+        return Vec2(x / scalar, y / scalar);
+    }
+
     float dot(const Vec2& other) const {
         return x * other.x + y * other.y;
     }
@@ -42,6 +46,9 @@ public:
     Vec2 normalize() const {
         float len = length();
         return Vec2(x / len, y / len);
+    }
+    float magnitude() const {
+        return (std::sqrt(x * x + y * y));
     }
 };
 

@@ -3,24 +3,8 @@
 #include <string>
 #include <functional>
 #include <vector>
-
-// Enum for different types of network messages
-enum class MessageType {
-    PLAYER_POSITION,
-    PLAYER_ACTION,
-    GAME_STATE,
-    CHAT_MESSAGE,
-    CONNECT,
-    DISCONNECT,
-    PING
-};
-
-// Base message structure
-struct NetworkMessage {
-    MessageType type;
-    std::string senderId;
-    std::vector<uint8_t> data;
-};
+#include <cstdint>
+#include "network/NetworkMessage.h"
 
 // Network interface class that will be implemented for client
 class NetworkInterface {
@@ -44,4 +28,7 @@ public:
     
     // Check if connected to the server
     virtual bool isConnected() const = 0;
+    
+    // Set the client ID for sending messages
+    virtual void setClientId(const uint16_t clientId) = 0;
 };

@@ -7,9 +7,10 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 
 // Forward declaration
-class RemotePlayer;
+class PlayerInput;
 
 // Handles all multiplayer functionality for the client
 class MultiplayerManager {
@@ -18,31 +19,53 @@ public:
     ~MultiplayerManager();
 
     // Initialize the multiplayer system
-    bool initialize(const std::string& serverAddress, int serverPort, const std::string& playerId);
+    bool initialize(const std::string& serverAddress, int serverPort, const uint16_t playerId);
     
     // Shutdown multiplayer system
     void shutdown();
     
     // Update network state - should be called once per frame
-    void update(uint64_t deltaTime);
+    void update(float deltaTime);
     
     // Set the local player
     void setLocalPlayer(Player* player);
     
-    // Send local player state to the server
+    // Set the player input handler
+    void setPlayerInput(PlayerInput* input);
+    
+    // Send player input state to server
+    void sendPlayerInput();
+    
+    // Send player position (kept for backwards compatibility, less important now)
     void sendPlayerState();
     
+    // Send player action
+    void sendPlayerAction(int actionType);
+    
+    // Send enemy state update to server (e.g., when enemy dies)
+    void sendEnemyStateUpdate(const uint16_t enemyId, bool isDead, int16_t currentHealth);
+    void handleEnemyStateMessage(const NetworkMessage& message);
+
     // Check if connected to server
     bool isConnected() const;
     
     // Get all remote players
-    const std::map<std::string, std::unique_ptr<RemotePlayer>>& getRemotePlayers() const;
+    const std::map<uint16_t, std::shared_ptr<Player>>& getRemotePlayers() const;
     
     // Send a chat message
     void sendChatMessage(const std::string& message);
     
     // Set the chat message handler
-    void setChatMessageHandler(std::function<void(const std::string& senderId, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const uint16_t senderId, const std::string& message)> handler);
+    
+    // Process game state update from server
+    void processGameState(const std::vector<uint8_t>& gameStateData);
+    
+    // Process delta game state update (only changed objects)
+    void processGameStateDelta(const std::vector<uint8_t>& gameStateData);
+    
+    // Process part of a multi-packet game state update
+    void processGameStatePart(const std::vector<uint8_t>& gameStateData);
 
 private:
     // Handle network messages received from the server
@@ -55,10 +78,20 @@ private:
     void handleChatMessage(const NetworkMessage& message);
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
+    void handlePlayerAssignMessage(const NetworkMessage& message);
+    void handlePlayerJoinMessage(const NetworkMessage& message);
+
+    std::shared_ptr<Object> updateEntityPosition(const uint16_t objectId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
-    void deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player);
+    void deserializePlayerState(const std::vector<uint8_t>& data, Player* player);
+
+    // Deserialize object from game state data
+    std::shared_ptr<Object> deserializeObject(const std::vector<uint8_t>& data, size_t& pos);
+    
+    // Serialize player input
+    std::vector<uint8_t> serializePlayerInput(const PlayerInput* input);
     
     // Network interface
     std::unique_ptr<NetworkInterface> network_;
@@ -66,50 +99,35 @@ private:
     // Local player reference (not owned)
     Player* localPlayer_;
     
-    // Remote players
-    std::map<std::string, std::unique_ptr<RemotePlayer>> remotePlayers_;
+    // Player input reference (not owned)
+    PlayerInput* playerInput_;
+    
+    // Remote players - now using Player class instead of RemotePlayer
+    std::map<uint16_t, std::shared_ptr<Player>> remotePlayers_;
     
     // Player ID
-    std::string playerId_;
+    uint16_t playerId_;
     
     // Chat message handler
-    std::function<void(const std::string& senderId, const std::string& message)> chatHandler_;
+    std::function<void(const uint16_t senderId, const std::string& message)> chatHandler_;
     
     // Last time we sent a player update
     uint64_t lastUpdateTime_;
     
-    // How often to send updates (in ms)
-    static constexpr uint64_t UpdateInterval = 50;  // 20 updates per second
-};
+    // Client-side prediction state
+    float lastSentInputTime_;
+    uint32_t inputSequenceNumber_;
 
-// RemotePlayer class to represent other players in the game
-class RemotePlayer : public Object
-{
-public:
-    RemotePlayer(const std::string& id);
-    
-    void update(uint64_t deltaTime);
-    
-    // Setters
-    // void setPosition(const Vec2& position);
-    // void setVelocity(const Vec2& velocity);
-    void setOrientation(float orientation);
-    void setState(int state);
-    
-    void accept(CollisionVisitor& visitor) override;
+    //Base path for atlas
+    std::filesystem::path atlasBasePath_;
 
-    // Getters
-    // const std::string& getId() const { return id_; }
-    // const Vec2& getPosition() const { return position_; }
-    // const Vec2& getVelocity() const { return velocity_; }
-    float getOrientation() const { return orientation_; }
-    int getState() const { return state_; }
-    
-private:
-    // std::string id_;
-    // Vec2 position_;
-    // Vec2 velocity_;
-    float orientation_;
-    int state_;
-    const std::string id_;
+    // Multi-part game state handling
+    struct PartialGameState {
+        uint16_t totalObjectCount;
+        bool complete;
+        std::vector<std::vector<uint8_t>> parts;
+        std::vector<uint16_t> packetIndices;
+        std::chrono::steady_clock::time_point lastUpdateTime;
+    };
+    std::unique_ptr<PartialGameState> partialGameState_;
 };

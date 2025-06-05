@@ -23,19 +23,36 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
     server_port_ = port;
 
     try {
+        io_context_.restart(); // Restart the io_context if it was stopped
+
         boost::asio::ip::tcp::resolver resolver(io_context_);
-        auto endpoints = resolver.resolve(host, std::to_string(port));
+        
+        // Try to resolve the address with an explicit timeout
+        boost::system::error_code ec;
+        auto endpoints = resolver.resolve(host, std::to_string(port), ec);
+        
+        if (ec) {
+            std::cerr << "[Network] Failed to resolve host: " << host << ", error: " << ec.message() << std::endl;
+            return false;
+        }
         
         std::cout << "[Network] Attempting to connect to " << host << ":" << port << std::endl;
-
-        // Ensure the handler signature matches one of the expected overloads.
-        // Common signature takes error_code and the endpoint type.
-        boost::asio::async_connect(socket_, endpoints,
-            [this](const boost::system::error_code& error,
-                   const boost::asio::ip::tcp::endpoint& /* endpoint */) { // Using const& is common
-                handleConnect(error);
-            });
         
+        // Connect synchronously first to catch immediate failures
+        boost::system::error_code connect_ec;
+        boost::asio::connect(socket_, endpoints, connect_ec);
+        
+        if (connect_ec) {
+            std::cerr << "[Network] Synchronous connect failed: " << connect_ec.message() << std::endl;
+            return false;
+        }
+        
+        // If we got here, connection succeeded
+        connected_ = true;
+        std::cout << "[Network] Connected to " << host << ":" << port << std::endl;
+
+        // work_guard keeps the io_context running even if there are no handlers
+        work_guard_.emplace(boost::asio::make_work_guard(io_context_));
 
         // Start the ASIO io_context in a separate thread
         io_thread_ = boost::thread([this]() {
@@ -48,9 +65,10 @@ bool AsioNetworkClient::connect(const std::string& host, int port) {
                 connected_ = false;
             }
         });
-
-        // Wait briefly to ensure connection has time to be established
-        boost::this_thread::sleep_for(boost::chrono::milliseconds(100));
+        
+        // Start reading
+        startRead();
+        
         return connected_;
     } catch (const std::exception& e) {
         std::cerr << "[Network] Connection error: " << e.what() << std::endl;
@@ -75,6 +93,13 @@ void AsioNetworkClient::disconnect() {
             io_thread_.join();
         }
 
+        // Reset the work guard
+        if(work_guard_)
+        {
+            work_guard_->reset();
+            work_guard_.reset();
+        }
+
         connected_ = false;
     } catch (const std::exception& e) {
         std::cerr << "Error during disconnect: " << e.what() << std::endl;
@@ -83,48 +108,88 @@ void AsioNetworkClient::disconnect() {
 
 bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
     if (!connected_ || !socket_.is_open()) {
-        std::cerr << "[Network] Cannot send message, not connected" << std::endl;
+        std::cerr << "[AsioNetworkClient] Cannot send message - not connected" << std::endl;
         return false;
     }
-
+    
     try {
-        // Serialize the message
-        std::vector<uint8_t> serializedMsg = serializeMessage(message);
+        // Create a binary message as shared_ptr to manage message lifetime
+        auto buffer_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& buffer = *buffer_ptr;
         
-        // Prefix with message size
+        // Add message type (1 byte)
+        buffer.push_back(static_cast<uint8_t>(message.type));
+        
+        // Use client_id_ instead of message.senderId if it's set
+        uint16_t senderId = client_id_ ? client_id_ : message.senderId;
+
+        // Add sender ID content
+        buffer.push_back(static_cast<uint8_t>((senderId >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(senderId & 0xFF));
+
+        // Add data length (4 bytes)
+        uint32_t dataSize = static_cast<uint32_t>(message.data.size());
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(dataSize & 0xFF));
+        
+        // Add message data
+        buffer.insert(buffer.end(), message.data.begin(), message.data.end());
+        
+        // Create the message header
         MessageHeader header;
-        header.size = static_cast<uint32_t>(serializedMsg.size());
+        header.size = static_cast<uint32_t>(buffer.size());
         
-        // Create combined buffer with header + message
-        std::vector<uint8_t> buffer;
-        buffer.resize(sizeof(header) + serializedMsg.size());
+        // Create the complete message (header + body)
+        auto complete_message_ptr = std::make_shared<std::vector<uint8_t>>();
+        auto& completeMessage = *complete_message_ptr;
+        completeMessage.resize(sizeof(header) + buffer.size());
         
-        // Copy header
-        std::memcpy(buffer.data(), &header, sizeof(header));
+        // Copy the header
+        std::memcpy(completeMessage.data(), &header, sizeof(header));
         
-        // Copy message body
-        std::memcpy(buffer.data() + sizeof(header), serializedMsg.data(), serializedMsg.size());
-        
-        // std::cout << "[Network] Sending message type: " << static_cast<int>(message.type) 
-        //           << ", size: " << serializedMsg.size() 
-        //           << ", sender: " << message.senderId << std::endl;
+        // Copy the message body
+        std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+
+        //Store the buffer in collection to keep alive
+        {
+            std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);
+            outgoing_messages_.push_back(buffer_ptr);
+        }
         
         // Send the message asynchronously
-        boost::asio::async_write(socket_, 
-            boost::asio::buffer(buffer, buffer.size()),
-            [this](const boost::system::error_code& error, std::size_t) {
-                handleWrite(error);
+        boost::asio::async_write(socket_,
+            boost::asio::buffer(completeMessage),
+            [this, complete_message_ptr](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                // Clean up the buffer after operation completes
+                {
+                    std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);
+                    outgoing_messages_.erase(
+                        std::remove(outgoing_messages_.begin(), outgoing_messages_.end(), complete_message_ptr),
+                        outgoing_messages_.end());
+                }
+                
+                if (error) {
+                    std::cerr << "[AsioNetworkClient] Error sending message: " << error.message() << std::endl;
+                    connected_ = false;
+                }
             });
         
         return true;
     } catch (const std::exception& e) {
-        std::cerr << "[Network] Error sending message: " << e.what() << std::endl;
+        std::cerr << "[AsioNetworkClient] Error preparing message: " << e.what() << std::endl;
         return false;
     }
 }
 
 void AsioNetworkClient::setMessageHandler(std::function<void(const NetworkMessage&)> handler) {
     message_handler_ = handler;
+}
+
+void AsioNetworkClient::setClientId(const uint16_t clientId) {
+    client_id_ = clientId;
+    std::cout << "[AsioNetworkClient] Client ID set to: " << clientId << std::endl;
 }
 
 void AsioNetworkClient::update() {
@@ -151,7 +216,7 @@ void AsioNetworkClient::startRead() {
         std::cerr << "[Network] Cannot start read, socket is closed" << std::endl;
         return;
     }
-    
+
     // First, read the message header to know the size
     boost::asio::async_read(socket_,
         boost::asio::buffer(&read_buffer_[0], sizeof(MessageHeader)),
@@ -159,48 +224,48 @@ void AsioNetworkClient::startRead() {
             if (!error && bytes_transferred == sizeof(MessageHeader)) {
                 // Read the message header
                 MessageHeader* header = reinterpret_cast<MessageHeader*>(read_buffer_.data());
-                
-                // std::cout << "[Network] Received message header, size: " << header->size << " bytes" << std::endl;
-                
-                // Now read the message body
-                if (header->size > 0 && header->size < max_buffer_size) {
-                    boost::asio::async_read(socket_,
-                        boost::asio::buffer(&read_buffer_[sizeof(MessageHeader)], header->size),
-                        [this, header](const boost::system::error_code& error, std::size_t bytes_transferred) {
-                            if (!error && bytes_transferred == header->size) {
-                                // Process the complete message
-                                std::vector<uint8_t> messageData(
-                                    read_buffer_.begin() + sizeof(MessageHeader),
-                                    read_buffer_.begin() + sizeof(MessageHeader) + header->size
-                                );
-                                
-                                // Deserialize and add to queue
-                                NetworkMessage message = deserializeMessage(messageData);
-                                // std::cout << "[Network] Received complete message, type: " << static_cast<int>(message.type) 
-                                //           << ", sender: " << message.senderId
-                                //           << ", data size: " << message.data.size() << " bytes" << std::endl;
-                                
-                                std::lock_guard<std::mutex> lock(message_mutex_);
-                                received_messages_.push(message);
-                            } else if (error) {
-                                std::cerr << "[Network] Error reading message body: " << error.message() << std::endl;
-                            }
-                            
-                            // Continue reading
-                            startRead();
-                        });
-                } else {
-                    // Invalid message size, restart reading
-                    std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
-                    startRead();
+
+                // Log raw header data for debugging
+                // std::cout << "[Network] Raw header data: ";
+                // for (size_t i = 0; i < sizeof(MessageHeader); ++i) {
+                //     std::cout << std::hex << static_cast<int>(read_buffer_[i]) << " ";
+                // }
+                // std::cout << std::dec << std::endl;
+
+                // Sanity check for message size
+                if (header->size <= 0 || header->size >= max_buffer_size) {
+                    // std::cerr << "[Network] Invalid message size: " << header->size << std::endl;
+                    startRead(); // Restart reading
+                    return;
                 }
+
+                // Now read the message body
+                boost::asio::async_read(socket_,
+                    boost::asio::buffer(&read_buffer_[sizeof(MessageHeader)], header->size),
+                    [this, header](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                        if (!error && bytes_transferred == header->size) {
+                            // Process the complete message
+                            std::vector<uint8_t> messageData(
+                                read_buffer_.begin() + sizeof(MessageHeader),
+                                read_buffer_.begin() + sizeof(MessageHeader) + header->size
+                            );
+
+                            // Deserialize and add to queue
+                            NetworkMessage message = deserializeMessage(messageData);
+                            std::lock_guard<std::mutex> lock(message_mutex_);
+                            received_messages_.push(message);
+                        } else if (error) {
+                            std::cerr << "[Network] Error reading message body: " << error.message() << std::endl;
+                        }
+
+                        // Continue reading
+                        startRead();
+                    });
             } else if (error != boost::asio::error::operation_aborted) {
                 // Handle error but don't restart if we're intentionally shutting down
                 if (connected_) {
                     std::cerr << "[Network] Read error: " << error.message() << std::endl;
-                    // Try to reconnect or handle disconnection
                     connected_ = false;
-                    // Could implement reconnection logic here
                 }
             }
         });
@@ -262,11 +327,9 @@ std::vector<uint8_t> AsioNetworkClient::serializeMessage(const NetworkMessage& m
     // 1. Message type - 1 byte
     result.push_back(static_cast<uint8_t>(message.type));
     
-    // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId.size()));
-
-    // 3. Sender ID content
-    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
+    // 2. Sender ID - 2 bytes
+    result.push_back(static_cast<uint8_t>(message.senderId >> 8));
+    result.push_back(static_cast<uint8_t>(message.senderId & 0xFF));
     
     // 4. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
@@ -292,14 +355,14 @@ NetworkMessage AsioNetworkClient::deserializeMessage(const std::vector<uint8_t>&
     
     if (offset >= data.size()) return message;
     
-    // 2. Sender ID length
-    uint8_t senderIdLength = data[offset++];
-    
-    // // 3. Sender ID content
-    if (offset + senderIdLength <= data.size()) {
-        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-        offset += senderIdLength;
+    // 2. Sender ID 2 bytes
+    message.senderId = 0;
+    if (offset + 2 <= data.size()) {
+        message.senderId = (static_cast<uint16_t>(data[offset]) << 8) |
+                           static_cast<uint16_t>(data[offset + 1]);
+        offset += 2;
     }
+    
     
     if (offset + 4 > data.size()) return message;
     

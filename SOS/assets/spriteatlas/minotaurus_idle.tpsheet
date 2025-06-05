@@ -1,0 +1,138 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:60388844f65505149f1402a1ac2077a1:ca7e591357fa93294323db8be4f6c4b8:472ebb332dc53f26ebdf6a556784e7b0$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "minotaurus_idle",
+            "size": {
+                "h": 870,
+                "w": 870
+            },
+            "sprites": [
+                {
+                    "filename": "minotaurus_idle-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 1,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 291
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 291,
+                        "y": 581
+                    }
+                },
+                {
+                    "filename": "minotaurus_idle-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 288,
+                        "w": 288,
+                        "x": 581,
+                        "y": 291
+                    }
+                }
+            ]
+        }
+    ]
+}

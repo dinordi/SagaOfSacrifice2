@@ -2,10 +2,13 @@
 
 #include "NetworkInterface.h"
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <queue>
 #include <mutex>
+#include <optional>
+
+#include <boost/bind/bind.hpp>
+using namespace boost::placeholders;
 
 class AsioNetworkClient : public NetworkInterface {
 public:
@@ -19,6 +22,7 @@ public:
     void setMessageHandler(std::function<void(const NetworkMessage&)> handler) override;
     void update() override;
     bool isConnected() const override;
+    void setClientId(const uint16_t clientId) override;
 
 private:
     // Asio-specific implementation details
@@ -32,15 +36,24 @@ private:
     std::vector<uint8_t> serializeMessage(const NetworkMessage& message);
     NetworkMessage deserializeMessage(const std::vector<uint8_t>& data);
 
+    
+private:
+    std::mutex outgoing_messages_mutex_;
+    std::vector<std::shared_ptr<std::vector<uint8_t>>> outgoing_messages_;
+    
     // Asio io_context and socket
     boost::asio::io_context io_context_;
     boost::asio::ip::tcp::socket socket_;
     boost::thread io_thread_;
+
+    // Work guard to keep io_context running
+    std::optional<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> work_guard_;
     
     // Connection state
     bool connected_;
     std::string server_host_;
     int server_port_;
+    uint16_t client_id_; // Client ID for message sending
     
     // Message handling
     std::function<void(const NetworkMessage&)> message_handler_;
@@ -48,7 +61,7 @@ private:
     std::mutex message_mutex_;
     
     // Message read buffer
-    enum { max_buffer_size = 1024 };
+    enum { max_buffer_size = 8192 };
     std::vector<uint8_t> read_buffer_;
     
     // Message header contains the size of the following message

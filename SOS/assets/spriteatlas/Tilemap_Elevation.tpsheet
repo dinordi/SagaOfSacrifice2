@@ -1,0 +1,378 @@
+{
+	"textures": [
+		{
+			"image": "Tilemap_Elevation",
+			"size": {
+				"w": 1536,
+				"h": 64
+			},
+			"sprites": [
+				{
+					"filename": "struct",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-1",
+					"region": {
+						"x": 64,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-2",
+					"region": {
+						"x": 128,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-3",
+					"region": {
+						"x": 192,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-4",
+					"region": {
+						"x": 256,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-5",
+					"region": {
+						"x": 320,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-6",
+					"region": {
+						"x": 384,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-7",
+					"region": {
+						"x": 448,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-8",
+					"region": {
+						"x": 512,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-9",
+					"region": {
+						"x": 576,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-10",
+					"region": {
+						"x": 640,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-11",
+					"region": {
+						"x": 704,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-12",
+					"region": {
+						"x": 768,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-13",
+					"region": {
+						"x": 832,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-14",
+					"region": {
+						"x": 896,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-15",
+					"region": {
+						"x": 960,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-16",
+					"region": {
+						"x": 1024,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-17",
+					"region": {
+						"x": 1088,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-18",
+					"region": {
+						"x": 1152,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-19",
+					"region": {
+						"x": 1216,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-20",
+					"region": {
+						"x": 1280,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-21",
+					"region": {
+						"x": 1344,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-22",
+					"region": {
+						"x": 1408,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "struct-23",
+					"region": {
+						"x": 1472,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:92c47c4475980e89b9fa4e1206cbe6a8:1fe19395f04b1a63ac1e236d641c5f22:609741374127ca860f9779c5eb57a60c$"
+	}
+}

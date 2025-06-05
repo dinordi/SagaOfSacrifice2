@@ -1,0 +1,678 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:9f4d5f7d42f206af24547e09b7f22072:039f2902f653b39ba3115ac353ba39c7:05648468b0f89add61c94129ab7dbbb3$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "water_coast",
+            "size": {
+                "h": 500,
+                "w": 1234
+            },
+            "sprites": [
+                {
+                    "filename": "Water_coasts_animation",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 583,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 108,
+                        "w": 192,
+                        "x": 389,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 805,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 681,
+                        "y": 305
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 192,
+                        "x": 1,
+                        "y": 323
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 871,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 76,
+                        "w": 192,
+                        "x": 513,
+                        "y": 161
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 937,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 192,
+                        "x": 319,
+                        "y": 225
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1003,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 903,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 192,
+                        "x": 1,
+                        "y": 435
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 999,
+                        "y": 113
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 877,
+                        "y": 277
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 192,
+                        "x": 195,
+                        "y": 435
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 1065,
+                        "y": 113
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 707,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 192,
+                        "x": 195,
+                        "y": 323
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1069,
+                        "y": 211
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 707,
+                        "y": 145
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 192,
+                        "x": 319,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1073,
+                        "y": 277
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 192,
+                        "x": 389,
+                        "y": 415
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1135,
+                        "y": 197
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 192,
+                        "x": 513,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1139,
+                        "y": 263
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 1001,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 192,
+                        "x": 513,
+                        "y": 239
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 1099,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-29",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 973,
+                        "y": 389
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-30",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 192,
+                        "x": 779,
+                        "y": 433
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-31",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 1131,
+                        "y": 99
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-32",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 779,
+                        "y": 289
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-33",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 320,
+                        "w": 316,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-34",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 142,
+                        "w": 96,
+                        "x": 805,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-35",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 192,
+                        "x": 319,
+                        "y": 113
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-36",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1169,
+                        "y": 329
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-37",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 78,
+                        "w": 192,
+                        "x": 513,
+                        "y": 81
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-38",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 64,
+                        "x": 1169,
+                        "y": 395
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-39",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 975,
+                        "y": 277
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-40",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 110,
+                        "w": 96,
+                        "x": 1071,
+                        "y": 389
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-41",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 64,
+                        "w": 192,
+                        "x": 805,
+                        "y": 145
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-42",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 64,
+                        "x": 1165,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Water_coasts_animation-43",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 32,
+                        "w": 96,
+                        "x": 583,
+                        "y": 449
+                    }
+                }
+            ]
+        }
+    ]
+}
