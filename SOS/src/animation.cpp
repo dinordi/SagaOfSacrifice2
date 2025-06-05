@@ -1,7 +1,7 @@
 #include "animation.h"
 #include <iostream>
 AnimationController::AnimationController()
-    : currentState(AnimationState::IDLE), currentFrame(0), elapsedTime(0), finished(false) {
+    : currentState(AnimationState::IDLE), currentFrame(0), elapsedTime(0), finished(false),lastDirection(FacingDirection::EAST), targetState(AnimationState::IDLE) {
     // Default constructor - start with IDLE state
 }
 
@@ -32,6 +32,7 @@ void AnimationController::setState(AnimationState state) {
         std::cerr << "Direction " << static_cast<int>(lastDirection) << " not found in animation definition!" << std::endl;
         return;
     }
+ 
     FacingDirFrames& fdf = dirIt->second;
     if(finished || targetState != currentState)
     {

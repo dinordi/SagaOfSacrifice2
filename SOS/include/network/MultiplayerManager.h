@@ -10,7 +10,6 @@
 #include <set>
 
 // Forward declaration
-class RemotePlayer;
 class PlayerInput;
 
 // Handles all multiplayer functionality for the client
@@ -20,7 +19,7 @@ public:
     ~MultiplayerManager();
 
     // Initialize the multiplayer system
-    bool initialize(const std::string& serverAddress, int serverPort, const std::string& playerId);
+    bool initialize(const std::string& serverAddress, int serverPort, const uint16_t playerId);
     
     // Shutdown multiplayer system
     void shutdown();
@@ -44,20 +43,20 @@ public:
     void sendPlayerAction(int actionType);
     
     // Send enemy state update to server (e.g., when enemy dies)
-    void sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth);
+    void sendEnemyStateUpdate(const uint16_t enemyId, bool isDead, int16_t currentHealth);
     void handleEnemyStateMessage(const NetworkMessage& message);
 
     // Check if connected to server
     bool isConnected() const;
     
     // Get all remote players
-    const std::map<std::string, std::unique_ptr<RemotePlayer>>& getRemotePlayers() const;
+    const std::map<uint16_t, std::shared_ptr<Player>>& getRemotePlayers() const;
     
     // Send a chat message
     void sendChatMessage(const std::string& message);
     
     // Set the chat message handler
-    void setChatMessageHandler(std::function<void(const std::string& senderId, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const uint16_t senderId, const std::string& message)> handler);
     
     // Process game state update from server
     void processGameState(const std::vector<uint8_t>& gameStateData);
@@ -79,12 +78,14 @@ private:
     void handleChatMessage(const NetworkMessage& message);
     void handlePlayerConnectMessage(const NetworkMessage& message);
     void handlePlayerDisconnectMessage(const NetworkMessage& message);
+    void handlePlayerAssignMessage(const NetworkMessage& message);
+    void handlePlayerJoinMessage(const NetworkMessage& message);
 
-    std::shared_ptr<Object> updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
+    std::shared_ptr<Object> updateEntityPosition(const uint16_t objectId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
-    void deserializePlayerState(const std::vector<uint8_t>& data, RemotePlayer* player);
+    void deserializePlayerState(const std::vector<uint8_t>& data, Player* player);
 
     // Deserialize object from game state data
     std::shared_ptr<Object> deserializeObject(const std::vector<uint8_t>& data, size_t& pos);
@@ -101,14 +102,14 @@ private:
     // Player input reference (not owned)
     PlayerInput* playerInput_;
     
-    // Remote players
-    std::map<std::string, std::unique_ptr<RemotePlayer>> remotePlayers_;
+    // Remote players - now using Player class instead of RemotePlayer
+    std::map<uint16_t, std::shared_ptr<Player>> remotePlayers_;
     
     // Player ID
-    std::string playerId_;
+    uint16_t playerId_;
     
     // Chat message handler
-    std::function<void(const std::string& senderId, const std::string& message)> chatHandler_;
+    std::function<void(const uint16_t senderId, const std::string& message)> chatHandler_;
     
     // Last time we sent a player update
     uint64_t lastUpdateTime_;
@@ -125,42 +126,8 @@ private:
         uint16_t totalObjectCount;
         bool complete;
         std::vector<std::vector<uint8_t>> parts;
-        std::vector<uint16_t> packetIndices;  // Add this line
+        std::vector<uint16_t> packetIndices;
         std::chrono::steady_clock::time_point lastUpdateTime;
     };
     std::unique_ptr<PartialGameState> partialGameState_;
-};
-
-// RemotePlayer class to represent other players in the game
-class RemotePlayer : public Object
-{
-public:
-    RemotePlayer(const std::string id);
-    
-    void update(float deltaTime) override;
-    
-    // Setters
-    void setOrientation(float orientation);
-    void setState(int state);
-    void setTargetPosition(const Vec2& position);
-    void setTargetVelocity(const Vec2& velocity);
-    void resetInterpolation();
-    
-    void accept(CollisionVisitor& visitor) override;
-
-    // Getters
-    float getOrientation() const { return orientation_; }
-    int getState() const { return state_; }
-    const Vec2& getTargetPosition() const { return targetPosition_; }
-    const Vec2& getTargetVelocity() const { return targetVelocity_; }
-    float getInterpolationTime() const { return interpolationTime_; }
-    
-private:
-    float orientation_;
-    int state_;
-    
-    // Client-side interpolation variables
-    Vec2 targetPosition_;
-    Vec2 targetVelocity_;
-    float interpolationTime_;
 };

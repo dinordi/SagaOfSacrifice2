@@ -28,7 +28,7 @@ public:
 class PlayerFactory {
 public:
     static std::shared_ptr<Player> createPlayer(
-        const std::string& playerId,
+        const uint16_t playerId,
         const Vec2& position = Vec2{500, 100}
     ) {
         // Create sprite data
@@ -48,7 +48,7 @@ public:
      * Create a player with custom sprite settings
      */
     static std::shared_ptr<Player> createPlayerWithSprite(
-        const std::string& playerId,
+        const uint16_t playerId,
         const std::string& spriteSheet,
         int width, int height,
         int spriteId,

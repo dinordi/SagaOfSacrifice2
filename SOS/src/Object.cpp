@@ -3,8 +3,12 @@
 #include "tile.h"
 
 #include <iostream>
+#include <mutex>
 
-Object::Object(BoxCollider collider, ObjectType type, std::string ID)
+uint16_t Object::objectCount = 0; // Initialize static object count
+std::mutex Object::countmutex; // Define the static mutex
+
+Object::Object(BoxCollider collider, ObjectType type, uint16_t ID)
     : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID)
 {
     // this->spriteData = new SpriteData();
@@ -17,6 +21,10 @@ Object::Object(BoxCollider collider, ObjectType type, std::string ID)
 
 // Animation methods implementation
 void Object::updateAnimation(float deltaTime) {
+    if(type == ObjectType::TILE) {
+        // Tiles do not have animations, return early
+        return;
+    }
     animController.update(static_cast<uint64_t>(deltaTime), dir);
 }
 

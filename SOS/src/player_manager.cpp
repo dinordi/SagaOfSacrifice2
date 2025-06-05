@@ -6,7 +6,7 @@ PlayerManager& PlayerManager::getInstance() {
     return instance;
 }
 
-std::shared_ptr<Player> PlayerManager::createPlayer(const std::string& playerId, const Vec2& position) {
+std::shared_ptr<Player> PlayerManager::createPlayer(const uint16_t playerId, const Vec2& position) {
     std::lock_guard<std::mutex> lock(playerMutex_);
     
     // Check if player already exists
@@ -24,7 +24,7 @@ std::shared_ptr<Player> PlayerManager::createPlayer(const std::string& playerId,
     return player;
 }
 
-std::shared_ptr<Player> PlayerManager::getPlayer(const std::string& playerId) {
+std::shared_ptr<Player> PlayerManager::getPlayer(const uint16_t playerId) {
     std::lock_guard<std::mutex> lock(playerMutex_);
     
     auto it = players_.find(playerId);
@@ -37,11 +37,12 @@ std::shared_ptr<Player> PlayerManager::getPlayer(const std::string& playerId) {
 }
 
 
-const std::unordered_map<std::string, std::shared_ptr<Player>>& PlayerManager::getAllPlayers() const {
+const std::unordered_map<uint16_t, std::shared_ptr<Player>>& PlayerManager::getAllPlayers() const {
+    std::cout << "[PlayerManager] Retrieving all players, size: " << players_.size() << std::endl;
     return players_;
 }
 
-bool PlayerManager::removePlayer(const std::string& playerId) {
+bool PlayerManager::removePlayer(const uint16_t playerId) {
     std::lock_guard<std::mutex> lock(playerMutex_);
     
     auto it = players_.find(playerId);

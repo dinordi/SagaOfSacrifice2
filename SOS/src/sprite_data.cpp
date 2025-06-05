@@ -35,13 +35,14 @@ SpriteRect SpriteData::getSpriteRect(int index) const {
     auto it = spriteRects.find(index);
     if (it == spriteRects.end()) {
         for(const auto& pair : spriteRects) {
-            std::cout << "SpriteRect ID: " << pair.first << ", Rect: (" 
+            std::cout << "[SpriteData] SpriteRect ID: " << pair.first << ", Rect: (" 
                       << pair.second.x << ", " << pair.second.y << ", "
                       << pair.second.w << ", " << pair.second.h << ")\n";
         }
         std::cout << "Could not find sprite rect for index: " << index << std::endl;
         return SpriteRect(); // Return an empty SpriteRect if not found
     }
+    
     const SpriteRect& spriteRect = it->second;
 
     return spriteRect;
