@@ -230,7 +230,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     }
     
     // Connect to the local server
-    std::string playerId = "player_tempID";
+    uint16_t playerId = 65000;
     if (!initializeServerConnection("localhost", LOCAL_SERVER_PORT, playerId)) {
         std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
         localServerManager->stopEmbeddedServer();
@@ -244,7 +244,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
 }
 
 
-bool Game::initializeServerConnection(const std::string& serverAddress, int serverPort, const std::string& playerId) {
+bool Game::initializeServerConnection(const std::string& serverAddress, int serverPort, const uint16_t playerId) {
     if (!multiplayerManager) {
         multiplayerManager = std::make_unique<MultiplayerManager>();
     }
@@ -349,13 +349,13 @@ void Game::sendChatMessage(const std::string& message) {
     }
 }
 
-void Game::setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler) {
+void Game::setChatMessageHandler(std::function<void(const uint16_t sender, const std::string& message)> handler) {
     if (multiplayerManager) {
         multiplayerManager->setChatMessageHandler(handler);
     }
 }
 
-void Game::updateRemotePlayers(const std::map<std::string, std::shared_ptr<Player>>& remotePlayers) {
+void Game::updateRemotePlayers(const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers) {
     // loop through all remote players
     for (const auto& pair : remotePlayers) {
         //Find the remote player in the gameobjects
@@ -410,7 +410,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     
     // Handle player attack hit registration
     static bool wasAttacking = false;
-    static std::set<std::string> hitEnemiesThisAttack;
+    static std::set<uint16_t> hitEnemiesThisAttack;
     
     // Check if player just started attacking this frame
     bool justStartedAttacking = player->isAttacking() && !wasAttacking;
@@ -443,7 +443,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                 enemy->takeDamage(damageAmount);
                 
                 // If the enemy died from this hit, notify the server immediately
-                if (enemy->isDead() && multiplayerActive && multiplayerManager) {
+                if (multiplayerActive && multiplayerManager) {
                     multiplayerManager->sendEnemyStateUpdate(
                         enemy->getObjID(), 
                         true,  // isDead = true
@@ -473,7 +473,7 @@ void Game::reconcileWithServerState(float deltaTime) {
     // Get the server position for our player from the MultiplayerManager
     if (multiplayerManager && player) {
 
-        const std::map<std::string, std::shared_ptr<Player>>& remotePlayers = multiplayerManager->getRemotePlayers();
+        const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
         static uint64_t lastUpdateTime = 0;
         static uint64_t remotePlayerWaitTime = 0;
@@ -799,8 +799,14 @@ void Game::handleServerSelectionInput(float deltaTime) {
         if (selectedServer) {
             std::cout << "[Game] Connecting to server: " << selectedServer->name 
                       << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
-            
-            if (!initializeServerConnection(selectedServer->address, selectedServer->port, player->getObjID())) {
+            uint16_t playID;
+            if (player) {
+                playID = player->getObjID(); // Use existing player ID
+            } else {
+                // Generate a new random player ID if not already set
+                playID = 65000;
+            }
+            if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
                 std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
                 // Could show error message and stay in server selection
                 // For now, go back to main menu
@@ -829,7 +835,7 @@ void Game::handleServerSelectionInput(float deltaTime) {
     }
 }
 
-void Game::updatePlayer(std::string playerId, const Vec2& position) {
+void Game::updatePlayer(uint16_t playerId, const Vec2& position) {
     // Find the player object by ID
     if(player)
     {

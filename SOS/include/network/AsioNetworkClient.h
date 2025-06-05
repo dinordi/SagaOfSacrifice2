@@ -22,7 +22,7 @@ public:
     void setMessageHandler(std::function<void(const NetworkMessage&)> handler) override;
     void update() override;
     bool isConnected() const override;
-    void setClientId(const std::string& clientId) override;
+    void setClientId(const uint16_t clientId) override;
 
 private:
     // Asio-specific implementation details
@@ -53,7 +53,7 @@ private:
     bool connected_;
     std::string server_host_;
     int server_port_;
-    std::string client_id_; // Client ID for message sending
+    uint16_t client_id_; // Client ID for message sending
     
     // Message handling
     std::function<void(const NetworkMessage&)> message_handler_;

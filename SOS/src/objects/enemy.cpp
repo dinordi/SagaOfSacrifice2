@@ -4,7 +4,7 @@
 #include <random>
 #include "objects/player.h"
 
-Enemy::Enemy(BoxCollider collider, std::string objID, ObjectType type) : Entity(collider, objID, type) {
+Enemy::Enemy(BoxCollider collider, uint16_t objID, ObjectType type) : Entity(collider, objID, type) {
     // Initialize Enemy-specific attributes here
     health = 100;
     attackCooldown = 0.0f;

@@ -49,15 +49,15 @@ public:
     std::vector<std::shared_ptr<Object>> getChangedObjects(const std::vector<std::shared_ptr<Object>>& objects);
     
     // Check if an object ID exists in the latest state
-    bool objectExists(const std::string& objectId) const;
+    bool objectExists(const uint16_t objectId) const;
     
     // Get all object IDs in previous state
-    std::vector<std::string> getAllObjectIds() const;
+    std::vector<uint16_t> getAllObjectIds() const;
     
     // Clear all tracked states
     void clear();
 
 private:
     // Map of object ID to its last known state
-    std::map<std::string, ObjectState> previousObjectStates;
+    std::map<uint16_t, ObjectState> previousObjectStates;
 };

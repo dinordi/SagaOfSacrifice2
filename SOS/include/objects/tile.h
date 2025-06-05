@@ -6,7 +6,7 @@
 
 class Tile : public Object {
 public:
-    Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex,
+    Tile(int x, int y, uint16_t objID, std::string tileMap, int tileIndex,
          int tileWidth, int tileHeight, int columns);
     // Tile(int ID, int x, int y);
     void update(float deltaTime) override;

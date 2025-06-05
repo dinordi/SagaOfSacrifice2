@@ -3,7 +3,7 @@
 #include "network/NetworkConfig.h"
 
 
-Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
+Player::Player( int x, int y, uint16_t objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
     isAttackActive(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
     std::cout << "[Player] created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;

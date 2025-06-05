@@ -80,7 +80,6 @@ bool Level::load(json& levelData)
     };
 
     /* --- tile layers ---------------------------------------------------- */
-    int nextObjId = 0;                           // fast unique ID counter
 
     if (levelData.contains("layers"))
     {
@@ -114,7 +113,7 @@ bool Level::load(json& levelData)
                     const int worldX = col * tileWidth;
                     const int worldY = row * tileHeight;
 
-                    std::string objId = "T_" + std::to_string(nextObjId++);
+                    uint16_t objId = Object::getNextObjectID();
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
@@ -299,17 +298,15 @@ bool Level::removeAllObjects() {
 }
 
 std::shared_ptr<Minotaur> Level::spawnMinotaur(int x, int y) {
-    // Generate a unique ID for the minotaur
-    static int minotaurCounter = 0;
-    std::string minotaurId = "minotaur_" + std::to_string(minotaurCounter++);
     
+    uint16_t nextObjId = Object::getNextObjectID();
     // Create a new minotaur at the specified position
-    std::shared_ptr<Minotaur> minotaur = std::make_shared<Minotaur>(x, y, minotaurId);
+    std::shared_ptr<Minotaur> minotaur = std::make_shared<Minotaur>(x, y, nextObjId);
     
     // Add the minotaur to the level objects
     levelObjects.push_back(minotaur);
     
-    std::cout << "Spawned Minotaur at position (" << x << ", " << y << ") with ID: " << minotaurId << std::endl;
+    std::cout << "Spawned Minotaur at position (" << x << ", " << y << ") with ID: " << nextObjId << std::endl;
     
     return minotaur;
 }

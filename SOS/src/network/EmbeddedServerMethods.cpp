@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cmath>
 
-NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId) {
+NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& data, const uint16_t clientId) {
     NetworkMessage message;
     
     // Make sure we have at least the type byte
@@ -17,34 +17,26 @@ NetworkMessage EmbeddedServer::deserializeMessage(const std::vector<uint8_t>& da
         return message;
     }
     
-    // Extract message type
-    message.type = static_cast<MessageType>(data[0]);
-    
-    // Extract sender ID if present
-    if (data.size() >= 2) {
-        uint8_t idLength = data[1];
-        
-        if (data.size() >= 2 + idLength) {
-            message.senderId = std::string(data.begin() + 2, data.begin() + 2 + idLength);
-        } else {
-            // Invalid ID length, use provided client ID
-            std::cerr << "[EmbeddedServer] Invalid sender ID length in message" << std::endl;
-            message.senderId = clientId;
-        }
-        
-        // Extract message data
-        if (data.size() > 2 + idLength) {
-            message.data = std::vector<uint8_t>(data.begin() + 2 + idLength, data.end());
-        }
-    } else {
-        // No sender ID, use provided client ID
+    message.senderId = clientId; // Use the provided client ID
+    // Extract message type (1 byte)
+    if (data.size() < 1) {
+        std::cerr << "[EmbeddedServer] Message too short for type" << std::endl;
+        message.type = MessageType::PING;
         message.senderId = clientId;
+        return message;
     }
-    
+    message.type = static_cast<MessageType>(data[0]);
+
+    // Extract message data (everything after byte 2)
+    if (data.size() > 3) {
+        message.data = std::vector<uint8_t>(data.begin() + 3, data.end());
+    } else {
+        message.data.clear();
+    }
     return message;
 }
 
-void EmbeddedServer::processPlayerInput(const std::string& playerId, const NetworkMessage& message) {
+void EmbeddedServer::processPlayerInput(const uint16_t playerId, const NetworkMessage& message) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     return;
     // Lookup the player
@@ -110,7 +102,7 @@ void EmbeddedServer::processPlayerInput(const std::string& playerId, const Netwo
     }
 }
 
-void EmbeddedServer::processPlayerPosition(const std::string& playerId, const NetworkMessage& message) {
+void EmbeddedServer::processPlayerPosition(const uint16_t playerId, const NetworkMessage& message) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     
     // This is used as a fallback/reconciliation mechanism
@@ -156,34 +148,25 @@ void EmbeddedServer::processPlayerPosition(const std::string& playerId, const Ne
 }
 
 void EmbeddedServer::processEnemyState(
-    const std::string& playerId,
+    const uint16_t playerId,
     const NetworkMessage& message
 ) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
 
     // Parse enemy state data from message
-    if (message.data.size() < sizeof(uint32_t) + sizeof(bool) + sizeof(int16_t)) {
+    if (message.data.size() < sizeof(uint16_t) + sizeof(bool) + sizeof(int16_t)) {
         std::cerr << "[EmbeddedServer] Invalid enemy state message size" << std::endl;
         return;
     }
 
     // Extract enemy ID, isDead flag, and health
     size_t offset = 4;
-    
-    // Read enemy ID length (1 byte)
-    uint8_t enemyIdLength;
-    enemyIdLength = message.data[offset++];
-    
-    // Read enemy ID string
-    if (offset + enemyIdLength > message.data.size()) {
-        std::cerr << "[EmbeddedServer] Invalid enemy ID length" << std::endl;
-        return;
-    }
-    std::string enemyId(
-        message.data.begin() + offset,
-        message.data.begin() + offset + enemyIdLength
-    );
-    offset += enemyIdLength;
+
+    // Read enemy ID (2 bytes)
+    uint16_t enemyId;
+    std::memcpy(&enemyId, message.data.data() + offset, sizeof(uint16_t));
+    offset += sizeof(uint16_t);
+
     
     // Read isDead flag (1 byte)
     if (offset >= message.data.size()) {
@@ -234,22 +217,22 @@ void EmbeddedServer::processEnemyState(
     }
 }
 
-void EmbeddedServer::sendEnemyStateToClients(const std::string& enemyId, bool isDead, int16_t health)
+void EmbeddedServer::sendEnemyStateToClients(const uint16_t enemyId, bool isDead, int16_t health)
 {
     NetworkMessage enemyMsg;
     enemyMsg.type = MessageType::ENEMY_STATE_UPDATE;
 
 
-    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId.size()));
-    enemyMsg.data.insert(enemyMsg.data.end(), enemyId.begin(), enemyId.end());
+    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId >> 8)); // High byte
+    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId & 0xFF)); // Low byte
 
-    enemyMsg.data.push_back(static_cast<uint8_t>(isDead == true ? 1 : 0));
+    // Insert isDead flag (1 byte)
+    enemyMsg.data.push_back(static_cast<uint8_t>(isDead ? 1 : 0));
 
     // Add health (2 bytes) - Use memcpy for consistent byte order
     size_t currentSize = enemyMsg.data.size();
     enemyMsg.data.resize(currentSize + sizeof(int16_t));
     std::memcpy(enemyMsg.data.data() + currentSize, &health, sizeof(int16_t));
-    
     
     // Broadcast to all clients
     {
