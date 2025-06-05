@@ -799,8 +799,14 @@ void Game::handleServerSelectionInput(float deltaTime) {
         if (selectedServer) {
             std::cout << "[Game] Connecting to server: " << selectedServer->name 
                       << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
-            
-            if (!initializeServerConnection(selectedServer->address, selectedServer->port, player->getObjID())) {
+            uint16_t playID;
+            if (player) {
+                playID = player->getObjID(); // Use existing player ID
+            } else {
+                // Generate a new random player ID if not already set
+                playID = 65000;
+            }
+            if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
                 std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
                 // Could show error message and stay in server selection
                 // For now, go back to main menu
