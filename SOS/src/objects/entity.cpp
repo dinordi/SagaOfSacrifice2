@@ -2,17 +2,47 @@
 #include "tile.h"
 #include <iostream>
 
-Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Object( collider, type, objID) 
+Entity::Entity( BoxCollider collider, uint16_t objID, ObjectType type, int layer) : 
+Object( collider, type, objID,layer),
+   isDead_(false),
+    healthbar_(nullptr),
+    health(100), // Default health value, can be set later
+    targetPosition_(0, 0),
+    targetVelocity_(0, 0),
+    interpolationTime_(0.0f),
+    isRemote_(false)
 {
+    
 
 }
+
 
 void Entity::update(float deltaTime) {
     // Update animation state
     updateAnimation(deltaTime*1000);
+    Vec2 pos = getposition();
+    Vec2 vel = getvelocity();
+    if (isRemote_) {
+        interpolationTime_ += deltaTime;
+        float t = std::min(interpolationTime_ / 0.1f, 1.0f); // 0.1s default interp period
+        // Only interpolate if we have a different target position
+        if ((targetPosition_.x != pos.x || targetPosition_.y != pos.y) && t < 1.0f) {
+            pos.x = pos.x + (targetPosition_.x - pos.x) * t;
+            pos.y = pos.y + (targetPosition_.y - pos.y) * t;
+            vel.x = vel.x + (targetVelocity_.x - vel.x) * t;
+            vel.y = vel.y + (targetVelocity_.y - vel.y) * t;
+        } else {
+            pos += vel * deltaTime;
+        }
+        setposition(pos);
+        setvelocity(vel);
+    } else {
+        pos += vel * deltaTime;
+        setposition(pos);
+    }
 }
 
-Healthbar::Healthbar(float x, float y, std::string tpsheet, uint16_t maxHealth, bool enemy)
+Healthbar::Healthbar(float x, float y, std::string tpsheet, int16_t maxHealth, bool enemy)
     : Actor(Vec2(x,y), tpsheet, 0, ActorType::HEALTHBAR), enemy_(enemy)
 {
     std::cout << "Healthbar created at position: (" << x << ", " << y << ") with max health: " << maxHealth << ", tpsheet: " << tpsheet << std::endl;
@@ -33,7 +63,7 @@ const SpriteData* Healthbar::getCurrentSpriteData() const
     return SpriteData::getSharedInstance(spriteSheetPath_);
 }
 
-void Healthbar::setHealth(int health)
+void Healthbar::setHealth(int16_t health)
 {
     // Healthbar has 5 parts, each part is 20% of the health
     currentHealth_ = health;

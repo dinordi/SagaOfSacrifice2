@@ -113,7 +113,7 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             }
             
             // Example: Spawn a minotaur in the level near the player start position plus an offset
-            Vec2 playerStart = currentLevel_->getPlayerStartPosition();
+            //Vec2 playerStart = currentLevel_->getPlayerStartPosition();
             
             // Spawn a minotaur slightly to the right of the player start position
             // if (auto minotaur = currentLevel_->spawnMinotaur(playerStart.x + 300, playerStart.y)) {
@@ -121,7 +121,7 @@ bool LevelManager::loadLevel(const std::string& levelId) {
             // }
             
             // Example: Spawn more minotaurs at different positions if desired
-            currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
+            //currentLevel_->spawnMinotaur(playerStart.x + 600, playerStart.y + 100);
             // currentLevel_->spawnMinotaur(playerStart.x - 600, playerStart.y + 200);
             
             // Set all enemies in the level to target any existing players
@@ -145,10 +145,10 @@ bool LevelManager::loadLevel(const std::string& levelId) {
                     }
                 }
                 
-                if (!playerExists) {
+                // if (!playerExists) {
 
-                    addPlayerToCurrentLevel(playerPair.first);
-                }
+                //     addPlayerToCurrentLevel(playerPair.first);
+                // }
             }
             std::cout << "[LevelManager] Loaded level: " << levelId << std::endl;
             return true;
@@ -218,7 +218,7 @@ bool LevelManager::loadPreviousLevel() {
 }
 
 // Add a player to the current level
-bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
+bool LevelManager::addPlayerToCurrentLevel(uint16_t playerId) {
     if (!currentLevel_) {
         std::cerr << "[LevelManager] No current level to add player to" << std::endl;
         return false;
@@ -231,7 +231,8 @@ bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
     
     // Get the level's player start position
     Vec2 startPos = currentLevel_->getPlayerStartPosition();
-    
+    std::cout << "[LevelManager] Player start position for level " << currentLevel_->getId() 
+              << ": " << startPos.x << "," << startPos.y << std::endl;
     // If the player doesn't exist yet, create a new one
     if (!player) {
         player = playerManager.createPlayer(playerId, startPos);
@@ -259,7 +260,7 @@ void LevelManager::update(float deltaTime) {
     }
 }
 
-bool LevelManager::removePlayerFromCurrentLevel(const std::string& playerId) {
+bool LevelManager::removePlayerFromCurrentLevel(uint16_t playerId) {
     if (currentLevel_) {
         auto& playerManager = PlayerManager::getInstance();
         auto player = playerManager.getPlayer(playerId);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include <cstdint>
 
@@ -20,11 +19,13 @@ enum class MessageType {
     PLAYER_LEFT,       // Player left the game
     CHAT,            // Chat message
     ENEMY_STATE_UPDATE, // Update enemy state (e.g., health, dead)
+    PLAYER_ASSIGN,     // Assign a player to a client
 };
 
 // Base message structure - same as client side
 struct NetworkMessage {
     MessageType type;
-    std::string senderId;
+    uint16_t senderId;
+    uint16_t targetId; // Used for messages directed at a specific client
     std::vector<uint8_t> data;
 };

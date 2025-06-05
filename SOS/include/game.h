@@ -48,7 +48,7 @@ public:
     std::string generateRandomPlayerId();
     
     // Multiplayer functionality
-    bool initializeServerConnection(const std::string& serverAddress, int serverPort, const std::string& playerId);
+    bool initializeServerConnection(const std::string& serverAddress, int serverPort, const uint16_t playerId);
 
     // New: Initialize single player mode with embedded server
     bool initializeSinglePlayerEmbeddedServer();
@@ -68,11 +68,15 @@ public:
 
     // Methods to handle chatting
     void sendChatMessage(const std::string& message);
-    void setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const uint16_t sender, const std::string& message)> handler);
 
     std::vector<std::shared_ptr<Object>>& getObjects();
     std::vector<Actor*>& getActors();
     void clearActors();
+
+    Player* getPlayer() const { return player; }
+
+    void movePlayerToEnd();
 
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
@@ -85,8 +89,11 @@ public:
     // Static instance getter for singleton access
     static Game& getInstance() { static Game instance_; return instance_; }
 
+    void updatePlayer(uint16_t playerId, const Vec2& position);
+
 private:
     void drawWord(const std::string& word, int x, int y, int letterSize = 0);
+    void sortObjects();                     // sort objects by layer
     void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);
@@ -137,7 +144,7 @@ private:
     bool serverSelectionOptionChanged = true;
     
     // Update remote players
-    void updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers);
+    void updateRemotePlayers(const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers);
     
     SpriteData* characters;
     std::map<char, int> characterMap;

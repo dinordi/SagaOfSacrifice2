@@ -4,7 +4,7 @@
 #include <random>
 #include "objects/player.h"
 
-Enemy::Enemy(BoxCollider collider, std::string objID, ObjectType type) : Entity(collider, objID, type) {
+Enemy::Enemy(BoxCollider collider, uint16_t objID, ObjectType type, int layer) : Entity(collider, objID, type, layer) {
     // Initialize Enemy-specific attributes here
     health = 100;
     attackCooldown = 0.0f;
@@ -138,12 +138,12 @@ void Enemy::update(float deltaTime) {
     }
 
     //Print old position
-    Vec2 vel = getvelocity();
-    // Update position based on velocity
-    BoxCollider* pColl = &getcollider();
-    Vec2* pos = &pColl->position;
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    // Vec2 vel = getvelocity();
+    // // Update position based on velocity
+    // BoxCollider* pColl = &getcollider();
+    // Vec2* pos = &pColl->position;
+    // pos->x += vel.x * deltaTime;
+    // pos->y += vel.y * deltaTime;
 
     // Update animation
     Entity::update(deltaTime); // Call the base class update
@@ -195,7 +195,7 @@ Vec2 Enemy::getDirectionToPlayer(std::shared_ptr<Player> player) {
     return direction;
 }
 
-void Enemy::takeDamage(int amount) {
+void Enemy::takeDamage(int16_t amount) {
     if (isDead_) return;
     
     health -= amount;
@@ -209,7 +209,7 @@ void Enemy::takeDamage(int amount) {
 }
 
 
-void Enemy::setHealth(int newHealth) {
+void Enemy::setHealth(int16_t newHealth) {
     health = newHealth;
     if (health <= 0) {
         currentState = EnemyState::DYING;

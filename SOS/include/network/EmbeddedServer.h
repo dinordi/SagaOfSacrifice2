@@ -46,10 +46,13 @@ public:
     bool isRunning() const;
     
     // Add a player to the server
-    void addPlayer(const std::string& playerId);
+    void addPlayer(const uint16_t playerId);
+    
+    // Send a player to the client
+    void sendPlayerToClient(const uint16_t playerId, Player* player);
     
     // Remove a player from the server
-    void removePlayer(const std::string& playerId);
+    void removePlayer(const uint16_t playerId);
     
     // Process incoming network message
     void processMessage(const NetworkMessage& message);
@@ -68,7 +71,7 @@ private:
     bool sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket, 
                      const NetworkMessage& message);
     // Deserialize message from binary data
-    NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const std::string& clientId);
+    NetworkMessage deserializeMessage(const std::vector<uint8_t>& data, const uint16_t clientId);
     void serializeObject(const std::shared_ptr<Object>& object, std::vector<uint8_t>& data);
 
     // Game logic methods
@@ -76,15 +79,34 @@ private:
     void updateGameState(float deltaTime);
     void detectAndResolveCollisions();
     void sendGameStateToClients();
+    void sendFullGameStateToClient(const uint16_t playerId);
     void sendPartialGameState(const std::vector<std::shared_ptr<Object>>& objects, 
                               size_t startIndex, size_t count, 
                               bool isFirstPacket, bool isLastPacket);
+    void sendPartialGameStateToClient(const std::vector<std::shared_ptr<Object>>& objects, 
+                                     size_t startIndex, size_t count, 
+                                     bool isFirstPacket, bool isLastPacket,
+                                     uint16_t playerId);
+    
+    // Helper methods for game state updates
+    std::vector<std::shared_ptr<Object>> collectObjectsToSend(const std::vector<std::shared_ptr<Object>>& allObjects);
+    size_t calculateMessageSize(const std::vector<std::shared_ptr<Object>>& objectsToSend);
+    void sendSplitGameState(const std::vector<std::shared_ptr<Object>>& objectsToSend, size_t estimatedSize);
+    void sendSplitGameStateToClient(const std::vector<std::shared_ptr<Object>>& objectsToSend, 
+                                   size_t estimatedSize, uint16_t playerId);
+    void sendSingleGameStatePacket(const std::vector<std::shared_ptr<Object>>& objectsToSend);
+    void sendSingleGameStatePacketToClient(const std::vector<std::shared_ptr<Object>>& objectsToSend, 
+                                          uint16_t playerId);
+    void sendMinimalHeartbeat();
     
     // Process player input message
-    void processPlayerInput(const std::string& playerId, const NetworkMessage& message);
-    void processPlayerPosition(const std::string& playerId, const NetworkMessage& message);
-    void processEnemyState(const std::string& playerId, const NetworkMessage& message);
+    void processPlayerInput(const uint16_t playerId, const NetworkMessage& message);
+    void processPlayerPosition(const uint16_t playerId, const NetworkMessage& message);
+    void processEnemyState(const uint16_t playerId, const NetworkMessage& message);
     
+    // Send info messages
+    void sendEnemyStateToClients(const uint16_t enemyId, bool isDead, int16_t health);
+
     // Server configuration
     int port_;
     std::atomic<bool> running_;
@@ -94,7 +116,7 @@ private:
     boost::asio::io_context io_context_;
     std::unique_ptr<boost::asio::ip::tcp::acceptor> acceptor_;
     std::unique_ptr<std::thread> io_thread_;
-    std::map<std::string, std::shared_ptr<boost::asio::ip::tcp::socket>> clientSockets_;
+    std::map<uint16_t, std::shared_ptr<boost::asio::ip::tcp::socket>> clientSockets_;
     std::mutex clientSocketsMutex_;
     
     // Game state data
