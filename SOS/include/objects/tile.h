@@ -6,7 +6,7 @@
 
 class Tile : public Object {
 public:
-    Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex,
+    Tile(int x, int y, uint16_t objID, std::string tileMap, int tileIndex,
          int tileWidth, int tileHeight, int layer = 0);
     // Tile(int ID, int x, int y);
     void update(float deltaTime) override;
@@ -26,11 +26,13 @@ public:
     uint32_t getFlags() const { return collisionFlags; }
 
     // Collision flags
-    static const uint32_t BLOCKS_HORIZONTAL = 0x00000001;
-    static const uint32_t BLOCKS_VERTICAL = 0x00000002;
+    static const uint32_t BLOCKS_HORIZONTAL_LEFT = 0x00000001;
+    static const uint32_t BLOCKS_VERTICAL_TOP = 0x00000002;
     static const uint32_t REDUCES_SPEED = 0x00000004;  // Mud or similar
     static const uint32_t ALLOWS_CLIMBING = 0x00000008; // Stairs
     static const uint32_t BLOCKS_PROJECTILES = 0x00000010;
+    static const uint32_t BLOCKS_HORIZONTAL_RIGHT = 0x00000020;
+    static const uint32_t BLOCKS_VERTICAL_BOTTOM = 0x00000020;
 
 
 private:
