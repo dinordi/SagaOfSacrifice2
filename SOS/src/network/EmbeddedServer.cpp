@@ -1106,7 +1106,7 @@ void EmbeddedServer::sendSplitGameStateToClient(
         sendPartialGameStateToClient(objectsToSend, startIndex, count, isFirstPacket, isLastPacket, playerId);
         if(!isLastPacket)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     }
 }

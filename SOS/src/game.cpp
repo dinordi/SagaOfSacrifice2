@@ -182,9 +182,31 @@ void Game::update(float deltaTime) {
                 }
             }
             // Ensure objects are sorted before rendering
-            sortObjects();
+            if(objects.size() > 1) {
+                sortObjects();
+            }
             break;
         case GameState::MENU:
+            // If nothing pressed for a while, reset menu option
+            static float menuIdleTime = 0.0f;
+            menuIdleTime += deltaTime;
+            if (menuIdleTime > 5.0f) { // Reset after 5 seconds of inactivity
+                // Initialize single player mode with embedded server
+                if (!initializeSinglePlayerEmbeddedServer()) {
+                    std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+                    // Could show error message in menu or fallback
+                    break;
+                } else {
+                    std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
+                }
+                // Start single player game
+                state = GameState::RUNNING;
+                {
+                    std::lock_guard<std::mutex> lock(objectsMutex);
+                    objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                }
+                clearActors(); // Clear the menu
+            }
             // Handle menu state
             drawMenu(deltaTime);
             handleMenuInput(deltaTime);
@@ -554,7 +576,7 @@ void Game::reconcileWithServerState(float deltaTime) {
 void Game::sortObjects() {
     std::sort(objects.begin(), objects.end(),
         [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
-
+            if (!a || !b) return false; // Handle null pointers gracefully
             if (a->getLayer() != b->getLayer())
                 return a->getLayer() < b->getLayer();
             if (a->getposition().y != b->getposition().y)

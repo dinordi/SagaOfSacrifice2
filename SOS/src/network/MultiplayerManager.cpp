@@ -342,7 +342,7 @@ void MultiplayerManager::handleNetworkMessage(const NetworkMessage& message) {
             handleEnemyStateMessage(message);
             break;
         default:
-            std::cerr << "[Client] Unknown message type received: " << static_cast<int>(message.type) << std::endl;
+            // std::cerr << "[Client] Unknown message type received: " << static_cast<int>(message.type) << std::endl;
             break;
     }
 }
@@ -726,7 +726,7 @@ std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const uint16_t 
 
 void MultiplayerManager::deserializePlayerState(const std::vector<uint8_t>& data, Player* player) {
     if (data.size() < 18) { // 16 bytes for position/velocity + 2 bytes for state/dir
-        std::cerr << "[Client] Invalid player state data size: " << data.size() << std::endl;
+        // std::cerr << "[Client] Invalid player state data size: " << data.size() << std::endl;
         return;
     }
     
