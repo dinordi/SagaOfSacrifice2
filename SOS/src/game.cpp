@@ -17,7 +17,7 @@ Game* Game::instance_ = nullptr;
 extern uint32_t get_ticks(); // Declare the get_ticks function
 
 // Default port for local server in single-player mode
-const int LOCAL_SERVER_PORT = 8081;
+const int LOCAL_SERVER_PORT = 8080;
 
 Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     // Set this as the active instance
