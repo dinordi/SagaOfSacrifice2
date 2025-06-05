@@ -49,38 +49,15 @@ sequenceDiagram
     MM->>MM: handleGameStateMessage
     MM->>MM: processGameStateDelta OR processGameState
     MM->>MM: deserializeObject for each changed object
-    MM->>C: updateEntityPosition OR addObject
+    MM->>C: updateObject for each changed object
 
-    %% Client Prediction - Real Implementation  
-    C->>C: predictLocalPlayerMovement
-    C->>CM: detectPlayerCollisions(objects, player)
-    CM->>CM: Local collision detection for responsive feel
-    MM->>MM: reconcileWithServerState - compare server vs predicted
-
-    Note over C,CM: Enemy Death Example - Actual Flow
-
-    %% Enemy Interaction - Real Implementation
-    C->>C: player->checkAttackHit(enemy)
-    C->>C: enemy->takeDamage(damageAmount)
-    C->>MM: sendEnemyStateUpdate(enemyId, isDead=true, health=0)
-    MM->>AN: NetworkMessage(ENEMY_STATE_UPDATE, enemyId + isDead + health)
-    ES->>LM: Find enemy by ID and update state
-    ES->>AN: Broadcast enemy state to all clients
-
-    Note over C,CM: Chat System - Real Implementation
-
-    %% Chat - Actual Implementation
-    C->>MM: sendChatMessage("Hello!")
-    MM->>AN: NetworkMessage(CHAT_MESSAGE, message data)
-    ES->>AN: Broadcast to all other clients
-    MM->>MM: handleChatMessage
-    MM->>C: chatHandler_(senderId, message)
-
-    Note over C,CM: Disconnection - Real Implementation
-
-    %% Disconnection - Actual Implementation
-    C->>MM: shutdown()
-    MM->>AN: sendMessage(DISCONNECT, playerId)
-    MM->>AN: disconnect()
-    ES->>LM: Remove player from level
-    ES->>AN: Broadcast DISCONNECT to remaining clients
+    %% Client Prediction and Reconciliation - Real Implementation
+    Note over C,MM: Client-side Prediction
+    C->>MM: predictLocalPlayerMovement (before server response)
+    MM->>CM: detectPlayerCollisions (local prediction)
+    MM->>MM: Apply predicted position changes
+    
+    Note over MM,ES: Server Reconciliation
+    ES->>AN: Send authoritative player position
+    MM->>MM: Reconcile predicted vs authoritative position
+    MM->>MM: Apply correction if prediction differs

@@ -1,109 +1,133 @@
 flowchart TD
-    %% Main Components
+    %% SagaOfSacrifice2 Actual System Architecture
+    
     subgraph "Client Layer"
         Client[Client Application]
         Game[Game Class]
         SDL[SDL Wrapper Client]
         Renderer[Renderer]
+        Input[SDL2Input]
+        Audio[SDL2AudioManager]
     end
 
     subgraph "Game Core"
-        Objects[Game Objects]
         Player[Player]
-        Enemy[Enemy]
+        Enemy[Enemy - Minotaur type]
         Tile[Tile/Platform]
-        Entity[Entity]
+        Entity[Entity Base Class]
         Actor[Actor System]
-    end
-
-    subgraph "Systems"
-        Input[Input System]
-        Collision[Collision Manager]
-        Animation[Animation Controller]
-        Audio[Audio Manager]
         Level[Level Manager]
     end
 
+    subgraph "Systems"
+        InputSys[Input System]
+        CollisionMgr[Collision Manager]
+        SpatialGrid[SpatialGrid Optimization]
+        AnimationCtrl[Animation Controller]
+        AudioMgr[Audio Manager]
+    end
+
     subgraph "Network Layer"
-        MultiplayerManager[Multiplayer Manager]
-        NetworkClient[Asio Network Client]
-        LocalServerManager[Local Server Manager]
+        MultiplayerMgr[MultiplayerManager]
+        AsioClient[AsioNetworkClient]
+        LocalServerMgr[LocalServerManager]
+        NetworkMsg[NetworkMessage Types]
     end
 
     subgraph "Server Components"
-        EmbeddedServer[Embedded Server]
-        DedicatedServer[Dedicated Server]
-        GameServer[Game Server Logic]
+        EmbeddedSrv[EmbeddedServer]
+        DedicatedSrv[DedicatedServer]
+        GameSrvLogic[GameServer Logic]
+        ClientMgr[ClientManager]
+    end
+
+    subgraph "Collision System"
+        CollisionHandler[CollisionHandler - Visitor Pattern]
+        BoxCollider[BoxCollider]
+        CollisionInfo[CollisionInfo]
+        AABB[AABB Detection]
     end
 
     subgraph "Data & Assets"
         SpriteData[Sprite Data]
-        Assets[Asset Files]
-        Config[Configuration]
+        LevelData[Level Files]
+        Config[server.json Configuration]
+        Assets[Asset Management]
     end
 
     subgraph "Hardware Layer (FPGA)"
-        DMAControl[DMA Control]
+        DMACtrl[DMA Control]
         BRAM[BRAM Controller]
-        Hardware[Hardware Rendering]
+        HardwareRender[Hardware Rendering]
+        AudioHW[Audio Hardware]
     end
 
     %% Main Flow Connections
     Client --> Game
-    Client --> SDL
-    SDL --> Renderer
-    Game --> Objects
-    Game --> Systems
-    Game --> NetworkLayer[Network Layer]
-
-    %% Game Objects
-    Objects --> Player
-    Objects --> Enemy  
-    Objects --> Tile
-    Player --> Entity
-    Enemy --> Entity
-    Entity --> Actor
-
-    %% Systems Integration
-    Game --> Input
-    Game --> Collision
-    Game --> Audio
     Game --> Level
-    Objects --> Animation
-    Objects --> SpriteData
-
-    %% Network Connections
-    MultiplayerManager --> NetworkClient
-    Game --> MultiplayerManager
-    Game --> LocalServerManager
-    LocalServerManager --> EmbeddedServer
-    NetworkClient --> EmbeddedServer
-    NetworkClient --> DedicatedServer
-
-    %% Data Flow
+    Game --> MultiplayerMgr
+    SDL --> Renderer
+    SDL --> Input
+    SDL --> Audio
+    
+    %% Core Game Flow
+    Level --> Player
+    Level --> Enemy
+    Level --> Tile
+    Level --> CollisionMgr
+    CollisionMgr --> SpatialGrid
+    CollisionMgr --> CollisionHandler
+    CollisionHandler --> BoxCollider
+    BoxCollider --> AABB
+    
+    %% Network Flow
+    MultiplayerMgr --> AsioClient
+    AsioClient --> EmbeddedSrv
+    EmbeddedSrv --> ClientMgr
+    EmbeddedSrv --> GameSrvLogic
+    NetworkMsg --> MultiplayerMgr
+    
+    %% Input Processing
+    Input --> InputSys
+    InputSys --> Player
+    InputSys --> MultiplayerMgr
+    
+    %% Asset Loading
     Assets --> SpriteData
-    Config --> Game
-    SpriteData --> Animation
-    SpriteData --> Renderer
-
-    %% Hardware Integration (Client Only)
-    Renderer --> DMAControl
-    DMAControl --> BRAM
-    BRAM --> Hardware
-
+    Assets --> LevelData
+    Config --> EmbeddedSrv
+    
+    %% Hardware Integration
+    Renderer --> DMACtrl
+    DMACtrl --> BRAM
+    BRAM --> HardwareRender
+    Audio --> AudioHW
+    
+    %% Collision Detection Flow
+    Entity --> BoxCollider
+    SpatialGrid --> AABB
+    AABB --> CollisionInfo
+    CollisionInfo --> CollisionHandler
+    
+    %% Server-Client Communication
+    GameSrvLogic --> Level
+    ClientMgr --> AsioClient
+    
     %% Styling
-    classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef coreStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef systemStyle fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef networkStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef serverStyle fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef dataStyle fill:#f1f8e9,stroke:#33691e,stroke-width:2px
-    classDef hardwareStyle fill:#ffebee,stroke:#b71c1c,stroke-width:2px
-
-    class Client,Game,SDL,Renderer clientStyle
-    class Objects,Player,Enemy,Tile,Entity,Actor coreStyle
-    class Input,Collision,Animation,Audio,Level systemStyle
-    class MultiplayerManager,NetworkClient,LocalServerManager networkStyle
-    class EmbeddedServer,DedicatedServer,GameServer serverStyle
-    class SpriteData,Assets,Config dataStyle
-    class DMAControl,BRAM,Hardware hardwareStyle
+    classDef client fill:#e3f2fd
+    classDef core fill:#f3e5f5
+    classDef systems fill:#e8f5e8
+    classDef network fill:#fff3e0
+    classDef server fill:#fce4ec
+    classDef collision fill:#f1f8e9
+    classDef data fill:#f8f9fa
+    classDef hardware fill:#fffde7
+    
+    class Client,Game,SDL,Renderer,Input,Audio client
+    class Player,Enemy,Tile,Entity,Actor,Level core
+    class InputSys,CollisionMgr,SpatialGrid,AnimationCtrl,AudioMgr systems
+    class MultiplayerMgr,AsioClient,LocalServerMgr,NetworkMsg network
+    class EmbeddedSrv,DedicatedSrv,GameSrvLogic,ClientMgr server
+    class CollisionHandler,BoxCollider,CollisionInfo,AABB collision
+    class SpriteData,LevelData,Config,Assets data
+    class DMACtrl,BRAM,HardwareRender,AudioHW hardware
