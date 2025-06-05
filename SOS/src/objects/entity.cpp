@@ -2,8 +2,9 @@
 #include "tile.h"
 #include <iostream>
 
-Entity::Entity( BoxCollider collider, uint16_t objID, ObjectType type) : Object( collider, type, objID), 
-    isDead_(false),
+Entity::Entity( BoxCollider collider, uint16_t objID, ObjectType type, int layer) : 
+Object( collider, type, objID,layer),
+   isDead_(false),
     healthbar_(nullptr),
     health(100), // Default health value, can be set later
     targetPosition_(0, 0),
@@ -11,6 +12,7 @@ Entity::Entity( BoxCollider collider, uint16_t objID, ObjectType type) : Object(
     interpolationTime_(0.0f),
     isRemote_(false)
 {
+    
 
 }
 

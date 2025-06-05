@@ -86,6 +86,7 @@ public:
 
 private:
     void drawWord(const std::string& word, int x, int y, int letterSize = 0);
+    void sortObjects();                     // sort objects by layer
     void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);

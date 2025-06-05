@@ -92,6 +92,7 @@ bool Level::load(json& levelData)
             const int width  = layer.at("width");
             const int height = layer.at("height");
             const auto& data = layer.at("data");
+            const int layerid = layer.at("id");
 
             for (int row = 0; row < height; ++row)
             {
@@ -115,12 +116,14 @@ bool Level::load(json& levelData)
                     const int worldY = row * tileHeight;
 
                     uint16_t objId = Object::getNextObjectID();
+                    std::cout << "LayerID: " << layerid << std::endl;
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
-                        tileWidth, tileHeight, 0);
-
+                        tileWidth, tileHeight, layerid);
+                    std::cout << "Layer after: " << tile->getLayer() << std::endl;
                     levelObjects.push_back(tile);
+                    
                 }
             }
         }
@@ -224,6 +227,7 @@ void Level::update(float deltaTime) {
         for (const auto& obj : objectsToRemove) {
             removeObject(obj);
         }
+
         auto timeBeforeCollision = std::chrono::steady_clock::now();
         // Detect and resolve collisions
         detectAndResolveCollisions();
@@ -232,6 +236,7 @@ void Level::update(float deltaTime) {
         // std::cout << "[Level] Collision detection and resolution took "
         //           << duration.count() << " microseconds\n";
     }
+    
     
     // Send game state to clients periodically
     static uint64_t updateTimer = 0;
@@ -245,6 +250,7 @@ void Level::detectAndResolveCollisions() {
     // Detect and resolve collisions using the collision manager
     collisionManager->detectCollisions(levelObjects);
 }   
+
 
 void Level::addObject(std::shared_ptr<Object> object) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
