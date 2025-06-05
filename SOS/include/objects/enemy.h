@@ -16,7 +16,7 @@ enum class EnemyState {
 
 class Enemy : public Entity {
 public:
-    Enemy(BoxCollider collider, std::string objID, ObjectType type, int layer);
+    Enemy(BoxCollider collider, uint16_t objID, ObjectType type, int layer);
 
     float attackCooldown;
     float attackRange;
@@ -35,9 +35,9 @@ public:
     void setTargetPlayer(std::shared_ptr<Player> player) { targetPlayer = player; }
 
     // Take damage from player attacks
-    virtual void takeDamage(int amount);
+    virtual void takeDamage(int16_t amount);
 
-    void setHealth(int newHealth);
+    void setHealth(int16_t newHealth);
 
     // Virtual methods to be overridden by derived classes
     virtual void move() = 0; // Move the enemy

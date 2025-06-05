@@ -19,7 +19,7 @@ public:
     ~MultiplayerManager();
 
     // Initialize the multiplayer system
-    bool initialize(const std::string& serverAddress, int serverPort, const std::string& playerId);
+    bool initialize(const std::string& serverAddress, int serverPort, const uint16_t playerId);
     
     // Shutdown multiplayer system
     void shutdown();
@@ -43,20 +43,20 @@ public:
     void sendPlayerAction(int actionType);
     
     // Send enemy state update to server (e.g., when enemy dies)
-    void sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int currentHealth);
+    void sendEnemyStateUpdate(const uint16_t enemyId, bool isDead, int16_t currentHealth);
     void handleEnemyStateMessage(const NetworkMessage& message);
 
     // Check if connected to server
     bool isConnected() const;
     
     // Get all remote players
-    const std::map<std::string, std::shared_ptr<Player>>& getRemotePlayers() const;
+    const std::map<uint16_t, std::shared_ptr<Player>>& getRemotePlayers() const;
     
     // Send a chat message
     void sendChatMessage(const std::string& message);
     
     // Set the chat message handler
-    void setChatMessageHandler(std::function<void(const std::string& senderId, const std::string& message)> handler);
+    void setChatMessageHandler(std::function<void(const uint16_t senderId, const std::string& message)> handler);
     
     // Process game state update from server
     void processGameState(const std::vector<uint8_t>& gameStateData);
@@ -81,7 +81,7 @@ private:
     void handlePlayerAssignMessage(const NetworkMessage& message);
     void handlePlayerJoinMessage(const NetworkMessage& message);
 
-    std::shared_ptr<Object> updateEntityPosition(const std::string& playerId, const Vec2& position, const Vec2& velocity);
+    std::shared_ptr<Object> updateEntityPosition(const uint16_t objectId, const Vec2& position, const Vec2& velocity);
     
     // Serialize/deserialize player state
     std::vector<uint8_t> serializePlayerState(const Player* player);
@@ -103,13 +103,13 @@ private:
     PlayerInput* playerInput_;
     
     // Remote players - now using Player class instead of RemotePlayer
-    std::map<std::string, std::shared_ptr<Player>> remotePlayers_;
+    std::map<uint16_t, std::shared_ptr<Player>> remotePlayers_;
     
     // Player ID
-    std::string playerId_;
+    uint16_t playerId_;
     
     // Chat message handler
-    std::function<void(const std::string& senderId, const std::string& message)> chatHandler_;
+    std::function<void(const uint16_t senderId, const std::string& message)> chatHandler_;
     
     // Last time we sent a player update
     uint64_t lastUpdateTime_;

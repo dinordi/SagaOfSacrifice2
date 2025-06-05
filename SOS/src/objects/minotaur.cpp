@@ -6,7 +6,7 @@
 #include <filesystem>
 #include "minotaur.h"
 
- Minotaur::Minotaur(BoxCollider collider, std::string objID, int layer): Enemy(collider, objID, ObjectType::MINOTAUR, layer) 
+ Minotaur::Minotaur(int x, int y, uint16_t objID, int layer): Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR, layer) 
     {
     setvelocity(Vec2(0, 0));
     // Minotaur specific stats
@@ -17,11 +17,7 @@
     moveSpeed = 100.0f;
     }
 
-Minotaur::Minotaur(int x, int y, std::string objID)
-    : Minotaur(BoxCollider(x, y, 64, 64), objID, 8) // Default layer 3
-{
-    // Delegates to main constructor
-}
+
 
 Minotaur::~Minotaur() {
     // Clean up any resources
@@ -51,7 +47,7 @@ void Minotaur::setupAnimations(std::filesystem::path atlasPath)
 
     std::cout << "Setting up healthbar" << std::endl;
     //Setup healthbar
-    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }

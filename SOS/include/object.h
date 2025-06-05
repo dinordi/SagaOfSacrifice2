@@ -3,7 +3,7 @@
 #pragma once
 #include <map>
 #include <unordered_map>
-
+#include <mutex>
 #include <Vec2.h>
 #include "sprite_data.h"
 #include "collision/CollisionVisitor.h"
@@ -48,8 +48,20 @@ BoxCollider(float x, float y, float width, float height);
 
 class Object {
 public:
+        static uint16_t getNextObjectID() {
+            std::lock_guard<std::mutex> lock(countmutex); // Ensure thread-safe access
+            return objectCount++;
+        }
+        static uint16_t getObjectCount() {
+            std::lock_guard<std::mutex> lock(countmutex); // Ensure thread-safe access
+            return objectCount;
+        }
+    private:
+    static uint16_t objectCount; // Static counter to assign unique IDs to objects
+    static std::mutex countmutex; // Mutex to protect access to objectCount
+public:
     const ObjectType type;
-    Object(BoxCollider collider, ObjectType type, std::string ID, int layer);
+    Object(BoxCollider collider, ObjectType type, uint16_t ID, int layer);
     virtual ~Object() = default;
 
     virtual void update(float deltaTime) = 0;
@@ -84,7 +96,7 @@ protected:
 private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
-    DEFINE_CONST_GETTER_SETTER(std::string, ObjID); // ID of the object, for multiplayer to indicate between players and objects
+    DEFINE_CONST_GETTER_SETTER(uint16_t, ObjID); // ID of the object, for multiplayer to indicate between players and objects
     DEFINE_CONST_GETTER_SETTER(int, Layer); // ID of the object, for multiplayer to indicate between players and objects
 private:
     int layer;

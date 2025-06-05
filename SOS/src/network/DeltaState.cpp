@@ -21,12 +21,14 @@ ObjectState ObjectState::fromObject(const std::shared_ptr<Object>& obj) {
             Player* player = static_cast<Player*>(obj.get());
             state.player.animState = static_cast<uint8_t>(player->getAnimationState());
             state.player.direction = static_cast<uint8_t>(player->getDir());
+            state.player.health = player->getHealth();
             break;
         }
         case ObjectType::MINOTAUR: {
             Minotaur* minotaur = static_cast<Minotaur*>(obj.get());
             state.player.animState = static_cast<uint8_t>(minotaur->getAnimationState());
             state.player.direction = static_cast<uint8_t>(minotaur->getDir());
+            state.player.health = minotaur->getHealth();
             break;
         }
         case ObjectType::TILE: {
@@ -66,6 +68,9 @@ bool ObjectState::isDifferentFrom(const ObjectState& other) const {
         case static_cast<uint8_t>(ObjectType::MINOTAUR):
             if (player.animState != other.player.animState ||
                 player.direction != other.player.direction) {
+                return true;
+            }
+            if(player.health != other.player.health) {
                 return true;
             }
             break;
@@ -113,13 +118,13 @@ std::vector<std::shared_ptr<Object>> DeltaStateTracker::getChangedObjects(
     const std::vector<std::shared_ptr<Object>>& objects) {
     
     std::vector<std::shared_ptr<Object>> changedObjects;
-    std::map<std::string, bool> seenObjects;
+    std::map<uint16_t, bool> seenObjects;
     
     // Find objects that are new or changed
     for (const auto& obj : objects) {
         if (!obj) continue;
         
-        std::string objId = obj->getObjID();
+        uint16_t objId = obj->getObjID();
         seenObjects[objId] = true;
         
         // Create current state
@@ -149,12 +154,12 @@ std::vector<std::shared_ptr<Object>> DeltaStateTracker::getChangedObjects(
     return changedObjects;
 }
 
-bool DeltaStateTracker::objectExists(const std::string& objectId) const {
+bool DeltaStateTracker::objectExists(const uint16_t objectId) const {
     return previousObjectStates.find(objectId) != previousObjectStates.end();
 }
 
-std::vector<std::string> DeltaStateTracker::getAllObjectIds() const {
-    std::vector<std::string> ids;
+std::vector<uint16_t> DeltaStateTracker::getAllObjectIds() const {
+    std::vector<uint16_t> ids;
     ids.reserve(previousObjectStates.size());
     
     for (const auto& [id, _] : previousObjectStates) {

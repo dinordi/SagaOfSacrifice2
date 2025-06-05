@@ -9,7 +9,7 @@
 class Player : public Entity {
 
 public:
-    Player(int x, int y, std::string objID, int layer = 8);
+    Player(int x, int y, uint16_t objID, int layer = 8);
     void setInput(PlayerInput* input) { this->input = input; }
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;
@@ -34,9 +34,7 @@ private:
     bool isMoving() const;
     void updateDirectionFromVelocity(const Vec2& vel);
     
-    int health;
     bool isAttackActive;
-    bool isJumping;
     float attackTimer;
     
     // Attack properties

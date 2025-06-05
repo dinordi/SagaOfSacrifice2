@@ -275,59 +275,18 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
     switch (message.type) {
         case MessageType::CONNECT: {
             std::cout << "[EmbeddedServer] Processing connect message from client" << std::endl;
-            
-            // Find the socket using the temp clientId from the network endpoint
-            std::string tempClientId;
+            uint16_t assignedPlayerId = message.senderId;
+            std::cout << "[EmbeddedServer] Assigned player ID: " << assignedPlayerId << std::endl;
             std::shared_ptr<boost::asio::ip::tcp::socket> clientSocket;
-            std::string assignedPlayerId;
-            
             {
                 std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-                // Find the socket by checking all entries
-                for (auto& entry : clientSockets_) {
-                    try {
-                        if (entry.second && entry.second->is_open()) {
-                            std::string socketId = entry.second->remote_endpoint().address().to_string() + 
-                                                 ":" + std::to_string(entry.second->remote_endpoint().port());
-                            
-                            if (entry.first.find(socketId) != std::string::npos) {
-                                tempClientId = entry.first;
-                                clientSocket = entry.second;
-                                
-                                // Find the assigned player ID for this temp client ID
-                                auto it = tempToPlayerIdMap_.find(tempClientId);
-                                if (it != tempToPlayerIdMap_.end()) {
-                                    assignedPlayerId = it->second;
-                                }
-                                
-                                break;
-                            }
-                        }
-                    } catch (const std::exception& e) {
-                        std::cerr << "[EmbeddedServer] Error checking socket: " << e.what() << std::endl;
-                    }
-                }
-                
-                // If we found the socket and have an assigned player ID, update the mapping
-                if (!tempClientId.empty() && clientSocket && !assignedPlayerId.empty()) {
-                    std::cout << "[EmbeddedServer] Updating socket mapping from " << tempClientId 
-                              << " to " << assignedPlayerId << std::endl;
-                    
-                    // Remove the old temp ID mapping
-                    clientSockets_.erase(tempClientId);
-                    
-                    // Add the new mapping with the assigned player ID
-                    clientSockets_[assignedPlayerId] = clientSocket;
-                    
-                    // Remove the temporary mapping
-                    tempToPlayerIdMap_.erase(tempClientId);
+                auto it = clientSockets_.find(assignedPlayerId);
+                if (it != clientSockets_.end()) {
+                    clientSocket = it->second;
                 }
             }
-            
-            // Add the player to the game using the server-assigned ID
-            if (!assignedPlayerId.empty()) {
+            if (clientSocket) {
                 addPlayer(assignedPlayerId);
-                // Send full game state to this new player
                 sendFullGameStateToClient(assignedPlayerId);
             } else {
                 std::cerr << "[EmbeddedServer] Error: Failed to find assigned player ID for connecting client" << std::endl;
@@ -370,7 +329,7 @@ void EmbeddedServer::processMessage(const NetworkMessage& message) {
 }
 
 
-void EmbeddedServer::removePlayer(const std::string& playerId) {
+void EmbeddedServer::removePlayer(const uint16_t playerId) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     auto& pm = PlayerManager::getInstance();
     auto playerIt = pm.getPlayer(playerId);
@@ -434,37 +393,26 @@ void EmbeddedServer::handleAccept(const boost::system::error_code& error,
 }
 
 void EmbeddedServer::handleClientConnection(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
-    // Generate a temporary client ID based on the remote endpoint (just for socket tracking)
-    std::string tempClientId = socket->remote_endpoint().address().to_string() + 
-                           ":" + std::to_string(socket->remote_endpoint().port());
-    
-    // Generate a unique player ID for this client
-    std::string generatedPlayerId = "player_" + std::to_string(nextPlayerId_++);
-    
-    std::cout << "[EmbeddedServer] New connection from: " << tempClientId << std::endl;
+    // Generate a unique player ID for this client (now using uint16_t)
+    uint16_t generatedPlayerId = Object::getNextObjectID();
+    std::cout << "[EmbeddedServer] New connection from: "
+              << socket->remote_endpoint().address().to_string() << ":"
+              << socket->remote_endpoint().port() << std::endl;
     std::cout << "[EmbeddedServer] Generated player ID: " << generatedPlayerId << std::endl;
-    
-    // Store the socket using the temporary ID, but also remember the generated player ID
     {
         std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-        clientSockets_[tempClientId] = socket;
-        // Map the temporary ID to the generated player ID
-        tempToPlayerIdMap_[tempClientId] = generatedPlayerId;
+        clientSockets_[generatedPlayerId] = socket;
+        std::cout << "[EmbeddedServer] Added client socket for player ID: " << generatedPlayerId << std::endl;
     }
-    
     // Start the proper async read sequence to get a complete message
-    // First read just the message header
     auto headerBuffer = std::make_shared<std::array<char, sizeof(MessageHeader)>>();
     boost::asio::async_read(*socket, 
         boost::asio::buffer(*headerBuffer, sizeof(MessageHeader)),
-        [this, socket, headerBuffer, tempClientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+        [this, socket, headerBuffer, generatedPlayerId](const boost::system::error_code& error, std::size_t bytes_transferred) {
             if (!error && bytes_transferred == sizeof(MessageHeader)) {
-                // Extract the message size from the header
                 MessageHeader* header = reinterpret_cast<MessageHeader*>(headerBuffer->data());
                 uint32_t headerSize = header->size;
                 std::cout << "[EmbeddedServer] Received message header with size: " << header->size << " bytes" << std::endl;
-                
-                // Validate header size
                 if (header->size > MAX_MESSAGE_SIZE) {
                     std::cerr << "[EmbeddedServer] Message size exceeds maximum limit" << std::endl;
                     boost::system::error_code ec;
@@ -473,27 +421,21 @@ void EmbeddedServer::handleClientConnection(std::shared_ptr<boost::asio::ip::tcp
                     return;
                 }
                 std::cout << "[EmbeddedServer] Valid header size, proceeding to read message body..." << std::endl;
-                // Now read the message body
                 auto bodyBuffer = std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
                 boost::asio::async_read(*socket,
                     boost::asio::buffer(bodyBuffer->data(), header->size),
-                    [this, socket, bodyBuffer, headerSize, tempClientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                    [this, socket, bodyBuffer, headerSize, generatedPlayerId](const boost::system::error_code& error, std::size_t bytes_transferred) {
                         std::cout << "[EmbeddedServer] Received message body with size: " << bytes_transferred << " bytes" << std::endl;
                         std::cout << "[EmbeddedServer] Header size: " << headerSize << std::endl;
                         if (!error && bytes_transferred == headerSize) {
-                            // Process the complete message
                             std::vector<uint8_t> messageData(
                                 bodyBuffer->data(),
                                 bodyBuffer->data() + headerSize
                             );
-                            
-                            // Deserialize the message
-                            NetworkMessage message = deserializeMessage(messageData, tempClientId);
-                            
-                            // Debug log - always log CONNECT messages
+                            std::cout << "Deserializing from sender ID: " << generatedPlayerId << std::endl;
+                            NetworkMessage message = deserializeMessage(messageData, generatedPlayerId);
                             std::cout << "[EmbeddedServer] Received first message from client - Type: " << static_cast<int>(message.type)
                                      << " from " << message.senderId << " with data size: " << message.data.size() << " bytes" << std::endl;
-                            
                             if (!message.data.empty()) {
                                 try {
                                     std::string playerInfo(message.data.begin(), message.data.end());
@@ -502,12 +444,9 @@ void EmbeddedServer::handleClientConnection(std::shared_ptr<boost::asio::ip::tcp
                                     std::cerr << "[EmbeddedServer] Error extracting message data: " << e.what() << std::endl;
                                 }
                             }
-                            
-                            // Process the message
+                            message.senderId = generatedPlayerId; // Set the sender ID to the generated player ID
                             processMessage(message);
-                            
                             std::cout << "[EmbeddedServer] First message processed, now waiting for more messages..." << std::endl;
-                            // Now start the normal read loop
                             handleRead(socket, boost::system::error_code(), 0);
                         } else {
                             if (error) {
@@ -527,44 +466,36 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
                                const boost::system::error_code& error,
                                size_t bytes_transferred) {
     if (!error) {
-        // Get the client ID
-        std::string clientId;
+        uint16_t playerId = 0;
         try {
-            clientId = socket->remote_endpoint().address().to_string() + 
-                      ":" + std::to_string(socket->remote_endpoint().port());
+            // Find the playerId by matching the socket in clientSockets_
+            std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+            for (const auto& entry : clientSockets_) {
+                if (entry.second == socket) {
+                    playerId = entry.first;
+                    break;
+                }
+            }
         } catch (const std::exception& e) {
-            std::cerr << "[EmbeddedServer] Error getting client ID: " << e.what() << std::endl;
+            std::cerr << "[EmbeddedServer] Error getting player ID: " << e.what() << std::endl;
             return;
         }
-        
-        std::shared_ptr<std::array<char, MAX_MESSAGE_SIZE>> buffer = 
-            std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
-        
-        // First read the message header to determine the size
+        auto buffer = std::make_shared<std::array<char, MAX_MESSAGE_SIZE>>();
         boost::asio::async_read(*socket, 
             boost::asio::buffer(buffer->data(), sizeof(MessageHeader)),
-            [this, socket, buffer, clientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+            [this, socket, buffer, playerId](const boost::system::error_code& error, std::size_t bytes_transferred) {
                 if (!error && bytes_transferred == sizeof(MessageHeader)) {
-                    // Extract the message size from the header
                     MessageHeader* header = reinterpret_cast<MessageHeader*>(buffer->data());
-                    // Read the message body
                     boost::asio::async_read(*socket,
                         boost::asio::buffer(buffer->data() + sizeof(MessageHeader), header->size),
-                        [this, socket, buffer, header, clientId](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                        [this, socket, buffer, header, playerId](const boost::system::error_code& error, std::size_t bytes_transferred) {
                             if (!error && bytes_transferred == header->size) {
-                                // Process the complete message
                                 std::vector<uint8_t> messageData(
                                     buffer->data() + sizeof(MessageHeader),
                                     buffer->data() + sizeof(MessageHeader) + header->size
                                 );
-                                
-                                // Deserialize the message
-                                NetworkMessage message = deserializeMessage(messageData, clientId);
-                                
-                                // Process the message
+                                NetworkMessage message = deserializeMessage(messageData, playerId);
                                 processMessage(message);
-                                
-                                // Continue reading
                                 handleRead(socket, boost::system::error_code(), 0);
                             } else {
                                 if (error) {
@@ -580,33 +511,25 @@ void EmbeddedServer::handleRead(std::shared_ptr<boost::asio::ip::tcp::socket> so
             });
     } else if (error == boost::asio::error::eof || 
               error == boost::asio::error::connection_reset) {
-        // Client disconnected
-        std::string clientId;
+        uint16_t playerId = 0;
         try {
-            clientId = socket->remote_endpoint().address().to_string() + 
-                      ":" + std::to_string(socket->remote_endpoint().port());
-                      
-            std::cout << "[EmbeddedServer] Client disconnected: " << clientId << std::endl;
-            
-            // Remove the client from our maps
-            {
-                std::lock_guard<std::mutex> lock(clientSocketsMutex_);
-                clientSockets_.erase(clientId);
+            std::lock_guard<std::mutex> lock(clientSocketsMutex_);
+            for (const auto& entry : clientSockets_) {
+                if (entry.second == socket) {
+                    playerId = entry.first;
+                    break;
+                }
             }
-            
-            // Create a disconnect message
+            std::cout << "[EmbeddedServer] Client disconnected: " << playerId << std::endl;
+            clientSockets_.erase(playerId);
             NetworkMessage disconnectMsg;
             disconnectMsg.type = MessageType::DISCONNECT;
-            disconnectMsg.senderId = clientId;
-            
-            // Process the disconnection
+            disconnectMsg.senderId = playerId;
             processMessage(disconnectMsg);
-            
         } catch (const std::exception& e) {
             std::cerr << "[EmbeddedServer] Error handling disconnection: " << e.what() << std::endl;
         }
     } else {
-        // Some other error
         std::cerr << "[EmbeddedServer] Read error: " << error.message() << std::endl;
     }
 }
@@ -622,20 +545,19 @@ bool EmbeddedServer::sendToClient(std::shared_ptr<boost::asio::ip::tcp::socket> 
         // 1. Message type - 1 byte
         buffer.push_back(static_cast<uint8_t>(message.type));
         
-        // 2. Sender ID length - 1 byte
-        buffer.push_back(static_cast<uint8_t>(message.senderId.size()));
-        
-        // 3. Sender ID content
-        buffer.insert(buffer.end(), message.senderId.begin(), message.senderId.end());
-        
-        // 4. Data length - 4 bytes (important!)
+        // 2/. Sender ID - 2 bytes
+        buffer.push_back(static_cast<uint8_t>((message.senderId >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(message.senderId & 0xFF));
+
+
+        // 3. Data length - 4 bytes (important!)
         uint32_t dataSize = static_cast<uint32_t>(message.data.size());
         buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
         buffer.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
         buffer.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
         buffer.push_back(static_cast<uint8_t>(dataSize & 0xFF));
         
-        // 5. Data content
+        // 4. Data content
         buffer.insert(buffer.end(), message.data.begin(), message.data.end());
         
         // Create the complete message with header + body
@@ -740,7 +662,7 @@ bool EmbeddedServer::isRunning() const {
     return running_;
 }
 
-void EmbeddedServer::addPlayer(const std::string& playerId) {
+void EmbeddedServer::addPlayer(const uint16_t playerId) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     
     // 1) Create (or fetch) the player in the global manager:
@@ -763,7 +685,7 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     //Broadcast player object to all clients
     NetworkMessage joinMsg;
     joinMsg.type = MessageType::PLAYER_JOINED;
-    joinMsg.senderId = "server";
+    joinMsg.senderId = 0; // 'server' as 0 or a reserved value
 
     // Serialize player data
     serializeObject(player, joinMsg.data);
@@ -783,50 +705,25 @@ void EmbeddedServer::addPlayer(const std::string& playerId) {
     }
 }
 
-void EmbeddedServer::sendPlayerToClient(const std::string& playerId, Player* player) {
-    if (!player) {
-        return;
-    }
-    
-    // Create a message to send the player to the client
+void EmbeddedServer::sendPlayerToClient(const uint16_t playerId, Player* player) {
+    if (!player) return;
     NetworkMessage playerMsg;
     playerMsg.type = MessageType::PLAYER_ASSIGN;
-    playerMsg.senderId = "server";
+    playerMsg.senderId = 0; // 'server' as 0 or a reserved value
     playerMsg.targetId = playerId;
-    
-    // Serialize player data
-    // For now we'll use position and ID. In a more advanced implementation,
-    // you would serialize the complete player state.
     Vec2 position = player->getcollider().position;
-    
-    // Pack position data
     std::vector<uint8_t> data;
-    data.resize(sizeof(float) * 2 + playerId.length() + 1);
-    
-    // Position X and Y
+    data.resize(sizeof(float) * 2 + sizeof(uint16_t));
     float posX = position.x;
     float posY = position.y;
     std::memcpy(data.data(), &posX, sizeof(float));
     std::memcpy(data.data() + sizeof(float), &posY, sizeof(float));
-    
-    // Player ID
-    std::memcpy(data.data() + sizeof(float) * 2, playerId.c_str(), playerId.length() + 1);
-    
+    std::memcpy(data.data() + sizeof(float) * 2, &playerId, sizeof(uint16_t));
     playerMsg.data = std::move(data);
-    
-    // Send the message
-    
     std::lock_guard<std::mutex> lock(clientSocketsMutex_);
     auto it = clientSockets_.find(playerId);
     if (it != clientSockets_.end() && it->second && it->second->is_open()) {
         sendToClient(it->second, playerMsg);
-    } else {
-        std::cerr << "[EmbeddedServer] Failed to find socket for player " << playerId << std::endl;
-    }
-
-    // Notify through callback if set
-    if (messageCallback_) {
-        messageCallback_(playerMsg);
     }
 }
 
@@ -939,7 +836,7 @@ void EmbeddedServer::sendMinimalHeartbeat() {
     // Send a minimal update with just packet type
     NetworkMessage minimalMsg;
     minimalMsg.type = MessageType::GAME_STATE_DELTA;
-    minimalMsg.senderId = "server";
+    minimalMsg.senderId = 0; // 'server' as 0 or a reserved value
     minimalMsg.data = {0, 0}; // 0 objects
     
     // Send to all clients
@@ -967,13 +864,13 @@ size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Ob
         if (!obj) continue;
         
         // Basic object data
-        size_t objSize = 1 + 1 + obj->getObjID().size() + 16; // Type + ID length + ID + position/velocity
+        size_t objSize = 1 + sizeof(uint16_t) + 16; // Type + ID (uint16_t) + position/velocity
         
         // Type-specific data
         switch (obj->type) {
             case ObjectType::PLAYER:
             case ObjectType::MINOTAUR:
-                objSize += 2; // Animation state and direction
+                objSize += 4; // Animation state and direction, health
                 break;
             case ObjectType::TILE: {
                 std::shared_ptr<Tile> tile = std::static_pointer_cast<Tile>(obj);
@@ -1030,7 +927,7 @@ void EmbeddedServer::sendSingleGameStatePacket(const std::vector<std::shared_ptr
     // Message fits in a single packet - use delta state message
     NetworkMessage stateMsg;
     stateMsg.type = MessageType::GAME_STATE_DELTA;
-    stateMsg.senderId = "server";
+    stateMsg.senderId = 0; // 'server' as 0 or a reserved value
     stateMsg.data.clear();
     
     // Serialize object count (2 bytes)
@@ -1088,7 +985,7 @@ void EmbeddedServer::sendPartialGameState(
     // Create a new message for this part
     NetworkMessage partMsg;
     partMsg.type = MessageType::GAME_STATE_PART;
-    partMsg.senderId = "server";
+    partMsg.senderId = 0; // 'server' as 0 or a reserved value
     partMsg.data.clear();
     
     // Packet metadata (3 bytes):
@@ -1149,12 +1046,10 @@ void EmbeddedServer::sendPartialGameStateToClient(
     const std::vector<std::shared_ptr<Object>>& objects, 
     size_t startIndex, size_t count, 
     bool isFirstPacket, bool isLastPacket,
-    const std::string& playerId) {
-    
-    // Create a new message for this part
+    uint16_t playerId) {
     NetworkMessage partMsg;
     partMsg.type = MessageType::GAME_STATE_PART;
-    partMsg.senderId = "server";
+    partMsg.senderId = 0;
     partMsg.targetId = playerId;
     partMsg.data.clear();
     
@@ -1176,13 +1071,9 @@ void EmbeddedServer::sendPartialGameStateToClient(
     // - Object count in this packet (2 bytes)
     partMsg.data.push_back(uint8_t(count >> 8));
     partMsg.data.push_back(uint8_t(count & 0xFF));
-    
-    // Serialize each object in this range
-    for (size_t j = startIndex; j < startIndex + count && j < objects.size(); j++) {
-        serializeObject(objects[j], partMsg.data);
+    for (size_t i = startIndex; i < startIndex + count && i < objects.size(); ++i) {
+        serializeObject(objects[i], partMsg.data);
     }
-    
-    // Send to the specific client
     std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
     auto it = clientSockets_.find(playerId);
     if (it != clientSockets_.end() && it->second && it->second->is_open()) {
@@ -1199,64 +1090,45 @@ void EmbeddedServer::sendPartialGameStateToClient(
 void EmbeddedServer::sendSplitGameStateToClient(
     const std::vector<std::shared_ptr<Object>>& objectsToSend, 
     size_t estimatedSize, 
-    const std::string& playerId) {
-    
-    // We need to split the message
-    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size()) - 15;
+    uint16_t playerId) {
+    size_t objectsPerPacket = MAX_GAMESTATE_PACKET_SIZE / (estimatedSize / objectsToSend.size()) - 25;
     size_t totalObjects = objectsToSend.size();
     size_t packetCount = (totalObjects + objectsPerPacket - 1) / objectsPerPacket;
-    
     std::cout << "[EmbeddedServer] Splitting game state for client " << playerId
               << " into " << packetCount << " packets with ~" << objectsPerPacket 
               << " objects per packet (total objects: " << totalObjects << ")" << std::endl;
-    
-    // Send packets specifically to this client
     for (size_t i = 0; i < packetCount; i++) {
         size_t startIndex = i * objectsPerPacket;
         size_t count = std::min(objectsPerPacket, totalObjects - startIndex);
-        
         bool isFirstPacket = (i == 0);
         bool isLastPacket = (i == packetCount - 1);
-        
         sendPartialGameStateToClient(objectsToSend, startIndex, count, isFirstPacket, isLastPacket, playerId);
         if(!isLastPacket)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Small delay to avoid overwhelming the client
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
 }
 
 void EmbeddedServer::sendSingleGameStatePacketToClient(
     const std::vector<std::shared_ptr<Object>>& objectsToSend, 
-    const std::string& playerId) {
-    
-    // Message fits in a single packet
+    uint16_t playerId) {
     std::vector<uint8_t> data;
-    // First 2 bytes: object count
     uint16_t objectCount = static_cast<uint16_t>(objectsToSend.size());
     data.push_back(static_cast<uint8_t>(objectCount >> 8));
     data.push_back(static_cast<uint8_t>(objectCount & 0xFF));
     for (const auto& obj : objectsToSend) {
         serializeObject(obj, data);
     }
-    
     NetworkMessage msg;
-    // Use GAME_STATE instead of GAME_STATE_DELTA for full game states to a single client
-    // This ensures the client knows to replace its entire state rather than apply a delta
     msg.type = MessageType::GAME_STATE;
-    msg.senderId = "server";
+    msg.senderId = 0;
     msg.targetId = playerId;
     msg.data = std::move(data);
-    
-    // Send to the specific client
     std::lock_guard<std::mutex> sockLock(clientSocketsMutex_);
     auto it = clientSockets_.find(playerId);
     if (it != clientSockets_.end() && it->second && it->second->is_open()) {
-        std::cout << "[EmbeddedServer] Sending full game state to client " << playerId 
-                  << " in a single packet (" << objectsToSend.size() << " objects)" << std::endl;
         sendToClient(it->second, msg);
-    } else {
-        std::cerr << "[EmbeddedServer] Could not send game state to client: " << playerId << std::endl;
     }
 }
 
@@ -1271,10 +1143,10 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
     // a) Type
     data.push_back(static_cast<uint8_t>(obj->type));
     
-    // b) ID
-    const std::string& id = obj->getObjID();
-    data.push_back(static_cast<uint8_t>(id.size()));
-    data.insert(data.end(), id.begin(), id.end());
+    // b) ID - now a uint16_t
+    uint16_t id = obj->getObjID();
+    data.push_back(static_cast<uint8_t>(id & 0xFF));
+    data.push_back(static_cast<uint8_t>((id >> 8) & 0xFF));
 
     // c) Position & Velocity
     auto writeFloat = [&](float v) {
@@ -1313,12 +1185,18 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             auto* mino = static_cast<Minotaur*>(obj);
             data.push_back(static_cast<uint8_t>(mino->getAnimationState()));
             data.push_back(static_cast<uint8_t>(mino->getDir()));
+            int16_t health = mino->getHealth();
+            data.push_back(static_cast<uint8_t>(health >> 8));
+            data.push_back(static_cast<uint8_t>(health & 0xFF));
             break;
         }
         case ObjectType::PLAYER: {
             auto* player = static_cast<Player*>(obj);
             data.push_back(static_cast<uint8_t>(player->getAnimationState()));
             data.push_back(static_cast<uint8_t>(player->getDir()));
+            int16_t health = player->getHealth();
+            data.push_back(static_cast<uint8_t>(health >> 8));
+            data.push_back(static_cast<uint8_t>(health & 0xFF));
             break;
         }
         default:
@@ -1332,7 +1210,7 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
  * If the game state is too large, it will be split into multiple packets.
  * Each packet will contain metadata to indicate if it's the first or last part.
  */
-void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
+void EmbeddedServer::sendFullGameStateToClient(const uint16_t playerId) {
 
     std::lock_guard<std::mutex> lock(gameStateMutex_);
     Level* lvl = levelManager_->getCurrentLevel();
@@ -1354,6 +1232,4 @@ void EmbeddedServer::sendFullGameStateToClient(const std::string& playerId) {
     } else {
         sendSingleGameStatePacketToClient(objects, playerId);
     }
-
-    deltaTracker_.updateState(objects);
 }

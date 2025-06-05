@@ -3,10 +3,11 @@
 #include "network/NetworkConfig.h"
 
 
-Player::Player( int x, int y, std::string objID, int layer) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER, layer),
-    health(100), isAttackActive(false), isJumping(false), attackTimer(0.0f) {
+Player::Player( int x, int y, uint16_t objID, int layer) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER, layer),
+    isAttackActive(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] health initialized to: " << health << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -47,7 +48,7 @@ void Player::setupAnimations() {
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
-    healthbar_ = new Healthbar(getposition().x, getposition().y - 20, basePath / "healthbar.tpsheet", health, false); // Create health bar for player
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, basePath / "healthbar.tpsheet", health, false); // Create health bar for player
     
     // Set initial state
     setAnimationState(AnimationState::IDLE);

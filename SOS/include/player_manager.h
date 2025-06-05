@@ -23,15 +23,15 @@ public:
      */
     static PlayerManager& getInstance();
 
-    std::shared_ptr<Player> createPlayer(const std::string& playerId, const Vec2& position = Vec2(500, 100));
+    std::shared_ptr<Player> createPlayer(const uint16_t playerId, const Vec2& position = Vec2(500, 100));
 
-    bool addPlayerToLevel(const std::string& playerId, Level* level);
+    bool addPlayerToLevel(const uint16_t playerId, Level* level);
     
-    std::shared_ptr<Player> getPlayer(const std::string& playerId);
+    std::shared_ptr<Player> getPlayer(const uint16_t playerId);
 
-    const std::unordered_map<std::string, std::shared_ptr<Player>>& getAllPlayers() const;
+    const std::unordered_map<uint16_t, std::shared_ptr<Player>>& getAllPlayers() const;
     
-    bool removePlayer(const std::string& playerId);
+    bool removePlayer(const uint16_t playerId);
 
 
     void clear();
@@ -46,6 +46,6 @@ private:
     PlayerManager& operator=(const PlayerManager&) = delete;
     
     // Player storage
-    std::unordered_map<std::string, std::shared_ptr<Player>> players_;
+    std::unordered_map<uint16_t, std::shared_ptr<Player>> players_;
     std::mutex playerMutex_;
 };

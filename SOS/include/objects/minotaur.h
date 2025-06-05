@@ -8,8 +8,8 @@
 class Minotaur : public Enemy
 {
 public:
-    Minotaur(BoxCollider collider, std::string objID, int layer = 8);
-    Minotaur(int x, int y, std::string objID);
+    Minotaur(BoxCollider collider, uint16_t objID, int layer = 8);
+    Minotaur(int x, int y, uint16_t objID);
     ~Minotaur() override;
     void setupAnimations(std::filesystem::path atlasPath);
 

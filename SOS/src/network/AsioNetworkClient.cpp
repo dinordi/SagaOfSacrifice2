@@ -121,14 +121,12 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         buffer.push_back(static_cast<uint8_t>(message.type));
         
         // Use client_id_ instead of message.senderId if it's set
-        std::string senderId = !client_id_.empty() ? client_id_ : message.senderId;
-        
-        // Add sender ID length (1 byte)
-        buffer.push_back(static_cast<uint8_t>(senderId.size()));
-        
+        uint16_t senderId = client_id_ ? client_id_ : message.senderId;
+
         // Add sender ID content
-        buffer.insert(buffer.end(), senderId.begin(), senderId.end());
-        
+        buffer.push_back(static_cast<uint8_t>((senderId >> 8) & 0xFF));
+        buffer.push_back(static_cast<uint8_t>(senderId & 0xFF));
+
         // Add data length (4 bytes)
         uint32_t dataSize = static_cast<uint32_t>(message.data.size());
         buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
@@ -189,7 +187,7 @@ void AsioNetworkClient::setMessageHandler(std::function<void(const NetworkMessag
     message_handler_ = handler;
 }
 
-void AsioNetworkClient::setClientId(const std::string& clientId) {
+void AsioNetworkClient::setClientId(const uint16_t clientId) {
     client_id_ = clientId;
     std::cout << "[AsioNetworkClient] Client ID set to: " << clientId << std::endl;
 }
@@ -329,11 +327,9 @@ std::vector<uint8_t> AsioNetworkClient::serializeMessage(const NetworkMessage& m
     // 1. Message type - 1 byte
     result.push_back(static_cast<uint8_t>(message.type));
     
-    // 2. Sender ID length - 1 byte
-    result.push_back(static_cast<uint8_t>(message.senderId.size()));
-
-    // 3. Sender ID content
-    result.insert(result.end(), message.senderId.begin(), message.senderId.end());
+    // 2. Sender ID - 2 bytes
+    result.push_back(static_cast<uint8_t>(message.senderId >> 8));
+    result.push_back(static_cast<uint8_t>(message.senderId & 0xFF));
     
     // 4. Data length - 4 bytes
     uint32_t dataSize = static_cast<uint32_t>(message.data.size());
@@ -359,14 +355,14 @@ NetworkMessage AsioNetworkClient::deserializeMessage(const std::vector<uint8_t>&
     
     if (offset >= data.size()) return message;
     
-    // 2. Sender ID length
-    uint8_t senderIdLength = data[offset++];
-    
-    // // 3. Sender ID content
-    if (offset + senderIdLength <= data.size()) {
-        message.senderId.assign(data.begin() + offset, data.begin() + offset + senderIdLength);
-        offset += senderIdLength;
+    // 2. Sender ID 2 bytes
+    message.senderId = 0;
+    if (offset + 2 <= data.size()) {
+        message.senderId = (static_cast<uint16_t>(data[offset]) << 8) |
+                           static_cast<uint16_t>(data[offset + 1]);
+        offset += 2;
     }
+    
     
     if (offset + 4 > data.size()) return message;
     
