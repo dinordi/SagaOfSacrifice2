@@ -108,8 +108,8 @@ int SpriteLoader::load_png(const char *filename, uint32_t *sprite_data_out, int 
     *height_out = height;
     *sprite_size_out = width * height * sizeof(uint32_t);
 
-    std::cout << "Sprite succesvol geladen: " << width << "x" << height
-              << ", " << *sprite_size_out << " bytes" << std::endl;
+    // std::cout << "Sprite succesvol geladen: " << width << "x" << height
+    //           << ", " << *sprite_size_out << " bytes" << std::endl;
 
     return 0;
 }
@@ -264,8 +264,12 @@ int SpriteLoader::load_png_spritesheet(const char *filename, uint32_t *sprite_da
     for (unsigned int i = 0; i < img_height; i++) free(rows[i]);
     free(rows);
 
-    std::cout << "Sprite succesvol geknipt op pixel (" << x << ", " << y << ") met grootte "
-              << sprite_width << "x" << sprite_height << std::endl;
+    static int sprite_count = 0;
+    sprite_count++;
+    if(sprite_count % 20 == 0) {
+        std::cout << "Sprite: " << sprite_count <<  " succesvol geknipt op pixel (" << x << ", " << y << ") met grootte "
+                  << sprite_width << "x" << sprite_height << std::endl;
+    }
 
     return 0;
 }

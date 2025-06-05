@@ -276,8 +276,8 @@ void Renderer::distribute_sprites_over_pipelines() {
             return; // Or handle the error as needed
         }
         // Print what will be written to frame info
-        std::cout << "Writing to frame_info[0][" << index << "]: x=" << frame.x
-                  << ", y=" << frame.y << ", sprite_id=" << frame.sprite_id << std::endl;
+        // std::cout << "Writing to frame_info[0][" << index << "]: x=" << frame.x
+        //           << ", y=" << frame.y << ", sprite_id=" << frame.sprite_id << std::endl;
         // Write the sprite to the first pipeline
         write_sprite_to_frame_info(frame_infos[0], index, frame.x, frame.y, frame.sprite_id);
         index++;

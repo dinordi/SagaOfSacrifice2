@@ -159,6 +159,9 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     }
+    //wait 5 seconds
+    std::cout << "Waiting for 5 seconds before starting the game..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     PlayerInput* controller = new SDL2Input();
     Game& game = Game::getInstance();

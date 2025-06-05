@@ -13,7 +13,7 @@
 #include "object.h"
 #include "graphics/Camera.h"
 
-constexpr int NUM_PIPELINES = 4;
+constexpr int NUM_PIPELINES = 1;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
 constexpr size_t FRAME_INFO_SIZE = 0x2000;    // Pas aan indien nodig
 
@@ -65,11 +65,11 @@ public:
     std::thread irq_thread;
     volatile bool stop_thread = false;
 
-    static constexpr uint32_t LOOKUP_TABLE_ADDRS[NUM_PIPELINES] = {
+    static constexpr uint32_t LOOKUP_TABLE_ADDRS[4] = {
         0x82000000, 0x86000000, 0x8A000000, 0x8E000000
     };
 
-    static constexpr uint32_t FRAME_INFO_ADDRS[NUM_PIPELINES] = {
+    static constexpr uint32_t FRAME_INFO_ADDRS[4] = {
         0x80000000, 0x84000000, 0x88000000, 0x8C000000
     };
 
