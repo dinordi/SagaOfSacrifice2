@@ -1,11 +1,13 @@
 #include "objects/player.h"
 #include <iostream>
+#include "network/NetworkConfig.h"
 
 
-Player::Player( int x, int y, std::string objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
-    health(100), isAttackActive(false), isJumping(false), attackTimer(0.0f) {
+Player::Player( int x, int y, uint16_t objID) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
+    isAttackActive(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
+    std::cout << "[Player] health initialized to: " << health << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
     setupAnimations();
@@ -46,23 +48,55 @@ void Player::setupAnimations() {
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, basePath / "healthbar.tpsheet", health, false); // Create health bar for player
+    
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
 
 void Player::update(float deltaTime) {
-    // Update player-specific logic here
-    // handleInput(input, deltaTime); // Handle input
+    if (isRemote_) {
+        // Remote player update logic - similar to RemotePlayer
+        
+        // Update the animation controller
+        Entity::update(deltaTime);
+        
+        // Set direction based on velocity
+        Vec2 vel = getvelocity();
+        updateDirectionFromVelocity(vel);
 
-    BoxCollider* pColl = &getcollider();
-    Vec2* pos = &pColl->position;
-    Vec2 vel = getvelocity();
+    } else {
+        // Local player update logic
+        BoxCollider* pColl = &getcollider();
+        Vec2* pos = &pColl->position;
+        Vec2 vel = getvelocity();
 
+        // *pos += vel * deltaTime; // Update position based on velocity and delta time
 
-    *pos += vel * deltaTime; // Update position based on velocity and delta time
+        // Set direction based on velocity
+        updateDirectionFromVelocity(vel);
 
+        // Handle attack timer
+        if (isAttackActive) {
+            attackTimer += deltaTime;
+            if (attackTimer >= 0.4f) { // Attack animation time (seconds)
+                isAttackActive = false;
+                attackTimer = 0.0f;
+            }
+        }
 
-    // Set direction based on horizontal and vertical velocity
+        // Update animation state based on player state
+        updateAnimationState();
+
+        // Update the animation controller
+        Entity::update(deltaTime);
+
+        setvelocity(vel); // Update velocity
+    }
+}
+
+// Helper method to update direction based on velocity
+void Player::updateDirectionFromVelocity(const Vec2& vel) {
     if (vel.x > 0) {
         dir = FacingDirection::EAST;
     } else if (vel.x < 0) {
@@ -71,35 +105,7 @@ void Player::update(float deltaTime) {
         dir = FacingDirection::SOUTH;
     } else if (vel.y < 0) {
         dir = FacingDirection::NORTH;
-    } else if (vel.x < 0 && vel.y < 0) {
-        dir = FacingDirection::NORTH_WEST;
-    } else if (vel.x > 0 && vel.y < 0) {
-        dir = FacingDirection::NORTH_EAST;
-    } else if (vel.x < 0 && vel.y > 0) {
-        dir = FacingDirection::SOUTH_WEST;
-    } else if (vel.x > 0 && vel.y > 0) {
-        dir = FacingDirection::SOUTH_EAST;
     }
-
-    // Handle attack timer
-    if (isAttackActive) {
-        attackTimer += deltaTime;
-        if (attackTimer >= 0.4f) { // Attack animation time (seconds)
-            isAttackActive = false;
-            attackTimer = 0.0f;
-        }
-    }
-
-
-    // Update animation state based on player state
-    updateAnimationState();
-
-    // Update the animation controller
-    // updateAnimation(deltaTime*1000); // Convert deltaTime to milliseconds
-    Entity::update(deltaTime); // Call base class update
-
-    setvelocity(vel); // Update velocity
-    setcollider(*pColl); // Update position
 }
 
 void Player::handleInput(PlayerInput* input, float deltaTime) {

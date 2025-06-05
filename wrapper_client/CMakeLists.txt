@@ -222,45 +222,45 @@ else()
     )
     
     set(OUTPUT_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
-    file(GLOB_RECURSE ASSETS "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/*")
-    foreach(ASSET ${ASSETS})
-        # Get relative path from source assets dir to maintain folder structure
-        file(RELATIVE_PATH ASSET_REL_PATH "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets" "${ASSET}")
-        get_filename_component(ASSET_DIR "${ASSET_REL_PATH}" DIRECTORY)
-        
-        if (ANDROID)
-            # on Android, we need to copy the assets to the mobile assets directory.
-            set(outname "${MOBILE_ASSETS_DIR}/${ASSET_REL_PATH}")
-            # Create directory structure
-            if(NOT "${ASSET_DIR}" STREQUAL "")
-                add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E make_directory "${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
-                    COMMENT "Creating directory ${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
-                )
-            endif()
-        else()
-            # for platforms that do not have a good packaging format, all we can do is copy the assets to the process working directory.
-            set(outname "${OUTPUT_DIR}/SOS/assets/${ASSET_REL_PATH}")
+    if(MSVC)
+        file(GLOB_RECURSE ASSETS "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets/*")
+        foreach(ASSET ${ASSETS})
+            # Get relative path from source assets dir to maintain folder structure
+            file(RELATIVE_PATH ASSET_REL_PATH "${CMAKE_CURRENT_LIST_DIR}/../SOS/assets" "${ASSET}")
+            get_filename_component(ASSET_DIR "${ASSET_REL_PATH}" DIRECTORY)
             
-            # Create directory structure if needed
-            if(NOT "${ASSET_DIR}" STREQUAL "")
-                add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/${ASSET_DIR}"
-                    COMMENT "Creating directory SOS/assets/${ASSET_DIR}"
-                )
+            if (ANDROID)
+                # on Android, we need to copy the assets to the mobile assets directory.
+                set(outname "${MOBILE_ASSETS_DIR}/${ASSET_REL_PATH}")
+                # Create directory structure
+                if(NOT "${ASSET_DIR}" STREQUAL "")
+                    add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E make_directory "${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
+                        COMMENT "Creating directory ${MOBILE_ASSETS_DIR}/${ASSET_DIR}"
+                    )
+                endif()
+            else()
+                # for platforms that do not have a good packaging format, all we can do is copy the assets to the process working directory.
+                set(outname "${OUTPUT_DIR}/SOS/assets/${ASSET_REL_PATH}")
+                
+                # Create directory structure if needed
+                if(NOT "${ASSET_DIR}" STREQUAL "")
+                    add_custom_command(TARGET "${EXECUTABLE_NAME}" PRE_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/$<CONFIGURATION>/SOS/assets/${ASSET_DIR}"
+                        COMMENT "Creating directory SOS/assets/${ASSET_DIR}"
+                    )
+                endif()
             endif()
-        endif()
-        
-        # Copy the file with echo
-        add_custom_command(POST_BUILD
-            TARGET "${EXECUTABLE_NAME}"
-            COMMAND ${CMAKE_COMMAND} -E echo "Copying ${ASSET} to ${outname}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ASSET}" "${outname}"
-            DEPENDS "${ASSET}"
-        )
-    endforeach()
-    
+            
+            # Copy the file with echo
+            add_custom_command(POST_BUILD
+                TARGET "${EXECUTABLE_NAME}"
+                COMMAND ${CMAKE_COMMAND} -E echo "Copying ${ASSET} to ${outname}"
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ASSET}" "${outname}"
+                DEPENDS "${ASSET}"
+            )
+        endforeach()
+    endif()
 endif()
 
 # set some extra configs for each platform

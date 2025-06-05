@@ -145,10 +145,10 @@ bool LevelManager::loadLevel(const std::string& levelId) {
                     }
                 }
                 
-                if (!playerExists) {
+                // if (!playerExists) {
 
-                    addPlayerToCurrentLevel(playerPair.first);
-                }
+                //     addPlayerToCurrentLevel(playerPair.first);
+                // }
             }
             std::cout << "[LevelManager] Loaded level: " << levelId << std::endl;
             return true;
@@ -218,7 +218,7 @@ bool LevelManager::loadPreviousLevel() {
 }
 
 // Add a player to the current level
-bool LevelManager::addPlayerToCurrentLevel(const std::string& playerId) {
+bool LevelManager::addPlayerToCurrentLevel(uint16_t playerId) {
     if (!currentLevel_) {
         std::cerr << "[LevelManager] No current level to add player to" << std::endl;
         return false;
@@ -260,7 +260,7 @@ void LevelManager::update(float deltaTime) {
     }
 }
 
-bool LevelManager::removePlayerFromCurrentLevel(const std::string& playerId) {
+bool LevelManager::removePlayerFromCurrentLevel(uint16_t playerId) {
     if (currentLevel_) {
         auto& playerManager = PlayerManager::getInstance();
         auto player = playerManager.getPlayer(playerId);
