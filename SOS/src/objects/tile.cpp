@@ -5,7 +5,7 @@
 Tile::Tile(int x, int y, uint16_t objID, std::string tileMap, 
     int tileIndex, int tileWidth, int tileHeight, int layer) :   
         Object(BoxCollider(x, y, tileWidth, tileHeight), 
-        ObjectType::TILE, objID), layer, 
+        ObjectType::TILE, (objID), layer), 
         tileIndex(tileIndex), 
         tileMapName(tileMap)
 {
