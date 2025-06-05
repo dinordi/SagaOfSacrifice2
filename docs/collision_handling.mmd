@@ -1,0 +1,93 @@
+graph TD
+    %% Collision Detection and Resolution System
+    
+    subgraph "Game Loop Integration"
+        A[Game Update Loop] --> B[CollisionManager::update]
+        B --> C[Spatial Grid Update]
+        B --> D[Collision Detection Phase]
+    end
+    
+    subgraph "Spatial Optimization"
+        C --> E[SpatialGrid::clear]
+        E --> F[SpatialGrid::insert Objects]
+        F --> G[Grid Cell Assignment]
+        G --> H[Neighbor Cell Mapping]
+    end
+    
+    subgraph "Detection Phase"
+        D --> I[CollisionManager::checkCollisions]
+        I --> J[SpatialGrid::getPotentialCollisions]
+        J --> K[Broad Phase: Grid Lookup]
+        K --> L[Narrow Phase: Precise Detection]
+        
+        L --> M{Collision Type?}
+        M -->|Player-Enemy| N[Combat Collision]
+        M -->|Player-Projectile| O[Damage Collision]
+        M -->|Player-Environment| P[Boundary Collision]
+        M -->|Projectile-Environment| Q[Impact Collision]
+    end
+    
+    subgraph "Collision Resolution"
+        N --> R[CollisionHandler::handleCombat]
+        O --> S[CollisionHandler::handleDamage]
+        P --> T[CollisionHandler::handleBoundary]
+        Q --> U[CollisionHandler::handleImpact]
+        
+        R --> V[Apply Damage/Effects]
+        S --> W[Health Reduction]
+        T --> X[Position Correction]
+        U --> Y[Projectile Destruction]
+    end
+    
+    subgraph "Visitor Pattern Implementation"
+        V --> Z[CollisionVisitor::visit]
+        W --> Z
+        X --> Z
+        Y --> Z
+        
+        Z --> AA[Dynamic Type Resolution]
+        AA --> BB[Specific Handler Selection]
+        BB --> CC[Action Execution]
+    end
+    
+    subgraph "Response Actions"
+        CC --> DD[Object State Updates]
+        DD --> EE[Animation Triggers]
+        DD --> FF[Sound Effects]
+        DD --> GG[Particle Effects]
+        DD --> HH[Network Synchronization]
+    end
+    
+    subgraph "Multiplayer Considerations"
+        HH --> II[Server Authority Check]
+        II --> JJ{Is Server?}
+        JJ -->|Yes| KK[Authoritative Resolution]
+        JJ -->|No| LL[Client Prediction]
+        
+        KK --> MM[Broadcast Collision Event]
+        LL --> NN[Local Application]
+        LL --> OO[Await Server Confirmation]
+    end
+    
+    subgraph "Performance Optimizations"
+        PP[Collision Caching]
+        QQ[Early Exit Conditions]
+        RR[Collision Masks/Layers]
+        SS[Sleeping Object Detection]
+        
+        L --> QQ
+        K --> RR
+        I --> SS
+        CC --> PP
+    end
+    
+    %% Styling
+    classDef detectionPhase fill:#e1f5fe
+    classDef resolutionPhase fill:#f3e5f5
+    classDef optimizationPhase fill:#e8f5e8
+    classDef networkPhase fill:#fff3e0
+    
+    class C,D,I,J,K,L,M detectionPhase
+    class R,S,T,U,V,W,X,Y,Z,AA,BB,CC resolutionPhase
+    class E,F,G,H,PP,QQ,RR,SS optimizationPhase
+    class HH,II,JJ,KK,LL,MM,NN,OO networkPhase

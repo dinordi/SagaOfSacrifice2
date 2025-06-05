@@ -1,0 +1,109 @@
+flowchart TD
+    %% Main Components
+    subgraph "Client Layer"
+        Client[Client Application]
+        Game[Game Class]
+        SDL[SDL Wrapper Client]
+        Renderer[Renderer]
+    end
+
+    subgraph "Game Core"
+        Objects[Game Objects]
+        Player[Player]
+        Enemy[Enemy]
+        Tile[Tile/Platform]
+        Entity[Entity]
+        Actor[Actor System]
+    end
+
+    subgraph "Systems"
+        Input[Input System]
+        Collision[Collision Manager]
+        Animation[Animation Controller]
+        Audio[Audio Manager]
+        Level[Level Manager]
+    end
+
+    subgraph "Network Layer"
+        MultiplayerManager[Multiplayer Manager]
+        NetworkClient[Asio Network Client]
+        LocalServerManager[Local Server Manager]
+    end
+
+    subgraph "Server Components"
+        EmbeddedServer[Embedded Server]
+        DedicatedServer[Dedicated Server]
+        GameServer[Game Server Logic]
+    end
+
+    subgraph "Data & Assets"
+        SpriteData[Sprite Data]
+        Assets[Asset Files]
+        Config[Configuration]
+    end
+
+    subgraph "Hardware Layer (FPGA)"
+        DMAControl[DMA Control]
+        BRAM[BRAM Controller]
+        Hardware[Hardware Rendering]
+    end
+
+    %% Main Flow Connections
+    Client --> Game
+    Client --> SDL
+    SDL --> Renderer
+    Game --> Objects
+    Game --> Systems
+    Game --> NetworkLayer[Network Layer]
+
+    %% Game Objects
+    Objects --> Player
+    Objects --> Enemy  
+    Objects --> Tile
+    Player --> Entity
+    Enemy --> Entity
+    Entity --> Actor
+
+    %% Systems Integration
+    Game --> Input
+    Game --> Collision
+    Game --> Audio
+    Game --> Level
+    Objects --> Animation
+    Objects --> SpriteData
+
+    %% Network Connections
+    MultiplayerManager --> NetworkClient
+    Game --> MultiplayerManager
+    Game --> LocalServerManager
+    LocalServerManager --> EmbeddedServer
+    NetworkClient --> EmbeddedServer
+    NetworkClient --> DedicatedServer
+
+    %% Data Flow
+    Assets --> SpriteData
+    Config --> Game
+    SpriteData --> Animation
+    SpriteData --> Renderer
+
+    %% Hardware Integration (Client Only)
+    Renderer --> DMAControl
+    DMAControl --> BRAM
+    BRAM --> Hardware
+
+    %% Styling
+    classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef coreStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef systemStyle fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef networkStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef serverStyle fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef dataStyle fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef hardwareStyle fill:#ffebee,stroke:#b71c1c,stroke-width:2px
+
+    class Client,Game,SDL,Renderer clientStyle
+    class Objects,Player,Enemy,Tile,Entity,Actor coreStyle
+    class Input,Collision,Animation,Audio,Level systemStyle
+    class MultiplayerManager,NetworkClient,LocalServerManager networkStyle
+    class EmbeddedServer,DedicatedServer,GameServer serverStyle
+    class SpriteData,Assets,Config dataStyle
+    class DMAControl,BRAM,Hardware hardwareStyle

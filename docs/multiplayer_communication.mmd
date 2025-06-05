@@ -1,0 +1,80 @@
+sequenceDiagram
+    participant C1 as Client 1
+    participant C2 as Client 2
+    participant S as Server
+    participant GM as Game Manager
+    participant CM as Collision Manager
+
+    Note over C1,CM: Multiplayer Game Session Setup
+
+    %% Connection Phase
+    C1->>S: Connect(playerID=65000)
+    S->>S: Assign PlayerID=1001
+    S->>C1: Connection ACK(playerID=1001)
+    C1->>S: CONNECT Message
+
+    C2->>S: Connect(playerID=65000)
+    S->>S: Assign PlayerID=1002
+    S->>C2: Connection ACK(playerID=1002)
+    C2->>S: CONNECT Message
+
+    %% Game State Synchronization
+    S->>GM: Add Players to Game
+    GM->>S: Initial Game State
+    S->>C1: Full Game State (all objects, players)
+    S->>C2: Full Game State (all objects, players)
+
+    Note over C1,CM: Active Gameplay Loop
+
+    %% Input and Movement Phase
+    C1->>C1: Process Local Input
+    C1->>C1: Predict Movement Locally
+    C1->>S: Player Input State (sequence#1)
+    
+    C2->>C2: Process Local Input  
+    C2->>C2: Predict Movement Locally
+    C2->>S: Player Input State (sequence#1)
+
+    %% Server Processing
+    S->>GM: Process Player Inputs
+    GM->>CM: Check Collisions
+    CM->>GM: Collision Results
+    GM->>S: Updated Game State
+    
+    %% State Distribution
+    S->>C1: Game State Update (both players)
+    S->>C2: Game State Update (both players)
+    
+    %% Client Reconciliation
+    C1->>C1: Compare Server vs Predicted State
+    C1->>C1: Apply Corrections if Needed
+    
+    C2->>C2: Compare Server vs Predicted State
+    C2->>C2: Apply Corrections if Needed
+
+    Note over C1,CM: Player Action Example
+
+    %% Player Action (e.g., Attack)
+    C1->>S: Player Action (ATTACK, sequence#2)
+    S->>GM: Process Attack Action
+    GM->>CM: Check Attack Collisions
+    CM->>GM: Hit Detection Results
+    GM->>GM: Update Entity Health
+    GM->>S: Action Result + State Update
+    
+    S->>C1: Action Result + Game State
+    S->>C2: Game State Update (damage/effects)
+
+    Note over C1,CM: Chat Communication
+
+    %% Chat Message
+    C1->>S: Chat Message("Hello!")
+    S->>C2: Chat Message(from=1001, "Hello!")
+
+    Note over C1,CM: Disconnection
+
+    %% Player Disconnection
+    C2->>S: DISCONNECT Message
+    S->>GM: Remove Player 1002
+    GM->>S: Updated Game State
+    S->>C1: Game State Update (player removed)
