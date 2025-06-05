@@ -18,7 +18,7 @@
     }
 
 Minotaur::Minotaur(int x, int y, std::string objID)
-    : Minotaur(BoxCollider(x, y, 64, 64), objID, 3) // Default layer 3
+    : Minotaur(BoxCollider(x, y, 64, 64), objID, 8) // Default layer 3
 {
     // Delegates to main constructor
 }
