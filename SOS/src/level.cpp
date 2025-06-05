@@ -116,10 +116,12 @@ bool Level::load(json& levelData)
                     const int worldY = row * tileHeight;
 
                     std::string objId = "Tile_" + std::to_string(nextObjId++);
+                    std::cout << "LayerID: " << layerid << std::endl;
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
                         tileWidth, tileHeight, layerid);
+                    std::cout << "Layer after: " << tile->getLayer() << std::endl;
                     levelObjects.push_back(tile);
                     
                 }

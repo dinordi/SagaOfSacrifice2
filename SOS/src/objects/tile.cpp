@@ -3,14 +3,14 @@
 #include <iostream>
 
 Tile::Tile(int x, int y, std::string objID, std::string tileMap, 
-    int tileIndex, int tileWidth, int tileHeight, int columns, int layer) :   
+    int tileIndex, int tileWidth, int tileHeight, int layer) :   
         Object(BoxCollider(x, y, tileWidth, tileHeight), 
         ObjectType::TILE, (objID), layer), 
         tileIndex(tileIndex), 
         tileMapName(tileMap)
 {
     // Initialize Tile-specific attributes here
-    std::cout << " Tile Layer: " << layer << std::endl;
+    // std::cout << " Tile Layer: " << layer << std::endl;
     
 }
 
