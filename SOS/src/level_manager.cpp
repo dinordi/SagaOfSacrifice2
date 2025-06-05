@@ -91,22 +91,10 @@ bool LevelManager::loadLevel(const std::string& levelId) {
     std::cout << "[LevelManager] Loading level: " << levelId << std::endl;  
     if (it != levels_.end()) {
         currentLevel_ = it->second;
-        
-        // Load the JSON level data file
-        std::string levelFilePath = levelFilePaths_[levelId];  // Use the path we already stored during initialization
-        std::ifstream levelFile(levelFilePath);
-        
-        if (!levelFile.is_open()) {
-            std::cerr << "Failed to open level file: " << levelFilePath << std::endl;
-            loaded = false;
-        }
-        std::cout << "[LevelManager] Loading level from file: " << levelFilePath << std::endl;
-        try {
-            json levelData;
-            levelFile >> levelData;
-            
+                try {
+
             // First load the level data
-            bool loadSuccess = currentLevel_->load(levelData);
+            bool loadSuccess = currentLevel_->load();
             if (!loadSuccess) {
                 std::cerr << "[LevelManager] Failed to load level data from JSON" << std::endl;
                 loaded = false;

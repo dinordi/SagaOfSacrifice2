@@ -24,7 +24,7 @@ public:
     ~Level();
 
     /* -------- life-cycle -------- */
-    bool load(nlohmann::json& levelData);   // read JSON, build level
+    bool load();   // read JSON, build level
     void unload();                          // free everything
     void reset();                           // start over
     void update(float deltaTime);           // per-frame
