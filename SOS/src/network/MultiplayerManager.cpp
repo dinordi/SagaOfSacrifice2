@@ -972,6 +972,6 @@ void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message
     std::cout << "[Client] Assigned player with ID: " << assignedId << " at position (" << posX << ", " << posY << ")" << std::endl;
     
     // Create our player
-    auto* game = Game::getInstance();
-    game->updatePlayer(assignedId, Vec2(posX, posY));
+    auto& game = Game::getInstance();
+    game.updatePlayer(assignedId, Vec2(posX, posY));
 }

@@ -38,7 +38,7 @@ struct AppContext {
                                       // You can adjust this (e.g., 33333 for 30 UPS)
     Uint64 accumulator_us = 0;
     Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
-    Game* game;
+    Game& game;
     std::filesystem::path basePathSOS;
     Camera* camera;
     
@@ -281,13 +281,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_APP_FAILURE;
     }
     //Load game
-    Game* game = new Game(input);
+    Game& game = Game::getInstance();
+    game.setPlayerInput(input);
     
     // Initialize server configuration
-    game->initializeServerConfig(basePathSOS.string());
+    game.initializeServerConfig(basePathSOS.string());
     
     // Set multiplayer configuration for later use when menu option is selected
-    game->setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
+    game.setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
     
     SDL_SetWindowSize(window, 1920, 1080);
     // print some information about the window
@@ -372,7 +373,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
     }
 
     // Pass event to input handler if needed (SDLInput might handle events internally or need polling)
-    // Example: if (app->game) { static_cast<SDLInput*>(app->game->getInput())->handleEvent(event); }
+    // Example: if (app->game) { static_cast<SDLInput*>(app->game.getInput())->handleEvent(event); }
 
     return SDL_APP_CONTINUE;
 }
@@ -380,7 +381,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
     auto* app = (AppContext*)appstate;
 
-    if(!app->game->isRunning())
+    if(!app->game.isRunning())
     {
         app->app_quit = SDL_APP_SUCCESS;
         return app->app_quit;
@@ -407,29 +408,17 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     app->accumulator_us += frame_time_us;
 
-    // --- Event Handling (Crucial - ensure you have this somewhere!) ---
-    // SDL_Event event;
-    // while (SDL_PollEvent(&event)) {
-    //     if (event.type == SDL_EVENT_QUIT) {
-    //         app->app_quit = SDL_APPTERMINATE; // Or however you signal quit
-    //     }
-    //     // Pass event to your game for input processing, etc.
-    //     // app->game->handleEvent(event); 
-    // }
-
-
     // --- Game Logic Updates (Fixed Timestep) ---
     while (app->accumulator_us >= app->fixed_timestep_us) {
-        if (app->game) {
-            // Pass the fixed timestep in SECONDS to your update function
-            float fixed_delta_seconds = static_cast<float>(app->fixed_timestep_us) / 1000000.0f;
-            app->game->update(fixed_delta_seconds); 
-        }
+        // Pass the fixed timestep in SECONDS to your update function
+        float fixed_delta_seconds = static_cast<float>(app->fixed_timestep_us) / 1000000.0f;
+        app->game.update(fixed_delta_seconds); 
+
         app->accumulator_us -= app->fixed_timestep_us;
     }
 
     // Find player object to center camera on
-    Player* playerObject = app->game->getPlayer();
+    Player* playerObject = app->game.getPlayer();
     
     // Update camera to follow player
     if (playerObject) {
@@ -473,7 +462,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     renderParallaxLayer(app->parallaxLayer2Tex, layer2Factor);
 
     //Load game objects (Entities, player(s), platforms)
-    for(const auto& entity : app->game->getObjects()) {
+    for(const auto& entity : app->game.getObjects()) {
         
         if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
         
@@ -546,7 +535,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
     }
 
-    for(const auto& actor : app->game->getActors()) {
+    for(const auto& actor : app->game.getActors()) {
          if (!actor) continue; // Basic safety check
 
          const SpriteData* spriteData = actor->getCurrentSpriteData();
@@ -635,7 +624,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
         }
     }
-    // app->game->clearActors(); // Clear actors after rendering
+    // app->game.clearActors(); // Clear actors after rendering
 
     SDL_RenderPresent(app->renderer);
 
@@ -645,9 +634,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
-        
-        // Clean up game object
-        delete app->game; // Delete the game instance
 
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
@@ -658,7 +644,7 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
         SDL_DestroyWindow(app->window);
 
         // Clean up input (if dynamically allocated in AppInit)
-        // delete static_cast<SDLInput*>(app->game->getInput()); // Be careful with ownership
+        // delete static_cast<SDLInput*>(app->game.getInput()); // Be careful with ownership
 
         delete app; // Delete the context itself
     }

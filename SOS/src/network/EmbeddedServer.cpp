@@ -26,6 +26,7 @@ EmbeddedServer::EmbeddedServer(int port, const std::filesystem::path& basePath)
     
     // Initialize the acceptor but don't start listening until start() is called
     acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_);
+    serverId_ = Object::getNextObjectID(); // Assign a unique server ID
 }
 
 EmbeddedServer::~EmbeddedServer() {

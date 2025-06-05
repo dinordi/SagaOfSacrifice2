@@ -130,8 +130,8 @@ int main(int argc, char *argv[]) {
     std::string path = std::filesystem::current_path().string();
     // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
     // Want to go to /SagaOfSacrifice2/SOS
-    path = path.substr(0, path.find("/client/build"));
-    path = path + "/SOS";
+    std::string basePathSOS = path.substr(0, path.find("/client/build"));
+    path = basePathSOS + "/SOS";
 
     std::string path_sprites = path + "/assets/spriteatlas/";
     imageName = imageName + ".png";
@@ -143,6 +143,8 @@ int main(int argc, char *argv[]) {
     }
     if(audio)
     {
+        audio->setVolume(0.2f);
+        audio->setMusicVolume(0.2f);
         audio->loadMusic("music/menu/menu.wav");
         audio->loadSound("sfx/001.wav");
         audio->loadSound("sfx/jump.wav");
@@ -160,35 +162,17 @@ int main(int argc, char *argv[]) {
         }
     }
     //wait 5 seconds
-    std::cout << "Waiting for 5 seconds before starting the game..." << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::cout << "Waiting for 2 seconds before starting the game..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     PlayerInput* controller = new SDL2Input();
     Game& game = Game::getInstance();
     game.setPlayerInput(controller);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
+
+    // Initialize server configuration
+    game.initializeServerConfig(basePathSOS);
     
-    // Initialize network features based on mode
-    if (enableRemoteMultiplayer) {
-        // Connect to remote server for multiplayer
-        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
-            std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
-        } else {
-            std::cout << "Multiplayer initialized successfully!" << std::endl;
-        }
-    } else if (!localOnlyMode) {
-        if (useEmbeddedServer) {
-            // Initialize single player with embedded server (new recommended approach)
-            if (!game.initializeSinglePlayerEmbeddedServer()) {
-                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
-            } else {
-                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
-            }
-        }
-    } else {
-        // Local-only mode (no server) for development/debugging
-        std::cout << "Running in local-only mode without server." << std::endl;
-    }
 
     auto lastTime = get_ticks();
     auto lastRenderTime = lastTime;
