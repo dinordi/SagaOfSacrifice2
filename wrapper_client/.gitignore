@@ -1,8 +1,4 @@
 .DS_Store
 .vscode/
 build/
-wrapper_client/.gradle/
-wrapper_client/SDL/
-wrapper_client/SDL_image/
-wrapper_client/SDL_mixer/
-wrapper_client/SDL_ttf/
+.gradle/

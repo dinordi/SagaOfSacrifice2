@@ -1,0 +1,1023 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:33fea754941aed1d32376024d6bd9cab:a70cb36a150ecb9c53b2aa5c83549a9a:1bd2911419f0f023569681ec97f0512b$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "Golem_animations",
+            "size": {
+                "h": 510,
+                "w": 1122
+            },
+            "sprites": [
+                {
+                    "filename": "Character_sheet-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-11",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-12",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-13",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 103,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-14",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-15",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-16",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-17",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-18",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-19",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-20",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 205,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-21",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-22",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 307,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-23",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 307,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-24",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 307,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-25",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 307,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-26",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 307,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-27",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 409,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-28",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 409,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-29",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-30",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 409,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-31",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 409,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-32",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 409,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-33",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 511,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-34",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 511,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-35",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 511,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-36",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-37",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 511,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-38",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 511,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-39",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 613,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-40",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 613,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-41",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 613,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-42",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 613,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-43",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-44",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 613,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-45",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 715,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-46",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 715,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-47",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 715,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-48",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 715,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-49",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 715,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-50",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 817,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-51",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 817,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-52",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-53",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-54",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 817,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-55",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 817,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-56",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 817,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-57",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 919,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-58",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 919,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-59",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 919,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-60",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 919,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-61",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 919,
+                        "y": 409
+                    }
+                },
+                {
+                    "filename": "Character_sheet-62",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1021,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "Character_sheet-63",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1021,
+                        "y": 103
+                    }
+                },
+                {
+                    "filename": "Character_sheet-64",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1021,
+                        "y": 205
+                    }
+                },
+                {
+                    "filename": "Character_sheet-65",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1021,
+                        "y": 307
+                    }
+                },
+                {
+                    "filename": "Character_sheet-66",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 100,
+                        "x": 1021,
+                        "y": 307
+                    }
+                }
+            ]
+        }
+    ]
+}

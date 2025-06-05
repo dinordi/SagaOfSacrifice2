@@ -3,9 +3,13 @@
 #include "tile.h"
 
 #include <iostream>
+#include <mutex>
 
-Object::Object(BoxCollider collider, ObjectType type, std::string ID)
-    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID)
+uint16_t Object::objectCount = 0; // Initialize static object count
+std::mutex Object::countmutex; // Define the static mutex
+
+Object::Object(BoxCollider collider, ObjectType type, uint16_t ID, int layer)
+    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID), Layer(layer)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;
@@ -17,6 +21,10 @@ Object::Object(BoxCollider collider, ObjectType type, std::string ID)
 
 // Animation methods implementation
 void Object::updateAnimation(float deltaTime) {
+    if(type == ObjectType::TILE) {
+        // Tiles do not have animations, return early
+        return;
+    }
     animController.update(static_cast<uint64_t>(deltaTime), dir);
 }
 
@@ -56,10 +64,15 @@ const SpriteData* Object::getCurrentSpriteData() const {
     return nullptr; // No sprite data found for the current state
 }
 
-Actor::Actor(Vec2 pos, const SpriteData* spData, uint32_t spriteIndex) : spriteIndex(spriteIndex)
+uint16_t Actor::actorCount = 0; // Initialize static actor count
+Actor::Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type) : position(pos), type(type), tpsheet(tpsheet), defaultIndex(defaultIndex)
 {
-    this->position = pos;
-    this->spriteData = spData;
+    ObjID = actorCount++;
+}
+
+const SpriteData* Actor::getCurrentSpriteData() const
+{
+    return SpriteData::getSharedInstance(tpsheet);
 }
 
 BoxCollider::BoxCollider(Vec2 pos, Vec2 size) : position(pos), size(size) {}

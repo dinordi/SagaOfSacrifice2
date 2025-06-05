@@ -4,21 +4,24 @@
 #include <cmath>
 #include <random>
 #include <filesystem>
+#include "minotaur.h"
 
-Minotaur::Minotaur(int x, int y, std::string objID) : Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR) {
-    // Call the other constructor's setup code
+ Minotaur::Minotaur(int x, int y, uint16_t objID, int layer): Enemy(BoxCollider(x, y, 64, 64), objID, ObjectType::MINOTAUR, layer) 
+    {
     setvelocity(Vec2(0, 0));
-    
     // Minotaur specific stats
     health = 150;
     attackDamage = 25;
     attackRange = 120.0f;
     detectionRange = 400.0f;
     moveSpeed = 100.0f;
-}
+    }
+
+
 
 Minotaur::~Minotaur() {
     // Clean up any resources
+   
 }
 
 void Minotaur::setupAnimations(std::filesystem::path atlasPath)
@@ -42,6 +45,9 @@ void Minotaur::setupAnimations(std::filesystem::path atlasPath)
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::SOUTH, 10,14);
     animController.setDirectionRow(AnimationState::ATTACKING, FacingDirection::EAST, 15,19);
 
+    std::cout << "Setting up healthbar" << std::endl;
+    //Setup healthbar
+    healthbar_ = std::make_unique<Healthbar>(getposition().x, getposition().y - 20, atlasPath / "healthbar.tpsheet", health);
     // Set initial state
     setAnimationState(AnimationState::IDLE);
 }
@@ -118,20 +124,18 @@ void Minotaur::attack() {
 }
 
 void Minotaur::die() {
-    if (isDead) return;
+    if (isDead_) return;
     
-    std::cout << "Minotaur is dying!" << std::endl;
     // Play death animation or effects here
     
     // Mark as dead
-    isDead = true;
+    isDead_ = true;
     
     // The minotaur object will be removed by the game's cleanup mechanism
 }
 
 void Minotaur::update(float deltaTime) {
-    // Use base enemy update for AI behavior
+    // Interpolation for remote minotaurs is handled in Entity::update
     Enemy::update(deltaTime);
-    
     // Minotaur-specific updates can be added here
 }

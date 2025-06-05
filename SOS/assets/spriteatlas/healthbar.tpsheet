@@ -1,0 +1,183 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:7560d9b995837339d0af12a1697fb34f:42cde7f5a7457686cc8fdc9482006387:812907a3fc61d45bec2f326ff250c9f3$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "healthbar",
+            "size": {
+                "h": 14,
+                "w": 121
+            },
+            "sprites": [
+                {
+                    "filename": "healthbar-0",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 15,
+                        "x": 86,
+                        "y": 6
+                    }
+                },
+                {
+                    "filename": "healthbar-1",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 17,
+                        "x": 36,
+                        "y": 8
+                    }
+                },
+                {
+                    "filename": "healthbar-2",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 18,
+                        "x": 0,
+                        "y": 8
+                    }
+                },
+                {
+                    "filename": "healthbar-3",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 16,
+                        "x": 70,
+                        "y": 8
+                    }
+                },
+                {
+                    "filename": "healthbar-4",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 13,
+                        "x": 101,
+                        "y": 6
+                    }
+                },
+                {
+                    "filename": "healthbar-5",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 15,
+                        "x": 93,
+                        "y": 0
+                    }
+                },
+                {
+                    "filename": "healthbar-6",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 17,
+                        "x": 53,
+                        "y": 8
+                    }
+                },
+                {
+                    "filename": "healthbar-7",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 18,
+                        "x": 18,
+                        "y": 8
+                    }
+                },
+                {
+                    "filename": "healthbar-8",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 16,
+                        "x": 77,
+                        "y": 0
+                    }
+                },
+                {
+                    "filename": "healthbar-9",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 6,
+                        "w": 13,
+                        "x": 108,
+                        "y": 0
+                    }
+                },
+                {
+                    "filename": "healthbar-10",
+                    "margin": {
+                        "h": 0,
+                        "w": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "region": {
+                        "h": 8,
+                        "w": 77,
+                        "x": 0,
+                        "y": 0
+                    }
+                }
+            ]
+        }
+    ]
+}

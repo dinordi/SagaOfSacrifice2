@@ -4,7 +4,7 @@
 #include <random>
 #include "objects/player.h"
 
-Enemy::Enemy(BoxCollider collider, std::string objID, ObjectType type) : Entity(collider, objID, type) {
+Enemy::Enemy(BoxCollider collider, uint16_t objID, ObjectType type, int layer) : Entity(collider, objID, type, layer) {
     // Initialize Enemy-specific attributes here
     health = 100;
     attackCooldown = 0.0f;
@@ -15,7 +15,7 @@ Enemy::Enemy(BoxCollider collider, std::string objID, ObjectType type) : Entity(
     currentState = EnemyState::IDLE;
     wanderTimer = 0.0f;
     wanderDirection = Vec2(0, 0);
-    isDead = false;
+    isDead_ = false;
     
     // std::cout << "Enemy created with ID: " << objID << " at position (" 
     //           << getcollider().position.x << ", " << getcollider().position.y << ")" << std::endl;
@@ -26,7 +26,6 @@ void Enemy::accept(CollisionVisitor& visitor) {
 }
 
 void Enemy::update(float deltaTime) {
-    if (isDead) return;
     
     // Decrease attack cooldown
     if (attackCooldown > 0) {
@@ -122,7 +121,7 @@ void Enemy::update(float deltaTime) {
             }
             
             // Return to chasing if player is out of attack range
-            if (targetPlayer && !isPlayerInRange(targetPlayer, attackRange)) {
+            if (targetPlayer && !isPlayerInRange(targetPlayer, attackRange) && !isDead_) {
                 currentState = EnemyState::CHASING;
             }
             break;
@@ -139,12 +138,12 @@ void Enemy::update(float deltaTime) {
     }
 
     //Print old position
-    Vec2 vel = getvelocity();
-    // Update position based on velocity
-    BoxCollider* pColl = &getcollider();
-    Vec2* pos = &pColl->position;
-    pos->x += vel.x * deltaTime;
-    pos->y += vel.y * deltaTime;
+    // Vec2 vel = getvelocity();
+    // // Update position based on velocity
+    // BoxCollider* pColl = &getcollider();
+    // Vec2* pos = &pColl->position;
+    // pos->x += vel.x * deltaTime;
+    // pos->y += vel.y * deltaTime;
 
     // Update animation
     Entity::update(deltaTime); // Call the base class update
@@ -155,7 +154,8 @@ void Enemy::update(float deltaTime) {
 
 void Enemy::detectPlayer(std::shared_ptr<Player> player) {
     if (!player) return;
-    
+    if (isDead_) return;
+
     if (isPlayerInRange(player, detectionRange)) {
         currentState = EnemyState::CHASING;
         targetPlayer = player;
@@ -193,4 +193,26 @@ Vec2 Enemy::getDirectionToPlayer(std::shared_ptr<Player> player) {
     }
     
     return direction;
+}
+
+void Enemy::takeDamage(int16_t amount) {
+    if (isDead_) return;
+    
+    health -= amount;
+    std::cout << "Enemy " << getObjID() << " took " << amount << " damage! Health: " << health << std::endl;
+    
+    if (health <= 0) {
+        std::cout << "Enemy " << getObjID() << " health depleted!" << std::endl;
+        currentState = EnemyState::DYING;
+        isDead_ = true;
+    }
+}
+
+
+void Enemy::setHealth(int16_t newHealth) {
+    health = newHealth;
+    if (health <= 0) {
+        currentState = EnemyState::DYING;
+        isDead_ = true;
+    }
 }

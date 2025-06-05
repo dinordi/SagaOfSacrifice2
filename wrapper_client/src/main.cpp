@@ -17,6 +17,7 @@
 #include "logger_sdl.h"
 #include "sdl_input.h"
 #include "SDL3AudioManager.h"
+#include "graphics/Camera.h"
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
@@ -28,6 +29,9 @@ struct AppContext {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* messageTex, *backgroundTex;
+    // Parallax layers
+    SDL_Texture* parallaxLayer1Tex = nullptr;
+    SDL_Texture* parallaxLayer2Tex = nullptr;
     SDL_Rect imageDest;
     SDL_AppResult app_quit = SDL_APP_CONTINUE;
     Uint64 fixed_timestep_us = 16666; // For ~60 updates per second (1,000,000 microseconds / 60)
@@ -36,6 +40,7 @@ struct AppContext {
     Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
     Game* game;
     std::filesystem::path basePathSOS;
+    Camera* camera;
     
     // Multiplayer configuration
     bool enableMultiplayer;
@@ -231,7 +236,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_APP_FAILURE;
     }
     //Load game
-    Game* game = new Game(input, playerId);
+    Game* game = new Game(input);
     
     // Initialize server configuration
     game->initializeServerConfig(basePathSOS.string());
@@ -254,28 +259,53 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     }
 
     // Load the background image
-    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background.png").make_preferred();
+    auto backgroundPath = (basePathSOS / "SOS/assets/backgrounds/background2.png").make_preferred();
     SDL_Surface* backgroundSurface = IMG_Load(backgroundPath.string().c_str());
     if (!backgroundSurface) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to load background image: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-
     SDL_Texture* backgroundTex = SDL_CreateTextureFromSurface(renderer, backgroundSurface);
-    SDL_DestroySurface(backgroundSurface); // Free the surface after creating the texture
+    SDL_DestroySurface(backgroundSurface);
     if (!backgroundTex) {
         SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Failed to create background texture: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    // Load parallax layers
+    SDL_Texture* parallaxLayer1Tex = nullptr;
+    SDL_Texture* parallaxLayer2Tex = nullptr;
+    {
+        auto layer1Path = (basePathSOS / "SOS/assets/backgrounds/platform.png").make_preferred();
+        SDL_Surface* layer1Surface = IMG_Load(layer1Path.string().c_str());
+        if (layer1Surface) {
+            parallaxLayer1Tex = SDL_CreateTextureFromSurface(renderer, layer1Surface);
+            SDL_DestroySurface(layer1Surface);
+        } else {
+            SDL_LogWarn(SDL_LOG_CATEGORY_CUSTOM, "Could not load parallax layer 1: %s", SDL_GetError());
+        }
+        auto layer2Path = (basePathSOS / "SOS/assets/backgrounds/islands2.png").make_preferred();
+        SDL_Surface* layer2Surface = IMG_Load(layer2Path.string().c_str());
+        if (layer2Surface) {
+            parallaxLayer2Tex = SDL_CreateTextureFromSurface(renderer, layer2Surface);
+            SDL_DestroySurface(layer2Surface);
+        } else {
+            SDL_LogWarn(SDL_LOG_CATEGORY_CUSTOM, "Could not load parallax layer 2: %s", SDL_GetError());
+        }
+    }
 
+    // Initialize camera
+    Camera* camera = new Camera(windowStartWidth, windowStartHeight);
     // set up the application data
     *appstate = new AppContext{
        .window = window,
        .renderer = renderer,
        .messageTex = messageTex,
        .backgroundTex = backgroundTex,
+       .parallaxLayer1Tex = parallaxLayer1Tex,
+       .parallaxLayer2Tex = parallaxLayer2Tex,
        .game = game,
        .basePathSOS = basePathSOS,
+       .camera = camera,
        .enableMultiplayer = enableMultiplayer,
        .serverAddress = serverAddress,
        .serverPort = serverPort,
@@ -353,20 +383,66 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         app->accumulator_us -= app->fixed_timestep_us;
     }
 
+    // Find player object to center camera on
+    Player* playerObject = app->game->getPlayer();
+    
+    // Update camera to follow player
+    if (playerObject) {
+        app->camera->update(playerObject);
+    }
+
     SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(app->renderer);
 
-    SDL_RenderTexture(app->renderer, app->backgroundTex, NULL, NULL);
+    // --- Parallax Background Rendering ---
+    float camX = app->camera->getPosition().x;
+    float camY = app->camera->getPosition().y;
+    // Parallax factors (0 = static, 1 = moves with camera)
+    float bgFactor = 0.1f; // background almost static
+    float layer1Factor = 0.3f;
+    float layer2Factor = 0.6f;
+
+    // Helper lambda to render a parallax layer at native size, moving with camera and tiling if needed
+    auto renderParallaxLayer = [&](SDL_Texture* tex, float factor) {
+        if (!tex) return;
+        auto props = SDL_GetTextureProperties(tex);
+        int texW = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
+        int texH = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
+        float offsetX = fmod(camX * factor, texW);
+        float offsetY = fmod(camY * factor, texH);
+        if (offsetX < 0) offsetX += texW;
+        if (offsetY < 0) offsetY += texH;
+        // Tile the image to fill the window
+        for (float y = -offsetY; y < windowStartHeight; y += texH) {
+            for (float x = -offsetX; x < windowStartWidth; x += texW) {
+                SDL_FRect dest = { x, y, (float)texW, (float)texH };
+                SDL_RenderTexture(app->renderer, tex, nullptr, &dest);
+            }
+        }
+    };
+    // Render farthest background (sky)
+    renderParallaxLayer(app->backgroundTex, bgFactor);
+    // Render parallax layer 1 (islands far)
+    renderParallaxLayer(app->parallaxLayer1Tex, layer1Factor);
+    // Render parallax layer 2 (islands closer)
+    renderParallaxLayer(app->parallaxLayer2Tex, layer2Factor);
 
     //Load game objects (Entities, player(s), platforms)
     for(const auto& entity : app->game->getObjects()) {
         
         if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
+        
+        // Skip rendering objects that are outside the camera view (viewport culling)
+        float entityX = entity->getcollider().position.x - (entity->getCurrentSpriteData()->getSpriteRect(0).w / 2);
+        float entityY = entity->getcollider().position.y - (entity->getCurrentSpriteData()->getSpriteRect(0).h / 2);
+        float entityWidth = entity->getCurrentSpriteData()->getSpriteRect(0).w;
+        float entityHeight = entity->getCurrentSpriteData()->getSpriteRect(0).h;
+        
+        if (!app->camera->isVisible(entityX, entityY, entityWidth, entityHeight)) {
+            continue; // Skip rendering this object
+        }
+        
         SDL_Texture* sprite_tex = nullptr;
-        // if(printID)
-        // {
-        //     SDL_Log("Entity ID: %s", entity->spriteData->getid_().c_str());
-        // }
         // Get the pre-loaded sprite info from the map
         auto it = spriteMap2.find(entity->getCurrentSpriteData()->getid_());
         if (it == spriteMap2.end()) {
@@ -402,10 +478,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             default:
                 break;
         }
+        
+        // Convert world coordinates to screen coordinates using the camera
+        Vec2 screenPos = app->camera->worldToScreen(
+            entity->getcollider().position.x - (currentSpriteRect.w / 2),
+            entity->getcollider().position.y - (currentSpriteRect.h / 2)
+        );
 
         SDL_FRect destRect{
-            .x = static_cast<float>(entity->getcollider().position.x - (currentSpriteRect.w / 2)),
-            .y = static_cast<float>(entity->getcollider().position.y - (currentSpriteRect.h / 2)),
+            .x = screenPos.x,
+            .y = screenPos.y,
             .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
             .h = static_cast<float>(currentSpriteRect.h)
         };
@@ -417,37 +499,96 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
         // Normal rendering without flip
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
-        
     }
 
     for(const auto& actor : app->game->getActors()) {
-         if (!actor || !actor->spriteData) continue; // Basic safety check
+         if (!actor) continue; // Basic safety check
 
-        // Get the pre-loaded sprite info for the character texture (ID 11)
-        auto it_char_tex = spriteMap2.find(actor->spriteData->getid_()); // Should be ID 11 for letters
-         if (it_char_tex == spriteMap2.end()) {
-             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", actor->spriteData->getid_().c_str());
-             continue;
-         }
-        SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
+         const SpriteData* spriteData = actor->getCurrentSpriteData();
+         // Get the pre-loaded sprite info for the character texture (ID 11)
+         auto it_char_tex = spriteMap2.find(spriteData->getid_()); // Should be ID 11 for letters
+          if (it_char_tex == spriteMap2.end()) {
+              SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Sprite ID %s not found in spriteMap for Actor", spriteData->getid_().c_str());
+              continue;
+          }
+         SDL_Texture* sprite_tex = it_char_tex->second; // Base texture for letters.png
 
-        // Get the specific source rect for this character index
-        const SpriteRect& charSpriteRect = actor->spriteData->getSpriteRect(actor->spriteIndex);
-        SDL_FRect srcRect = {
-            static_cast<float>(charSpriteRect.x),
-            static_cast<float>(charSpriteRect.y),
-            static_cast<float>(charSpriteRect.w),
-            static_cast<float>(charSpriteRect.h)
-        };
+        ActorType actorType = actor->gettype();
+        if(actorType == ActorType::HEALTHBAR) {
+            std::vector<SpriteRect> spriteRects = static_cast<Healthbar*>(actor)->getSpriteRects();
+            int count = 0;
+            int maxCount = spriteRects.size();
+            std::vector<float> offsets = static_cast<Healthbar*>(actor)->getOffsets(maxCount); // Get personal offsets
+            for(int count = 0; count < maxCount; count++)
+            {
+                auto rect = spriteRects[count];
+                // Note: We assume the healthbar sprite rects are already in the correct format
+                SDL_FRect srcRect = {
+                    static_cast<float>(rect.x),
+                    static_cast<float>(rect.y),
+                    static_cast<float>(rect.w),
+                    static_cast<float>(rect.h)
+                };
 
+                // Use personal offset for this specific count/part
+                float centerOffset = 0.0f;
+                if (count < offsets.size()) {
+                    centerOffset = offsets[count];
+                } else {
+                    // Fallback to old calculation if offset not provided
+                    if (count == 2 || count == maxCount - 1) {
+                        centerOffset = 0.0f;
+                    } else {
+                        centerOffset = (count - 2) * rect.w;
+                    }
+                }
 
-        SDL_FRect destRect{
-            .x = static_cast<float>(actor->getposition().x),
-            .y = static_cast<float>(actor->getposition().y),
-            .w = static_cast<float>(charSpriteRect.w),
-            .h = static_cast<float>(charSpriteRect.h)
-        };
-        SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+                float x = actor->getposition().x + centerOffset;
+
+                Vec2 screenPos = app->camera->worldToScreen(
+                    x - (rect.w / 2),
+                    actor->getposition().y - (rect.h / 2)
+                );
+
+                SDL_FRect destRect{
+                    .x = screenPos.x,
+                    .y = screenPos.y,
+                    .w = static_cast<float>(rect.w),
+                    .h = static_cast<float>(rect.h)
+                };
+                SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+            }
+        }
+        else    //Render text
+        {
+    
+            // Get the specific source rect for this character index
+            const SpriteRect& charSpriteRect = spriteData->getSpriteRect(actor->getdefaultIndex());
+            SDL_FRect srcRect = {
+                static_cast<float>(charSpriteRect.x),
+                static_cast<float>(charSpriteRect.y),
+                static_cast<float>(charSpriteRect.w),
+                static_cast<float>(charSpriteRect.h)
+            };
+            
+            // Note: For UI elements like actors, we might want to keep them in screen space
+            // rather than applying the camera transform. This depends on whether they're
+            // part of the HUD or part of the game world.
+            
+            // Convert world coordinates to screen coordinates using the camera
+            Vec2 screenPos = app->camera->worldToScreen(
+                actor->getposition().x,
+                actor->getposition().y
+            );
+            
+            SDL_FRect destRect{
+                .x = screenPos.x,
+                .y = screenPos.y,
+                .w = static_cast<float>(charSpriteRect.w),
+                .h = static_cast<float>(charSpriteRect.h)
+            };
+            SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
+        }
     }
     // app->game->clearActors(); // Clear actors after rendering
 
@@ -459,18 +600,15 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
-        // --- Shutdown Multiplayer ---
-        // if (app->game && app->game->isMultiplayerActive()) {
-        //     app->game->shutdownMultiplayer();
-        // }
-        // --- End Shutdown Multiplayer ---
-
+        
         // Clean up game object
         delete app->game; // Delete the game instance
 
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
         SDL_DestroyTexture(app->backgroundTex);
+        SDL_DestroyTexture(app->parallaxLayer1Tex);
+        SDL_DestroyTexture(app->parallaxLayer2Tex);
         SDL_DestroyRenderer(app->renderer);
         SDL_DestroyWindow(app->window);
 

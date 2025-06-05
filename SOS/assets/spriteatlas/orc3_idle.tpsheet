@@ -1,258 +1,258 @@
 {
-	"textures": [
-		{
-			"image": "orc3_idle",
-			"size": {
-				"w": 728,
-				"h": 492
-			},
-			"sprites": [
-				{
-					"filename": "orc3_idle_full-1.png",
-					"region": {
-						"x": 1,
-						"y": 1,
-						"w": 154,
-						"h": 162
-					},
-					"margin": {
-						"x": 31,
-						"y": 23,
-						"w": 102,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-2.png",
-					"region": {
-						"x": 157,
-						"y": 1,
-						"w": 154,
-						"h": 162
-					},
-					"margin": {
-						"x": 31,
-						"y": 23,
-						"w": 102,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-5.png",
-					"region": {
-						"x": 313,
-						"y": 1,
-						"w": 154,
-						"h": 162
-					},
-					"margin": {
-						"x": 67,
-						"y": 23,
-						"w": 102,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-6.png",
-					"region": {
-						"x": 469,
-						"y": 1,
-						"w": 154,
-						"h": 162
-					},
-					"margin": {
-						"x": 67,
-						"y": 23,
-						"w": 102,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-13.png",
-					"region": {
-						"x": 625,
-						"y": 1,
-						"w": 102,
-						"h": 162
-					},
-					"margin": {
-						"x": 67,
-						"y": 23,
-						"w": 154,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full",
-					"region": {
-						"x": 1,
-						"y": 165,
-						"w": 154,
-						"h": 158
-					},
-					"margin": {
-						"x": 31,
-						"y": 27,
-						"w": 102,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-3.png",
-					"region": {
-						"x": 157,
-						"y": 165,
-						"w": 154,
-						"h": 158
-					},
-					"margin": {
-						"x": 31,
-						"y": 27,
-						"w": 102,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-4.png",
-					"region": {
-						"x": 313,
-						"y": 165,
-						"w": 154,
-						"h": 158
-					},
-					"margin": {
-						"x": 67,
-						"y": 27,
-						"w": 102,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-9.png",
-					"region": {
-						"x": 469,
-						"y": 165,
-						"w": 118,
-						"h": 162
-					},
-					"margin": {
-						"x": 71,
-						"y": 23,
-						"w": 138,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-10.png",
-					"region": {
-						"x": 589,
-						"y": 165,
-						"w": 118,
-						"h": 162
-					},
-					"margin": {
-						"x": 71,
-						"y": 23,
-						"w": 138,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-7.png",
-					"region": {
-						"x": 1,
-						"y": 325,
-						"w": 154,
-						"h": 158
-					},
-					"margin": {
-						"x": 67,
-						"y": 27,
-						"w": 102,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-11.png",
-					"region": {
-						"x": 157,
-						"y": 325,
-						"w": 118,
-						"h": 158
-					},
-					"margin": {
-						"x": 71,
-						"y": 27,
-						"w": 138,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-8.png",
-					"region": {
-						"x": 277,
-						"y": 325,
-						"w": 114,
-						"h": 158
-					},
-					"margin": {
-						"x": 75,
-						"y": 27,
-						"w": 142,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-12.png",
-					"region": {
-						"x": 393,
-						"y": 329,
-						"w": 106,
-						"h": 158
-					},
-					"margin": {
-						"x": 67,
-						"y": 27,
-						"w": 150,
-						"h": 98
-					}
-				},
-				{
-					"filename": "orc3_idle_full-14.png",
-					"region": {
-						"x": 501,
-						"y": 329,
-						"w": 102,
-						"h": 162
-					},
-					"margin": {
-						"x": 67,
-						"y": 23,
-						"w": 154,
-						"h": 94
-					}
-				},
-				{
-					"filename": "orc3_idle_full-15.png",
-					"region": {
-						"x": 605,
-						"y": 329,
-						"w": 102,
-						"h": 158
-					},
-					"margin": {
-						"x": 67,
-						"y": 27,
-						"w": 154,
-						"h": 98
-					}
-				}
-			]
-		}
-	],
-	"meta": {
-		"app": "https://www.codeandweb.com/texturepacker",
-		"version": "1.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:407f12a580a58af832478adcc7d6cf90:96a887b39b3722922bae246121acbc30:84f156f7be2afe75ed30fa9b4a9972dd$"
-	}
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:407f12a580a58af832478adcc7d6cf90:96a887b39b3722922bae246121acbc30:84f156f7be2afe75ed30fa9b4a9972dd$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "orc3_idle",
+            "size": {
+                "h": 492,
+                "w": 728
+            },
+            "sprites": [
+                {
+                    "filename": "orc3_idle_full",
+                    "margin": {
+                        "h": 98,
+                        "w": 102,
+                        "x": 31,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 154,
+                        "x": 1,
+                        "y": 165
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-1",
+                    "margin": {
+                        "h": 94,
+                        "w": 102,
+                        "x": 31,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 154,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-2",
+                    "margin": {
+                        "h": 94,
+                        "w": 102,
+                        "x": 31,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 154,
+                        "x": 157,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-3",
+                    "margin": {
+                        "h": 98,
+                        "w": 102,
+                        "x": 31,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 154,
+                        "x": 157,
+                        "y": 165
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-4",
+                    "margin": {
+                        "h": 98,
+                        "w": 102,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 154,
+                        "x": 313,
+                        "y": 165
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-5",
+                    "margin": {
+                        "h": 94,
+                        "w": 102,
+                        "x": 67,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 154,
+                        "x": 313,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-6",
+                    "margin": {
+                        "h": 94,
+                        "w": 102,
+                        "x": 67,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 154,
+                        "x": 469,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-7",
+                    "margin": {
+                        "h": 98,
+                        "w": 102,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 154,
+                        "x": 1,
+                        "y": 325
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-8",
+                    "margin": {
+                        "h": 98,
+                        "w": 142,
+                        "x": 75,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 114,
+                        "x": 277,
+                        "y": 325
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-9",
+                    "margin": {
+                        "h": 94,
+                        "w": 138,
+                        "x": 71,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 118,
+                        "x": 469,
+                        "y": 165
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-10",
+                    "margin": {
+                        "h": 94,
+                        "w": 138,
+                        "x": 71,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 118,
+                        "x": 589,
+                        "y": 165
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-11",
+                    "margin": {
+                        "h": 98,
+                        "w": 138,
+                        "x": 71,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 118,
+                        "x": 157,
+                        "y": 325
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-12",
+                    "margin": {
+                        "h": 98,
+                        "w": 150,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 106,
+                        "x": 393,
+                        "y": 329
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-13",
+                    "margin": {
+                        "h": 94,
+                        "w": 154,
+                        "x": 67,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 102,
+                        "x": 625,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-14",
+                    "margin": {
+                        "h": 94,
+                        "w": 154,
+                        "x": 67,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 162,
+                        "w": 102,
+                        "x": 501,
+                        "y": 329
+                    }
+                },
+                {
+                    "filename": "orc3_idle_full-15",
+                    "margin": {
+                        "h": 98,
+                        "w": 154,
+                        "x": 67,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 158,
+                        "w": 102,
+                        "x": 605,
+                        "y": 329
+                    }
+                }
+            ]
+        }
+    ]
 }

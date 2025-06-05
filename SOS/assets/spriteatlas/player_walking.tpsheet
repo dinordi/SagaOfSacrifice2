@@ -1,0 +1,558 @@
+{
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "smartupdate": "$TexturePacker:SmartUpdate:7e7b8c8a13b2d02758f61455f2fb9007:c19c80966871f48115ad0bd7164af6f6:b355d31d8709211ad44ee9b901af0085$",
+        "version": "1.0"
+    },
+    "textures": [
+        {
+            "image": "player_walking",
+            "size": {
+                "h": 208,
+                "w": 1400
+            },
+            "sprites": [
+                {
+                    "filename": "player_walking",
+                    "margin": {
+                        "h": 28,
+                        "w": 48,
+                        "x": 15,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 80,
+                        "x": 276,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-1",
+                    "margin": {
+                        "h": 26,
+                        "w": 56,
+                        "x": 33,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 72,
+                        "x": 857,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "player_walking-2",
+                    "margin": {
+                        "h": 20,
+                        "w": 54,
+                        "x": 33,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 108,
+                        "w": 74,
+                        "x": 1,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-3",
+                    "margin": {
+                        "h": 28,
+                        "w": 62,
+                        "x": 33,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 66,
+                        "x": 508,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-4",
+                    "margin": {
+                        "h": 20,
+                        "w": 54,
+                        "x": 33,
+                        "y": 17
+                    },
+                    "region": {
+                        "h": 108,
+                        "w": 74,
+                        "x": 77,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-5",
+                    "margin": {
+                        "h": 28,
+                        "w": 54,
+                        "x": 33,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 74,
+                        "x": 358,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-6",
+                    "margin": {
+                        "h": 26,
+                        "w": 54,
+                        "x": 33,
+                        "y": 23
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 74,
+                        "x": 853,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-7",
+                    "margin": {
+                        "h": 26,
+                        "w": 56,
+                        "x": 35,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 72,
+                        "x": 929,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-8",
+                    "margin": {
+                        "h": 24,
+                        "w": 54,
+                        "x": 33,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 74,
+                        "x": 557,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-9",
+                    "margin": {
+                        "h": 24,
+                        "w": 54,
+                        "x": 13,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 74,
+                        "x": 633,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-10",
+                    "margin": {
+                        "h": 32,
+                        "w": 39,
+                        "x": 0,
+                        "y": 29
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 89,
+                        "x": 1213,
+                        "y": 101
+                    }
+                },
+                {
+                    "filename": "player_walking-11",
+                    "margin": {
+                        "h": 32,
+                        "w": 41,
+                        "x": 0,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 87,
+                        "x": 1304,
+                        "y": 99
+                    }
+                },
+                {
+                    "filename": "player_walking-12",
+                    "margin": {
+                        "h": 32,
+                        "w": 38,
+                        "x": 1,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 90,
+                        "x": 1,
+                        "y": 111
+                    }
+                },
+                {
+                    "filename": "player_walking-13",
+                    "margin": {
+                        "h": 24,
+                        "w": 46,
+                        "x": 11,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 82,
+                        "x": 229,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-14",
+                    "margin": {
+                        "h": 24,
+                        "w": 58,
+                        "x": 27,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 70,
+                        "x": 709,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-15",
+                    "margin": {
+                        "h": 24,
+                        "w": 50,
+                        "x": 15,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 78,
+                        "x": 397,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-16",
+                    "margin": {
+                        "h": 30,
+                        "w": 40,
+                        "x": 3,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 88,
+                        "x": 1123,
+                        "y": 104
+                    }
+                },
+                {
+                    "filename": "player_walking-17",
+                    "margin": {
+                        "h": 30,
+                        "w": 39,
+                        "x": 0,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 89,
+                        "x": 185,
+                        "y": 109
+                    }
+                },
+                {
+                    "filename": "player_walking-18",
+                    "margin": {
+                        "h": 28,
+                        "w": 56,
+                        "x": 27,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 72,
+                        "x": 434,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-19",
+                    "margin": {
+                        "h": 28,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 62,
+                        "x": 576,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-20",
+                    "margin": {
+                        "h": 26,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 62,
+                        "x": 931,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "player_walking-21",
+                    "margin": {
+                        "h": 27,
+                        "w": 66,
+                        "x": 35,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 101,
+                        "w": 62,
+                        "x": 1067,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-22",
+                    "margin": {
+                        "h": 26,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 62,
+                        "x": 995,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "player_walking-23",
+                    "margin": {
+                        "h": 28,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 62,
+                        "x": 640,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-24",
+                    "margin": {
+                        "h": 26,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 62,
+                        "x": 1003,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-25",
+                    "margin": {
+                        "h": 28,
+                        "w": 68,
+                        "x": 33,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 100,
+                        "w": 60,
+                        "x": 704,
+                        "y": 107
+                    }
+                },
+                {
+                    "filename": "player_walking-26",
+                    "margin": {
+                        "h": 26,
+                        "w": 66,
+                        "x": 33,
+                        "y": 25
+                    },
+                    "region": {
+                        "h": 102,
+                        "w": 62,
+                        "x": 1059,
+                        "y": 105
+                    }
+                },
+                {
+                    "filename": "player_walking-27",
+                    "margin": {
+                        "h": 22,
+                        "w": 54,
+                        "x": 41,
+                        "y": 19
+                    },
+                    "region": {
+                        "h": 106,
+                        "w": 74,
+                        "x": 153,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-28",
+                    "margin": {
+                        "h": 32,
+                        "w": 39,
+                        "x": 39,
+                        "y": 29
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 89,
+                        "x": 1221,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-29",
+                    "margin": {
+                        "h": 32,
+                        "w": 41,
+                        "x": 41,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 87,
+                        "x": 1312,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-30",
+                    "margin": {
+                        "h": 32,
+                        "w": 38,
+                        "x": 37,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 96,
+                        "w": 90,
+                        "x": 93,
+                        "y": 111
+                    }
+                },
+                {
+                    "filename": "player_walking-31",
+                    "margin": {
+                        "h": 24,
+                        "w": 46,
+                        "x": 35,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 82,
+                        "x": 313,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-32",
+                    "margin": {
+                        "h": 24,
+                        "w": 58,
+                        "x": 31,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 70,
+                        "x": 781,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-33",
+                    "margin": {
+                        "h": 24,
+                        "w": 50,
+                        "x": 35,
+                        "y": 21
+                    },
+                    "region": {
+                        "h": 104,
+                        "w": 78,
+                        "x": 477,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-34",
+                    "margin": {
+                        "h": 30,
+                        "w": 40,
+                        "x": 37,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 88,
+                        "x": 1131,
+                        "y": 1
+                    }
+                },
+                {
+                    "filename": "player_walking-35",
+                    "margin": {
+                        "h": 30,
+                        "w": 39,
+                        "x": 39,
+                        "y": 27
+                    },
+                    "region": {
+                        "h": 98,
+                        "w": 89,
+                        "x": 766,
+                        "y": 107
+                    }
+                }
+            ]
+        }
+    ]
+}

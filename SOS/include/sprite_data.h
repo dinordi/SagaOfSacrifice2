@@ -3,7 +3,9 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <filesystem>
 #include <map>
+#include <filesystem>
 using json = nlohmann::json;
 
 #define DEFINE_GETTER_SETTER(type, member) \
@@ -38,6 +40,9 @@ class SpriteData {
 public:
     // Constructor
     SpriteData(std::string atlasPath);
+    ~SpriteData();
+
+    static SpriteData* getSharedInstance(const std::string& atlasPath);
 
     SpriteRect getSpriteRect(int index) const;
 
@@ -50,4 +55,6 @@ public:
 private:
     DEFINE_GETTER_SETTER(std::string, id_);
     std::map<int, SpriteRect> spriteRects; // Maps sprite sheet ID to its rects
+
+    static std::unordered_map<std::string, SpriteData*> spriteCache;
 };

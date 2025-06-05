@@ -3,22 +3,46 @@
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
+std::unordered_map<std::string, SpriteData*> SpriteData::spriteCache;
+
 SpriteData::SpriteData(std::string atlasPath)
 {
     addSpriteSheet(atlasPath);
+}
+
+SpriteData::~SpriteData() {
+    // Clean up spriteRects map
+    spriteRects.clear();
+
+    //Do not cleanup spriteCache, it needs to be shutdown manually
+}
+
+SpriteData* SpriteData::getSharedInstance(const std::string& atlasPath)
+{
+    // Check if we already have this sprite sheet loaded
+    auto it = spriteCache.find(atlasPath);
+    if (it != spriteCache.end()) {
+        return it->second;
+    }
+    
+    // If not, create a new instance and cache it
+    SpriteData* newInstance = new SpriteData(atlasPath);
+    spriteCache[atlasPath] = newInstance;
+    return newInstance;
 }
 
 SpriteRect SpriteData::getSpriteRect(int index) const {
     auto it = spriteRects.find(index);
     if (it == spriteRects.end()) {
         for(const auto& pair : spriteRects) {
-            std::cout << "SpriteRect ID: " << pair.first << ", Rect: (" 
+            std::cout << "[SpriteData] SpriteRect ID: " << pair.first << ", Rect: (" 
                       << pair.second.x << ", " << pair.second.y << ", "
                       << pair.second.w << ", " << pair.second.h << ")\n";
         }
         std::cout << "Could not find sprite rect for index: " << index << std::endl;
         return SpriteRect(); // Return an empty SpriteRect if not found
     }
+    
     const SpriteRect& spriteRect = it->second;
 
     return spriteRect;

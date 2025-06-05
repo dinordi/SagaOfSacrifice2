@@ -9,7 +9,7 @@
 class Player : public Entity {
 
 public:
-    Player(int x, int y, std::string objID);
+    Player(int x, int y, uint16_t objID, int layer = 8);
     void setInput(PlayerInput* input) { this->input = input; }
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;
@@ -18,16 +18,27 @@ public:
     void collectItem();
     void applyPhysicsResponse(const Vec2& resolutionVector);
     
+    // Attack methods
+    void attack();
+    bool checkAttackHit(Object* target);
+    bool isAttacking() const { return isAttackActive; }
+    int getAttackDamage() const { return attackDamage; }
+    float getAttackRange() const { return attackRange; }
+    
+    
 private:
     PlayerInput* input;
     // Define player animation states
     void setupAnimations();
     void updateAnimationState();
     bool isMoving() const;
+    void updateDirectionFromVelocity(const Vec2& vel);
     
-    int health;
-    bool isAttacking;
-    bool isJumping;
+    bool isAttackActive;
     float attackTimer;
-    bool wasMoving = false; // Track previous movement state for modular audio
+    
+    // Attack properties
+    int attackDamage = 20;
+    float attackRange = 100.0f;
+    
 };

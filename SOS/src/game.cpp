@@ -19,7 +19,7 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8080;
 
-Game::Game(PlayerInput* input, std::string playerID) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
+Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     // Set this as the active instance
     instance_ = this;
     
@@ -41,10 +41,8 @@ Game::Game(PlayerInput* input, std::string playerID) : running(true), input(inpu
     basePath /= "SOS/assets/spriteatlas";
     basePath_ = basePath; // Store base path for later use
     std::cout << "Got base path for game" << std::endl;
-
-    // Set player's input handler
-    player = new Player(500, 100, playerID);
-    player->setInput(input);
+    player = nullptr; // Initialize player to null
+    // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
 }
@@ -111,15 +109,68 @@ void Game::update(float deltaTime) {
     switch(state)
     {
         case GameState::RUNNING:
+            // Check for and remove dead enemies
+            objects.erase(
+                std::remove_if(objects.begin(), objects.end(), 
+                    [this](const std::shared_ptr<Object>& obj) {
+                        if (obj && obj->type == ObjectType::MINOTAUR) {
+                            Enemy* enemy = static_cast<Enemy*>(obj.get());
+                            
+                            // If the enemy is dead, notify the server before removing it
+                            if (enemy && enemy->isDead()) {
+                                // Only notify if multiplayer is active
+                                if (multiplayerActive && multiplayerManager) {
+                                    multiplayerManager->sendEnemyStateUpdate(
+                                        enemy->getObjID(), 
+                                        true,  // isDead = true
+                                        0      // Health = 0
+                                    );
+                                }
+                                clearActors();
+                                return true; // Remove this enemy
+                            }
+                        }
+                        return false;
+                    }
+                ), 
+                objects.end()
+            );
+            
+            if(!player)
+            {
+                break;
+            }
+            // Update all objects
             for(auto& obj : objects) {
                 if (obj) {
-                    if(obj->getObjID() == player->getObjID()) {
-                        continue; // Skip updating the local player
+                    // Update healthbar if it exists
+                    if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
+                        Entity* entity = static_cast<Entity*>(obj.get());
+                        if (entity) {
+                            if(obj->getObjID() != player->getObjID())
+                            {
+                                entity->Entity::update(deltaTime);
+                            }
+                            
+                            entity->updateHealthbar();
+                            Healthbar* healthbar = entity->getHealthbar();
+                            if(healthbar) {
+                                //Check if healthbar is already in actors
+                                auto it = std::find_if(actors.begin(), actors.end(),
+                                    [&healthbar](Actor* actor) {
+                                        return actor->getObjID() == healthbar->getObjID();
+                                    });
+                                if (it == actors.end()) {
+                                    actors.push_back(healthbar); // Add healthbar to actors for rendering
+                                }
+                            }
+                        }
                     }
-                    // Update the player object
-                    obj->updateAnimation(deltaTime * 1000);
+
                 }
             }
+            // Ensure objects are sorted before rendering
+            sortObjects();
             break;
         case GameState::MENU:
             // Handle menu state
@@ -147,12 +198,15 @@ void Game::update(float deltaTime) {
         // In the server-authoritative model:
         // 1. We still apply local input immediately for responsive feel
         // 2. But the server will correct our position if needed
-        predictLocalPlayerMovement(deltaTime);
-
-        reconcileWithServerState(deltaTime);
-        
-        // Update remote players based on server data
-        updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        if(player)
+        {
+            predictLocalPlayerMovement(deltaTime);
+    
+            reconcileWithServerState(deltaTime);
+            
+            // Update remote players based on server data
+            // updateRemotePlayers(multiplayerManager->getRemotePlayers());
+        }
     }
 }
 
@@ -179,8 +233,8 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
     }
     
     // Connect to the local server
-    std::string playerId = player->getObjID();
-    if (!initializeServerConnection("127.0.0.1", LOCAL_SERVER_PORT, playerId)) {
+    uint16_t playerId = 65000;
+    if (!initializeServerConnection("localhost", LOCAL_SERVER_PORT, playerId)) {
         std::cerr << "[Game] Failed to connect to embedded server" << std::endl;
         localServerManager->stopEmbeddedServer();
         return false;
@@ -193,7 +247,7 @@ bool Game::initializeSinglePlayerEmbeddedServer() {
 }
 
 
-bool Game::initializeServerConnection(const std::string& serverAddress, int serverPort, const std::string& playerId) {
+bool Game::initializeServerConnection(const std::string& serverAddress, int serverPort, const uint16_t playerId) {
     if (!multiplayerManager) {
         multiplayerManager = std::make_unique<MultiplayerManager>();
     }
@@ -210,6 +264,24 @@ bool Game::initializeServerConnection(const std::string& serverAddress, int serv
     }
     
     return success;
+}
+
+// Add this new helper method
+void Game::movePlayerToEnd() {
+    if (!player) return;
+    
+    // Find the player in the objects vector
+    auto playerIt = std::find_if(objects.begin(), objects.end(),
+        [this](const std::shared_ptr<Object>& obj) {
+            return obj.get() == player;
+        });
+    
+    // If found and not already at the end, move it
+    if (playerIt != objects.end() && playerIt != objects.end() - 1) {
+        std::shared_ptr<Object> playerObj = *playerIt;
+        objects.erase(playerIt);
+        objects.push_back(playerObj);
+    }
 }
 
 void Game::setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort) {
@@ -267,6 +339,8 @@ std::vector<Actor*>& Game::getActors() {
 
 void Game::clearActors() {
     for(auto& actor : actors) {
+        if(actor->gettype() == ActorType::HEALTHBAR)
+            continue;   // Healthbar is managed by unique_ptr in Entity, so skip it
         delete actor; // Clean up each actor
     }
     actors.clear();
@@ -278,13 +352,13 @@ void Game::sendChatMessage(const std::string& message) {
     }
 }
 
-void Game::setChatMessageHandler(std::function<void(const std::string& sender, const std::string& message)> handler) {
+void Game::setChatMessageHandler(std::function<void(const uint16_t sender, const std::string& message)> handler) {
     if (multiplayerManager) {
         multiplayerManager->setChatMessageHandler(handler);
     }
 }
 
-void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers) {
+void Game::updateRemotePlayers(const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers) {
     // loop through all remote players
     for (const auto& pair : remotePlayers) {
         //Find the remote player in the gameobjects
@@ -295,29 +369,34 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
         if (it == objects.end()) {
             // Create a new remote player
             std::cout << "[Game] Creating new remote player: " << pair.first << std::endl;
-            RemotePlayer* remotePlayer = new RemotePlayer(pair.first);
+            Vec2 position = pair.second->getposition();
+            Player* remotePlayer = new Player(position.x, position.y, pair.first);
             remotePlayer->setcollider(pair.second->getcollider());
             remotePlayer->setvelocity(pair.second->getvelocity());
             remotePlayer->setDir(pair.second->getDir());
             remotePlayer->setAnimationState(pair.second->getAnimationState());
             
-            objects.push_back(std::shared_ptr<RemotePlayer>(remotePlayer));
-            // levelManager_->addPlayerToCurrentLevel(remotePlayer->getObjID()); // Add to level manager
+            objects.push_back(std::shared_ptr<Player>(remotePlayer));
 
         } else {
-            if((*it)->getObjID() == player->getObjID())
+            if(player)
             {
-                // Skip updating the local player
-                continue;
+                if((*it)->getObjID() == player->getObjID())
+                {
+                    // Skip updating the local player
+                    continue;
+                }    
             }
-            else
-            {
-                // Update existing remote player
-                (*it)->setcollider(pair.second->getcollider());
-                (*it)->setvelocity(pair.second->getvelocity());
-                (*it)->setDir(pair.second->getDir());
-                (*it)->setAnimationState(pair.second->getAnimationState());
-            }
+            Vec2 position = pair.second->getposition();
+            Vec2 oldPosition = (*it)->getposition();
+            std::cout << "[Game] Updating remote player: " << pair.first 
+                      << " from " << oldPosition.x << "," << oldPosition.y 
+                      << " to " << position.x << "," << position.y << std::endl;
+            // Update existing remote player
+            (*it)->setcollider(pair.second->getcollider());
+            (*it)->setvelocity(pair.second->getvelocity());
+            (*it)->setDir(pair.second->getDir());
+            (*it)->setAnimationState(pair.second->getAnimationState());
         }
     }
 }
@@ -325,10 +404,65 @@ void Game::updateRemotePlayers(const std::map<std::string, std::unique_ptr<Remot
 // New methods for server-authoritative gameplay
 
 void Game::predictLocalPlayerMovement(float deltaTime) {
+    if( !player || !input) {
+        return; // No player or input to process
+    }
     // Apply local input immediately for responsive gameplay
-    // This is a simple client-side prediction that will be corrected by the server if needed
     player->handleInput(input, deltaTime);
     player->update(deltaTime);
+    
+    // Handle player attack hit registration
+    static bool wasAttacking = false;
+    static std::set<uint16_t> hitEnemiesThisAttack;
+    
+    // Check if player just started attacking this frame
+    bool justStartedAttacking = player->isAttacking() && !wasAttacking;
+    
+    // Clear hit tracking when starting a new attack
+    if (justStartedAttacking) {
+        hitEnemiesThisAttack.clear();
+    }
+    
+    if (player->isAttacking()) {
+        // Check for enemies that may have been hit
+        for (auto& obj : objects) {
+            // Skip non-enemy objects
+            if (obj->type != ObjectType::MINOTAUR) continue;
+            
+            // Skip enemies we've already hit in this attack
+            if (hitEnemiesThisAttack.find(obj->getObjID()) != hitEnemiesThisAttack.end()) continue;
+            
+            // Try to cast to Enemy pointer
+            Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
+            if (!enemy || enemy->isDead()) continue;
+            
+            // Check if the player's attack hits this enemy
+            if (player->checkAttackHit(obj.get())) {
+                // Mark this enemy as hit for this attack
+                hitEnemiesThisAttack.insert(obj->getObjID());
+                
+                // Deal damage to the enemy
+                int damageAmount = player->getAttackDamage();
+                enemy->takeDamage(damageAmount);
+                
+                // If the enemy died from this hit, notify the server immediately
+                if (multiplayerActive && multiplayerManager) {
+                    multiplayerManager->sendEnemyStateUpdate(
+                        enemy->getObjID(), 
+                        true,  // isDead = true
+                        0      // Health = 0
+                    );
+                }
+                // Only hit each enemy once per attack frame
+                break;
+            }
+        }
+    }
+    
+    // Update attack tracking state
+    wasAttacking = player->isAttacking();
+    
+    // Check for regular collisions (like with platforms)
     collisionManager->detectPlayerCollisions(objects, player);
 }
 
@@ -342,7 +476,7 @@ void Game::reconcileWithServerState(float deltaTime) {
     // Get the server position for our player from the MultiplayerManager
     if (multiplayerManager && player) {
 
-        const std::map<std::string, std::unique_ptr<RemotePlayer>>& remotePlayers = multiplayerManager->getRemotePlayers();
+        const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers = multiplayerManager->getRemotePlayers();
         auto it = remotePlayers.find(player->getObjID());
         static uint64_t lastUpdateTime = 0;
         static uint64_t remotePlayerWaitTime = 0;
@@ -369,7 +503,7 @@ void Game::reconcileWithServerState(float deltaTime) {
         
         // Reset the wait timer once we find our player
         remotePlayerWaitTime = 0;
-        RemotePlayer* remotePlayer = it->second.get();
+        Player* remotePlayer = it->second.get();
 
         Vec2 serverPosition = remotePlayer->getTargetPosition();
         BoxCollider* clientCollider = &player->getcollider();
@@ -384,20 +518,32 @@ void Game::reconcileWithServerState(float deltaTime) {
         const float MAX_ALLOWED_DEVIATION = 2500.0f; // 50 units squared
         const float TELEPORT_THRESHOLD = 10000.0f; // 100 units squared
         
-        if (distSquared > TELEPORT_THRESHOLD) {
-            // Potential cheating or severe desync - force correction
-            clientPosition->x = serverPosition.x;
-            clientPosition->y = serverPosition.y;
+        // if (distSquared > TELEPORT_THRESHOLD) {
+        //     // Potential cheating or severe desync - force correction
+        //     clientPosition->x = serverPosition.x;
+        //     clientPosition->y = serverPosition.y;
             
-            // Log potential cheating attempt
-            std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
-        }
+        //     // Log potential cheating attempt
+        //     std::cout << "[Game] Position sanity check failed - forced correction" << std::endl;
+        // }
         // Server side validation check, can be implemented later
         // else if (distSquared > MAX_ALLOWED_DEVIATION) {  
         //     // Server validation failed - report to server we need validation
         //     multiplayerManager->requestPositionValidation();
         // }
     }
+}
+void Game::sortObjects() {
+    std::sort(objects.begin(), objects.end(),
+        [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+
+            if (a->getLayer() != b->getLayer())
+                return a->getLayer() < b->getLayer();
+            if (a->getposition().y != b->getposition().y)
+                return a->getposition().y < b->getposition().y;
+            return a->type < b->type; // Fallback comparison
+        }
+    );
 }
 
 // New method to add objects to the game
@@ -408,11 +554,16 @@ void Game::addObject(std::shared_ptr<Object> object) {
                               [&](const std::shared_ptr<Object>& obj) {
                                   return obj->getObjID() == object->getObjID();
                               });
+                           
         
         if (it == objects.end()) {
             // Add new object if it doesn't exist
             objects.push_back(object);
-            std::cout << "[Game] Added new object with ID: " << object->getObjID() << std::endl;
+
+            if(player)
+            {
+                movePlayerToEnd();
+            }
         } 
         // else {
         //     std::cerr << "[Game] Object with ID " << object->getObjID() << " already exists" << std::endl;
@@ -475,11 +626,11 @@ void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
             Actor* character;
             if(letterSize == 0)
             {
-                character = new Actor(Vec2(x,y), new SpriteData(*letters), index);
+                character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", index);
             }
             else
             {
-                character = new Actor(Vec2(x,y), new SpriteData(*letters_small), index);
+                character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters_small.tpsheet", index);
             }
             actors.push_back(character);
             x += letterWidth; // Move to the right for the next character
@@ -500,7 +651,7 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     // Clear any existing actors at this position (to refresh selection highlight)
     if (isSelected) {
         // Add a simple visual indicator for the selected item
-        Actor* selector = new Actor(Vec2(x - 80, y), new SpriteData(*this->letters), 36);
+        Actor* selector = new Actor(Vec2(x - 80, y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", characterMap['>']);
         actors.push_back(selector);
     }
     
@@ -549,7 +700,7 @@ void Game::handleMenuInput(float deltaTime) {
                 }
                 // Start single player game
                 state = GameState::RUNNING;
-                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+                // objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
@@ -664,8 +815,14 @@ void Game::handleServerSelectionInput(float deltaTime) {
         if (selectedServer) {
             std::cout << "[Game] Connecting to server: " << selectedServer->name 
                       << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
-            
-            if (!initializeServerConnection(selectedServer->address, selectedServer->port, player->getObjID())) {
+            uint16_t playID;
+            if (player) {
+                playID = player->getObjID(); // Use existing player ID
+            } else {
+                // Generate a new random player ID if not already set
+                playID = 65000;
+            }
+            if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
                 std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
                 // Could show error message and stay in server selection
                 // For now, go back to main menu
@@ -675,7 +832,6 @@ void Game::handleServerSelectionInput(float deltaTime) {
                 std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
                 // Start multiplayer game
                 state = GameState::RUNNING;
-                objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
             }
         }
@@ -692,5 +848,27 @@ void Game::handleServerSelectionInput(float deltaTime) {
     if (inputDetected) {
         menuInputCooldown = MENU_INPUT_DELAY;
         serverSelectionOptionChanged = true;
+    }
+}
+
+void Game::updatePlayer(uint16_t playerId, const Vec2& position) {
+    // Find the player object by ID
+    if(player)
+    {
+        if(player->getObjID() != playerId)
+        {
+            std::cerr << "[Game] Player ID mismatch: expected " << player->getObjID() << ", received " << playerId << std::endl;
+            return; // Ignore update if IDs don't match
+        }
+        player->setposition(position);
+    }
+    else
+    {
+        // If player is not initialized, create a new one
+        player = new Player(position.x, position.y, playerId);
+        player->setInput(input); // Set input handler for the player
+        multiplayerManager->setLocalPlayer(player); // Set the local player in the multiplayer manager
+        multiplayerManager->setPlayerInput(input); // Set input for multiplayer manager
+        objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
     }
 }
