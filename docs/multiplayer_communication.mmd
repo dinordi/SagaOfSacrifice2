@@ -1,80 +1,86 @@
 sequenceDiagram
-    participant C1 as Client 1
-    participant C2 as Client 2
-    participant S as Server
-    participant GM as Game Manager
-    participant CM as Collision Manager
+    participant C as Client
+    participant MM as MultiplayerManager
+    participant AN as AsioNetworkClient
+    participant ES as EmbeddedServer
+    participant LM as LevelManager
+    participant CM as CollisionManager
 
-    Note over C1,CM: Multiplayer Game Session Setup
+    Note over C,CM: Actual Multiplayer Implementation Flow
 
-    %% Connection Phase
-    C1->>S: Connect(playerID=65000)
-    S->>S: Assign PlayerID=1001
-    S->>C1: Connection ACK(playerID=1001)
-    C1->>S: CONNECT Message
+    %% Connection Phase - Real Implementation
+    C->>MM: initialize(serverAddress, port, 65000)
+    MM->>AN: connect(serverAddress, port)
+    AN->>ES: TCP Connection
+    MM->>AN: sendMessage(CONNECT, senderId=65000)
+    ES->>ES: Assign real PlayerID (1001)
+    ES->>AN: NetworkMessage(PLAYER_ASSIGN, playerId=1001)
+    MM->>MM: Update playerId_ = 1001
 
-    C2->>S: Connect(playerID=65000)
-    S->>S: Assign PlayerID=1002
-    S->>C2: Connection ACK(playerID=1002)
-    C2->>S: CONNECT Message
+    %% Game State Initialization  
+    ES->>LM: getCurrentLevel()->getObjects()
+    LM->>ES: Return all level objects
+    ES->>ES: serializeObject for each object
+    ES->>AN: NetworkMessage(GAME_STATE, serialized objects)
+    MM->>MM: processGameState - deserialize objects
+    MM->>C: addObject for each deserialized object
 
-    %% Game State Synchronization
-    S->>GM: Add Players to Game
-    GM->>S: Initial Game State
-    S->>C1: Full Game State (all objects, players)
-    S->>C2: Full Game State (all objects, players)
+    Note over C,CM: Active Gameplay Loop - Real Flow
 
-    Note over C1,CM: Active Gameplay Loop
-
-    %% Input and Movement Phase
-    C1->>C1: Process Local Input
-    C1->>C1: Predict Movement Locally
-    C1->>S: Player Input State (sequence#1)
+    %% Input Processing - Actual Implementation
+    C->>C: input->readInput()
+    C->>MM: setPlayerInput(input)
+    MM->>MM: serializePlayerInput - create 8-bit input state
+    MM->>AN: sendMessage(PLAYER_INPUT, inputBits + sequence#)
     
-    C2->>C2: Process Local Input  
-    C2->>C2: Predict Movement Locally
-    C2->>S: Player Input State (sequence#1)
-
-    %% Server Processing
-    S->>GM: Process Player Inputs
-    GM->>CM: Check Collisions
-    CM->>GM: Collision Results
-    GM->>S: Updated Game State
+    %% Server Processing - Real Implementation
+    ES->>ES: processPlayerInput - deserialize input bits
+    ES->>ES: Apply input to player object
+    ES->>CM: detectCollisions(levelObjects)
+    CM->>CM: SpatialGrid optimization + AABB detection
+    CM->>CM: resolveCollision using visitor pattern
     
-    %% State Distribution
-    S->>C1: Game State Update (both players)
-    S->>C2: Game State Update (both players)
+    %% Game State Updates - Actual Implementation
+    ES->>ES: updateGameState - process all objects
+    ES->>ES: Check if objects changed vs deltaState
+    ES->>AN: sendGameStateToClients (GAME_STATE_DELTA if minimal changes)
     
-    %% Client Reconciliation
-    C1->>C1: Compare Server vs Predicted State
-    C1->>C1: Apply Corrections if Needed
-    
-    C2->>C2: Compare Server vs Predicted State
-    C2->>C2: Apply Corrections if Needed
+    %% Client State Processing
+    MM->>MM: handleGameStateMessage
+    MM->>MM: processGameStateDelta OR processGameState
+    MM->>MM: deserializeObject for each changed object
+    MM->>C: updateEntityPosition OR addObject
 
-    Note over C1,CM: Player Action Example
+    %% Client Prediction - Real Implementation  
+    C->>C: predictLocalPlayerMovement
+    C->>CM: detectPlayerCollisions(objects, player)
+    CM->>CM: Local collision detection for responsive feel
+    MM->>MM: reconcileWithServerState - compare server vs predicted
 
-    %% Player Action (e.g., Attack)
-    C1->>S: Player Action (ATTACK, sequence#2)
-    S->>GM: Process Attack Action
-    GM->>CM: Check Attack Collisions
-    CM->>GM: Hit Detection Results
-    GM->>GM: Update Entity Health
-    GM->>S: Action Result + State Update
-    
-    S->>C1: Action Result + Game State
-    S->>C2: Game State Update (damage/effects)
+    Note over C,CM: Enemy Death Example - Actual Flow
 
-    Note over C1,CM: Chat Communication
+    %% Enemy Interaction - Real Implementation
+    C->>C: player->checkAttackHit(enemy)
+    C->>C: enemy->takeDamage(damageAmount)
+    C->>MM: sendEnemyStateUpdate(enemyId, isDead=true, health=0)
+    MM->>AN: NetworkMessage(ENEMY_STATE_UPDATE, enemyId + isDead + health)
+    ES->>LM: Find enemy by ID and update state
+    ES->>AN: Broadcast enemy state to all clients
 
-    %% Chat Message
-    C1->>S: Chat Message("Hello!")
-    S->>C2: Chat Message(from=1001, "Hello!")
+    Note over C,CM: Chat System - Real Implementation
 
-    Note over C1,CM: Disconnection
+    %% Chat - Actual Implementation
+    C->>MM: sendChatMessage("Hello!")
+    MM->>AN: NetworkMessage(CHAT_MESSAGE, message data)
+    ES->>AN: Broadcast to all other clients
+    MM->>MM: handleChatMessage
+    MM->>C: chatHandler_(senderId, message)
 
-    %% Player Disconnection
-    C2->>S: DISCONNECT Message
-    S->>GM: Remove Player 1002
-    GM->>S: Updated Game State
-    S->>C1: Game State Update (player removed)
+    Note over C,CM: Disconnection - Real Implementation
+
+    %% Disconnection - Actual Implementation
+    C->>MM: shutdown()
+    MM->>AN: sendMessage(DISCONNECT, playerId)
+    MM->>AN: disconnect()
+    ES->>LM: Remove player from level
+    ES->>AN: Broadcast DISCONNECT to remaining clients

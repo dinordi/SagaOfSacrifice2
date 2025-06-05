@@ -1,93 +1,86 @@
 graph TD
-    %% Collision Detection and Resolution System
+    %% Actual Collision System Implementation
     
-    subgraph "Game Loop Integration"
-        A[Game Update Loop] --> B[CollisionManager::update]
-        B --> C[Spatial Grid Update]
-        B --> D[Collision Detection Phase]
+    subgraph "Game Loop Call"
+        A[Level::update] --> B[Level::detectAndResolveCollisions]
+        C[Game::predictLocalPlayerMovement] --> D[CollisionManager::detectPlayerCollisions]
     end
     
-    subgraph "Spatial Optimization"
-        C --> E[SpatialGrid::clear]
-        E --> F[SpatialGrid::insert Objects]
-        F --> G[Grid Cell Assignment]
-        G --> H[Neighbor Cell Mapping]
+    subgraph "Collision Detection Setup"
+        B --> E[CollisionManager::detectCollisions]
+        E --> F[Create SpatialGrid with 200px cells]
+        F --> G[Add all collidable objects to grid]
+        G --> H[Separate dynamic objects - non-tiles only]
     end
     
-    subgraph "Detection Phase"
-        D --> I[CollisionManager::checkCollisions]
-        I --> J[SpatialGrid::getPotentialCollisions]
-        J --> K[Broad Phase: Grid Lookup]
-        K --> L[Narrow Phase: Precise Detection]
-        
-        L --> M{Collision Type?}
-        M -->|Player-Enemy| N[Combat Collision]
-        M -->|Player-Projectile| O[Damage Collision]
-        M -->|Player-Environment| P[Boundary Collision]
-        M -->|Projectile-Environment| Q[Impact Collision]
+    subgraph "Broad Phase Detection"
+        H --> I[For each dynamic object]
+        I --> J[SpatialGrid::getPotentialColliders]
+        J --> K[Skip tile-vs-tile collisions]
+        K --> L[Distance check - skip if > 200px apart]
+    end
+    
+    subgraph "Narrow Phase - AABB Detection"
+        L --> M[CollisionManager::checkAndResolveCollision]
+        M --> N[Get BoxCollider positions and sizes]
+        N --> O[Calculate AABB intersection]
+        O --> P{Objects intersect?}
+        P -->|No| Q[Continue to next object]
+        P -->|Yes| R[Calculate CollisionInfo]
     end
     
     subgraph "Collision Resolution"
-        N --> R[CollisionHandler::handleCombat]
-        O --> S[CollisionHandler::handleDamage]
-        P --> T[CollisionHandler::handleBoundary]
-        Q --> U[CollisionHandler::handleImpact]
-        
-        R --> V[Apply Damage/Effects]
-        S --> W[Health Reduction]
-        T --> X[Position Correction]
-        U --> Y[Projectile Destruction]
+        R --> S[Calculate penetration vector]
+        S --> T[Find minimal displacement - X or Y axis]
+        T --> U[Calculate contact point]
+        U --> V[CollisionManager::resolveCollision]
     end
     
     subgraph "Visitor Pattern Implementation"
-        V --> Z[CollisionVisitor::visit]
-        W --> Z
-        X --> Z
-        Y --> Z
-        
-        Z --> AA[Dynamic Type Resolution]
-        AA --> BB[Specific Handler Selection]
-        BB --> CC[Action Execution]
+        V --> W[Create CollisionHandler for objA]
+        W --> X[objB->accept CollisionHandler A]
+        X --> Y[Create CollisionHandler for objB with reversed penetration]
+        Y --> Z[objA->accept CollisionHandler B]
     end
     
-    subgraph "Response Actions"
-        CC --> DD[Object State Updates]
-        DD --> EE[Animation Triggers]
-        DD --> FF[Sound Effects]
-        DD --> GG[Particle Effects]
-        DD --> HH[Network Synchronization]
+    subgraph "Object Type Resolution"
+        Z --> AA[CollisionHandler::visit method called]
+        AA --> BB{Object type?}
+        BB -->|Player| CC[CollisionHandler::visit Player]
+        BB -->|Enemy| DD[CollisionHandler::visit Enemy] 
+        BB -->|Tile| EE[CollisionHandler::visit Tile]
     end
     
-    subgraph "Multiplayer Considerations"
-        HH --> II[Server Authority Check]
-        II --> JJ{Is Server?}
-        JJ -->|Yes| KK[Authoritative Resolution]
-        JJ -->|No| LL[Client Prediction]
+    subgraph "Interaction Handling"
+        CC --> FF[CollisionHandler::handleInteraction Player]
+        DD --> GG[CollisionHandler::handleInteraction Enemy]
+        EE --> HH[CollisionHandler::handleInteraction Tile]
         
-        KK --> MM[Broadcast Collision Event]
-        LL --> NN[Local Application]
-        LL --> OO[Await Server Confirmation]
+        FF --> II{Initiator type?}
+        II -->|TILE| JJ[Check Tile flags - BLOCKS_VERTICAL/HORIZONTAL]
+        II -->|MINOTAUR| KK[Enemy damage to player - commented out]
+        
+        GG --> LL{Initiator type?}
+        LL -->|TILE| MM[Apply position correction based on flags]
+        LL -->|PLAYER| NN[Player hit enemy]
+        LL -->|MINOTAUR| OO[Enemy-vs-enemy collision - position/velocity correction]
     end
     
-    subgraph "Performance Optimizations"
-        PP[Collision Caching]
-        QQ[Early Exit Conditions]
-        RR[Collision Masks/Layers]
-        SS[Sleeping Object Detection]
-        
-        L --> QQ
-        K --> RR
-        I --> SS
-        CC --> PP
+    subgraph "Position Correction"
+        JJ --> PP[Subtract penetration from position]
+        MM --> PP
+        OO --> QQ[Set velocity to 0 and correct position]
+        PP --> RR[Update object collider]
+        QQ --> RR
     end
     
     %% Styling
-    classDef detectionPhase fill:#e1f5fe
-    classDef resolutionPhase fill:#f3e5f5
-    classDef optimizationPhase fill:#e8f5e8
-    classDef networkPhase fill:#fff3e0
+    classDef gameLoop fill:#e1f5fe
+    classDef detection fill:#f3e5f5
+    classDef resolution fill:#e8f5e8
+    classDef visitor fill:#fff3e0
     
-    class C,D,I,J,K,L,M detectionPhase
-    class R,S,T,U,V,W,X,Y,Z,AA,BB,CC resolutionPhase
-    class E,F,G,H,PP,QQ,RR,SS optimizationPhase
-    class HH,II,JJ,KK,LL,MM,NN,OO networkPhase
+    class A,B,C,D gameLoop
+    class E,F,G,H,I,J,K,L,M,N,O,P,Q detection
+    class R,S,T,U,V,W,X,Y,Z resolution
+    class AA,BB,CC,DD,EE,FF,GG,HH,II,JJ,KK,LL,MM,NN,OO,PP,QQ,RR visitor
