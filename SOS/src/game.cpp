@@ -201,10 +201,6 @@ void Game::update(float deltaTime) {
                 }
                 // Start single player game
                 state = GameState::RUNNING;
-                {
-                    std::lock_guard<std::mutex> lock(objectsMutex);
-                    objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
-                }
                 clearActors(); // Clear the menu
             }
             // Handle menu state
@@ -741,10 +737,6 @@ void Game::handleMenuInput(float deltaTime) {
                 }
                 // Start single player game
                 state = GameState::RUNNING;
-                {
-                    std::lock_guard<std::mutex> lock(objectsMutex);
-                    objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
-                }
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
