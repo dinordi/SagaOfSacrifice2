@@ -49,7 +49,7 @@ BoxCollider(float x, float y, float width, float height);
 class Object {
 public:
     const ObjectType type;
-    Object(BoxCollider collider, ObjectType type, std::string ID);
+    Object(BoxCollider collider, ObjectType type, std::string ID, int layer);
     virtual ~Object() = default;
 
     virtual void update(float deltaTime) = 0;
@@ -75,8 +75,6 @@ public:
     Vec2 getposition() const { return collider.position; }
     void setposition(const Vec2& pos) { collider.position = pos; }
 
-    void setLayer(int layer) { this->layer = layer; }
-    int getLayer() const { return layer; }
 
 protected:
     AnimationController animController;
@@ -87,6 +85,7 @@ private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
     DEFINE_CONST_GETTER_SETTER(std::string, ObjID); // ID of the object, for multiplayer to indicate between players and objects
+    DEFINE_CONST_GETTER_SETTER(int, Layer); // ID of the object, for multiplayer to indicate between players and objects
 private:
     int layer;
 };

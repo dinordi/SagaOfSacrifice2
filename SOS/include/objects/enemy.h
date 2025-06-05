@@ -16,7 +16,7 @@ enum class EnemyState {
 
 class Enemy : public Entity {
 public:
-    Enemy(BoxCollider collider, std::string objID, ObjectType type);
+    Enemy(BoxCollider collider, std::string objID, ObjectType type, int layer);
 
     float attackCooldown;
     float attackRange;

@@ -2,14 +2,15 @@
 #include <filesystem>
 #include <iostream>
 
-Tile::Tile(int x, int y, std::string objID, std::string tileMap, int tileIndex, int tileWidth, int tileHeight, int columns, int layer) :   
+Tile::Tile(int x, int y, std::string objID, std::string tileMap, 
+    int tileIndex, int tileWidth, int tileHeight, int columns, int layer) :   
         Object(BoxCollider(x, y, tileWidth, tileHeight), 
-        ObjectType::TILE, (objID)), 
+        ObjectType::TILE, (objID), layer), 
         tileIndex(tileIndex), 
-        tileMapName(tileMap) 
+        tileMapName(tileMap)
 {
     // Initialize Tile-specific attributes here
-    setLayer(layer);
+    std::cout << " Tile Layer: " << layer << std::endl;
     
 }
 

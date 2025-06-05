@@ -3,10 +3,9 @@
 #include "network/NetworkConfig.h"
 
 
-Player::Player( int x, int y, std::string objID, int layer) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER),
+Player::Player( int x, int y, std::string objID, int layer) : Entity(BoxCollider(Vec2(x,y), Vec2(64,64)), objID, ObjectType::PLAYER, layer),
     health(100), isAttackActive(false), isJumping(false), attackTimer(0.0f) {
     // Initialize player-specific attributes here
-    setLayer(layer);
     std::cout << "Player created with ID: " << objID << " at position (" << x << ", " << y << ")" << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations

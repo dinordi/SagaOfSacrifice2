@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-Object::Object(BoxCollider collider, ObjectType type, std::string ID)
-    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID)
+Object::Object(BoxCollider collider, ObjectType type, std::string ID, int layer)
+    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID), Layer(layer)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;

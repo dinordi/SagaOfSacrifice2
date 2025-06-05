@@ -25,7 +25,7 @@ private:
 class Entity : public Object
 {
 public:
-    Entity( BoxCollider collider, std::string objID, ObjectType type);
+    Entity( BoxCollider collider, std::string objID, ObjectType type, int layer);
     
     bool isDead() const { return isDead_; }
     

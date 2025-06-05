@@ -92,6 +92,7 @@ bool Level::load(json& levelData)
             const int width  = layer.at("width");
             const int height = layer.at("height");
             const auto& data = layer.at("data");
+            const int layerid = layer.at("id");
 
             for (int row = 0; row < height; ++row)
             {
@@ -118,9 +119,9 @@ bool Level::load(json& levelData)
                     auto tile = std::make_shared<Tile>(
                         worldX, worldY, objId,
                         tileset, spriteIndex,
-                        tileWidth, tileHeight, 0);
-
+                        tileWidth, tileHeight, layerid);
                     levelObjects.push_back(tile);
+                    
                 }
             }
         }
@@ -232,7 +233,7 @@ void Level::update(float deltaTime) {
         // std::cout << "[Level] Collision detection and resolution took "
         //           << duration.count() << " microseconds\n";
     }
-    sortObjects();
+    
     
     // Send game state to clients periodically
     static uint64_t updateTimer = 0;
@@ -247,24 +248,6 @@ void Level::detectAndResolveCollisions() {
     collisionManager->detectCollisions(levelObjects);
 }   
 
-void Level::sortObjects() {
-    std::sort(levelObjects.begin(), levelObjects.end(),
-        [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
-            if (a->getLayer() != b->getLayer())
-                return a->getLayer() < b->getLayer();
-            // If same layer, sort by Y
-            if (a->getposition().y != b->getposition().y)
-                return a->getposition().y < b->getposition().y;
-            // If same Y, draw player last (on top)
-            if (a->type == ObjectType::PLAYER && b->type != ObjectType::PLAYER)
-                return false;
-            if (a->type != ObjectType::PLAYER && b->type == ObjectType::PLAYER)
-                return true;
-            // Fallback: keep original order
-            return false;
-        }
-    );
-}
 
 void Level::addObject(std::shared_ptr<Object> object) {
     std::lock_guard<std::mutex> lock(gameStateMutex_);

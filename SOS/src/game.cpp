@@ -174,8 +174,11 @@ void Game::update(float deltaTime) {
                             }
                         }
                     }
+
                 }
             }
+            // Ensure objects are sorted before rendering
+            sortObjects();
             break;
         case GameState::MENU:
             // Handle menu state
@@ -518,6 +521,18 @@ void Game::reconcileWithServerState(float deltaTime) {
         // }
     }
 }
+void Game::sortObjects() {
+    std::sort(objects.begin(), objects.end(),
+        [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+
+            if (a->getLayer() != b->getLayer())
+                return a->getLayer() < b->getLayer();
+            if (a->getposition().y != b->getposition().y)
+                return a->getposition().y < b->getposition().y;
+            return a->type < b->type; // Fallback comparison
+        }
+    );
+}
 
 // New method to add objects to the game
 void Game::addObject(std::shared_ptr<Object> object) {
@@ -527,6 +542,7 @@ void Game::addObject(std::shared_ptr<Object> object) {
                               [&](const std::shared_ptr<Object>& obj) {
                                   return obj->getObjID() == object->getObjID();
                               });
+                           
         
         if (it == objects.end()) {
             // Add new object if it doesn't exist

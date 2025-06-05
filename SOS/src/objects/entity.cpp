@@ -2,7 +2,8 @@
 #include "tile.h"
 #include <iostream>
 
-Entity::Entity( BoxCollider collider, std::string objID, ObjectType type) : Object( collider, type, objID) 
+Entity::Entity( BoxCollider collider, std::string objID, ObjectType type, int layer) : 
+Object( collider, type, objID,layer)
 {
 
 }

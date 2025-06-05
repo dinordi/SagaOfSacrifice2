@@ -6,10 +6,9 @@
 #include <filesystem>
 #include "minotaur.h"
 
- Minotaur::Minotaur(BoxCollider collider, std::string objID, int layer): Enemy(collider, objID, ObjectType::MINOTAUR) 
+ Minotaur::Minotaur(BoxCollider collider, std::string objID, int layer): Enemy(collider, objID, ObjectType::MINOTAUR, layer) 
     {
     setvelocity(Vec2(0, 0));
-    setLayer(layer);
     // Minotaur specific stats
     health = 150;
     attackDamage = 25;
