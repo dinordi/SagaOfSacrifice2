@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include <cstdint>
 
@@ -26,7 +25,7 @@ enum class MessageType {
 // Base message structure - same as client side
 struct NetworkMessage {
     MessageType type;
-    std::string senderId;
-    std::string targetId; // Used for messages directed at a specific client
+    uint16_t senderId;
+    uint16_t targetId; // Used for messages directed at a specific client
     std::vector<uint8_t> data;
 };

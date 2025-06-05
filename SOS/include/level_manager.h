@@ -46,8 +46,8 @@ public:
     std::vector<std::string> getAllLevelIds() const;
     
     // Add a player to the current level
-    bool addPlayerToCurrentLevel(const std::string& playerId);
-    bool removePlayerFromCurrentLevel(const std::string& playerId);
+    bool addPlayerToCurrentLevel(uint16_t playerId);
+    bool removePlayerFromCurrentLevel(uint16_t playerId);
     bool removeAllPlayersFromCurrentLevel();
     bool removeAllObjectsFromCurrentLevel();
 

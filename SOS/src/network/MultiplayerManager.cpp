@@ -45,9 +45,9 @@ MultiplayerManager::~MultiplayerManager() {
     remotePlayers_.clear();
 }
 
-bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const std::string& initialPlayerId) {
+bool MultiplayerManager::initialize(const std::string& serverAddress, int serverPort, const uint16_t initialPlayerId) {
     // Store an initial temporary player ID
-    playerId_ = "connecting_client"; // Will be replaced by server-assigned ID
+    playerId_ = 65000; // Will be replaced by server-assigned ID
     
     // Set message handler
     network_->setMessageHandler([this](const NetworkMessage& msg) {
@@ -63,11 +63,7 @@ bool MultiplayerManager::initialize(const std::string& serverAddress, int server
         // Send a connection message to the server - this time without a specific player ID
         NetworkMessage connectMsg;
         connectMsg.type = MessageType::CONNECT;
-        connectMsg.senderId = "connecting_client"; // Temporary ID that will be replaced by server-assigned ID
-        
-        // Add player info to connection data (could include more info)
-        std::string playerInfo = "Requesting player ID from server";
-        connectMsg.data.assign(playerInfo.begin(), playerInfo.end());
+        connectMsg.senderId = 65000; // Temporary ID that will be replaced by server-assigned ID
         
         std::cout << "[Client] Sending CONNECT message to get server-assigned ID" << std::endl;
         // Sleep for a short time to ensure server is ready
@@ -189,7 +185,7 @@ void MultiplayerManager::sendPlayerAction(int actionType) {
     network_->sendMessage(actionMsg);
 }
 
-void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool isDead, int16_t currentHealth) {
+void MultiplayerManager::sendEnemyStateUpdate(const uint16_t enemyId, bool isDead, int16_t currentHealth) {
     if (!network_ || !network_->isConnected()) {
         return;
     }
@@ -202,17 +198,16 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
     // Encode the enemy state in the data payload
     // Format: [enemy ID length][enemy ID string][1 byte isDead][4 bytes health]
     std::vector<uint8_t> data; 
-    // Add enemy ID length (1 byte)
-    data.push_back(static_cast<uint8_t>(enemyId.size()));
 
-    // Add enemy ID string after the length
-    data.insert(data.end(), enemyId.begin(), enemyId.end());
+    size_t currentSize = data.size();
+    data.resize(currentSize + sizeof(int16_t));
+    std::memcpy(data.data() + currentSize, &enemyId, sizeof(int16_t));
 
     // Add isDead flag
     data.push_back(isDead ? 1 : 0);
     
     // Add current health (2 bytes) - Use memcpy for consistent byte order
-    size_t currentSize = data.size();
+    currentSize = data.size();
     data.resize(currentSize + sizeof(int16_t));
     std::memcpy(data.data() + currentSize, &currentHealth, sizeof(int16_t));
 
@@ -225,47 +220,37 @@ void MultiplayerManager::sendEnemyStateUpdate(const std::string& enemyId, bool i
 void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) {
     // This method is called by the server to handle enemy state updates
     // It updates enemy health, dead status, etc.
-    if (message.data.size() < 2) {
+    if (message.data.size() < sizeof(uint16_t) + 1 + sizeof(int16_t)) {
         std::cerr << "[Client] Invalid enemy state update message received" << std::endl;
         return;
     }
-    // Format same as server: [enemy ID len][enemy ID string][1 byte isDead][2 bytes health]
     size_t pos = 0;
 
-    // Read enemy ID length
-    size_t idLength = message.data[pos++];
-    std::string enemyId(message.data.begin() + pos, message.data.begin() + pos + idLength);
-    pos += idLength;
+    // Read enemy ID (2 bytes)
+    uint16_t enemyId;
+    std::memcpy(&enemyId, message.data.data() + pos, sizeof(uint16_t));
+    pos += sizeof(uint16_t);
 
-    // Read isDead flag
-    if (pos >= message.data.size()) {
-        std::cerr << "[Client] Missing isDead flag in enemy state update" << std::endl;
-        return;
-    }
+    // Read isDead flag (1 byte)
     bool isDead = message.data[pos++] != 0;
-    // Read health (4 bytes)
-    if (pos + 2 > message.data.size()) {
-        std::cerr << "[Client] Missing health value in enemy state update" << std::endl;
-        return;
-    }
+
+    // Read health (2 bytes)
     int16_t health;
     std::memcpy(&health, message.data.data() + pos, sizeof(int16_t));
+    pos += sizeof(int16_t);
 
-
-    // Find the remote player or enemy object
-    Game * game = Game::getInstance();
+    // Find the enemy object by ID in gameObjects
+    Game* game = Game::getInstance();
     if (!game) {
         std::cerr << "[Client] Game instance not found" << std::endl;
         return;
     }
-    // Find the enemy object by ID in gameObjects
     std::shared_ptr<Enemy> enemyObject = nullptr;
     auto& objects = game->getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == enemyId) {
             switch(obj->type) {
                 case ObjectType::MINOTAUR:
-                    // Cast to Enemy type
                     enemyObject = std::static_pointer_cast<Minotaur>(obj);
                     break;
                 default:
@@ -281,20 +266,17 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     }
     // Update the enemy state
     if (isDead) {
-        // Handle enemy death logic here, e.g., remove from game, play death animation, etc.
-        enemyObject->die();  // Assuming die() method handles cleanup
+        enemyObject->die();
     } else {
-        // Update health or other properties as needed
-        enemyObject->setHealth(health);  // Assuming setHealth() method exists
+        enemyObject->setHealth(health);
     }
-
 }
 
 bool MultiplayerManager::isConnected() const {
     return network_ && network_->isConnected();
 }
 
-const std::map<std::string, std::shared_ptr<Player>>& MultiplayerManager::getRemotePlayers() const {
+const std::map<uint16_t, std::shared_ptr<Player>>& MultiplayerManager::getRemotePlayers() const {
     return remotePlayers_;
 }
 
@@ -311,7 +293,7 @@ void MultiplayerManager::sendChatMessage(const std::string& message) {
     network_->sendMessage(chatMsg);
 }
 
-void MultiplayerManager::setChatMessageHandler(std::function<void(const std::string&, const std::string&)> handler) {
+void MultiplayerManager::setChatMessageHandler(std::function<void(const uint16_t senderId, const std::string& message)> handler) {
     chatHandler_ = handler;
 }
 
@@ -422,13 +404,11 @@ void MultiplayerManager::handlePlayerActionMessage(const NetworkMessage& message
     if (message.senderId == playerId_) {
         return; // Ignore our own actions
     }
-    
     // Find the remote player
     auto it = remotePlayers_.find(message.senderId);
     if (it == remotePlayers_.end()) {
         return; // Player not found
     }
-    
     std::cout << "[Client] Handling player action message from " << message.senderId << std::endl;
 }
 
@@ -479,7 +459,7 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     size_t pos = 2;
     
     // Maps to track objects we've seen in this update
-    std::map<std::string, bool> objectsSeen;
+    std::map<uint16_t, bool> objectsSeen;
     std::vector<std::shared_ptr<Object>> newObjects;
     
     // Process each object
@@ -525,7 +505,7 @@ void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameS
     size_t pos = 2;
     
     // Track objects we've seen
-    std::map<std::string, bool> objectsSeen;
+    std::map<uint16_t, bool> objectsSeen;
     std::vector<std::shared_ptr<Object>> newObjects;
     
     // Process each object
@@ -726,14 +706,13 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
     return data;
 }
 
-std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::string& objectId, const Vec2& position, const Vec2& velocity) {
+std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const uint16_t objectId, const Vec2& position, const Vec2& velocity) {
     // Update the position of a specific entity
     Game* game = Game::getInstance();
     if (!game) {
         std::cerr << "[Client] Game instance not found" << std::endl;
         return nullptr;
     }
-    
     auto& objects = game->getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == objectId) {
@@ -743,7 +722,6 @@ std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const std::stri
             return obj; // Successfully updated
         }
     }
-    
     return nullptr; // Object not found
 }
 
@@ -791,18 +769,16 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
     // Read object type
     uint8_t objectType = data[pos++];
     
-    // Read object ID length
-    uint8_t idLength = data[pos++];
-    
-    if (pos + idLength > data.size()) {
+    // Read object ID (2 bytes for uint16_t)
+    if (pos + 2 > data.size()) {
         std::cerr << "[Client] Not enough data to read object ID" << std::endl;
         return nullptr;
     }
     
-    // Read object ID
-    std::string objectId(data.begin() + pos, data.begin() + pos + idLength);
-    pos += idLength;
-    
+    // Read object ID as uint16_t (little endian format)
+    uint16_t objectId = static_cast<uint16_t>(data[pos]) | 
+                       (static_cast<uint16_t>(data[pos+1]) << 8);
+    pos += 2;
 
     // Read position and velocity (4 floats, 16 bytes total)
     if (pos + 16 > data.size()) {
@@ -969,34 +945,28 @@ void MultiplayerManager::handlePlayerDisconnectMessage(const NetworkMessage& mes
 
 void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message) {
     std::cout << "[Client] Received player assignment from server" << std::endl;
-    
     // For initial connection, the message might not have a targetId that matches our temporary ID
     // We'll check if we're in the initial connection phase
-    bool initialAssignment = playerId_ == "connecting_client" || message.targetId.empty();
-    
+    bool initialAssignment = (playerId_ == 65000 || playerId_ == 0); // 65000 is default temp value
     if (!initialAssignment && message.targetId != playerId_) {
         // This message is not for us
         return;
     }
-    
-    if (message.data.size() < sizeof(float) * 2) {
+    if (message.data.size() < sizeof(float) * 2 + sizeof(uint16_t)) {
         std::cerr << "[Client] Invalid player assignment data size: " << message.data.size() << std::endl;
         return;
     }
-    
     // Extract position
     float posX, posY;
     std::memcpy(&posX, &message.data[0], sizeof(float));
     std::memcpy(&posY, &message.data[sizeof(float)], sizeof(float));
-    
     // Extract player ID assigned by the server
-    std::string assignedId(reinterpret_cast<const char*>(&message.data[sizeof(float) * 2]));
-    
+    uint16_t assignedId;
+    std::memcpy(&assignedId, &message.data[sizeof(float) * 2], sizeof(uint16_t));
     // Update our player ID with the server-assigned one
     if (initialAssignment || playerId_ != assignedId) {
         std::cout << "[Client] Updating player ID from " << playerId_ << " to server-assigned ID: " << assignedId << std::endl;
         playerId_ = assignedId;
-        
         // Update sender ID for future messages
         if (network_) {
             network_->setClientId(assignedId);
