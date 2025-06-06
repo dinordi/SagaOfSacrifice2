@@ -55,7 +55,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     // Write current sprite state to index 0
     write_sprite_to_frame_info(frame_info_arr, 0, s_sprite_x, s_sprite_y, sprite_id_to_use);
     //write_sprite_to_frame_info(frame_info_arr, 1, s_sprite_x +200, s_sprite_y + 350, sprite_id_to_use);
-/*
+
     // Update X position for next frame
     if (s_direction_x == 1) {
         if (s_sprite_x >= 2050) {
@@ -84,7 +84,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
         } else {
             s_sprite_y -= 2;
         }
-    }*/
+    }
 }
 
 void handleIRQ(volatile uint64_t *frame_info_arr)
