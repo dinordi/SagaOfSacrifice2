@@ -268,6 +268,9 @@ void Renderer::init_frame_infos() {
 
 void Renderer::distribute_sprites_over_pipelines() {
 
+    // Arrays to track how many sprites are in each pipeline
+    int sprites_in_pipeline[NUM_PIPELINES] = {0};
+    
     int index = 0;
     for(auto frame : frame_info_data)
     {
@@ -275,19 +278,20 @@ void Renderer::distribute_sprites_over_pipelines() {
             std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
             return; // Or handle the error as needed
         }
-        // Print what will be written to frame info
-        // std::cout << "Writing to frame_info[0][" << index << "]: x=" << frame.x
-        //           << ", y=" << frame.y << ", sprite_id=" << frame.sprite_id << std::endl;
-        // Write the sprite to the first pipeline
-        write_sprite_to_frame_info(frame_infos[0], index, frame.x, frame.y, frame.sprite_id);
+        
+        // Distribute sprites across pipelines using round-robin
+        int pipeline = index % NUM_PIPELINES;
+        int pipeline_index = sprites_in_pipeline[pipeline];
+        
+        // Write the sprite to the determined pipeline
+        write_sprite_to_frame_info(frame_infos[pipeline], pipeline_index, frame.x, frame.y, frame.sprite_id);
+        sprites_in_pipeline[pipeline]++;
         index++;
     }
 
-    frame_infos[0][index] = 0xFFFFFFFFFFFFFFFF; // Add end marker after the last sprite in the first pipeline
-    
-    // For other pipelines, ensure they have just end markers
-    for (int i = 1; i < NUM_PIPELINES; i++) {
-        frame_infos[i][0] = 0xFFFFFFFFFFFFFFFF;
+    // Add end markers for all pipelines
+    for (int i = 0; i < NUM_PIPELINES; i++) {
+        frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
 
     // const uint16_t X_START = 130;
@@ -374,7 +378,8 @@ void Renderer::renderObjects(Game& game)
         frame_info_data.push_back({
             .x = static_cast<int16_t>(screenPos.x),
             .y = static_cast<int16_t>(screenPos.y),
-            .sprite_id = static_cast<uint32_t>(index) // Use the index as sprite ID
+            .sprite_id = static_cast<uint32_t>(index), // Use the index as sprite ID
+            .is_tile = (entity->type == ObjectType::TILE) // Indicate if this is a tile
         });
 
     }
@@ -443,7 +448,8 @@ void Renderer::renderActors(Game& game)
                 frame_info_data.push_back({
                     .x = static_cast<int16_t>(screenPos.x),
                     .y = static_cast<int16_t>(screenPos.y),
-                    .sprite_id =  static_cast<uint32_t>(index) // Use the index as sprite ID
+                    .sprite_id =  static_cast<uint32_t>(index), // Use the index as sprite ID
+                    .is_tile = 0 // Indicate if this is a tile
                 });
                 
             }
@@ -482,7 +488,8 @@ void Renderer::renderActors(Game& game)
             frame_info_data.push_back({
                 .x = static_cast<int16_t>(screenPos.x),
                 .y = static_cast<int16_t>(screenPos.y),
-                .sprite_id = static_cast<uint32_t>(index) // Use the sprite rect count as sprite ID
+                .sprite_id = static_cast<uint32_t>(index),
+                .is_tile = 0 // Use the sprite rect count as sprite ID
             });
         }
     }
