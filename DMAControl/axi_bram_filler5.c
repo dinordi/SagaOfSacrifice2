@@ -30,7 +30,7 @@ void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, in
     uint64_t masked_y = ((uint64_t)y) & 0x1FFF;
     uint64_t base_value = ((uint64_t)(x << 23)) | (masked_y << 11) | sprite_id;
     frame_info_arr[index] = base_value;
-    printf("Frame info [%d]: X=%d, Y=%d (masked=0x%llX), ID=%u\n", index, x, y, masked_y, sprite_id);
+    printf("Frame info [%d]: X=%d, Y=%d (masked=0x%llu), ID=%u\n", index, x, y, masked_y, sprite_id);
     printf("  Value (hex): 0x%016llX\n", base_value);
 }
 
