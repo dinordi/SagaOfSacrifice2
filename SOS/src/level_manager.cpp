@@ -245,6 +245,10 @@ bool LevelManager::addPlayerToCurrentLevel(uint16_t playerId) {
                   << " to level start position: " << playerPos->x << "," << playerPos->y << std::endl;
     }
     
+    std::shared_ptr<Object> objectExists = currentLevel_->getObject(playerId); // Ensure the player is created in the level
+    if(objectExists) {
+        return true; // Player already exists in the level
+    }
     // Add the player to the current level
     currentLevel_->addObject(player);
     currentLevel_->setAllEnemiesToTargetPlayer(player);
@@ -279,6 +283,10 @@ bool LevelManager::removeAllPlayersFromCurrentLevel() {
         const auto& players = playerManager.getAllPlayers();
         
         for (const auto& playerPair : players) {
+            if(playerPair.second == nullptr) {
+                std::cerr << "[LevelManager] Player " << playerPair.first << " is null, skipping removal" << std::endl;
+                continue;
+            }
             currentLevel_->removeObject(playerPair.second);
             std::cout << "[LevelManager] Removed player " << playerPair.first << " from current level" << std::endl;
         }

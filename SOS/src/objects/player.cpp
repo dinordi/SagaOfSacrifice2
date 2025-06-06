@@ -186,18 +186,6 @@ bool Player::checkAttackHit(Object* target) {
         case FacingDirection::WEST:
             directionVector = Vec2(-1, 0);
             break;
-        case FacingDirection::NORTH_EAST:
-            directionVector = Vec2(0.7f, -0.7f);
-            break;
-        case FacingDirection::NORTH_WEST:
-            directionVector = Vec2(-0.7f, -0.7f);
-            break;
-        case FacingDirection::SOUTH_EAST:
-            directionVector = Vec2(0.7f, 0.7f);
-            break;
-        case FacingDirection::SOUTH_WEST:
-            directionVector = Vec2(-0.7f, 0.7f);
-            break;
         default:
             directionVector = Vec2(0, 0);
             break;

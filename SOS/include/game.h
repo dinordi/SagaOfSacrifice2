@@ -74,7 +74,7 @@ public:
     std::vector<Actor*>& getActors();
     void clearActors();
 
-    Player* getPlayer() const { return player; }
+    std::shared_ptr<Player> getPlayer() const { return player; }
 
     void movePlayerToEnd();
 
@@ -84,7 +84,6 @@ public:
     // Mutex to protect access to game objects
     std::mutex& getObjectsMutex() { return objectsMutex; }
     std::mutex& getActorsMutex() { return actorsMutex; }
-    Player* getPlayer() { return player; }
 
     // Static instance getter for singleton access
     static Game& getInstance() { static Game instance_; return instance_; }
@@ -123,7 +122,7 @@ private:
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;
-    Player* player;
+    std::shared_ptr<Player> player; // Local player object
     
     // Local server management
     std::unique_ptr<LocalServerManager> localServerManager;

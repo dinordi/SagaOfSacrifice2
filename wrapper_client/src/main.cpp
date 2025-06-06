@@ -373,7 +373,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     // Find player object to center camera on
-    Player* playerObject = app->game.getPlayer();
+    std::shared_ptr<Player> playerObject = app->game.getPlayer();
     
     // Update camera to follow player
     if (playerObject) {
@@ -455,18 +455,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(currentSpriteRect.h)
         };
 
-        bool swap = false;
-        switch(entity->getDir())
-        {
-            case FacingDirection::EAST:
-                // swap = true;
-                break;
-            case FacingDirection::SOUTH_WEST:
-                // swap = true;
-                break;
-            default:
-                break;
-        }
         
         // Convert world coordinates to screen coordinates using the camera
         Vec2 screenPos = app->camera->worldToScreen(
@@ -477,14 +465,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_FRect destRect{
             .x = screenPos.x,
             .y = screenPos.y,
-            .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
+            .w = static_cast<float>(currentSpriteRect.w),
             .h = static_cast<float>(currentSpriteRect.h)
         };
 
-        // Adjust the dest rect's position when flipped
-        if (swap) {
-            destRect.x -= destRect.w; // Adjust x position when flipped
-        }
 
         // Normal rendering without flip
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);

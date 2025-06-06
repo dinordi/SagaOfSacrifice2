@@ -9,7 +9,7 @@ public:
     ~Camera();
 
     // Update camera position to follow target object
-    void update(const Object* target);
+    void update(std::shared_ptr<Object> target);
     
     // Convert world coordinates to screen coordinates
     Vec2 worldToScreen(float worldX, float worldY) const;

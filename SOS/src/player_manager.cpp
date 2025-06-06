@@ -20,7 +20,7 @@ std::shared_ptr<Player> PlayerManager::createPlayer(const uint16_t playerId, con
     
     // Add to the map
     players_[playerId] = player;
-    std::cout << "[PlayerManager] Created player with ID: " << playerId << std::endl;
+    std::cout << "[PlayerManager] Created player with ID: " << playerId << ". Player Count: " << players_.size() <<  std::endl;
     return player;
 }
 

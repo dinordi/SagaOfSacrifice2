@@ -1008,8 +1008,8 @@ void EmbeddedServer::sendPartialGameState(
     partMsg.data.push_back(uint8_t(count >> 8));
     partMsg.data.push_back(uint8_t(count & 0xFF));
     
-    std::cout << "Serializing " << count << " objects starting from index " 
-              << startIndex << " of total " << objects.size() << " objects." << std::endl;
+    // std::cout << "Serializing " << count << " objects starting from index " 
+    //           << startIndex << " of total " << objects.size() << " objects." << std::endl;
     // Serialize each object in this range
     for (size_t i = startIndex; i < startIndex + count && i < objects.size(); i++) {
         // if(i > PRINTNUM)
@@ -1106,7 +1106,11 @@ void EmbeddedServer::sendSplitGameStateToClient(
         sendPartialGameStateToClient(objectsToSend, startIndex, count, isFirstPacket, isLastPacket, playerId);
         if(!isLastPacket)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        else
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
 }
@@ -1232,5 +1236,11 @@ void EmbeddedServer::sendFullGameStateToClient(const uint16_t playerId) {
         sendSplitGameStateToClient(objects, estimatedSize, playerId);
     } else {
         sendSingleGameStatePacketToClient(objects, playerId);
+    }
+    // Do this the first time only
+    static bool firstTime = true;
+    if (firstTime) {
+        firstTime = false;
+        deltaTracker_.updateState(objects); // Update the delta tracker with the full state
     }
 }

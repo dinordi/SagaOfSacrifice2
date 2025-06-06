@@ -305,7 +305,7 @@ void Game::movePlayerToEnd() {
     // Find the player in the objects vector
     auto playerIt = std::find_if(objects.begin(), objects.end(),
         [this](const std::shared_ptr<Object>& obj) {
-            return obj.get() == player;
+            return obj.get() == player.get();
         });
     
     // If found and not already at the end, move it
@@ -370,7 +370,7 @@ std::vector<Actor*>& Game::getActors() {
 }
 
 void Game::clearActors() {
-    std::lock_guard<std::mutex> lock(objectsMutex);
+    std::lock_guard<std::mutex> lock(actorsMutex);
     for(auto& actor : actors) {
         if(actor->gettype() == ActorType::HEALTHBAR)
             continue;   // Healthbar is managed by unique_ptr in Entity, so skip it
@@ -477,13 +477,14 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                 // Deal damage to the enemy
                 int damageAmount = player->getAttackDamage();
                 enemy->takeDamage(damageAmount);
-                
-                // If the enemy died from this hit, notify the server immediately
+                int health = enemy->getHealth();
+                health = health < 0 ? 0 : health; // Ensure health doesn't go negative
+                // If the enemy is attacked from this hit, notify the server immediately
                 if (multiplayerActive && multiplayerManager) {
                     multiplayerManager->sendEnemyStateUpdate(
                         enemy->getObjID(), 
-                        true,  // isDead = true
-                        0      // Health = 0
+                        health <= 0 ? true : false,  // isDead = true
+                        static_cast<uint16_t>(health)      // Health = 0
                     );
                 }
                 // Only hit each enemy once per attack frame
@@ -498,7 +499,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // Check for regular collisions (like with platforms)
     {
         std::lock_guard<std::mutex> lock(objectsMutex);
-        collisionManager->detectPlayerCollisions(objects, player);
+        collisionManager->detectPlayerCollisions(objects, player.get());
     }
 }
 
@@ -621,7 +622,7 @@ void Game::drawMenu(float deltaTime) {
         }
         print = true;
     }
-    std::lock_guard<std::mutex> lock(actorsMutex);
+
     if(actors.size() != 0 && !menuOptionChanged && lastPrint == print)
         return;
     
@@ -669,7 +670,10 @@ void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
             {
                 character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters_small.tpsheet", index);
             }
-            actors.push_back(character);
+            {
+                std::lock_guard<std::mutex> lock(actorsMutex);
+                actors.push_back(character);
+            }
             x += letterWidth; // Move to the right for the next character
             if(x > 1600)
             {
@@ -689,7 +693,10 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     if (isSelected) {
         // Add a simple visual indicator for the selected item
         Actor* selector = new Actor(Vec2(x - 80, y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", characterMap['>']);
-        actors.push_back(selector);
+        {
+            std::lock_guard<std::mutex> lock(actorsMutex);
+            actors.push_back(selector);
+        }
     }
     
     // Draw the actual word
@@ -901,7 +908,7 @@ void Game::updatePlayer(uint16_t playerId, const Vec2& position) {
     else
     {
         // If player is not initialized, create a new one
-        player = new Player(position.x, position.y, playerId);
+        player = std::make_shared<Player>(position.x, position.y, playerId);
         player->setInput(input); // Set input handler for the player
         multiplayerManager->setLocalPlayer(player); // Set the local player in the multiplayer manager
         multiplayerManager->setPlayerInput(input); // Set input for multiplayer manager
