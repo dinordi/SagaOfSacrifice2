@@ -1,4 +1,45 @@
+# Build artifacts
+**/build/
+**/Release/
+**/Debug/
+
+# Visual Studio files
+**/.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.db
+*.ipch
+*.opendb
+*.VC.db
+Browse.VC.db
+*.VC.opendb
+*.VC.db-shm
+*.VC.db-wal
+
+# Binary files
+*.dll
+*.exe
+*.out
+*.app
+*.so
+*.dylib
+*.lib
+*.exp
+*.ilk
+*.pdb
+*.obj
+
+# CMake build directories
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# OS specific files
 .DS_Store
 .vscode/
 build/
 build-arm/
+Thumbs.db
+

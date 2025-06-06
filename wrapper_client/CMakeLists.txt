@@ -56,7 +56,7 @@ endif()
 
 if(MSVC)
     # Boost configuration - use consistent path separators and naming
-    set(BOOST_ROOT "C:/local/boost_1_87_0" CACHE PATH "Boost root directory")
+    set(BOOST_ROOT "D:/boost_1_88_0/boost_1_88_0" CACHE PATH "Boost root directory")
     set(Boost_NO_SYSTEM_PATHS ON)
     set(Boost_NO_BOOST_CMAKE ON)
     set(Boost_USE_STATIC_LIBS ON)

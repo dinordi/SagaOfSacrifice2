@@ -136,22 +136,19 @@ int main(int argc, char *argv[]) {
     std::string path_sprites = path + "/assets/spriteatlas/";
     imageName = imageName + ".png";
 
-    AudioManager* audio = new SDL2AudioManager();
-    std::string path_assets = path + "/assets";
-    if(!audio->initialize(path_assets)) {
-        std::cerr << "Failed to initialize AudioManager." << std::endl;
+    AudioManager& audio = SDL2AudioManager::Instance();
+
+    if(audio.initialize(basePathSOS) == false) {
+        std::cout << "AudioManager initialized successfully." << std::endl;
+        audio.loadMusic("music/menu/menu.wav");
+        audio.loadSound("sfx/001.wav");
+        audio.loadSound("sfx/jump.wav");
+        audio.playMusic();
+        audio.playSound("001");
+        audio.playSound("jump");
     }
-    if(audio)
-    {
-        audio->setVolume(0.2f);
-        audio->setMusicVolume(0.2f);
-        audio->loadMusic("music/menu/menu.wav");
-        audio->loadSound("sfx/001.wav");
-        audio->loadSound("sfx/jump.wav");
-        audio->playMusic();
-        audio->playSound("001");
-        audio->playSound("jump");
-    }
+
+    
     if(!devMode)
     {
         camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution

@@ -5,7 +5,7 @@
 #include "objects/tile.h"
 #include "playerInput.h"
 #include "animation.h"
-
+#include "AudioManager.h"
 class Player : public Entity {
 
 public:
