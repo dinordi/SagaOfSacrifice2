@@ -46,7 +46,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
 
     if (!s_initialized) {
         s_sprite_x = 1000;
-        s_sprite_y = -1;
+        s_sprite_y = 500;
         s_direction_x = 1;  // Start by moving right
         s_direction_y = 1;  // Start by moving down
         s_initialized = 1;
