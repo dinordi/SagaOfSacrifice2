@@ -43,7 +43,7 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     static int s_initialized = 0;
 
     if (!s_initialized) {
-        s_sprite_x = 120;
+        s_sprite_x = 1800;
         s_sprite_y = 400;
         s_direction_x = 1;  // Start by moving right
         s_direction_y = 1;  // Start by moving down
@@ -54,35 +54,35 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
     write_sprite_to_frame_info(frame_info_arr, 0, s_sprite_x, s_sprite_y, sprite_id_to_use);
     //write_sprite_to_frame_info(frame_info_arr, 1, s_sprite_x +200, s_sprite_y + 350, sprite_id_to_use);
 
-    // Update X position for next frame
-    if (s_direction_x == 1) {
-        if (s_sprite_x >= 2050) {
-            s_direction_x = -1;  // Bounce left
-        } else {
-            s_sprite_x += 2;
-        }
-    } else { // s_direction_x == -1
-        if (s_sprite_x <= -100) {
-            s_direction_x = 1;   // Bounce right
-        } else {
-            s_sprite_x -= 2;
-        }
-    }
+    // // Update X position for next frame
+    // if (s_direction_x == 1) {
+    //     if (s_sprite_x >= 2050) {
+    //         s_direction_x = -1;  // Bounce left
+    //     } else {
+    //         s_sprite_x += 2;
+    //     }
+    // } else { // s_direction_x == -1
+    //     if (s_sprite_x <= -100) {
+    //         s_direction_x = 1;   // Bounce right
+    //     } else {
+    //         s_sprite_x -= 2;
+    //     }
+    // }
 
-    // Update Y position for next frame (independent of X)
-    if (s_direction_y == 1) {
-        if (s_sprite_y >= 1080) {
-            s_direction_y = -1;  // Bounce up
-        } else {
-            s_sprite_y += 2;
-        }
-    } else { // s_direction_y == -1
-        if (s_sprite_y <= -400) {
-            s_direction_y = 1;   // Bounce down
-        } else {
-            s_sprite_y -= 2;
-        }
-    }
+    // // Update Y position for next frame (independent of X)
+    // if (s_direction_y == 1) {
+    //     if (s_sprite_y >= 1080) {
+    //         s_direction_y = -1;  // Bounce up
+    //     } else {
+    //         s_sprite_y += 2;
+    //     }
+    // } else { // s_direction_y == -1
+    //     if (s_sprite_y <= -400) {
+    //         s_direction_y = 1;   // Bounce down
+    //     } else {
+    //         s_sprite_y -= 2;
+    //     }
+    // }
 }
 
 void handleIRQ(volatile uint64_t *frame_info_arr)
