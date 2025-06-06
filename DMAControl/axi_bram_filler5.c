@@ -67,6 +67,22 @@ void update_and_write_animated_sprite(volatile uint64_t *frame_info_arr,
             s_sprite_x -= 2;
         }
     }
+
+     if (s_direction == 1) {
+        if (s_sprite_y >= 1080) {
+            s_direction = -1;
+            s_sprite_y -= 2;
+        } else {
+            s_sprite_y += 2;
+        }
+    } else { // s_direction == -1
+        if (s_sprite_y <= -400) {
+            s_direction = 1;
+            s_sprite_y += 2;
+        } else {
+            s_sprite_y -= 2;
+        }
+    }
 }
 
 void handleIRQ(volatile uint64_t *frame_info_arr)
