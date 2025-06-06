@@ -537,6 +537,22 @@ void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int ind
         return; // Of: throw std::runtime_error("lookup_table pointer is NULL");
     }
 
+    // Bounds checking
+    if (index < 0 || index > 1023) {
+        printf("Error: index %d out of bounds (0-1023)\n", index);
+        return;
+    }
+    
+    if (width > 1921) {
+        printf("Error: width %u out of bounds (0-1921)\n", width);
+        return;
+    }
+    
+    if (height > 1081) {
+        printf("Error: height %u out of bounds (0-1080)\n", height);
+        return;
+    }
+
     uint64_t value = ((uint64_t)sprite_data_base << 23) |
                      ((uint64_t)height << 12) |
                      width;
@@ -565,12 +581,12 @@ void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int
     
     
     if (x < -2047 || x > 2047) {
-        printf("Error: x %d out of bounds (-2047 to 2047)\n", signed_x);
+        printf("Error: x %d out of bounds (-2047 to 2047)\n", x);
         return;
     }
     
     if (y < -1080 || y > 1080) {
-        printf("Error: y %d out of bounds (-1080 to 1080)\n", signed_y);
+        printf("Error: y %d out of bounds (-1080 to 1080)\n", y);
         return;
     }
     
