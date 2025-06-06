@@ -334,6 +334,9 @@ void Renderer::renderObjects(Game& game)
         
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
+        if(entity->type == ObjectType::TILE) {
+            int i = 0; // Skip rendering if no animation state is set
+        }
         if (!entity || !spriteData) continue; // Basic safety check
         
         // Use the current sprite index from animation system
@@ -347,7 +350,7 @@ void Renderer::renderObjects(Game& game)
         float entityWidth = spriteRect.w;
         float entityHeight = spriteRect.h;
         
-        if (camera_->isVisible(entityX, entityY, entityWidth, entityHeight)) {
+        if (!camera_->isVisible(entityX, entityY, entityWidth, entityHeight)) {
             continue; // Skip rendering this object
         }
         
