@@ -547,9 +547,11 @@ void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int
         return; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
     }
 
-    uint64_t base_value = ((uint64_t)x << 22) | ((uint64_t)y << 11) | sprite_id;
+    uint64_t masked_y = ((uint64_t)y) & 0xFFF;
+    uint64_t base_value = ((uint64_t)x << 23) | (masked_y << 11) | sprite_id;
     frame_info_arr[index] = base_value;
 
     //printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", index, x, y, sprite_id);
     //printf("  Value (hex): 0x%016llX\n", base_value);
 }
+
