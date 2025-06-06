@@ -338,7 +338,7 @@ void Renderer::renderObjects(Game& game)
         
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
-        if(entity->layer == ObjectType::TILE && entity->getlayer() > 1) {
+        if(entity->type == ObjectType::TILE && entity->getLayer() > 1) {
             continue; // Skip rendering if no animation state is set
         }
 
