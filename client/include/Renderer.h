@@ -79,7 +79,7 @@ public:
     void write_lookup_table_entry(volatile uint64_t* table, int index,
                                  uint32_t phys_addr, uint16_t width, uint16_t height);
 
-    void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id);
+    void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id);
 };
 
 #endif // RENDERER_H

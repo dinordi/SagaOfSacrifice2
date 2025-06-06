@@ -551,10 +551,32 @@ void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int ind
 }
 
 // ─────────────────────────────────────────────
-void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, uint16_t x, uint16_t y, uint32_t sprite_id) {
+void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id) {
     if (frame_info_arr == nullptr) {
         printf("Error: frame_info_arr pointer is NULL\n");
         return; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
+    }
+
+    // Bounds checking
+    if (index < 0 || index > 1023) {
+        printf("Error: index %d out of bounds (0-1023)\n", index);
+        return;
+    }
+    
+    
+    if (x < -2047 || x > 2047) {
+        printf("Error: x %d out of bounds (-2047 to 2047)\n", signed_x);
+        return;
+    }
+    
+    if (y < -1080 || y > 1080) {
+        printf("Error: y %d out of bounds (-1080 to 1080)\n", signed_y);
+        return;
+    }
+    
+    if (sprite_id > 1023) {
+        printf("Error: sprite_id %u out of bounds (0-1023)\n", sprite_id);
+        return;
     }
 
     uint64_t masked_y = ((uint64_t)y) & 0xFFF;
