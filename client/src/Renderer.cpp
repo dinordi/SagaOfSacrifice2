@@ -13,7 +13,7 @@
 #include "sprite_data.h"
 
 Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devMode)
-    : uio_fd(-1), camera_(cam), devMode_(devMode), renderManager_(new RenderManager(512.0f))
+    : uio_fd(-1), camera_(cam), devMode_(devMode)
 {
     if(devMode_) {
         std::cout << "Development mode enabled. Running headless." << std::endl;
@@ -151,9 +151,6 @@ Renderer::~Renderer()
             frame_info_ptrs[i] = nullptr;
         }
     }
-    
-    // Clean up render manager
-    delete renderManager_;
     
     std::cout << "Renderer cleanup completed" << std::endl;
 }
@@ -362,42 +359,45 @@ void Renderer::drawScreen()
 
 void Renderer::renderObjects(Game& game)
 {
-    // Initialize render grid on first call with all objects
-    if (!renderManager_) {
-        std::cerr << "[Renderer] RenderManager not initialized!" << std::endl;
-        return;
-    }
-    
     std::lock_guard<std::mutex> lock(game.getObjectsMutex());
     const std::vector<std::shared_ptr<Object>>& allObjects = game.getObjects();
     
-    // Initialize spatial grid on first call or when object count changes significantly
-    static bool gridInitialized = false;
-    static size_t lastObjectCount = 0;
+    // Get camera viewport for culling
+    float cameraX = camera_->getPosition().x;
+    float cameraY = camera_->getPosition().y;
+    float viewportWidth = camera_->getWidth();
+    float viewportHeight = camera_->getHeight();
     
-    if (!gridInitialized || (allObjects.size() != lastObjectCount && abs((int)allObjects.size() - (int)lastObjectCount) > 100)) {
-        renderManager_->initializeGrid(allObjects);
-        lastObjectCount = allObjects.size();
-        gridInitialized = true;
-        std::cout << "[Renderer] RenderGrid initialized with " << allObjects.size() << " objects" << std::endl;
-    }
+    // Calculate visible bounds with some padding for smooth scrolling
+    float padding = 200.0f; // Extra pixels around viewport
+    float minX = cameraX - padding;
+    float maxX = cameraX + viewportWidth + padding;
+    float minY = cameraY - padding;
+    float maxY = cameraY + viewportHeight + padding;
     
-    // Update dynamic objects every frame (this is fast for objects that haven't moved)
-    renderManager_->updateDynamicObjects(allObjects);
-    
-    // Use spatial culling to get only visible objects instead of checking all 8000+
-    auto culledObjects = renderManager_->getCulledObjects(camera_);
-    
-    // Log performance metrics occasionally
+    // Count objects processed for performance monitoring
     static int frameCount = 0;
-    if (++frameCount % 300 == 0) { // Every ~5 seconds at 60fps
-        renderManager_->logPerformanceStats();
-    }
+    static int totalObjectsChecked = 0;
+    static int objectsRendered = 0;
+    
+    int currentFrameChecked = 0;
+    int currentFrameRendered = 0;
 
-    // Process the spatially culled objects for FPGA rendering
-    for(const auto& entity : culledObjects) {
-        
+    // Process objects with spatial culling optimization
+    for(const auto& entity : allObjects) {
         if (!entity) continue;
+        currentFrameChecked++;
+        
+        // Early spatial culling check using object's collider position
+        BoxCollider collider = entity->getcollider();
+        float entityX = collider.position.x;
+        float entityY = collider.position.y;
+        
+        // Quick bounds check - skip objects clearly outside viewport
+        if (entityX < minX || entityX > maxX || entityY < minY || entityY > maxY) {
+            continue;
+        }
+        
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
         if(entity->type == ObjectType::TILE ){
@@ -411,17 +411,18 @@ void Renderer::renderObjects(Game& game)
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
         const SpriteRect& spriteRect = spriteData->getSpriteRect(spriteIndex);
-        BoxCollider collider = entity->getcollider();
 
-        // Final viewport culling check (RenderManager does coarse culling, this is fine-grained)
-        float entityX = collider.position.x - (spriteRect.w / 2);
-        float entityY = collider.position.y - (spriteRect.h / 2);
+        // Final viewport culling check with actual sprite dimensions
+        float entityLeft = entityX - (spriteRect.w / 2);
+        float entityTop = entityY - (spriteRect.h / 2);
         float entityWidth = spriteRect.w;
         float entityHeight = spriteRect.h;
         
-        if (!camera_->isVisible(entityX, entityY, entityWidth, entityHeight)) {
+        if (!camera_->isVisible(entityLeft, entityTop, entityWidth, entityHeight)) {
             continue; // Skip rendering this object
         }
+        
+        currentFrameRendered++;
         
         // Get Sprite Address
         std::map<int, uint32_t>spriterects = spriteSheetMap[spriteRect.id_];
@@ -429,12 +430,8 @@ void Renderer::renderObjects(Game& game)
         // Needed index
         int index = first_index_of_map + spriteRect.count; // Get the index of the sprite in the lookup table
         
-        
         // Convert world coordinates to screen coordinates using the camera
-        Vec2 screenPos = camera_->worldToScreen(
-            collider.position.x - (spriteRect.w / 2),
-            collider.position.y - (spriteRect.h / 2)
-        );
+        Vec2 screenPos = camera_->worldToScreen(entityLeft, entityTop);
 
         if(frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
             std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
@@ -446,7 +443,22 @@ void Renderer::renderObjects(Game& game)
             .sprite_id = static_cast<uint32_t>(index), // Use the index as sprite ID
             .is_tile = (entity->type == ObjectType::TILE) // Indicate if this is a tile
         });
-
+    }
+    
+    // Performance logging every 5 seconds
+    totalObjectsChecked += currentFrameChecked;
+    objectsRendered += currentFrameRendered;
+    
+    if (++frameCount % 300 == 0) { // Every ~5 seconds at 60fps
+        float avgChecked = totalObjectsChecked / 300.0f;
+        float avgRendered = objectsRendered / 300.0f;
+        float cullRatio = avgChecked > 0 ? (avgChecked - avgRendered) / avgChecked * 100.0f : 0.0f;
+        
+        std::cout << "[FPGA Renderer] Performance - Avg objects checked: " << avgChecked 
+                  << ", rendered: " << avgRendered << ", culled: " << cullRatio << "%" << std::endl;
+        
+        totalObjectsChecked = 0;
+        objectsRendered = 0;
     }
 }
 

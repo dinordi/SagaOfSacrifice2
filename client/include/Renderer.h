@@ -12,7 +12,6 @@
 #include "game.h"
 #include "object.h"
 #include "graphics/Camera.h"
-#include "graphics/RenderManager.h"
 
 constexpr int NUM_PIPELINES = 4;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
@@ -62,7 +61,6 @@ public:
     std::mutex frame_info_mutex;
 
     Camera* camera_;
-    RenderManager* renderManager_;
 
     bool devMode_ = false; // For development mode, where we just load an image and quit
 
