@@ -13,7 +13,7 @@
 #include "sprite_data.h"
 
 Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devMode)
-    : uio_fd(-1), camera_(cam), devMode_(devMode)
+    : uio_fd(-1), camera_(cam), devMode_(devMode), renderManager_(new RenderManager(512.0f))
 {
     if(devMode_) {
         std::cout << "Development mode enabled. Running headless." << std::endl;
@@ -151,6 +151,9 @@ Renderer::~Renderer()
             frame_info_ptrs[i] = nullptr;
         }
     }
+    
+    // Clean up render manager
+    delete renderManager_;
     
     std::cout << "Renderer cleanup completed" << std::endl;
 }
@@ -359,10 +362,40 @@ void Renderer::drawScreen()
 
 void Renderer::renderObjects(Game& game)
 {
+    // Initialize render grid on first call with all objects
+    if (!renderManager_) {
+        std::cerr << "[Renderer] RenderManager not initialized!" << std::endl;
+        return;
+    }
+    
     std::lock_guard<std::mutex> lock(game.getObjectsMutex());
-    const std::vector<std::shared_ptr<Object>>& objects = game.getObjects();
+    const std::vector<std::shared_ptr<Object>>& allObjects = game.getObjects();
+    
+    // Initialize spatial grid on first call or when object count changes significantly
+    static bool gridInitialized = false;
+    static size_t lastObjectCount = 0;
+    
+    if (!gridInitialized || (allObjects.size() != lastObjectCount && abs((int)allObjects.size() - (int)lastObjectCount) > 100)) {
+        renderManager_->initializeGrid(allObjects);
+        lastObjectCount = allObjects.size();
+        gridInitialized = true;
+        std::cout << "[Renderer] RenderGrid initialized with " << allObjects.size() << " objects" << std::endl;
+    }
+    
+    // Update dynamic objects every frame (this is fast for objects that haven't moved)
+    renderManager_->updateDynamicObjects(allObjects);
+    
+    // Use spatial culling to get only visible objects instead of checking all 8000+
+    auto culledObjects = renderManager_->getCulledObjects(camera_);
+    
+    // Log performance metrics occasionally
+    static int frameCount = 0;
+    if (++frameCount % 300 == 0) { // Every ~5 seconds at 60fps
+        renderManager_->logPerformanceStats();
+    }
 
-    for(const auto& entity : objects) {
+    // Process the spatially culled objects for FPGA rendering
+    for(const auto& entity : culledObjects) {
         
         if (!entity) continue;
         const SpriteData* spriteData = entity->getCurrentSpriteData();
@@ -380,7 +413,7 @@ void Renderer::renderObjects(Game& game)
         const SpriteRect& spriteRect = spriteData->getSpriteRect(spriteIndex);
         BoxCollider collider = entity->getcollider();
 
-        // Skip rendering objects that are outside the camera view (viewport culling)
+        // Final viewport culling check (RenderManager does coarse culling, this is fine-grained)
         float entityX = collider.position.x - (spriteRect.w / 2);
         float entityY = collider.position.y - (spriteRect.h / 2);
         float entityWidth = spriteRect.w;

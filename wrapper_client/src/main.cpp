@@ -18,6 +18,7 @@
 #include "sdl_input.h"
 #include "SDL3AudioManager.h"
 #include "graphics/Camera.h"
+#include "graphics/RenderManager.h"
 
 constexpr uint32_t windowStartWidth = 1920;
 constexpr uint32_t windowStartHeight = 1080;
@@ -41,6 +42,7 @@ struct AppContext {
     Game& game;
     std::filesystem::path basePathSOS;
     Camera* camera;
+    RenderManager* renderManager;
     
     // Multiplayer configuration
     bool enableMultiplayer;
@@ -296,6 +298,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
     // Initialize camera
     Camera* camera = new Camera(windowStartWidth, windowStartHeight);
+    
+    // Initialize render manager for spatial culling optimization
+    RenderManager* renderManager = new RenderManager(512.0f); // 512-pixel cells for rendering optimization
+    
     // set up the application data
     *appstate = new AppContext{
        .window = window,
@@ -307,6 +313,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
        .game = game,
        .basePathSOS = basePathSOS,
        .camera = camera,
+       .renderManager = renderManager,
        .enableMultiplayer = enableMultiplayer,
        .serverAddress = serverAddress,
        .serverPort = serverPort,
@@ -413,12 +420,44 @@ void renderParallaxBackgrounds(AppContext* app) {
 }
 
 void renderEntities(AppContext* app) {
-    //Load game objects (Entities, player(s), platforms)
-    for(const auto& entity : app->game.getObjects()) {
+    // Initialize render grid on first call with all objects
+    if (!app->renderManager) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "RenderManager not initialized!");
+        return;
+    }
+    
+    // Get current objects from game
+    const auto& allObjects = app->game.getObjects();
+    
+    // Initialize spatial grid on first call or when object count changes significantly
+    static bool gridInitialized = false;
+    static size_t lastObjectCount = 0;
+    
+    if (!gridInitialized || (allObjects.size() != lastObjectCount && abs((int)allObjects.size() - (int)lastObjectCount) > 100)) {
+        app->renderManager->initializeGrid(allObjects);
+        lastObjectCount = allObjects.size();
+        gridInitialized = true;
+        SDL_Log("RenderGrid initialized with %zu objects", allObjects.size());
+    }
+    
+    // Update dynamic objects every frame (this is fast for objects that haven't moved)
+    app->renderManager->updateDynamicObjects(allObjects);
+    
+    // Use spatial culling to get only visible objects instead of checking all 8000+
+    auto culledObjects = app->renderManager->getCulledObjects(app->camera);
+    
+    // Log performance metrics occasionally
+    static int frameCount = 0;
+    if (++frameCount % 300 == 0) { // Every ~5 seconds at 60fps
+        app->renderManager->logPerformanceStats();
+    }
+    
+    // Render the spatially culled objects
+    for(const auto& entity : culledObjects) {
         
         if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
         
-        // Skip rendering objects that are outside the camera view (viewport culling)
+        // Final viewport culling check (RenderManager does coarse culling, this is fine-grained)
         float entityX = entity->getcollider().position.x - (entity->getCurrentSpriteData()->getSpriteRect(0).w / 2);
         float entityY = entity->getcollider().position.y - (entity->getCurrentSpriteData()->getSpriteRect(0).h / 2);
         float entityWidth = entity->getCurrentSpriteData()->getSpriteRect(0).w;
@@ -598,6 +637,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
+
+        // Clean up rendering components
+        delete app->camera;
+        delete app->renderManager;
 
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
