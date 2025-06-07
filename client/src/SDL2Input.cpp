@@ -78,20 +78,20 @@ void SDL2Input::readInput() {
     if (gameController) {
         SDL_GameControllerUpdate();
         // Print once a second
-        static Uint32 lastPrintTime = 0;
-        Uint32 currentTime = SDL_GetTicks();
-        if (currentTime - lastPrintTime > 10000) {
-            lastPrintTime = currentTime;
-            std::cout << "Game controller is active." << std::endl;
-            std::cout << "Controller name: " << SDL_GameControllerName(gameController) << std::endl;
-            std::cout << "Controller attached: " << (SDL_GameControllerGetAttached(gameController) ? "YES" : "NO") << std::endl;
-            std::cout << "Controller button X: " << (int)SDL_GameControllerGetButton(gameController, SDL_CONTROLLER_BUTTON_X) << std::endl;
-            std::cout << "Controller button A: " << (int)SDL_GameControllerGetButton(gameController, SDL_CONTROLLER_BUTTON_A) << std::endl;
-            std::cout << "Controller axis LEFTY: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY) << std::endl;
-            std::cout << "Controller axis LEFTX: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX) << std::endl;
-            std::cout << "Controller axis RIGHTY: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTY) << std::endl;
-            std::cout << "Controller axis RIGHTX: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTX) << std::endl;
-        }
+        // static Uint32 lastPrintTime = 0;
+        // Uint32 currentTime = SDL_GetTicks();
+        // if (currentTime - lastPrintTime > 10000) {
+        //     lastPrintTime = currentTime;
+        //     std::cout << "Game controller is active." << std::endl;
+        //     std::cout << "Controller name: " << SDL_GameControllerName(gameController) << std::endl;
+        //     std::cout << "Controller attached: " << (SDL_GameControllerGetAttached(gameController) ? "YES" : "NO") << std::endl;
+        //     std::cout << "Controller button X: " << (int)SDL_GameControllerGetButton(gameController, SDL_CONTROLLER_BUTTON_X) << std::endl;
+        //     std::cout << "Controller button A: " << (int)SDL_GameControllerGetButton(gameController, SDL_CONTROLLER_BUTTON_A) << std::endl;
+        //     std::cout << "Controller axis LEFTY: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY) << std::endl;
+        //     std::cout << "Controller axis LEFTX: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX) << std::endl;
+        //     std::cout << "Controller axis RIGHTY: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTY) << std::endl;
+        //     std::cout << "Controller axis RIGHTX: " << SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTX) << std::endl;
+        // }
         // Gamepad controls (SDL2)
         up_pressed = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY) < -8000 ||
                      SDL_GameControllerGetButton(gameController, SDL_CONTROLLER_BUTTON_DPAD_UP);
@@ -112,26 +112,26 @@ void SDL2Input::readInput() {
         attack_pressed = state[SDL_SCANCODE_K];
     }
 
-    if(up_pressed)
-    {
-        std::cout << "Up pressed" << std::endl;
-    }
-    if(down_pressed)
-    {
-        std::cout << "Down pressed" << std::endl;
-    }
-    if(left_pressed)
-    {
-        std::cout << "Left pressed" << std::endl;
-    }
-    if(right_pressed)
-    {
-        std::cout << "Right pressed" << std::endl;
-    }
-    if(attack_pressed)
-    {
-        std::cout << "Attack pressed" << std::endl;
-    }
+    // if(up_pressed)
+    // {
+    //     std::cout << "Up pressed" << std::endl;
+    // }
+    // if(down_pressed)
+    // {
+    //     std::cout << "Down pressed" << std::endl;
+    // }
+    // if(left_pressed)
+    // {
+    //     std::cout << "Left pressed" << std::endl;
+    // }
+    // if(right_pressed)
+    // {
+    //     std::cout << "Right pressed" << std::endl;
+    // }
+    // if(attack_pressed)
+    // {
+    //     std::cout << "Attack pressed" << std::endl;
+    // }
     set_left(left_pressed);
     set_right(right_pressed);
     set_up(up_pressed);

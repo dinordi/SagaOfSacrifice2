@@ -32,7 +32,7 @@ struct FrameInfo {
 
 class Renderer {
 public:
-    Renderer(const std::filesystem::path& basePath, Camera* cam);
+    Renderer(const std::filesystem::path& basePath, Camera* cam, bool devMode = false);
     ~Renderer();
 
     void initUIO();
@@ -48,6 +48,7 @@ public:
     void init_frame_infos();
     void distribute_sprites_over_pipelines();
     void irqHandlerThread();
+    void fakeIRQHandlerThread();
 
     void* lookup_table_ptrs[NUM_PIPELINES] = {nullptr};
     void* frame_info_ptrs[NUM_PIPELINES] = {nullptr};
@@ -60,6 +61,8 @@ public:
     std::mutex frame_info_mutex;
 
     Camera* camera_;
+
+    bool devMode_ = false; // For development mode, where we just load an image and quit
 
     int uio_fd;
 

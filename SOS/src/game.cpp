@@ -180,10 +180,10 @@ void Game::update(float deltaTime) {
                     }
 
                 }
-            }
-            // Ensure objects are sorted before rendering
-            if(objects.size() > 1) {
-                sortObjects();
+                // Ensure objects are sorted before rendering
+                if(objects.size() > 1) {
+                    sortObjects();
+                }
             }
             break;
         case GameState::MENU:
