@@ -123,6 +123,33 @@ classDiagram
   - Specialized for embedded systems (PetaLinux/FPGA integration).
   - Handles DMA transfers, hardware interrupts, and sprite management.
   - Renders all objects and actors each frame.
+ 
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Renderer
+    participant SpriteLoader
+    participant Memory
+    participant FPGA
+    participant Game
+
+    Note over Main,FPGA: Initialization
+    Main->>Renderer: Create renderer
+    Renderer->>SpriteLoader: Load sprite sheets
+    SpriteLoader->>Memory: Map sprites to physical memory
+    Renderer->>Memory: Setup lookup tables & frame buffers
+    Renderer->>FPGA: Initialize hardware interface
+
+    Note over Main,FPGA: Runtime Loop
+    loop Every Frame
+        FPGA->>Renderer: Frame interrupt (60 FPS)
+        Renderer->>Game: Get visible entities
+        Game-->>Renderer: Objects & actors to render
+        Renderer->>Renderer: Convert to screen coordinates
+        Renderer->>Memory: Write sprite positions/IDs
+        Note over FPGA: Hardware renders frame using<br/>memory-mapped sprite data
+    end
+```
 
 #### 7. Utilities & Support
 
