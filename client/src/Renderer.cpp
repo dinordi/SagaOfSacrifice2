@@ -336,13 +336,14 @@ void Renderer::renderObjects(Game& game)
 
     for(const auto& entity : objects) {
         
+        if (!entity) continue;
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
         if(entity->type == ObjectType::TILE && entity->getLayer() > 1) {
             continue; // Skip rendering if no animation state is set
         }
 
-        if (!entity || !spriteData) continue; // Basic safety check
+        if (!spriteData) continue; // Basic safety check
         
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
