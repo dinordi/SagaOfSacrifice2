@@ -19,9 +19,12 @@ Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devM
         std::cout << "Development mode enabled. Running headless." << std::endl;
         return; // In dev mode, we don't initialize UIO or load sprites
     }
-    init_frame_infos();
-    loadAllSprites(basePath);
-    init_lookup_tables();
+    else
+    {
+        init_frame_infos();
+        loadAllSprites(basePath);
+        init_lookup_tables();
+    }
 }
 
 int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out) {
@@ -212,7 +215,6 @@ void Renderer::fakeIRQHandlerThread()
     while (!stop_thread) {
         // Simulate an interrupt every 100 milliseconds
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
-        std::cout << "Fake IRQ triggered" << std::endl;
         // Only proceed if game instance is available and running
         Game& game = Game::getInstance();
         if (game.isRunning()) {
@@ -365,8 +367,10 @@ void Renderer::renderObjects(Game& game)
         if (!entity) continue;
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
-        if(entity->type == ObjectType::TILE && entity->getLayer() > 1) {
-            continue; // Skip rendering if no animation state is set
+        if(entity->type == ObjectType::TILE ){
+            if(entity->getLayer() > 1) {
+                continue; // Skip rendering if no animation state is set
+            }
         }
 
         if (!spriteData) continue; // Basic safety check

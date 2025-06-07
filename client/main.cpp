@@ -130,8 +130,14 @@ int main(int argc, char *argv[]) {
     std::string path = std::filesystem::current_path().string();
     // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
     // Want to go to /SagaOfSacrifice2/SOS
-    std::string basePathSOS = path.substr(0, path.find("/client/build"));
-    path = basePathSOS + "/SOS";
+    std::string basePathStr = path;
+    std::size_t pos = basePathStr.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        basePathStr = basePathStr.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePathSOS = std::filesystem::path(basePathStr);
+
+    path = basePathSOS.string() + "/SOS";
 
     std::string path_sprites = path + "/assets/spriteatlas/";
     imageName = imageName + ".png";
@@ -151,7 +157,7 @@ int main(int argc, char *argv[]) {
     
     
     camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution
-    renderer = new Renderer(std::filesystem::path(path_sprites), camera);
+    renderer = new Renderer(std::filesystem::path(path_sprites), camera, devMode);
     if(debugMode) {
         std::cout << "Debug mode: Loaded image." << std::endl;
         return 0;
