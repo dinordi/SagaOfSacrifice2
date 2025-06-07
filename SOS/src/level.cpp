@@ -10,6 +10,7 @@
 #include <chrono>
 
 #include <nlohmann/json.hpp>
+#include "game.h"
 
 using json = nlohmann::json;
 
@@ -246,7 +247,7 @@ void Level::update(float deltaTime) {
 
 void Level::detectAndResolveCollisions() {
     // Detect and resolve collisions using the collision manager
-    collisionManager->detectCollisions(levelObjects);
+    collisionManager->detectCollisions(Game::getInstance());
 }   
 
 

@@ -1,6 +1,7 @@
 #include "collision/CollisionManager.h"
 #include <iostream>
 #include "objects/tile.h"
+#include "game.h"
 
 std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(Game& game)
 {
@@ -43,6 +44,45 @@ std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(Game
     // std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks 
     //           << ", object checks: " << objChecks 
     //           << ", dynamic objects: " << dynamicObjects.size() << std::endl;
+
+    return collisions;
+}
+
+std::vector<std::pair<Object*, Object*>> CollisionManager::detectPlayerCollisions(Game& game)
+{
+    Player* player = game.getPlayer().get();
+    if (!player) {
+        return {};
+    }
+    
+    std::vector<std::pair<Object*, Object*>> collisions;
+    int collisionChecks = 0;
+    int objChecks = 0;
+
+    // Lock spatial grid access (thread safety)
+    std::lock_guard<std::mutex> lock(game.getSpatialGridMutex());
+    
+    // Get potential colliders for the player
+    auto potentialColliders = game.getSpatialGrid()->getPotentialColliders(player);
+
+    // Check player against each potential collider
+    for (Object* otherObj : potentialColliders) {
+        objChecks++;
+
+        // Skip self-collision
+        if (player->getObjID() == otherObj->getObjID()) {
+            continue;
+        }
+
+        // Check and resolve collision
+        if (checkAndResolveCollision(player, otherObj, collisions, collisionChecks)) {
+            // Collision was detected and resolved
+        }
+    }
+
+    // Optional: performance debug log
+    // std::cout << "[CollisionManager] Player collision checks performed: " << collisionChecks 
+    //           << ", object checks: " << objChecks << std::endl;
 
     return collisions;
 }

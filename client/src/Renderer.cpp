@@ -360,7 +360,7 @@ void Renderer::drawScreen()
 void Renderer::renderObjects(Game& game)
 {
     std::lock_guard<std::mutex> lock(game.getObjectsMutex());
-    std::lock_guard<std::mutex> lock(game.getSpatialGridMutex());
+    std::lock_guard<std::mutex> lock2(game.getSpatialGridMutex());
 
     // Get camera viewport for culling
     float cameraX = camera_->getPosition().x;

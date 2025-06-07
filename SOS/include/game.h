@@ -23,7 +23,7 @@
 #include "player_manager.h"
 #include "ServerConfig.h"
 #include "level_manager.h"
-#include "SpatialGrid.h"
+
 
 enum class GameState {
     RUNNING,

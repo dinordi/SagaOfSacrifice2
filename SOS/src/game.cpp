@@ -502,7 +502,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     // Check for regular collisions (like with platforms)
     {
         std::lock_guard<std::mutex> lock(objectsMutex);
-        collisionManager->detectPlayerCollisions(objects, player.get());
+        collisionManager->detectPlayerCollisions(Game::getInstance());
     }
 }
 

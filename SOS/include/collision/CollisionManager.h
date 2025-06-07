@@ -12,6 +12,8 @@
 #include "CollisionHandler.h"
 #include "objects/player.h"
 
+class Game;
+
 // Spatial grid for efficient collision detection
 class SpatialGrid {
 private:
@@ -130,15 +132,17 @@ std::vector<Object*> getObjectsInRegion(float minX, float minY, float maxX, floa
 
 class CollisionManager {
 public:
-    std::vector<std::pair<Object*, Object*>> detectCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects);
-    std::vector<std::pair<Object*, Object*>> detectPlayerCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects, Player* player);
-    void resolveCollision(Object* objA, Object* objB, const CollisionInfo& info);
+    // Main collision detection function - takes Game reference
+    static std::vector<std::pair<Object*, Object*>> detectCollisions(Game& game);
     
+    // Player-specific collision detection function - takes Game reference  
+    static std::vector<std::pair<Object*, Object*>> detectPlayerCollisions(Game& game);
+
 private:
-    // Helper method to check and resolve collision between two objects
-    bool checkAndResolveCollision(Object* objA, Object* objB, 
-                                  std::vector<std::pair<Object*, Object*>>& collisions, 
-                                  int& collisionChecks);
+    static void resolveCollision(Object* objA, Object* objB, const CollisionInfo& info);
+    static bool checkAndResolveCollision(Object* objA, Object* objB, 
+                                       std::vector<std::pair<Object*, Object*>>& collisions, 
+                                       int& collisionChecks);
 };
 
 #endif // COLLISION_MANAGER_H
