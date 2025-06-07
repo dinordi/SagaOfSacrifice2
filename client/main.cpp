@@ -163,9 +163,6 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     
-    //wait 5 seconds
-    std::cout << "Waiting for 2 seconds before starting the game..." << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     PlayerInput* controller = new SDL2Input();
     Game& game = Game::getInstance();
@@ -211,16 +208,21 @@ int main(int argc, char *argv[]) {
 
     //Print once a second
     static uint64_t last_print_time_us = 0;
-    if (current_time_us - last_print_time_us >= 1000000) { // 1 second
-        last_print_time_us = current_time_us;
-        std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
-    }
-
+    
     // Use actual frame time as deltaTime
     float deltaTime = static_cast<float>(frame_time_us) / 1000000.0f;
+    
+    auto timeBeforeUpdate = std::chrono::steady_clock::now();
     game.update(deltaTime); // This varies based on actual frame time
+    auto timeAfterUpdate = std::chrono::steady_clock::now();
+    auto updateDuration = std::chrono::duration_cast<std::chrono::microseconds>(timeAfterUpdate - timeBeforeUpdate).count();
     camera->update(game.getPlayer());
-
+    
+    if (current_time_us - last_print_time_us >= 1000000) { // 1 second
+        last_print_time_us = current_time_us;
+        std::cout << "Update took: " << updateDuration << " us" << std::endl;
+        std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
+    }
     // Initialize UIO only after game is fully set up and running
     static bool uio_initialized = false;
     if (!uio_initialized && game.isRunning()) {
