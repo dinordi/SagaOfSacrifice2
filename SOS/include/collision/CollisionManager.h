@@ -83,8 +83,11 @@ public:
                 if (it != cells_.end()) {
                     for (Object* other : it->second) {
                         if (other != obj && uniqueObjects.find(other) == uniqueObjects.end()) {
-                            uniqueObjects.insert(other);
-                            result.push_back(other);
+                            if(other->isCollidable())
+                            {
+                                uniqueObjects.insert(other);
+                                result.push_back(other);
+                            }
                         }
                     }
                 }
@@ -93,6 +96,36 @@ public:
         
         return result;
     }
+
+    // Get all objects overlapping a given region (x1,y1)-(x2,y2)
+std::vector<Object*> getObjectsInRegion(float minX, float minY, float maxX, float maxY) {
+    std::vector<Object*> result;
+    std::unordered_set<Object*> uniqueObjects;
+
+    int startX = static_cast<int>(std::floor(minX / cellSize_));
+    int startY = static_cast<int>(std::floor(minY / cellSize_));
+    int endX = static_cast<int>(std::floor(maxX / cellSize_));
+    int endY = static_cast<int>(std::floor(maxY / cellSize_));
+
+    for (int x = startX; x <= endX; x++) {
+        for (int y = startY; y <= endY; y++) {
+            int64_t key = (static_cast<int64_t>(x) << 32) | static_cast<uint32_t>(y);
+            
+            auto it = cells_.find(key);
+            if (it != cells_.end()) {
+                for (Object* other : it->second) {
+                    if (uniqueObjects.find(other) == uniqueObjects.end()) {
+                        uniqueObjects.insert(other);
+                        result.push_back(other);
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
 };
 
 class CollisionManager {

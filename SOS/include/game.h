@@ -23,6 +23,7 @@
 #include "player_manager.h"
 #include "ServerConfig.h"
 #include "level_manager.h"
+#include "SpatialGrid.h"
 
 enum class GameState {
     RUNNING,
@@ -71,10 +72,13 @@ public:
     void setChatMessageHandler(std::function<void(const uint16_t sender, const std::string& message)> handler);
 
     std::vector<std::shared_ptr<Object>>& getObjects();
+    std::vector<std::shared_ptr<Object>>& getDynamicObjects() { return dynamic_objects; }
     std::vector<Actor*>& getActors();
     void clearActors();
 
     std::shared_ptr<Player> getPlayer() const { return player; }
+    SpatialGrid* getSpatialGrid() const { return spatialGrid_.get(); }
+    std::mutex& getSpatialGridMutex() { return spatialGridMutex_; }
 
     void movePlayerToEnd();
 
@@ -119,6 +123,7 @@ private:
     std::mutex objectsMutex; // Mutex to protect access to objects vector
     std::mutex actorsMutex; // Mutex to protect access to actors vector
 
+    std::vector<std::shared_ptr<Object>> dynamic_objects; // Non-tile objects for efficient spatial grid updates
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
     PlayerInput* input;
     CollisionManager* collisionManager;
@@ -154,6 +159,10 @@ private:
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     std::unique_ptr<LevelManager> levelManager_;
+    
+    // Spatial grid for efficient object queries
+    std::unique_ptr<SpatialGrid> spatialGrid_;
+    std::mutex spatialGridMutex_; // Mutex to protect access to spatial grid
     
 };
 

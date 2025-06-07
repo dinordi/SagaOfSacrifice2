@@ -360,8 +360,8 @@ void Renderer::drawScreen()
 void Renderer::renderObjects(Game& game)
 {
     std::lock_guard<std::mutex> lock(game.getObjectsMutex());
-    const std::vector<std::shared_ptr<Object>>& allObjects = game.getObjects();
-    
+    std::lock_guard<std::mutex> lock(game.getSpatialGridMutex());
+
     // Get camera viewport for culling
     float cameraX = camera_->getPosition().x;
     float cameraY = camera_->getPosition().y;
@@ -375,6 +375,18 @@ void Renderer::renderObjects(Game& game)
     float minY = cameraY - padding;
     float maxY = cameraY + viewportHeight + padding;
     
+    // Ask spatial grid which objects are relevant
+    std::vector<Object*> visibleObjects;
+    if (game.getSpatialGrid()) {
+        visibleObjects = game.getSpatialGrid()->getObjectsInRegion(minX, minY, maxX, maxY);
+    } else {
+        // fallback: all objects
+        const std::vector<std::shared_ptr<Object>>& allObjects = game.getObjects();
+        for (const auto& obj : allObjects) {
+            if (obj) visibleObjects.push_back(obj.get());
+        }
+    }
+    
     // Count objects processed for performance monitoring
     static int frameCount = 0;
     static int totalObjectsChecked = 0;
@@ -382,21 +394,10 @@ void Renderer::renderObjects(Game& game)
     
     int currentFrameChecked = 0;
     int currentFrameRendered = 0;
-
-    // Process objects with spatial culling optimization
-    for(const auto& entity : allObjects) {
+    
+    for (Object* entity : visibleObjects) {
         if (!entity) continue;
         currentFrameChecked++;
-        
-        // Early spatial culling check using object's collider position
-        BoxCollider collider = entity->getcollider();
-        float entityX = collider.position.x;
-        float entityY = collider.position.y;
-        
-        // Quick bounds check - skip objects clearly outside viewport
-        if (entityX < minX || entityX > maxX || entityY < minY || entityY > maxY) {
-            continue;
-        }
         
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
@@ -413,8 +414,9 @@ void Renderer::renderObjects(Game& game)
         const SpriteRect& spriteRect = spriteData->getSpriteRect(spriteIndex);
 
         // Final viewport culling check with actual sprite dimensions
-        float entityLeft = entityX - (spriteRect.w / 2);
-        float entityTop = entityY - (spriteRect.h / 2);
+        BoxCollider collider = entity->getcollider();
+        float entityLeft = collider.position.x - (spriteRect.w / 2);
+        float entityTop = collider.position.y - (spriteRect.h / 2);
         float entityWidth = spriteRect.w;
         float entityHeight = spriteRect.h;
         
@@ -427,8 +429,7 @@ void Renderer::renderObjects(Game& game)
         // Get Sprite Address
         std::map<int, uint32_t>spriterects = spriteSheetMap[spriteRect.id_];
         int first_index_of_map = lookup_table_map[spriteRect.id_];
-        // Needed index
-        int index = first_index_of_map + spriteRect.count; // Get the index of the sprite in the lookup table
+        int index = first_index_of_map + spriteRect.count;
         
         // Convert world coordinates to screen coordinates using the camera
         Vec2 screenPos = camera_->worldToScreen(entityLeft, entityTop);
@@ -440,16 +441,16 @@ void Renderer::renderObjects(Game& game)
         frame_info_data.push_back({
             .x = static_cast<int16_t>(screenPos.x),
             .y = static_cast<int16_t>(screenPos.y),
-            .sprite_id = static_cast<uint32_t>(index), // Use the index as sprite ID
-            .is_tile = (entity->type == ObjectType::TILE) // Indicate if this is a tile
+            .sprite_id = static_cast<uint32_t>(index),
+            .is_tile = (entity->type == ObjectType::TILE)
         });
     }
-    
+
     // Performance logging every 5 seconds
     totalObjectsChecked += currentFrameChecked;
     objectsRendered += currentFrameRendered;
     
-    if (++frameCount % 300 == 0) { // Every ~5 seconds at 60fps
+    if (++frameCount % 300 == 0) {
         float avgChecked = totalObjectsChecked / 300.0f;
         float avgRendered = objectsRendered / 300.0f;
         float cullRatio = avgChecked > 0 ? (avgChecked - avgRendered) / avgChecked * 100.0f : 0.0f;

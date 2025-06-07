@@ -98,8 +98,6 @@ private:
     DEFINE_GETTER_SETTER(Vec2, velocity);
     DEFINE_CONST_GETTER_SETTER(uint16_t, ObjID); // ID of the object, for multiplayer to indicate between players and objects
     DEFINE_CONST_GETTER_SETTER(int, Layer); // ID of the object, for multiplayer to indicate between players and objects
-private:
-    int layer;
 };
 
 class Actor {

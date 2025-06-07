@@ -2,99 +2,51 @@
 #include <iostream>
 #include "objects/tile.h"
 
-std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects)
+std::vector<std::pair<Object*, Object*>> CollisionManager::detectCollisions(Game& game)
 {
     std::vector<std::pair<Object*, Object*>> collisions;
     int collisionChecks = 0;
     int objChecks = 0;
+
+    // Lock spatial grid access (thread safety)
+    std::lock_guard<std::mutex> lock(game.getSpatialGridMutex());
     
-    // Create spatial grid with 200-pixel cells (matches our broad-phase distance check)
-    SpatialGrid grid(200.0f);
-    
-    // Separate dynamic and static objects
-    std::vector<Object*> dynamicObjects;
-    
-    // First pass: identify all collidable objects and add to appropriate collections
-    for (const auto& obj : gameObjects) {
-        if (!obj || !obj->isCollidable()) continue;
-        
-        // Add to grid
-        grid.addObject(obj.get());
-        
-        // Only track dynamic objects separately (non-tiles)
-        if (obj->type != ObjectType::TILE) {
-            dynamicObjects.push_back(obj.get());
-        }
-    }
-    
-    // Second pass: check dynamic objects against potential colliders
-    for (Object* dynamicObj : dynamicObjects) {
+    // Get dynamic objects from Game class
+    const auto& dynamicObjects = game.getDynamicObjects(); // vector<Object*> of vector<shared_ptr<Object>>
+    auto spatialGrid = game.getSpatialGrid(); 
+    // Main collision detection loop
+    for (const auto& obj : dynamicObjects) {
+        if (!obj) continue;
+
+        Object* dynamicObj = obj.get(); // if shared_ptr, anders direct Object*
+
         // Get potential colliders for this object from the grid
-        auto potentialColliders = grid.getPotentialColliders(dynamicObj);
-        
+        auto potentialColliders = spatialGrid->getPotentialColliders(dynamicObj);
+
         // Check against each potential collider
         for (Object* otherObj : potentialColliders) {
             objChecks++;
-            
-            // Skip tile-vs-tile collisions (already filtered by dynamic objects list)
+
+            // Skip tile-vs-tile collisions
             if (dynamicObj->type == ObjectType::TILE && otherObj->type == ObjectType::TILE) {
                 continue;
             }
-            
+
             // Check and resolve collision
             if (checkAndResolveCollision(dynamicObj, otherObj, collisions, collisionChecks)) {
-                // Collision was detected and resolved
+                // Collision detected and resolved
             }
         }
     }
-    
+
+    //Optional: performance debug log
     // std::cout << "[CollisionManager] Collision checks performed: " << collisionChecks 
     //           << ", object checks: " << objChecks 
-    //           << ", size of object list: " << gameObjects.size() << std::endl;
+    //           << ", dynamic objects: " << dynamicObjects.size() << std::endl;
+
     return collisions;
 }
 
-std::vector<std::pair<Object*, Object*>> CollisionManager::detectPlayerCollisions(const std::vector<std::shared_ptr<Object>>& gameObjects, Player* player)
-{
-    if (!player) {
-        return {};
-    }
-    
-    std::vector<std::pair<Object*, Object*>> collisions;
-    int collisionChecks = 0;
-    int objChecks = 0;
-    
-    // Create spatial grid
-    SpatialGrid grid(200.0f);
-    
-    // Add all collidable objects to the grid
-    for (const auto& obj : gameObjects) {
-        if (!obj || !obj->isCollidable()) continue;
-        grid.addObject(obj.get());
-    }
-    
-    // Get potential colliders for the player
-    auto potentialColliders = grid.getPotentialColliders(player);
-    
-    // Check player against each potential collider
-    for (Object* otherObj : potentialColliders) {
-        objChecks++;
-        
-        // Skip self-collision
-        if (player->getObjID() == otherObj->getObjID()) {
-            continue;
-        }
-        
-        // Check and resolve collision
-        if (checkAndResolveCollision(player, otherObj, collisions, collisionChecks)) {
-            // Collision was detected and resolved
-        }
-    }
-    
-    // std::cout << "[CollisionManager] Player collision checks performed: " << collisionChecks 
-    //           << ", object checks: " << objChecks << std::endl;
-    return collisions;
-}
 
 void CollisionManager::resolveCollision(Object* objA, Object* objB, const CollisionInfo& info)
 {

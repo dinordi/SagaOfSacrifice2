@@ -41,6 +41,9 @@ Game::Game() : running(true), multiplayerActive(false), usingSinglePlayerServer(
     // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
+
+    // Initialize spatial grid with 128x128 cells and 10000x10000 world size
+    spatialGrid_ = std::make_unique<SpatialGrid>(128.0f);
 }
 
 Game::~Game() {
@@ -597,6 +600,14 @@ void Game::addObject(std::shared_ptr<Object> object) {
         if (it == objects.end()) {
             // Add new object if it doesn't exist
             objects.push_back(object);
+            
+            if (spatialGrid_) {
+                spatialGrid_->addObject(object.get()); // Object* → Object*
+            }
+            // Also add to dynamic objects if it's not a tile
+            if (object->type != ObjectType::TILE) {
+                dynamic_objects.push_back(object);
+            }
 
             if(player)
             {
