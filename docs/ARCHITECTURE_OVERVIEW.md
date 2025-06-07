@@ -1,7 +1,6 @@
 # Architecture Overview
 
 This document provides an overview of the architecture for the SagaOfSacrifice2 codebase, focusing on the game logic inside the `SOS/` folder. The diagrams and descriptions below are based on actual class structures and relationships observed in the repository.  
-*Note: Only a subset of the codebase is shown due to the result limits. For further exploration, [search the repository on GitHub](https://github.com/dinordi/SagaOfSacrifice2/search?q=path%3A%2FSOS%2F).*
 
 ---
 
