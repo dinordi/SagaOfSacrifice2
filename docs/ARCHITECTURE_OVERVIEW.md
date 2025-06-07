@@ -9,47 +9,21 @@ This document provides an overview of the architecture for the SagaOfSacrifice2 
 
 ```mermaid
 flowchart TD
-    subgraph User Input & Audio
-        PI[Player Input]
-        AM[Audio Manager]
-    end
+    AudioManager[AudioManager Singleton]
+    Game[Game Singleton]
+    CollisionManager[CollisionManager]
+    MultiplayerManager[MultiplayerManager]
+    Renderer[Renderer]
+    Objects[Objects Player, Enemy, Platform, etc.]
+    Server[Game Server]
 
-    subgraph Game Engine Core
-        G(Game)
-        LM(Level Manager)
-        CM(Collision Manager)
-        MM(Multiplayer Manager)
-    end
-
-    subgraph Objects
-        P[Player]
-        E[Enemy]
-        PL[Platform]
-        M(Minotaur)
-    end
-
-    subgraph Rendering
-        R[Renderer]
-    end
-
-    PI --> G
-    AM --> G
-    G --> LM
-    G --> MM
-    G --> CM
-    G --> R
-    LM -->|Manages| P
-    LM -->|Manages| E
-    LM -->|Manages| PL
-    LM -->|Manages| M
-    CM --> P
-    CM --> E
-    CM --> PL
-    R --> P
-    R --> E
-    R --> PL
-    R --> M
-    MM --> G
+    Game --> CollisionManager
+    Game --> MultiplayerManager
+    Game --> Objects
+    Renderer --> Game
+    CollisionManager --> Objects
+    MultiplayerManager --> Game
+    MultiplayerManager <---> Server
 ```
 
 ---
@@ -166,17 +140,19 @@ classDiagram
 sequenceDiagram
     participant User
     participant PlayerInput
-    participant Game
-    participant LevelManager
-    participant CollisionManager
     participant Renderer
+    participant Game
+    participant CollisionManager
+    participant MultiplayerManager
+    participant Server
 
     User->>PlayerInput: Provides input
     PlayerInput->>Game: Input is passed
-    Game->>LevelManager: Update current level
-    LevelManager->>Game: Updated objects and state
+    Game->>MultiplayerManager: Request latest objects
+    MultiplayerManager->>Server: (UDP) Receive object state updates
+    MultiplayerManager->>Game: Provide objects to update/render
     Game->>CollisionManager: Check for collisions
-    CollisionManager->>LevelManager: Report collisions
+    CollisionManager->>Game: Report collisions
     Game->>Renderer: Render all objects
 ```
 
@@ -193,7 +169,8 @@ sequenceDiagram
 
     Game->>Player: update(deltaTime)
     Player->>CollisionManager: Accept collision visitor
-    Player->>Renderer: Send animation + position for drawing
+    Renderer->>Game: Request list of objects to render
+    Game->>Renderer: Provide objects (including Player) for rendering
 ```
 
 ---
