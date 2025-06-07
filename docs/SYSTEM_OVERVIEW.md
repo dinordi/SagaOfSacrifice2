@@ -4,6 +4,7 @@
 flowchart TD
     SERVER -->|TCP/UDP| WRAPPER_CLIENT
     SERVER -->|TCP/UDP| ZYBO_CLIENT
+    SERVER -->|Game Locic API| GAME_CORE
     WRAPPER_CLIENT -->|Game Logic API| GAME_CORE
     ZYBO_CLIENT -->|Game Logic API| GAME_CORE
 
