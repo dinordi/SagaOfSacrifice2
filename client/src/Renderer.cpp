@@ -354,7 +354,7 @@ void Renderer::drawScreen()
     Game& game = Game::getInstance();
    
     renderObjects(game);
-    renderActors(game);
+    //renderActors(game);
 }
 
 void Renderer::renderObjects(Game& game)
