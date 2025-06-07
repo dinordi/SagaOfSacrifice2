@@ -28,7 +28,7 @@ public:
     void update(float deltaTime);
     
     // Set the local player
-    void setLocalPlayer(Player* player);
+    void setLocalPlayer(std::shared_ptr<Player> player);
     
     // Set the player input handler
     void setPlayerInput(PlayerInput* input);
@@ -97,7 +97,7 @@ private:
     std::unique_ptr<NetworkInterface> network_;
     
     // Local player reference (not owned)
-    Player* localPlayer_;
+    std::shared_ptr<Player> localPlayer_;
     
     // Player input reference (not owned)
     PlayerInput* playerInput_;

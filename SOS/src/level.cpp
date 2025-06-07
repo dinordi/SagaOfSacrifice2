@@ -293,6 +293,16 @@ std::shared_ptr<Minotaur> Level::spawnMinotaur(int x, int y) {
     return minotaur;
 }
 
+const std::shared_ptr<Object> Level::getObject(const uint16_t objId) const {
+    std::lock_guard<std::mutex> lock(gameStateMutex_);
+    for (const auto& object : levelObjects) {
+        if (object->getObjID() == objId) {
+            return object;
+        }
+    }
+    return nullptr; // Object not found
+}
+
 void Level::setAllEnemiesToTargetPlayer(std::shared_ptr<Player> player) {
     if (!player) {
         std::cerr << "[Level] Cannot set null player as target\n";

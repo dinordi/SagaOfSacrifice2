@@ -40,7 +40,7 @@ enum class MenuOption {
 
 class Game {
 public:
-    Game(PlayerInput* input);
+    Game();
     ~Game();
 
     void update(float deltaTime);
@@ -55,9 +55,12 @@ public:
     
     // Set multiplayer configuration (to be used when menu option is selected)
     void setMultiplayerConfig(bool enableMultiplayer, const std::string& serverAddress, int serverPort);
-    
+    void setPlayerInput(PlayerInput* input) { this->input = input; }
     // Initialize server configuration from file
     void initializeServerConfig(const std::string& basePath);
+
+    // Initialize SpriteSheets
+    void initializeSpriteSheets();
     
     void shutdownServerConnection();
     bool isServerConnection() const;
@@ -71,16 +74,19 @@ public:
     std::vector<Actor*>& getActors();
     void clearActors();
 
-    Player* getPlayer() const { return player; }
+    std::shared_ptr<Player> getPlayer() const { return player; }
 
     void movePlayerToEnd();
 
     // Method to add a game object dynamically
     void addObject(std::shared_ptr<Object> object);
     
+    // Mutex to protect access to game objects
+    std::mutex& getObjectsMutex() { return objectsMutex; }
+    std::mutex& getActorsMutex() { return actorsMutex; }
+
     // Static instance getter for singleton access
-    static Game* getInstance() { return instance_; }
-    static void setInstance(Game* instance) { instance_ = instance; }
+    static Game& getInstance() { static Game instance_; return instance_; }
 
     void updatePlayer(uint16_t playerId, const Vec2& position);
 
@@ -108,13 +114,15 @@ private:
     GameState state;
     bool running;
     bool isPaused = false;
+    
     std::vector<std::shared_ptr<Object>> objects;
+    std::mutex objectsMutex; // Mutex to protect access to objects vector
+    std::mutex actorsMutex; // Mutex to protect access to actors vector
+
     std::vector<Actor*> actors; //Non-interactive objects i.e. text, background, etc.
-    SpriteData* letters;
-    SpriteData* letters_small;
     PlayerInput* input;
     CollisionManager* collisionManager;
-    Player* player;
+    std::shared_ptr<Player> player; // Local player object
     
     // Local server management
     std::unique_ptr<LocalServerManager> localServerManager;
@@ -145,9 +153,8 @@ private:
     
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
-    static Game* instance_;
-
     std::unique_ptr<LevelManager> levelManager_;
+    
 };
 
 #endif // GAME_H

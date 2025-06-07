@@ -223,8 +223,8 @@ void EmbeddedServer::sendEnemyStateToClients(const uint16_t enemyId, bool isDead
     enemyMsg.type = MessageType::ENEMY_STATE_UPDATE;
 
 
-    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId >> 8)); // High byte
     enemyMsg.data.push_back(static_cast<uint8_t>(enemyId & 0xFF)); // Low byte
+    enemyMsg.data.push_back(static_cast<uint8_t>(enemyId >> 8)); // High byte
 
     // Insert isDead flag (1 byte)
     enemyMsg.data.push_back(static_cast<uint8_t>(isDead ? 1 : 0));
@@ -243,6 +243,10 @@ void EmbeddedServer::sendEnemyStateToClients(const uint16_t enemyId, bool isDead
         
         for (auto& [id, sock] : clientSockets_) {
             if (sock && sock->is_open()) {
+                std::cout << "[EmbeddedServer] Sending enemy state update to client " 
+                          << id << " - Enemy ID: " << enemyId 
+                          << ", isDead: " << isDead 
+                          << ", Health: " << health << std::endl;
                 sendToClient(sock, enemyMsg);
             }
         }
