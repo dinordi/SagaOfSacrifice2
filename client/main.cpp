@@ -175,10 +175,6 @@ int main(int argc, char *argv[]) {
     // Initialize server configuration
     game.initializeServerConfig(basePathSOS);
     
-
-    auto lastTime = get_ticks();
-    auto lastRenderTime = lastTime;
-    
     // In your game initialization code
     // std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
     // audioManager->initialize("/home/root/SagaOfSacrifice2/SOS/assets/");
@@ -203,38 +199,35 @@ int main(int argc, char *argv[]) {
     
     // Move initUIO() to after game initialization
     while (running && game.isRunning()) {
-        uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::steady_clock::now().time_since_epoch()).count();
-        uint64_t frame_time_us = current_time_us - last_time_us;
-        last_time_us = current_time_us;
-    
-        // Cap frame time to avoid spiral of death
-        if (frame_time_us > max_allowed_frame_time_us) {
-            frame_time_us = max_allowed_frame_time_us;
-        }
-    
-        accumulator_us += frame_time_us;
-    
-        // Fixed timestep update
-        while (accumulator_us >= fixed_timestep_us) {
-            float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
-            game.update(fixed_delta_seconds);
-            camera->update(game.getPlayer());
-            accumulator_us -= fixed_timestep_us;
-        }
-    
-        // Initialize UIO only after game is fully set up and running
-        static bool uio_initialized = false;
-        if (!uio_initialized && game.isRunning()) {
-            renderer->initUIO();
-            uio_initialized = true;
-        }
-    
-        // Optionally: render here if you want to decouple rendering from update
-    
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count();
+    uint64_t frame_time_us = current_time_us - last_time_us;
+    last_time_us = current_time_us;
+
+    // Cap frame time to avoid spiral of death
+    if (frame_time_us > max_allowed_frame_time_us) {
+        frame_time_us = max_allowed_frame_time_us;
     }
-    while(running){}
+
+    //Print once a second
+    static uint64_t last_print_time_us = 0;
+    if (current_time_us - last_print_time_us >= 1000000) { // 1 second
+        last_print_time_us = current_time_us;
+        std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
+    }
+
+    // Use actual frame time as deltaTime
+    float deltaTime = static_cast<float>(frame_time_us) / 1000000.0f;
+    game.update(deltaTime); // This varies based on actual frame time
+    camera->update(game.getPlayer());
+
+    // Initialize UIO only after game is fully set up and running
+    static bool uio_initialized = false;
+    if (!uio_initialized && game.isRunning()) {
+        renderer->initUIO();
+        uio_initialized = true;
+    }
+}
     // Clean up
     if (game.isServerConnection()) {
         game.shutdownServerConnection();
