@@ -153,6 +153,11 @@ void Game::update(float deltaTime) {
                 // Update all objects
                 for(auto& obj : objects) {
                     if (obj) {
+                        if(obj->type == ObjectType::TILE)
+                        {
+                            // Tiles do not need to be updated
+                            continue;
+                        }
                         if(obj->getObjID() == player->getObjID()) {
                             continue; // Skip updating the local player
                         }

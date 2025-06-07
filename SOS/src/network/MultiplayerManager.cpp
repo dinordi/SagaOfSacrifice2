@@ -104,28 +104,33 @@ void MultiplayerManager::update(float deltaTime) {
     // Process incoming messages
     network_->update();
     
+    
     static uint64_t lastUpdateTime = 0;
     lastUpdateTime += static_cast<uint64_t>(deltaTime*1000);  // Convert to milliseconds
-
     // Check for timed-out partial game state updates
     if (partialGameState_) {
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
             now - partialGameState_->lastUpdateTime).count();
-        
-        // If we haven't received an update for more than 2 seconds, abandon this partial state
-        if (elapsed > 2) {
-            std::cerr << "[Client] Abandoning stale partial game state update" << std::endl;
-            partialGameState_.reset();
-        }
+            
+            // If we haven't received an update for more than 2 seconds, abandon this partial state
+            if (elapsed > 2) {
+                std::cerr << "[Client] Abandoning stale partial game state update" << std::endl;
+                partialGameState_.reset();
+            }
     }
-    
+
     // Send player input periodically (primary control method now)
     if (playerInput_ && localPlayer_ && lastUpdateTime >= NetworkConfig::Client::UpdateInterval) {
-        sendPlayerInput();
+
+
+        // sendPlayerInput();
+        
         sendPlayerState();
         lastUpdateTime_ = deltaTime;
     }
+        
+    
 }
 
 void MultiplayerManager::setLocalPlayer(std::shared_ptr<Player> player) {
@@ -161,14 +166,16 @@ void MultiplayerManager::sendPlayerInput() {
     NetworkMessage inputMsg;
     inputMsg.type = MessageType::PLAYER_INPUT;
     inputMsg.senderId = playerId_;
+
+    
     inputMsg.data = serializePlayerInput(playerInput_);
+    
+    
+
     
     // Send to server
     network_->sendMessage(inputMsg);
     
-    // Update sequence number for client-side prediction
-    inputSequenceNumber_++;
-    lastSentInputTime_ = get_ticks() / 1000.0f;  // Convert to seconds
 }
 
 void MultiplayerManager::sendPlayerAction(int actionType) {
@@ -682,10 +689,6 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerInput(const PlayerInput*
     
     // Add the input bits to the data
     data.push_back(inputBits);
-    
-    // Add sequence number (useful for client-side prediction)
-    data.push_back(static_cast<uint8_t>((inputSequenceNumber_ >> 8) & 0xFF));
-    data.push_back(static_cast<uint8_t>(inputSequenceNumber_ & 0xFF));
     
     return data;
 }

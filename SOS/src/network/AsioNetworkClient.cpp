@@ -111,56 +111,46 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
         std::cerr << "[AsioNetworkClient] Cannot send message - not connected" << std::endl;
         return false;
     }
+    // auto timeBeforeUpdate = std::chrono::steady_clock::now();
+    // static int64_t lastupdateduration = 0;
     
     try {
-        // Create a binary message as shared_ptr to manage message lifetime
-        auto buffer_ptr = std::make_shared<std::vector<uint8_t>>();
-        auto& buffer = *buffer_ptr;
-        
-        // Add message type (1 byte)
-        buffer.push_back(static_cast<uint8_t>(message.type));
-        
-        // Use client_id_ instead of message.senderId if it's set
-        uint16_t senderId = client_id_ ? client_id_ : message.senderId;
-
-        // Add sender ID content
-        buffer.push_back(static_cast<uint8_t>((senderId >> 8) & 0xFF));
-        buffer.push_back(static_cast<uint8_t>(senderId & 0xFF));
-
-        // Add data length (4 bytes)
-        uint32_t dataSize = static_cast<uint32_t>(message.data.size());
-        buffer.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
-        buffer.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
-        buffer.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
-        buffer.push_back(static_cast<uint8_t>(dataSize & 0xFF));
-        
-        // Add message data
-        buffer.insert(buffer.end(), message.data.begin(), message.data.end());
-        
-        // Create the message header
-        MessageHeader header;
-        header.size = static_cast<uint32_t>(buffer.size());
-        
-        // Create the complete message (header + body)
+        // Create the complete message directly (no separate buffer_ptr)
         auto complete_message_ptr = std::make_shared<std::vector<uint8_t>>();
         auto& completeMessage = *complete_message_ptr;
-        completeMessage.resize(sizeof(header) + buffer.size());
         
-        // Copy the header
-        std::memcpy(completeMessage.data(), &header, sizeof(header));
+        // Add message type, sender ID, data length, and data directly
+        completeMessage.push_back(static_cast<uint8_t>(message.type));
         
-        // Copy the message body
-        std::memcpy(completeMessage.data() + sizeof(header), buffer.data(), buffer.size());
+        uint16_t senderId = client_id_ ? client_id_ : message.senderId;
+        completeMessage.push_back(static_cast<uint8_t>((senderId >> 8) & 0xFF));
+        completeMessage.push_back(static_cast<uint8_t>(senderId & 0xFF));
 
-        //Store the buffer in collection to keep alive
+        uint32_t dataSize = static_cast<uint32_t>(message.data.size());
+        completeMessage.push_back(static_cast<uint8_t>((dataSize >> 24) & 0xFF));
+        completeMessage.push_back(static_cast<uint8_t>((dataSize >> 16) & 0xFF));
+        completeMessage.push_back(static_cast<uint8_t>((dataSize >> 8) & 0xFF));
+        completeMessage.push_back(static_cast<uint8_t>(dataSize & 0xFF));
+        
+        completeMessage.insert(completeMessage.end(), message.data.begin(), message.data.end());
+        
+        // Create header and prepend it
+        MessageHeader header;
+        header.size = static_cast<uint32_t>(completeMessage.size());
+        
+        completeMessage.insert(completeMessage.begin(), 
+            reinterpret_cast<uint8_t*>(&header), 
+            reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+
+        // Store only the complete message
         {
             std::lock_guard<std::mutex> lock(outgoing_messages_mutex_);
-            outgoing_messages_.push_back(buffer_ptr);
+            outgoing_messages_.push_back(complete_message_ptr);
         }
         
         // Send the message asynchronously
         boost::asio::async_write(socket_,
-            boost::asio::buffer(completeMessage),
+            boost::asio::buffer(*complete_message_ptr),
             [this, complete_message_ptr](const boost::system::error_code& error, std::size_t bytes_transferred) {
                 // Clean up the buffer after operation completes
                 {
@@ -175,6 +165,18 @@ bool AsioNetworkClient::sendMessage(const NetworkMessage& message) {
                     connected_ = false;
                 }
             });
+        // {
+        //     auto timeAfterUpdate = std::chrono::steady_clock::now();
+        //     auto updateDuration = std::chrono::duration_cast<std::chrono::microseconds>(timeAfterUpdate - timeBeforeUpdate).count();
+        //     lastupdateduration = updateDuration;
+        //     // print once a second
+        //     static uint64_t last_print_time_us = 0;
+        //     uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        //     if (current_time_us - last_print_time_us >= 1000000) { // 1 second
+        //         last_print_time_us = current_time_us;
+        //         std::cout << "[Game] Update took: " << updateDuration << " us" << std::endl;
+        //     }
+        // }
         
         return true;
     } catch (const std::exception& e) {
