@@ -18,6 +18,5 @@ flowchart TD
 - **client/**: Zybo Z7 10 FPGA client, uses custom graphics accelerated by the FPGA.
 - **SOS/**: Shared core game logic, used by both types of clients.
 
-*Note: Mermaid diagrams require extremely simple node labels and no parentheses, slashes, or newlines for best compatibility on GitHub. Avoid special characters and keep node names short.*
 
 ---
