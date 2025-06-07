@@ -1,0 +1,63 @@
+sequenceDiagram
+    participant C as Client
+    participant MM as MultiplayerManager
+    participant AN as AsioNetworkClient
+    participant ES as EmbeddedServer
+    participant LM as LevelManager
+    participant CM as CollisionManager
+
+    Note over C,CM: Actual Multiplayer Implementation Flow
+
+    %% Connection Phase - Real Implementation
+    C->>MM: initialize(serverAddress, port, 65000)
+    MM->>AN: connect(serverAddress, port)
+    AN->>ES: TCP Connection
+    MM->>AN: sendMessage(CONNECT, senderId=65000)
+    ES->>ES: Assign real PlayerID (1001)
+    ES->>AN: NetworkMessage(PLAYER_ASSIGN, playerId=1001)
+    MM->>MM: Update playerId_ = 1001
+
+    %% Game State Initialization  
+    ES->>LM: getCurrentLevel()->getObjects()
+    LM->>ES: Return all level objects
+    ES->>ES: serializeObject for each object
+    ES->>AN: NetworkMessage(GAME_STATE, serialized objects)
+    MM->>MM: processGameState - deserialize objects
+    MM->>C: addObject for each deserialized object
+
+    Note over C,CM: Active Gameplay Loop - Real Flow
+
+    %% Input Processing - Actual Implementation
+    C->>C: input->readInput()
+    C->>MM: setPlayerInput(input)
+    MM->>MM: serializePlayerInput - create 8-bit input state
+    MM->>AN: sendMessage(PLAYER_INPUT, inputBits + sequence#)
+    
+    %% Server Processing - Real Implementation
+    ES->>ES: processPlayerInput - deserialize input bits
+    ES->>ES: Apply input to player object
+    ES->>CM: detectCollisions(levelObjects)
+    CM->>CM: SpatialGrid optimization + AABB detection
+    CM->>CM: resolveCollision using visitor pattern
+    
+    %% Game State Updates - Actual Implementation
+    ES->>ES: updateGameState - process all objects
+    ES->>ES: Check if objects changed vs deltaState
+    ES->>AN: sendGameStateToClients (GAME_STATE_DELTA if minimal changes)
+    
+    %% Client State Processing
+    MM->>MM: handleGameStateMessage
+    MM->>MM: processGameStateDelta OR processGameState
+    MM->>MM: deserializeObject for each changed object
+    MM->>C: updateObject for each changed object
+
+    %% Client Prediction and Reconciliation - Real Implementation
+    Note over C,MM: Client-side Prediction
+    C->>MM: predictLocalPlayerMovement (before server response)
+    MM->>CM: detectPlayerCollisions (local prediction)
+    MM->>MM: Apply predicted position changes
+    
+    Note over MM,ES: Server Reconciliation
+    ES->>AN: Send authoritative player position
+    MM->>MM: Reconcile predicted vs authoritative position
+    MM->>MM: Apply correction if prediction differs

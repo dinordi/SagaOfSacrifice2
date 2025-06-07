@@ -5,11 +5,11 @@
 #include "objects/tile.h"
 #include "playerInput.h"
 #include "animation.h"
-
+#include "AudioManager.h"
 class Player : public Entity {
 
 public:
-    Player(int x, int y, uint16_t objID);
+    Player(int x, int y, uint16_t objID, int layer = 8);
     void setInput(PlayerInput* input) { this->input = input; }
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;

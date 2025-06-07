@@ -86,6 +86,7 @@ public:
 
 private:
     void drawWord(const std::string& word, int x, int y, int letterSize = 0);
+    void sortObjects();                     // sort objects by layer
     void drawWordWithHighlight(const std::string& word, int x, int y, bool isSelected);
     void mapCharacters();
     void drawMenu(float deltaTime);
@@ -140,7 +141,7 @@ private:
     std::map<char, int> characterMap;
 
     // Default ports
-    static const int LOCAL_SERVER_PORT = 8081;
+    static const int LOCAL_SERVER_PORT = 8080;
     
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern

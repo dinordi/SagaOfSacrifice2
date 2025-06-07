@@ -8,8 +8,8 @@
 uint16_t Object::objectCount = 0; // Initialize static object count
 std::mutex Object::countmutex; // Define the static mutex
 
-Object::Object(BoxCollider collider, ObjectType type, uint16_t ID)
-    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID)
+Object::Object(BoxCollider collider, ObjectType type, uint16_t ID, int layer)
+    : collider(collider), type(type), dir(FacingDirection::EAST), ObjID(ID), Layer(layer)
 {
     // this->spriteData = new SpriteData();
     // this->spriteData->ID = ID;

@@ -7,7 +7,7 @@
 class Tile : public Object {
 public:
     Tile(int x, int y, uint16_t objID, std::string tileMap, int tileIndex,
-         int tileWidth, int tileHeight, int columns);
+         int tileWidth, int tileHeight, int layer = 0);
     // Tile(int ID, int x, int y);
     void update(float deltaTime) override;
     void accept(CollisionVisitor& visitor) override;

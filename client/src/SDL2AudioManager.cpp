@@ -45,7 +45,7 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "SDL (version 2) audio subsystem could not initialize! SDL Error: " << SDL_GetError() << std::endl;
         mInitialized = false;
-        return false;
+        return mInitialized;
     }
 
     // Initialize SDL_mixer for MP3 and OGG support
@@ -57,7 +57,7 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
             std::cerr << "SDL2_mixer basic support also failed! Mix_Error: " << Mix_GetError() << std::endl;
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
             mInitialized = false;
-            return false;
+            return mInitialized;
         }
         std::cerr << "SDL2_mixer initialized with partial format support." << std::endl;
     }
@@ -68,12 +68,12 @@ bool SDL2AudioManager::initialize(const std::string& basePath) {
         Mix_Quit();
         SDL_QuitSubSystem(SDL_INIT_AUDIO);
         mInitialized = false;
-        return false;
+        return mInitialized;
     }
 
     mInitialized = true;
     std::cout << "SDL2AudioManager initialized successfully." << std::endl;
-    return true;
+    return mInitialized;
 }
 
 bool SDL2AudioManager::loadSound(const std::string& filePath) {
@@ -95,6 +95,23 @@ bool SDL2AudioManager::loadSound(const std::string& filePath) {
     mSoundEffects[soundName] = sound;
     std::cout << "Loaded sound (SDL2): " << soundName << " from " << fullPath << std::endl;
     return true;
+}
+
+bool SDL2AudioManager::unloadSound(const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot unload sound." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        Mix_FreeChunk(it->second);
+        mSoundEffects.erase(it);
+        std::cout << "Unloaded sound (SDL2): " << soundName << std::endl;
+        return true;
+    } else {
+        std::cerr << "Sound not found (SDL2): " << soundName << std::endl;
+        return false;
+    }
 }
 
 bool SDL2AudioManager::playSound(const std::string& soundName) {

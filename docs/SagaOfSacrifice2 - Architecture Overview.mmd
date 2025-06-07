@@ -1,0 +1,42 @@
+# SagaOfSacrifice2 - Architecture Overview
+
+This document provides a high-level overview of the architecture for **SagaOfSacrifice2**. The system leverages the Zynq FPGA platform, combining software running on ARM cores with custom hardware accelerations and peripherals.
+
+```mermaid
+flowchart TD
+    subgraph FPGA [Zynq FPGA SoC]
+        CPU1[ARM Cortex-A9 Core 1<br/>(Game Logic)]
+        CPU2[ARM Cortex-A9 Core 2<br/>(Graphics/Sound/Multithreading)]
+        PL[Programmable Logic<br/>(Custom Hardware Accelerators)]
+    end
+
+    subgraph Peripherals
+        Video[Video Output<br/>(HDMI/VGA)]
+        Audio[Audio Output]
+        Input[User Input<br/>(Gamepad/Keyboard)]
+        Net[Multiplayer/Networking]
+        Storage[Storage<br/>(SD Card/Flash)]
+    end
+
+    CPU1 -- "Game State & Physics" --> CPU2
+    CPU2 -- "Render Commands" --> PL
+    PL -- "Accelerated Graphics" --> Video
+    CPU1 -- "Audio Events" --> Audio
+    Input -- "Player Actions" --> CPU1
+    Input -- "Player Actions" --> CPU2
+    Net -- "Sync Multiplayer" --> CPU1
+    Storage -- "Assets/Save Data" --> CPU1
+    Storage -- "Assets" --> CPU2
+
+    CPU2 -- "Sound Commands" --> Audio
+    PL -- "Hardware Events" --> CPU1
+```
+
+**Key Components:**
+- **ARM Cortex-A9 Cores:** Run game logic, handle input, and manage complex tasks like AI and physics.
+- **Programmable Logic (PL):** Accelerates graphics rendering, potentially handles sprite blitting, collision detection, and other parallelizable tasks.
+- **Peripherals:** Video and audio output, user input, networking for multiplayer features, and storage for assets and save data.
+
+---
+
+*This overview diagram is meant as a starting point. For more detailed subsystem diagrams (e.g., graphics pipeline, audio system, or networking), further breakdowns can be added to this document.*

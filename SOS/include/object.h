@@ -61,7 +61,7 @@ public:
     static std::mutex countmutex; // Mutex to protect access to objectCount
 public:
     const ObjectType type;
-    Object(BoxCollider collider, ObjectType type, uint16_t ID);
+    Object(BoxCollider collider, ObjectType type, uint16_t ID, int layer);
     virtual ~Object() = default;
 
     virtual void update(float deltaTime) = 0;
@@ -87,6 +87,7 @@ public:
     Vec2 getposition() const { return collider.position; }
     void setposition(const Vec2& pos) { collider.position = pos; }
 
+
 protected:
     AnimationController animController;
     FacingDirection dir;
@@ -96,18 +97,21 @@ private:
     DEFINE_GETTER_SETTER(BoxCollider, collider);
     DEFINE_GETTER_SETTER(Vec2, velocity);
     DEFINE_CONST_GETTER_SETTER(uint16_t, ObjID); // ID of the object, for multiplayer to indicate between players and objects
+    DEFINE_CONST_GETTER_SETTER(int, Layer); // ID of the object, for multiplayer to indicate between players and objects
+private:
+    int layer;
 };
 
 class Actor {
 public:
     Actor(Vec2 pos, std::string tpsheet, uint16_t defaultIndex, ActorType type = ActorType::TEXT);
     const SpriteData* getCurrentSpriteData() const;
+    
 private:
     DEFINE_GETTER_SETTER(Vec2, position);
     DEFINE_GETTER_SETTER(uint16_t, defaultIndex);
     DEFINE_CONST_GETTER_SETTER(ActorType, type);
     DEFINE_GETTER_SETTER(std::string, tpsheet);
     DEFINE_GETTER_SETTER(uint16_t, ObjID);
-
     static uint16_t actorCount; // Static counter to assign unique IDs to actors
 };

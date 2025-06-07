@@ -874,8 +874,16 @@ size_t EmbeddedServer::calculateMessageSize(const std::vector<std::shared_ptr<Ob
                 break;
             case ObjectType::TILE: {
                 std::shared_ptr<Tile> tile = std::static_pointer_cast<Tile>(obj);
-                objSize += 5; // Tile index (1) + flags (4) + tilemapname length + tilemapname
+                objSize += 5; // Tile index (1) + flags (4)
                 objSize += 1 + tile->gettileMapName().size();
+                objSize += 1; //LayerID
+                if(objSize > 56)
+                {
+                    std::cout << "[EmbeddedServer] Tile size: " << objSize << std::endl;
+                    std::cout << "[EmbeddedServer] Tile name: " << tile->gettileMapName() << std::endl;
+                    std::cout << "object ID: " << obj->getObjID() << std::endl;
+                }
+                
                 break;
             }
             default:
@@ -1169,7 +1177,8 @@ void EmbeddedServer::serializeObject(const std::shared_ptr<Object>& object, std:
             // Tilemap name content
             data.insert(data.end(), tileMapName.begin(), tileMapName.end());
             size_t sizeAfterTile = data.size();
-            // std::cout << "[EmbeddedServer] Tile serialized, size: " << sizeAfterTile - initialSize << " bytes" << std::endl;
+            // Layer
+            data.push_back(static_cast<uint8_t>(plat->getLayer()));
             break;
         }
         case ObjectType::MINOTAUR: {
