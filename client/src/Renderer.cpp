@@ -12,9 +12,13 @@
 
 #include "sprite_data.h"
 
-Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam)
-    : uio_fd(-1), camera_(cam)
+Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devMode)
+    : uio_fd(-1), camera_(cam), devMode_(devMode)
 {
+    if(devMode_) {
+        std::cout << "Development mode enabled. Running headless." << std::endl;
+        return; // In dev mode, we don't initialize UIO or load sprites
+    }
     init_frame_infos();
     loadAllSprites(basePath);
     init_lookup_tables();
@@ -91,6 +95,11 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
 }
 
 void Renderer::initUIO() {
+    if(devMode_)
+    {
+        irq_thread = std::thread(&Renderer::fakeIRQHandlerThread, this);
+        return;
+    }
     uio_fd = open("/dev/uio0", O_RDWR);
     if (uio_fd < 0) {
         perror("Failed to open UIO device");
@@ -195,6 +204,23 @@ void Renderer::irqHandlerThread()
     }
     
     std::cout << "IRQ thread exiting" << std::endl;
+}
+
+void Renderer::fakeIRQHandlerThread()
+{
+    stop_thread = 0;
+    while (!stop_thread) {
+        // Simulate an interrupt every 100 milliseconds
+        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        std::cout << "Fake IRQ triggered" << std::endl;
+        // Only proceed if game instance is available and running
+        Game& game = Game::getInstance();
+        if (game.isRunning()) {
+            drawScreen();
+        }
+    }
+    
+    std::cout << "Fake IRQ thread exiting" << std::endl;
 }
 
 void Renderer::init_lookup_tables() 

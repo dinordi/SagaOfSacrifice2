@@ -149,15 +149,14 @@ int main(int argc, char *argv[]) {
     }
 
     
-    if(!devMode)
-    {
-        camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution
-        renderer = new Renderer(std::filesystem::path(path_sprites), camera);
-        if(debugMode) {
-            std::cout << "Debug mode: Loaded image." << std::endl;
-            return 0;
-        }
+    
+    camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution
+    renderer = new Renderer(std::filesystem::path(path_sprites), camera);
+    if(debugMode) {
+        std::cout << "Debug mode: Loaded image." << std::endl;
+        return 0;
     }
+    
     //wait 5 seconds
     std::cout << "Waiting for 2 seconds before starting the game..." << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -214,14 +213,13 @@ int main(int argc, char *argv[]) {
         while (accumulator_us >= fixed_timestep_us) {
             float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
             game.update(fixed_delta_seconds);
-            if(!devMode)
-                camera->update(game.getPlayer());
+            camera->update(game.getPlayer());
             accumulator_us -= fixed_timestep_us;
         }
     
         // Initialize UIO only after game is fully set up and running
         static bool uio_initialized = false;
-        if (!devMode && !uio_initialized && game.isRunning()) {
+        if (!uio_initialized && game.isRunning()) {
             renderer->initUIO();
             uio_initialized = true;
         }
