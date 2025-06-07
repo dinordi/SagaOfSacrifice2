@@ -193,48 +193,48 @@ void Game::update(float deltaTime) {
             // If nothing pressed for a while, reset menu option
             static float menuIdleTime = 0.0f;
             menuIdleTime += deltaTime;
-            if (menuIdleTime > 5.0f) { // Reset after 5 seconds of inactivity
-                // {
-                //     // Initialize single player mode with embedded server
-                //     if (!initializeSinglePlayerEmbeddedServer()) {
-                //         std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
-                //         // Could show error message in menu or fallback
-                //         break;
-                //     } else {
-                //         std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
-                //     }
-                //     // Start single player game
-                //     state = GameState::RUNNING;
-                //     clearActors(); // Clear the menu
-                // }
+            if (menuIdleTime > 5.0f)  // Reset after 5 seconds of inactivity
                 {
-                    const ServerInfo* selectedServer = serverConfig.getServer(2);
-                    if (selectedServer) {
-                        std::cout << "[Game] Connecting to server: " << selectedServer->name 
-                                << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
-                        uint16_t playID;
-                        if (player) {
-                            playID = player->getObjID(); // Use existing player ID
-                        } else {
-                            // Generate a new random player ID if not already set
-                            playID = 65000;
-                        }
-                        if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
-                            std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
-                            // Could show error message and stay in server selection
-                            // For now, go back to main menu
-                            state = GameState::MENU;
-                            menuOptionChanged = true;
-                        } else {
-                            std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
-                            // Start multiplayer game
-                            state = GameState::RUNNING;
-                            clearActors(); // Clear the menu
-                        }
+                    // Initialize single player mode with embedded server
+                    if (!initializeSinglePlayerEmbeddedServer()) {
+                        std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+                        // Could show error message in menu or fallback
+                        break;
+                    } else {
+                        std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
                     }
-                    // inputDetected = true;
+                    // Start single player game
+                    state = GameState::RUNNING;
+                    clearActors(); // Clear the menu
                 }
-            }
+                // {
+                //     const ServerInfo* selectedServer = serverConfig.getServer(2);
+                //     if (selectedServer) {
+                //         std::cout << "[Game] Connecting to server: " << selectedServer->name 
+                //                 << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
+                //         uint16_t playID;
+                //         if (player) {
+                //             playID = player->getObjID(); // Use existing player ID
+                //         } else {
+                //             // Generate a new random player ID if not already set
+                //             playID = 65000;
+                //         }
+                //         if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
+                //             std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
+                //             // Could show error message and stay in server selection
+                //             // For now, go back to main menu
+                //             state = GameState::MENU;
+                //             menuOptionChanged = true;
+                //         } else {
+                //             std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
+                //             // Start multiplayer game
+                //             state = GameState::RUNNING;
+                //             clearActors(); // Clear the menu
+                //         }
+                //     }
+                    // inputDetected = true;
+               // }
+           // }
             // Handle menu state
             drawMenu(deltaTime);
             handleMenuInput(deltaTime);
@@ -952,6 +952,6 @@ void Game::updatePlayer(uint16_t playerId, const Vec2& position) {
         player->setInput(input); // Set input handler for the player
         multiplayerManager->setLocalPlayer(player); // Set the local player in the multiplayer manager
         multiplayerManager->setPlayerInput(input); // Set input for multiplayer manager
-        objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
+        addObject(std::shared_ptr<Player>(player)); // Add player to objects
     }
 }
