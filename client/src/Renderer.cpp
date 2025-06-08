@@ -294,26 +294,77 @@ void Renderer::init_frame_infos() {
     close(fd);
 }
 
+// Hulpfunctie om een sprite naar een pipeline te schrijven (max 15 per Y)
+bool Renderer::try_write_sprite_to_pipeline(int pipeline, int y, int x, int sprite_id,
+                                  int& pipeline_index,
+                                  int sprites_per_y_in_pipeline[NUM_PIPELINES][MAX_Y_RESOLUTION],
+                                  volatile uint64_t* frame_infos[], // hier volatile toegevoegd
+                                  int sprites_in_pipeline[NUM_PIPELINES])
+{
+    if (sprites_per_y_in_pipeline[pipeline][y] < 15)
+    {
+        pipeline_index = sprites_in_pipeline[pipeline];
+
+        write_sprite_to_frame_info(frame_infos[pipeline], pipeline_index, x, y, sprite_id);
+
+        sprites_in_pipeline[pipeline]++;
+        sprites_per_y_in_pipeline[pipeline][y]++;
+        return true;
+    }
+
+    return false;
+}
+
 void Renderer::distribute_sprites_over_pipelines() {
 
-    // Arrays to track how many sprites are in each pipeline
     int sprites_in_pipeline[NUM_PIPELINES] = {0};
-    
+    int sprites_per_y_in_pipeline[NUM_PIPELINES][MAX_Y_RESOLUTION] = {0};
+
+    // Pipelines proberen in volgorde 3 → 2 → 1 → 0
+    std::vector<int> pipeline_order = {3, 2, 1, 0};
+
     int index = 0;
-    for(auto frame : frame_info_data)
+    for (auto frame : frame_info_data)
     {
-        if (frame_info_data.size() > MAX_FRAME_INFO_SIZE) {
-            std::cerr << "Frame info data size exceeded maximum limit!" << std::endl;
-            return; // Or handle the error as needed
+        if (index < 20)
+        {
+            index++;
+            continue;
         }
-        
-        // Distribute sprites across pipelines using round-robin
-        int pipeline = index % NUM_PIPELINES;
-        int pipeline_index = sprites_in_pipeline[pipeline];
-        
-        // Write the sprite to the determined pipeline
-        write_sprite_to_frame_info(frame_infos[pipeline], pipeline_index, frame.x, frame.y, frame.sprite_id);
-        sprites_in_pipeline[pipeline]++;
+
+        int y = frame.y;
+        int pipeline_index = 0; // dummy voor de hulpfunctie
+
+        if (frame.is_tile == 0)
+        {
+            // Actor sprite → altijd pipeline 0
+            bool written = try_write_sprite_to_pipeline(0, y, frame.x, frame.sprite_id,
+                                                        pipeline_index, sprites_per_y_in_pipeline,
+                                                        frame_infos, sprites_in_pipeline);
+
+            if (!written)
+            {
+                std::cerr << "Warning: actor sprite at Y=" << y << " skipped, pipeline 0 full.\n";
+            }
+        }
+        else
+        {
+            // Tile sprite → pipelines 3 → 2 → 1 → 0
+            bool written = false;
+            for (int pipeline : pipeline_order)
+            {
+                written = try_write_sprite_to_pipeline(pipeline, y, frame.x, frame.sprite_id,
+                                                       pipeline_index, sprites_per_y_in_pipeline,
+                                                       frame_infos, sprites_in_pipeline);
+                if (written) break;
+            }
+
+            if (!written)
+            {
+                std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full.\n";
+            }
+        }
+
         index++;
     }
 
@@ -321,30 +372,6 @@ void Renderer::distribute_sprites_over_pipelines() {
     for (int i = 0; i < NUM_PIPELINES; i++) {
         frame_infos[i][sprites_in_pipeline[i]] = 0xFFFFFFFFFFFFFFFF;
     }
-
-    // const uint16_t X_START = 130;
-    // const uint16_t Y_START = 50;
-
-    // // Place just one sprite in the first pipeline at X_START, Y_START
-    // int pipeline = 0; // Use the first pipeline
-    // static int sprite_id = 0; // Use sprite ID 1
-
-    // static int counter = 0;
-    // counter++;
-    // if (counter == 5)
-    // {
-    //     sprite_id++;
-    //     counter = 0;
-    // }
-    // if (sprite_id > 800) {
-    //     sprite_id = 0; // Reset to a lower sprite ID
-    // }
-    
-    // // Write the single sprite to the frame info
-    // write_sprite_to_frame_info(frame_infos[pipeline], 0, X_START, Y_START, sprite_id);
-    
-    // // Add end marker after the sprite
-    // frame_infos[pipeline][1] = 0xFFFFFFFFFFFFFFFF;
 }
 
 void Renderer::drawScreen()
@@ -354,7 +381,7 @@ void Renderer::drawScreen()
     Game& game = Game::getInstance();
    
     renderObjects(game);
-    renderActors(game);
+    //renderActors(game);
 }
 
 void Renderer::renderObjects(Game& game)
@@ -402,7 +429,7 @@ void Renderer::renderObjects(Game& game)
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
         if(entity->type == ObjectType::TILE ){
-            if(entity->getLayer() > 3) {
+            if(entity->getLayer() > 4) {
                 continue; // Skip rendering if no animation state is set
             }
         }

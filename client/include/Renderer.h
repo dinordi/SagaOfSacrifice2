@@ -22,7 +22,7 @@ constexpr uint16_t SPRITE_HEIGHT = 400;
 constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jouw situatie
 
 constexpr size_t MAX_FRAME_INFO_SIZE = 4096;
-
+#define MAX_Y_RESOLUTION 1080
 struct FrameInfo {
     int16_t x;
     int16_t y;
@@ -47,6 +47,11 @@ public:
     void init_lookup_tables();
     void init_frame_infos();
     void distribute_sprites_over_pipelines();
+    bool try_write_sprite_to_pipeline(int pipeline, int y, int x, int sprite_id,
+                                  int& pipeline_index,
+                                  int sprites_per_y_in_pipeline[NUM_PIPELINES][MAX_Y_RESOLUTION],
+                                  volatile uint64_t* frame_infos[], 
+                                  int sprites_in_pipeline[NUM_PIPELINES]);
     void irqHandlerThread();
     void fakeIRQHandlerThread();
 
