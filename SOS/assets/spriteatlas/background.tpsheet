@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "testimg402",
+			"image": "background",
 			"size": {
 				"w": 1920,
 				"h": 1080
