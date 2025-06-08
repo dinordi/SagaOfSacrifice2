@@ -39,6 +39,7 @@ public:
     
     private:
     void drawScreen();
+    void test_fill_frame_infos();
     void renderObjects(Game& game);
     void renderActors(Game& game);
     void handleIRQ();

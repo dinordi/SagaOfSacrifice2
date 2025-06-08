@@ -315,18 +315,48 @@ bool Renderer::try_write_sprite_to_pipeline(int pipeline, int y, int x, int spri
     return false;
 }
 
+#include <unordered_map>
+
+void Renderer::test_fill_frame_infos()
+{
+    int y_line = 10; // kies een y-waarde
+    int pipeline = 0; // vul pipeline 0
+    int index = 0;
+
+    // eerst 5 blokjes ID 261, x 0 t/m 4 * 64, y=y_line
+    for (int i = 0; i < 5; i++)
+    {
+        bool written = write_sprite_to_frame_info(frame_infos[pipeline], index, i * 64, y_line, 261);
+        if (written)
+            index++;
+        else
+            std::cerr << "Failed to write sprite ID 261 at x=" << i * 64 << ", y=" << y_line << "\n";
+    }
+
+    // dan blokje ID 248 op het 3e blokje (index 2 * 64), zelfde y
+    bool written = write_sprite_to_frame_info(frame_infos[pipeline], index, 2 * 64, y_line, 248);
+    if (written)
+        index++;
+    else
+        std::cerr << "Failed to write sprite ID 248 at x=" << 2 * 64 << ", y=" << y_line << "\n";
+
+
+    // zet end marker
+    frame_infos[pipeline][index] = 0xFFFFFFFFFFFFFFFF;
+}
+
 void Renderer::distribute_sprites_over_pipelines() {
 
     int sprites_in_pipeline[NUM_PIPELINES] = {0};
-    int sprites_per_y_in_pipeline[NUM_PIPELINES][MAX_Y_RESOLUTION] = {0};
+    std::unordered_map<int, int> sprites_per_y_in_pipeline[NUM_PIPELINES];
 
     // Pipelines proberen in volgorde 3 → 2 → 1 → 0
-    std::vector<int> pipeline_order = {3, 2, 1, 0};
+    std::vector<int> pipeline_order = {0, 1, 2, 3};
 
     int index = 0;
     for (auto frame : frame_info_data)
     {
-        if (index < 20)
+        if (index < 10)
         {
             index++;
             continue;
@@ -335,18 +365,18 @@ void Renderer::distribute_sprites_over_pipelines() {
         int y = frame.y;
         int x = frame.x;
         int sprite_id = frame.sprite_id;
-
+        //std ::cout << "Distributing sprite ID " << sprite_id << " at (" << x << ", " << y << ") to pipelines.\n";
         if (frame.is_tile == 0)
         {
             // Actor sprite → pipeline 0
-            if (sprites_per_y_in_pipeline[0][y] < 15)
+            if (sprites_per_y_in_pipeline[3][y] < 15)
             {
-                bool written = write_sprite_to_frame_info(frame_infos[0], sprites_in_pipeline[0], x, y, sprite_id);
+                bool written = write_sprite_to_frame_info(frame_infos[3], sprites_in_pipeline[3], x, y, sprite_id);
 
                 if (written)
                 {
-                    sprites_in_pipeline[0]++;
-                    sprites_per_y_in_pipeline[0][y]++;
+                    sprites_in_pipeline[3]++;
+                    sprites_per_y_in_pipeline[3][y]++;
                 }
                 else
                 {
@@ -398,7 +428,15 @@ void Renderer::drawScreen()
 
     Game& game = Game::getInstance();
    
-    renderObjects(game);
+    int background_index = lookup_table_map["background"]; 
+    frame_info_data.push_back({
+        .x = static_cast<int16_t>(0),
+        .y = static_cast<int16_t>(0),
+        .sprite_id = static_cast<uint32_t>(background_index),
+        .is_tile = 0
+    });
+    
+    //renderObjects(game);
     //renderActors(game);
 }
 
@@ -419,7 +457,7 @@ void Renderer::renderObjects(Game& game)
     float maxX = cameraX + viewportWidth + padding;
     float minY = cameraY - padding;
     float maxY = cameraY + viewportHeight + padding;
-    
+
     // Ask spatial grid which objects are relevant
     std::vector<Object*> visibleObjects;
     if (game.getSpatialGrid()) {
@@ -452,7 +490,7 @@ void Renderer::renderObjects(Game& game)
             }
         }
 
-        if (!spriteData) continue; // Basic safety check
+        if (!spriteData ) continue; // Basic safety check
         
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
@@ -500,8 +538,8 @@ void Renderer::renderObjects(Game& game)
         float avgRendered = objectsRendered / 300.0f;
         float cullRatio = avgChecked > 0 ? (avgChecked - avgRendered) / avgChecked * 100.0f : 0.0f;
         
-        std::cout << "[FPGA Renderer] Performance - Avg objects checked: " << avgChecked 
-                  << ", rendered: " << avgRendered << ", culled: " << cullRatio << "%" << std::endl;
+        //std::cout << "[FPGA Renderer] Performance - Avg objects checked: " << avgChecked 
+                  //<< ", rendered: " << avgRendered << ", culled: " << cullRatio << "%" << std::endl;
         
         totalObjectsChecked = 0;
         objectsRendered = 0;

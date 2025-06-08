@@ -220,8 +220,8 @@ int main(int argc, char *argv[]) {
     
     if (current_time_us - last_print_time_us >= 1000000) { // 1 second
         last_print_time_us = current_time_us;
-        std::cout << "Update took: " << updateDuration << " us" << std::endl;
-        std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
+        //std::cout << "Update took: " << updateDuration << " us" << std::endl;
+        //std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
     }
     // Initialize UIO only after game is fully set up and running
     static bool uio_initialized = false;
