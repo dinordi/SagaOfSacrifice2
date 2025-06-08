@@ -1,0 +1,33 @@
+{
+	"textures": [
+		{
+			"image": "testimg402",
+			"size": {
+				"w": 1920,
+				"h": 1080
+			},
+			"sprites": [
+				{
+					"filename": "background.png",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 1920,
+						"h": 1080
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:85aaa7e3214bcaf0505b0df4a63062f0:c7fdbe346d1c40cfb3d493c21543bf07:87ed57aa8ddd8dc66370d211517d3ec5$"
+	}
+}
