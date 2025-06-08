@@ -338,9 +338,7 @@ void Renderer::distribute_sprites_over_pipelines() {
         if (frame.is_tile == 0)
         {
             // Actor sprite → altijd pipeline 0
-            bool written = try_write_sprite_to_pipeline(0, y, frame.x, frame.sprite_id,
-                                                        pipeline_index, sprites_per_y_in_pipeline,
-                                                        frame_infos, sprites_in_pipeline);
+            write_sprite_to_frame_info(frame_infos[pipeline], pipeline_index, x, y, sprite_id);
 
             if (!written)
             {
@@ -672,7 +670,7 @@ void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int ind
 }
 
 // ─────────────────────────────────────────────
-void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id) {
+bool Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id) {
     if (frame_info_arr == nullptr) {
         printf("Error: frame_info_arr pointer is NULL\n");
         return; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
@@ -681,29 +679,30 @@ void Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int
     // Bounds checking
     if (index < 0 || index > 1023) {
         printf("Error: index %d out of bounds (0-1023)\n", index);
-        return;
+        return false;
     }
     
     
     if (x < -2047 || x > 2047) {
         printf("Error: x %d out of bounds (-2047 to 2047)\n", x);
-        return;
+        return false;
     }
     
     if (y < -1080 || y > 1080) {
         printf("Error: y %d out of bounds (-1080 to 1080)\n", y);
-        return;
+        return  false;
     }
     
     if (sprite_id > 1023) {
         printf("Error: sprite_id %u out of bounds (0-1023)\n", sprite_id);
-        return;
+        return false;
     }
 
     uint64_t masked_y = ((uint64_t)y) & 0xFFF;
     uint64_t base_value = ((uint64_t)x << 23) | (masked_y << 11) | sprite_id;
     frame_info_arr[index] = base_value;
-
+    
+    return true;
     //printf("Frame info [%d]: X=%u, Y=%u, ID=%u\n", index, x, y, sprite_id);
     //printf("  Value (hex): 0x%016llX\n", base_value);
 }
