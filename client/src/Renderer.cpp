@@ -333,16 +333,29 @@ void Renderer::distribute_sprites_over_pipelines() {
         }
 
         int y = frame.y;
-        int pipeline_index = 0; // dummy voor de hulpfunctie
+        int x = frame.x;
+        int sprite_id = frame.sprite_id;
 
         if (frame.is_tile == 0)
         {
-            // Actor sprite → altijd pipeline 0
-            write_sprite_to_frame_info(frame_infos[pipeline], pipeline_index, x, y, sprite_id);
-
-            if (!written)
+            // Actor sprite → pipeline 0
+            if (sprites_per_y_in_pipeline[0][y] < 15)
             {
-                std::cerr << "Warning: actor sprite at Y=" << y << " skipped, pipeline 0 full.\n";
+                bool written = write_sprite_to_frame_info(frame_infos[0], sprites_in_pipeline[0], x, y, sprite_id);
+
+                if (written)
+                {
+                    sprites_in_pipeline[0]++;
+                    sprites_per_y_in_pipeline[0][y]++;
+                }
+                else
+                {
+                    std::cerr << "Warning: actor sprite at Y=" << y << " skipped, pipeline 0 full.\n";
+                }
+            }
+            else
+            {
+                std::cerr << "Warning: actor sprite at Y=" << y << " skipped, Y limit reached.\n";
             }
         }
         else
@@ -351,15 +364,22 @@ void Renderer::distribute_sprites_over_pipelines() {
             bool written = false;
             for (int pipeline : pipeline_order)
             {
-                written = try_write_sprite_to_pipeline(pipeline, y, frame.x, frame.sprite_id,
-                                                       pipeline_index, sprites_per_y_in_pipeline,
-                                                       frame_infos, sprites_in_pipeline);
-                if (written) break;
+                if (sprites_per_y_in_pipeline[pipeline][y] < 15)
+                {
+                    written = write_sprite_to_frame_info(frame_infos[pipeline], sprites_in_pipeline[pipeline], x, y, sprite_id);
+
+                    if (written)
+                    {
+                        sprites_in_pipeline[pipeline]++;
+                        sprites_per_y_in_pipeline[pipeline][y]++;
+                        break;
+                    }
+                }
             }
 
             if (!written)
             {
-                std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full.\n";
+                std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full or Y limit reached.\n";
             }
         }
 
@@ -673,7 +693,7 @@ void Renderer::write_lookup_table_entry(volatile uint64_t *lookup_table, int ind
 bool Renderer::write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id) {
     if (frame_info_arr == nullptr) {
         printf("Error: frame_info_arr pointer is NULL\n");
-        return; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
+        return false; // Of: throw std::runtime_error("frame_info_arr pointer is NULL");
     }
 
     // Bounds checking
