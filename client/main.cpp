@@ -63,6 +63,8 @@ int main(int argc, char *argv[]) {
     std::string serverAddress = "localhost";
     int serverPort = 8080;
     std::string playerId = generateRandomPlayerId();
+    Renderer *renderer;
+    Camera* camera;
     
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
@@ -128,16 +130,21 @@ int main(int argc, char *argv[]) {
     std::string path = std::filesystem::current_path().string();
     // Assuming executable is in /SagaOfSacrifice2/SOS/client/build
     // Want to go to /SagaOfSacrifice2/SOS
-    path = path.substr(0, path.find("/client/build"));
-    path = path + "/SOS";
+    std::string basePathStr = path;
+    std::size_t pos = basePathStr.find("SagaOfSacrifice2/");
+    if (pos != std::string::npos) {
+        basePathStr = basePathStr.substr(0, pos + std::string("SagaOfSacrifice2/").length());
+    }
+    auto basePathSOS = std::filesystem::path(basePathStr);
 
-    std::string path_sprites = path + "/assets/sprites/";
+    path = basePathSOS.string() + "/SOS";
+
+    std::string path_sprites = path + "/assets/spriteatlas/";
     imageName = imageName + ".png";
 
     AudioManager& audio = SDL2AudioManager::Instance();
-    std::string basePathSOS = "/home/root/SagaOfSacrifice2";
+
     if(audio.initialize(basePathSOS) == false) {
-    std::string basePathSOS = "/home/root/SagaOfSacrifice2/SOS/assets/";
         std::cout << "AudioManager initialized successfully." << std::endl;
         audio.loadMusic("music/menu/menu.wav");
         audio.loadSound("sfx/001.wav");
@@ -145,47 +152,28 @@ int main(int argc, char *argv[]) {
         audio.playMusic();
         audio.playSound("001");
         audio.playSound("jump");
-    if(!audio.initialize(basePathSOS)) {
-        std::cerr << "Failed to initialize AudioManager." << std::endl;
     }
 
     
-    if(!devMode)
-    {
-        Renderer renderer(path_sprites + imageName);
-        if(debugMode) {
-            std::cout << "Debug mode: Loaded image." << std::endl;
-            return 0;
-        }
+    
+    camera = new Camera(1920, 1080); // Assuming 1920x1080 resolution
+    renderer = new Renderer(std::filesystem::path(path_sprites), camera, devMode);
+    if(debugMode) {
+        std::cout << "Debug mode: Loaded image." << std::endl;
+        return 0;
     }
+    
+    //wait 5 seconds
+    std::cout << "Waiting for 2 seconds before starting the game..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
     PlayerInput* controller = new SDL2Input();
-    Game game(controller, playerId);
+    Game& game = Game::getInstance();
+    game.setPlayerInput(controller);
     std::cout << "Starting game Saga Of Sacrifice 2..." << std::endl;
-    
-    // Initialize network features based on mode
-    if (enableRemoteMultiplayer) {
-        // Connect to remote server for multiplayer
-        if (!game.initializeServerConnection(serverAddress, serverPort, playerId)) {
-            std::cerr << "Failed to initialize multiplayer. Continuing in single player mode." << std::endl;
-        } else {
-            std::cout << "Multiplayer initialized successfully!" << std::endl;
-        }
-    } else if (!localOnlyMode) {
-        if (useEmbeddedServer) {
-            // Initialize single player with embedded server (new recommended approach)
-            if (!game.initializeSinglePlayerEmbeddedServer()) {
-                std::cerr << "Failed to initialize embedded server. Falling back to local-only mode." << std::endl;
-            } else {
-                std::cout << "Single player with embedded server initialized successfully!" << std::endl;
-            }
-        }
-    } else {
-        // Local-only mode (no server) for development/debugging
-        std::cout << "Running in local-only mode without server." << std::endl;
-    }
 
-    auto lastTime = get_ticks();
-    auto lastRenderTime = lastTime;
+    // Initialize server configuration
+    game.initializeServerConfig(basePathSOS);
     
     // In your game initialization code
     // std::unique_ptr<AudioManager> audioManager = std::make_unique<SDL2AudioManager>();
@@ -208,35 +196,42 @@ int main(int argc, char *argv[]) {
     uint64_t accumulator_us = 0;
     
     std::cout << "Entering gameloop..." << std::endl;
+    
+    // Move initUIO() to after game initialization
     while (running && game.isRunning()) {
-        uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::steady_clock::now().time_since_epoch()).count();
-        uint64_t frame_time_us = current_time_us - last_time_us;
-        last_time_us = current_time_us;
-    
-        // Cap frame time to avoid spiral of death
-        if (frame_time_us > max_allowed_frame_time_us) {
-            frame_time_us = max_allowed_frame_time_us;
-        }
-    
-        accumulator_us += frame_time_us;
-    
-        // Fixed timestep update
-        while (accumulator_us >= fixed_timestep_us) {
-            float fixed_delta_seconds = static_cast<float>(fixed_timestep_us) / 1000000.0f;
-            game.update(fixed_delta_seconds);
-            accumulator_us -= fixed_timestep_us;
-        }
-    
-        // Optionally: render here if you want to decouple rendering from update
-    
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    uint64_t current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count();
+    uint64_t frame_time_us = current_time_us - last_time_us;
+    last_time_us = current_time_us;
+
+    // Cap frame time to avoid spiral of death
+    if (frame_time_us > max_allowed_frame_time_us) {
+        frame_time_us = max_allowed_frame_time_us;
     }
-    
+
+    //Print once a second
+    static uint64_t last_print_time_us = 0;
+    if (current_time_us - last_print_time_us >= 1000000) { // 1 second
+        last_print_time_us = current_time_us;
+        std::cout << "Game running... Frame time: " << frame_time_us << " us" << std::endl;
+    }
+
+    // Use actual frame time as deltaTime
+    float deltaTime = static_cast<float>(frame_time_us) / 1000000.0f;
+    game.update(deltaTime); // This varies based on actual frame time
+    camera->update(game.getPlayer());
+
+    // Initialize UIO only after game is fully set up and running
+    static bool uio_initialized = false;
+    if (!uio_initialized && game.isRunning()) {
+        renderer->initUIO();
+        uio_initialized = true;
+    }
+}
     // Clean up
     if (game.isServerConnection()) {
         game.shutdownServerConnection();
     }
-    
+    delete renderer;
     return 0;
 }

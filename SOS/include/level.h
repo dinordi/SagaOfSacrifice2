@@ -33,6 +33,7 @@ public:
     std::string                          getId()       const { return id;   }
     std::string                          getName()     const { return name; }
     const std::vector<std::shared_ptr<Object>>& getObjects()  const { return levelObjects; }
+    const std::shared_ptr<Object> getObject(const uint16_t objId) const; 
     std::string                          getBackgroundPath() const { return backgroundPath; }
     Vec2                                 getPlayerStartPosition() const { return playerStartPosition; }
 

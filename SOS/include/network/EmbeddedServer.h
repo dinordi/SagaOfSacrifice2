@@ -108,6 +108,7 @@ private:
     void sendEnemyStateToClients(const uint16_t enemyId, bool isDead, int16_t health);
 
     // Server configuration
+    uint16_t serverId_;
     int port_;
     std::atomic<bool> running_;
     std::atomic<bool> gameLoopRunning_;

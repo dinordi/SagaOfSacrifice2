@@ -19,15 +19,23 @@ SpriteData::~SpriteData() {
 
 SpriteData* SpriteData::getSharedInstance(const std::string& atlasPath)
 {
+    
+    std::string imageName = fs::path(atlasPath).stem().string();
     // Check if we already have this sprite sheet loaded
-    auto it = spriteCache.find(atlasPath);
+    auto it = spriteCache.find(imageName);
     if (it != spriteCache.end()) {
         return it->second;
     }
-    
+
     // If not, create a new instance and cache it
     SpriteData* newInstance = new SpriteData(atlasPath);
-    spriteCache[atlasPath] = newInstance;
+    static int spriteDataCount = 0;
+    spriteDataCount += newInstance->getSpriteRects().size();
+    spriteCache[imageName] = newInstance;
+    // Every 50 sprite data instances, print the count
+    if (spriteDataCount % 50 == 0) {
+        std::cout << "[SpriteData] Total sprite rects: " << spriteDataCount << std::endl;
+    }
     return newInstance;
 }
 
@@ -48,21 +56,6 @@ SpriteRect SpriteData::getSpriteRect(int index) const {
     return spriteRect;
 }
 
-void SpriteData::makeSpriteRect(json& data, int index) {
-    // Load the sprite sheet image from the given atlas path
-    // load level JSON file
-
-    const json& sprites = data["textures"][0]["sprites"];
-    const json& sprite = sprites[index];
-    const json& region = sprite["region"];
-
-    int x = region["x"].get<int>();
-    int y = region["y"].get<int>();
-    int w = region["w"].get<int>();
-    int h = region["h"].get<int>();
-
-    SpriteRect(x, y, w, h, "wolfman_idle.png");//Temp png
-}
 
 void SpriteData::addSpriteSheet(std::string atlasPath) 
 {
@@ -87,7 +80,7 @@ void SpriteData::addSpriteSheet(std::string atlasPath)
         int y = region["y"].get<int>();
         int w = region["w"].get<int>();
         int h = region["h"].get<int>();
-        spriteRects[index] = SpriteRect(x, y, w, h, image);
+        spriteRects[index] = SpriteRect(x, y, w, h, image, index);
         index++;
     }
     // Store the sprite data in the map

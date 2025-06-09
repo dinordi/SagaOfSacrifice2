@@ -38,7 +38,7 @@ struct AppContext {
                                       // You can adjust this (e.g., 33333 for 30 UPS)
     Uint64 accumulator_us = 0;
     Uint64 last_time_us = 0; // Will be initialized on the first run of AppIterate
-    Game* game;
+    Game& game;
     std::filesystem::path basePathSOS;
     Camera* camera;
     
@@ -236,13 +236,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_APP_FAILURE;
     }
     //Load game
-    Game* game = new Game(input);
+    Game& game = Game::getInstance();
+    game.setPlayerInput(input);
     
     // Initialize server configuration
-    game->initializeServerConfig(basePathSOS.string());
+    game.initializeServerConfig(basePathSOS.string());
     
     // Set multiplayer configuration for later use when menu option is selected
-    game->setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
+    game.setMultiplayerConfig(enableMultiplayer, serverAddress, serverPort);
     
     SDL_SetWindowSize(window, 1920, 1080);
     // print some information about the window
@@ -327,74 +328,57 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event* event) {
     }
 
     // Pass event to input handler if needed (SDLInput might handle events internally or need polling)
-    // Example: if (app->game) { static_cast<SDLInput*>(app->game->getInput())->handleEvent(event); }
+    // Example: if (app->game) { static_cast<SDLInput*>(app->game.getInput())->handleEvent(event); }
 
     return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult SDL_AppIterate(void *appstate) {
-    auto* app = (AppContext*)appstate;
-
-    if(!app->game->isRunning())
-    {
-        app->app_quit = SDL_APP_SUCCESS;
-        return app->app_quit;
-    }
-    // --- Timing ---
-    Uint64 current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-    Uint64 frame_time_us;
-
-    if (app->last_time_us == 0) { // First frame initialization
-        app->last_time_us = current_time_us;
-        frame_time_us = app->fixed_timestep_us; // Assume one fixed step for the first frame to avoid large initial deltaTime
-    } else {
-        frame_time_us = current_time_us - app->last_time_us;
-    }
-    app->last_time_us = current_time_us;
-
-    // Prevent "spiral of death" by capping frame_time_us if game freezes for too long
-    // This prevents the game from trying to simulate too many steps at once after a major lag spike.
-    // 250,000 microseconds = 0.25 seconds. Adjust as needed.
-    const Uint64 max_allowed_frame_time_us = 250000; 
-    if (frame_time_us > max_allowed_frame_time_us) {
-        frame_time_us = max_allowed_frame_time_us;
-    }
-
-    app->accumulator_us += frame_time_us;
-
-    // --- Event Handling (Crucial - ensure you have this somewhere!) ---
-    // SDL_Event event;
-    // while (SDL_PollEvent(&event)) {
-    //     if (event.type == SDL_EVENT_QUIT) {
-    //         app->app_quit = SDL_APPTERMINATE; // Or however you signal quit
-    //     }
-    //     // Pass event to your game for input processing, etc.
-    //     // app->game->handleEvent(event); 
-    // }
-
-
-    // --- Game Logic Updates (Fixed Timestep) ---
-    while (app->accumulator_us >= app->fixed_timestep_us) {
-        if (app->game) {
-            // Pass the fixed timestep in SECONDS to your update function
-            float fixed_delta_seconds = static_cast<float>(app->fixed_timestep_us) / 1000000.0f;
-            app->game->update(fixed_delta_seconds); 
-        }
-        app->accumulator_us -= app->fixed_timestep_us;
-    }
-
+void updateCamera(AppContext* app) {
     // Find player object to center camera on
-    Player* playerObject = app->game->getPlayer();
+    std::shared_ptr<Player> playerObject = app->game.getPlayer();
     
     // Update camera to follow player
     if (playerObject) {
         app->camera->update(playerObject);
     }
+}
 
-    SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(app->renderer);
+void updateTiming(AppContext* app) {
+    Uint64 current_time_us = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    
+    if (app->last_time_us == 0) { // First frame initialization
+        app->last_time_us = current_time_us;
+        return; // Skip first frame to avoid large deltaTime
+    }
+    
+    Uint64 delta_time_us = current_time_us - app->last_time_us;
+    app->last_time_us = current_time_us;
+    
+    // Cap deltaTime to prevent huge jumps (e.g., when debugging or window is minimized)
+    // 33333 microseconds = ~30 FPS minimum (1/30 second)
+    const Uint64 max_delta_time_us = 33333;
+    if (delta_time_us > max_delta_time_us) {
+        delta_time_us = max_delta_time_us;
+    }
+    
+    // Convert to seconds for the game update
+    float delta_time_seconds = static_cast<float>(delta_time_us) / 1000000.0f;
+    
+    // Print once per second for debugging
+    static Uint64 last_print_time_us = 0;
+    if (current_time_us - last_print_time_us >= 1000000) {
+        // SDL_Log("Delta time: %.6f seconds", delta_time_seconds);
+        last_print_time_us = current_time_us;
+    }
 
-    // --- Parallax Background Rendering ---
+    // Update game with variable deltaTime
+    app->game.update(delta_time_seconds);
+    
+    // Update camera with variable deltaTime
+    updateCamera(app);
+}
+
+void renderParallaxBackgrounds(AppContext* app) {
     float camX = app->camera->getPosition().x;
     float camY = app->camera->getPosition().y;
     // Parallax factors (0 = static, 1 = moves with camera)
@@ -426,9 +410,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     renderParallaxLayer(app->parallaxLayer1Tex, layer1Factor);
     // Render parallax layer 2 (islands closer)
     renderParallaxLayer(app->parallaxLayer2Tex, layer2Factor);
+}
 
+void renderEntities(AppContext* app) {
     //Load game objects (Entities, player(s), platforms)
-    for(const auto& entity : app->game->getObjects()) {
+    for(const auto& entity : app->game.getObjects()) {
         
         if (!entity || !entity->getCurrentSpriteData()) continue; // Basic safety check
         
@@ -466,18 +452,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             static_cast<float>(currentSpriteRect.h)
         };
 
-        bool swap = false;
-        switch(entity->getDir())
-        {
-            case FacingDirection::EAST:
-                // swap = true;
-                break;
-            case FacingDirection::SOUTH_WEST:
-                // swap = true;
-                break;
-            default:
-                break;
-        }
         
         // Convert world coordinates to screen coordinates using the camera
         Vec2 screenPos = app->camera->worldToScreen(
@@ -488,20 +462,17 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         SDL_FRect destRect{
             .x = screenPos.x,
             .y = screenPos.y,
-            .w = static_cast<float>(currentSpriteRect.w * (swap ? -1.0f : 1.0f)),
+            .w = static_cast<float>(currentSpriteRect.w),
             .h = static_cast<float>(currentSpriteRect.h)
         };
-
-        // Adjust the dest rect's position when flipped
-        if (swap) {
-            destRect.x -= destRect.w; // Adjust x position when flipped
-        }
 
         // Normal rendering without flip
         SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect);
     }
+}
 
-    for(const auto& actor : app->game->getActors()) {
+void renderActors(AppContext* app) {
+    for(const auto& actor : app->game.getActors()) {
          if (!actor) continue; // Basic safety check
 
          const SpriteData* spriteData = actor->getCurrentSpriteData();
@@ -590,8 +561,35 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             SDL_RenderTexture(app->renderer, sprite_tex, &srcRect, &destRect); // Use pre-loaded texture
         }
     }
-    // app->game->clearActors(); // Clear actors after rendering
+    // app->game.clearActors(); // Clear actors after rendering
+}
 
+SDL_AppResult SDL_AppIterate(void *appstate) {
+    auto* app = (AppContext*)appstate;
+
+    if(!app->game.isRunning())
+    {
+        app->app_quit = SDL_APP_SUCCESS;
+        return app->app_quit;
+    }
+
+    // Update timing and game logic at fixed timestep
+    updateTiming(app);
+
+    // Clear screen
+    SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(app->renderer);
+
+    // Render parallax backgrounds
+    renderParallaxBackgrounds(app);
+
+    // Render game entities
+    renderEntities(app);
+
+    // Render UI actors
+    renderActors(app);
+
+    // Present the rendered frame
     SDL_RenderPresent(app->renderer);
 
     return app->app_quit;
@@ -600,9 +598,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     auto* app = (AppContext*)appstate;
     if (app) {
-        
-        // Clean up game object
-        delete app->game; // Delete the game instance
 
         // Clean up SDL resources
         SDL_DestroyTexture(app->messageTex);
@@ -613,7 +608,7 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
         SDL_DestroyWindow(app->window);
 
         // Clean up input (if dynamically allocated in AppInit)
-        // delete static_cast<SDLInput*>(app->game->getInput()); // Be careful with ownership
+        // delete static_cast<SDLInput*>(app->game.getInput()); // Be careful with ownership
 
         delete app; // Delete the context itself
     }

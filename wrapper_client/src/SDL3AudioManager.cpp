@@ -16,10 +16,17 @@ SDL3AudioManager::SDL3AudioManager() : mMusic(nullptr), mInitialized(false) {
 
 SDL3AudioManager::~SDL3AudioManager() {
     if (mInitialized) {
+
+        Mix_HaltChannel(-1);
+        Mix_HaltMusic(); // Stop all channels and music
+
+        SDL_Delay(50);
+
         // Free all sound effects
         for (auto& pair : mSoundEffects) {
             if (pair.second) {
                 Mix_FreeChunk(pair.second);
+                pair.second = nullptr; // Set to nullptr after freeing
             }
         }
         mSoundEffects.clear();
@@ -30,8 +37,10 @@ SDL3AudioManager::~SDL3AudioManager() {
             mMusic = nullptr;
         }
 
-        Mix_CloseAudio();
+
         Mix_Quit(); // Quit SDL_mixer subsystems
+        SDL_Quit(); // Quit SDL subsystems
+        mInitialized = false;
     }
 }
 

@@ -38,6 +38,8 @@ cmake_install.cmake
 
 # OS specific files
 .DS_Store
+.vscode/
+build/
+build-arm/
 Thumbs.db
 
-.vscode/
