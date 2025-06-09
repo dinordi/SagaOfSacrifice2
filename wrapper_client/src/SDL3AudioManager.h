@@ -23,12 +23,14 @@ public:
     bool unloadSound(const std::string& soundName) override;
     bool playSound(const std::string& soundName) override;
     bool stopSound(const std::string& soundName) override;
+    bool isSfxPlaying(const std::string& soundName) override;
     bool setVolume(float volume) override;
 
     bool loadMusic(const std::string& filePath) override;
     bool playMusic() override;
     bool pauseMusic() override;
     bool stopMusic() override;
+    bool isMusicPlaying() const override;
     bool setMusicVolume(float volume) override;
 
 private:

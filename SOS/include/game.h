@@ -106,6 +106,7 @@ private:
     void reconcileWithServerState(float deltaTime);
 
     GameState state;
+    GameState lastState;
     bool running;
     bool isPaused = false;
     std::vector<std::shared_ptr<Object>> objects;
@@ -146,6 +147,7 @@ private:
     std::filesystem::path basePath_; // Base path for all file operations
     // Static instance for singleton pattern
     static Game* instance_;
+    AudioManager& audio = AudioManager::Instance();
 
     std::unique_ptr<LevelManager> levelManager_;
 };

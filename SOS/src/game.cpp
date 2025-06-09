@@ -45,6 +45,13 @@ Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(
     // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
+    //load menu music
+    basePath_ = "SOS/assets/music/";
+    
+    audio.loadMusic(basePath_ / "menu/001.wav");
+    //audio.loadSound(basePath_ / "menu/menu_select.wav");
+    audio.loadSound(basePath_ / "menu/menu_nav.wav");
+
 }
 
 Game::~Game() {
@@ -105,7 +112,15 @@ void Game::mapCharacters()
 void Game::update(float deltaTime) {
     // Process local input
     input->readInput();
-    
+
+    // if the case has changed, stop the music
+    if (state != lastState) {
+        audio.stopMusic(); // Play menu music if not already playing
+        // std::cout << "Game state changed from " << static_cast<int>(lastState) 
+        //           << " to " << static_cast<int>(state) << std::endl;
+    }
+    lastState = state;
+
     switch(state)
     {
         case GameState::RUNNING:
@@ -174,6 +189,12 @@ void Game::update(float deltaTime) {
             break;
         case GameState::MENU:
             // Handle menu state
+            
+            if(!audio.isMusicPlaying()) {
+                audio.playMusic(); // Play menu music if not already playing
+                std::cout << " play audio once " << std::endl;
+            }
+            
             drawMenu(deltaTime);
             handleMenuInput(deltaTime);
             return;
@@ -668,7 +689,7 @@ void Game::handleMenuInput(float deltaTime) {
     
     // Check for up/down input
     bool inputDetected = false;
-    
+    bool attacked = input->get_attack();
     // Using virtual key codes for UP and DOWN
     if (input->get_up()) {
         // Move selection up
@@ -686,7 +707,7 @@ void Game::handleMenuInput(float deltaTime) {
         }
         selectedOption = static_cast<MenuOption>(newOption);
         inputDetected = true;
-    } else if (input->get_attack()) {
+    } else if (attacked) {
         // Select current option
         switch(selectedOption) {
             case MenuOption::SINGLEPLAYER:
@@ -726,6 +747,9 @@ void Game::handleMenuInput(float deltaTime) {
     if (inputDetected) {
         menuInputCooldown = MENU_INPUT_DELAY;
         menuOptionChanged = true;
+        if(!attacked)
+            audio.playSound("menu_nav"); // Play sound on selection change (without extension)
+
     }
 }
 

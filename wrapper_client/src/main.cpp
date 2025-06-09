@@ -225,9 +225,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     
     if(audio.initialize(basePathSOS.string())){
         SDL_Log("AudioManager initialized successfully!");
-        audio.loadMusic("SOS/assets/music/menu/001.mp3");
-        audio.loadSound("SOS/assets/sfx/walking.mp3");
-        audio.playMusic();
+        // audio.loadMusic("SOS/assets/music/menu/001.mp3");
+        // audio.loadSound("SOS/assets/sfx/walking.mp3");
+        // audio.playMusic();
 
     }
     else

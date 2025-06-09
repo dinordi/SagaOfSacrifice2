@@ -39,7 +39,12 @@ Level::Level(const std::string& id,
       completed(false),
       collisionManager(collisionManager),
       playerStartPosition(0, 0)
-{ }
+{
+
+
+}
+
+
 
 Level::~Level() {
     unload();
@@ -176,6 +181,7 @@ bool Level::load()
 
     // (Items, triggers, objectives, music/sfx are not in the header yet—
     //  hard-code or extend your header + this code if needed.)
+    AudioManager::Instance().loadMusic("assets/music/level1.wav");
 
     loaded = true;
     return true;
