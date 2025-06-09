@@ -27,7 +27,7 @@ Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devM
     }
 }
 
-int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out) {
+int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap,volatile uint32_t* phys_addr_out) {
     SpriteLoader spriteLoader;
 
     int width = 0, height = 0;
@@ -77,7 +77,7 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
 void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
 
     uint32_t* sprite_data = new uint32_t[MAX_WIDTH * MAX_HEIGHT];
-    uint32_t phys_addr = SPRITE_DATA_BASE; // Start address for sprite data
+    volatile uint32_t phys_addr = SPRITE_DATA_BASE; // Start address for sprite data
     
     for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".tpsheet") {
@@ -357,7 +357,7 @@ void Renderer::distribute_sprites_over_pipelines() {
     int index = 0;
     for (auto frame : frame_info_data)
     {
-        if (index < 30)
+        if (index < 0)
         {
             index++;
             continue;

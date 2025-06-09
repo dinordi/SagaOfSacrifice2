@@ -117,7 +117,7 @@ int SpriteLoader::load_png(const char *filename, uint32_t *sprite_data_out, int 
 
 
 // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren (Vereenvoudigd)
-int SpriteLoader::map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
+int SpriteLoader::map_sprite_to_memory(const char *filename, volatile uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size) {
     int mem_fd = -1;
     void *mapped_mem = MAP_FAILED;
     size_t mapped_size;

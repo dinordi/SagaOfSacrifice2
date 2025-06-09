@@ -25,7 +25,7 @@ public:
                                        int sprite_width, int sprite_height,
                                        int x, int y);
     // Functie om een PNG-bestand in te laden, het naar fysiek geheugen te schrijven en de mapping te beheren
-    int map_sprite_to_memory(const char *filename, uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size);
+    int map_sprite_to_memory(const char *filename, volatile uint32_t *phys_addr, uint32_t *sprite_data, size_t sprite_size);
 
     // Verwijder de sprite data
     void free_sprite_data(uint32_t *sprite_data);
