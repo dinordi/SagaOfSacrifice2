@@ -351,12 +351,13 @@ void Renderer::distribute_sprites_over_pipelines() {
     std::unordered_map<int, int> sprites_per_y_in_pipeline[NUM_PIPELINES];
 
     // Pipelines proberen in volgorde 3 → 2 → 1 → 0
-    std::vector<int> pipeline_order = {0, 1, 2, 3};
+    //std::vector<int> pipeline_order = {0, 1, 2, 3};
+    std::vector<int> pipeline_order = {0};
 
     int index = 0;
     for (auto frame : frame_info_data)
     {
-        if (index < 10)
+        if (index < 30)
         {
             index++;
             continue;
@@ -369,14 +370,14 @@ void Renderer::distribute_sprites_over_pipelines() {
         if (frame.is_tile == 0)
         {
             // Actor sprite → pipeline 0
-            if (sprites_per_y_in_pipeline[3][y] < 15)
+            if (sprites_per_y_in_pipeline[0][y] < 15)
             {
-                bool written = write_sprite_to_frame_info(frame_infos[3], sprites_in_pipeline[3], x, y, sprite_id);
+                bool written = write_sprite_to_frame_info(frame_infos[0], sprites_in_pipeline[0], x, y, sprite_id);
 
                 if (written)
                 {
-                    sprites_in_pipeline[3]++;
-                    sprites_per_y_in_pipeline[3][y]++;
+                    sprites_in_pipeline[0]++;
+                    sprites_per_y_in_pipeline[0][y]++;
                 }
                 else
                 {
@@ -430,12 +431,12 @@ void Renderer::drawScreen()
    
     int background_index = lookup_table_map["background"]; 
     frame_info_data.push_back({
-        .x = static_cast<int16_t>(0),
-        .y = static_cast<int16_t>(0),
+        .x = static_cast<int16_t>(131),
+        .y = static_cast<int16_t>(8),
         .sprite_id = static_cast<uint32_t>(background_index),
         .is_tile = 0
     });
-    
+
     //renderObjects(game);
     //renderActors(game);
 }
