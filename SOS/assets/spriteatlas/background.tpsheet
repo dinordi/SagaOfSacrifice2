@@ -8,12 +8,57 @@
 			},
 			"sprites": [
 				{
-					"filename": "background.png",
+					"filename": "background1.png",
 					"region": {
 						"x": 0,
 						"y": 0,
-						"w": 1920,
-						"h": 1080
+						"w": 960,
+						"h": 540
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "background2.png",
+					"region": {
+						"x": 960,
+						"y": 0,
+						"w": 960,
+						"h": 540
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "background3.png",
+					"region": {
+						"x": 0,
+						"y": 540,
+						"w": 960,
+						"h": 540
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "background4.png",
+					"region": {
+						"x": 960,
+						"y": 540,
+						"w": 960,
+						"h": 540
 					},
 					"margin": {
 						"x": 0,
