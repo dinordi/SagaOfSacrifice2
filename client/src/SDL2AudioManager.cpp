@@ -260,3 +260,20 @@ bool SDL2AudioManager::isMusicPlaying() const {
     }
     return Mix_PlayingMusic() == 1; // Returns true if music is currently playing
 }
+
+bool SDL2AudioManager::setSfxVolume(float volume, const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL2) not initialized. Cannot set sound effect volume." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);
+        sdlVolume = std::max(0, std::min(sdlVolume, MIX_MAX_VOLUME));
+        Mix_VolumeChunk(it->second, sdlVolume);
+        return true;
+    } else {
+        std::cerr << "Sound not found (SDL2): " << soundName << std::endl;
+        return false;
+    }
+}

@@ -14,6 +14,7 @@ public:
     virtual bool isSfxPlaying(const std::string& soundName) = 0;
     virtual bool unloadSound(const std::string& soundName) = 0;
     virtual bool setVolume(float volume) = 0;
+    virtual bool setSfxVolume(float volume, const std::string& soundName) = 0;
 
     virtual bool loadMusic(const std::string& filePath) = 0;
     virtual bool playMusic() = 0;

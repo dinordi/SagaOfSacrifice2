@@ -37,6 +37,8 @@ private:
     bool isAttackActive;
     float attackTimer;
     
+    AudioManager &audio = AudioManager::Instance();
+
     // Attack properties
     int attackDamage = 20;
     float attackRange = 100.0f;

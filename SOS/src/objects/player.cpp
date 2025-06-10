@@ -10,6 +10,8 @@ Player::Player( int x, int y, uint16_t objID, int layer) : Entity(BoxCollider(Ve
     std::cout << "[Player] health initialized to: " << health << std::endl;
     setvelocity(Vec2(0, 0)); // Initialize velocity to zero
     // Setup player animations
+    audio.loadSound("SOS/assets/sfx/slash.wav");
+    audio.setSfxVolume(0.09f, "slash");
     setupAnimations();
 }
 
@@ -143,7 +145,7 @@ void Player::attack() {
     // Start attack sequence
     isAttackActive = true;
     attackTimer = 0.0f;
-    
+    audio.playSound("slash"); // Play attack sound effect
     // Play attack animation
     setAnimationState(AnimationState::ATTACKING);
     

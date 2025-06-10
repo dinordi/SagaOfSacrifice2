@@ -47,6 +47,7 @@ Game::Game() : running(true), multiplayerActive(false), usingSinglePlayerServer(
     audio.loadMusic(basePath_ / "menu/001.wav");
     //audio.loadSound(basePath_ / "menu/menu_select.wav");
     audio.loadSound(basePath_ / "menu/menu_nav.wav");
+    audio.setSfxVolume(1, "menu_nav");
 
 }
 

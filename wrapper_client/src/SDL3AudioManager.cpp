@@ -16,8 +16,6 @@ SDL3AudioManager::SDL3AudioManager() : mMusic(nullptr), mInitialized(false) {
 
 SDL3AudioManager::~SDL3AudioManager() {
     if (mInitialized) {
-
-        Mix_HaltChannel(-1);
         Mix_HaltMusic(); // Stop all channels and music
 
         SDL_Delay(50);
@@ -285,4 +283,22 @@ bool SDL3AudioManager::isSfxPlaying(const std::string& soundName) {
         }
     }
     return false; // Sound not found or not playing
+}
+
+bool SDL3AudioManager::setSfxVolume(float volume, const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot set sound effect volume." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);
+        if (sdlVolume < 0) sdlVolume = 0;
+        if (sdlVolume > MIX_MAX_VOLUME) sdlVolume = MIX_MAX_VOLUME;
+        Mix_VolumeChunk(it->second, sdlVolume);
+        return true; // Volume set successfully
+    } else {
+        std::cerr << "Sound not found (SDL3 - wrapper_client): " << soundName << std::endl;
+        return false; // Sound not found
+    }
 }

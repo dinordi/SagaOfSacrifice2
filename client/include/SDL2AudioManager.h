@@ -26,6 +26,7 @@ public:
     bool stopSound(const std::string& soundName) override;
     bool isSfxPlaying(const std::string& soundName) override;
     bool setVolume(float volume) override;
+    bool setSfxVolume(float volume, const std::string& soundName) override;
 
     bool loadMusic(const std::string& filePath) override;
     bool playMusic() override;

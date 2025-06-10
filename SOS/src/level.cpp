@@ -153,13 +153,13 @@ bool Level::load()
                     tileWidth, tileHeight,  /*layer=*/ static_cast<int>(layerIdx)
                 );
 
-                std::cout << "[Level::load] Layer " << layerIdx
-                          << " → Adding tile at (" << worldX << ", " << worldY
-                          << ") with GID: " << rawGid
-                          << " (layer: " << layerIdx
-                          << " (tileset: " << tilesetName
-                          << ", local ID: " << spriteIndex
-                          << ", object ID: " << objId << ")\n";
+                // std::cout << "[Level::load] Layer " << layerIdx
+                //           << " → Adding tile at (" << worldX << ", " << worldY
+                //           << ") with GID: " << rawGid
+                //           << " (layer: " << layerIdx
+                //           << " (tileset: " << tilesetName
+                //           << ", local ID: " << spriteIndex
+                //           << ", object ID: " << objId << ")\n";
 
                 levelObjects.push_back(tile);
             }
