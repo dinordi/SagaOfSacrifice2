@@ -349,35 +349,36 @@ void Renderer::distribute_sprites_over_pipelines() {
 
     int sprites_in_pipeline[NUM_PIPELINES] = {0};
     std::unordered_map<int, int> sprites_per_y_in_pipeline[NUM_PIPELINES];
-
-    // Pipelines proberen in volgorde 3 → 2 → 1 → 0
-    std::vector<int> pipeline_order = {0, 1, 2, 3};
-
+   
+    std::vector<int> pipeline_order = {};
     int index = 0;
-    for (auto frame : frame_info_data)
+    for (auto frame = frame_info_data.rbegin(); frame != frame_info_data.rend(); ++frame) 
     {
-        if (frame.is_tile == 0)
+        if (index == 0)
         {
-             std::vector<int> pipeline_order = {3, 2, 1, 0};
+            pipeline_order = {0};
         }
         else
         {
-            std::vector<int> pipeline_order = {0, 1, 2, 3};
+            if ((*frame).is_tile == 0)
+            {
+                pipeline_order = {3, 2, 1};
+            }
+            else
+            {
+                pipeline_order = {1, 2, 3};
+            }
         }
-        if (index < 0)
-        {
-            index++;
-            continue;
-        }
+    
 
-        int y = frame.y;
-        int x = frame.x;
-        int sprite_id = frame.sprite_id;
+        int y = (*frame).y;
+        int x = (*frame).x;
+        int sprite_id = (*frame).sprite_id;
 
         bool written = false;
         for (int pipeline : pipeline_order)
         {
-            if (sprites_per_y_in_pipeline[pipeline][y] < 1)
+            if (sprites_per_y_in_pipeline[pipeline][y] < 10)
             {
                 written = write_sprite_to_frame_info(frame_infos[pipeline], sprites_in_pipeline[pipeline], x, y, sprite_id);
 
@@ -389,7 +390,8 @@ void Renderer::distribute_sprites_over_pipelines() {
                 }
             }
         }
-             if (!written)
+
+        if (!written)
         {
             std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full or Y limit reached.\n";
         }
@@ -417,15 +419,8 @@ void Renderer::drawScreen()
         .sprite_id = static_cast<uint32_t>(background_index),
         .is_tile = 0
     });
-    background_index = lookup_table_map["wolfman_walk"]; 
-    frame_info_data.push_back({
-        .x = static_cast<int16_t>(131),
-        .y = static_cast<int16_t>(8),
-        .sprite_id = static_cast<uint32_t>(background_index),
-        .is_tile = 0
-    });
 
-    //renderObjects(game);
+    renderObjects(game);
     //renderActors(game);
 }
 
@@ -474,9 +469,7 @@ void Renderer::renderObjects(Game& game)
         const SpriteData* spriteData = entity->getCurrentSpriteData();
 
         if(entity->type == ObjectType::TILE ){
-            if(entity->getLayer() > 4) {
-                continue; // Skip rendering if no animation state is set
-            }
+            continue;
         }
 
         if (!spriteData ) continue; // Basic safety check
