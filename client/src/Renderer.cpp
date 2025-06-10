@@ -351,12 +351,19 @@ void Renderer::distribute_sprites_over_pipelines() {
     std::unordered_map<int, int> sprites_per_y_in_pipeline[NUM_PIPELINES];
 
     // Pipelines proberen in volgorde 3 → 2 → 1 → 0
-    //std::vector<int> pipeline_order = {0, 1, 2, 3};
-    std::vector<int> pipeline_order = {0};
+    std::vector<int> pipeline_order = {0, 1, 2, 3};
 
     int index = 0;
     for (auto frame : frame_info_data)
     {
+        if (frame.is_tile == 0)
+        {
+             std::vector<int> pipeline_order = {3, 2, 1, 0};
+        }
+        else
+        {
+            std::vector<int> pipeline_order = {0, 1, 2, 3};
+        }
         if (index < 0)
         {
             index++;
@@ -366,55 +373,29 @@ void Renderer::distribute_sprites_over_pipelines() {
         int y = frame.y;
         int x = frame.x;
         int sprite_id = frame.sprite_id;
-        //std ::cout << "Distributing sprite ID " << sprite_id << " at (" << x << ", " << y << ") to pipelines.\n";
-        if (frame.is_tile == 0)
+
+        bool written = false;
+        for (int pipeline : pipeline_order)
         {
-            // Actor sprite → pipeline 0
-            if (sprites_per_y_in_pipeline[0][y] < 15)
+            if (sprites_per_y_in_pipeline[pipeline][y] < 1)
             {
-                bool written = write_sprite_to_frame_info(frame_infos[0], sprites_in_pipeline[0], x, y, sprite_id);
+                written = write_sprite_to_frame_info(frame_infos[pipeline], sprites_in_pipeline[pipeline], x, y, sprite_id);
 
                 if (written)
                 {
-                    sprites_in_pipeline[0]++;
-                    sprites_per_y_in_pipeline[0][y]++;
+                    sprites_in_pipeline[pipeline]++;
+                    sprites_per_y_in_pipeline[pipeline][y]++;
+                    break;
                 }
-                else
-                {
-                    std::cerr << "Warning: actor sprite at Y=" << y << " skipped, pipeline 0 full.\n";
-                }
-            }
-            else
-            {
-                std::cerr << "Warning: actor sprite at Y=" << y << " skipped, Y limit reached.\n";
             }
         }
-        else
+             if (!written)
         {
-            // Tile sprite → pipelines 3 → 2 → 1 → 0
-            bool written = false;
-            for (int pipeline : pipeline_order)
-            {
-                if (sprites_per_y_in_pipeline[pipeline][y] < 15)
-                {
-                    written = write_sprite_to_frame_info(frame_infos[pipeline], sprites_in_pipeline[pipeline], x, y, sprite_id);
-
-                    if (written)
-                    {
-                        sprites_in_pipeline[pipeline]++;
-                        sprites_per_y_in_pipeline[pipeline][y]++;
-                        break;
-                    }
-                }
-            }
-
-            if (!written)
-            {
-                std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full or Y limit reached.\n";
-            }
+            std::cerr << "Warning: tile sprite at Y=" << y << " skipped, all pipelines full or Y limit reached.\n";
         }
 
         index++;
+
     }
 
     // Add end markers for all pipelines
@@ -430,6 +411,13 @@ void Renderer::drawScreen()
     Game& game = Game::getInstance();
    
     int background_index = lookup_table_map["background"]; 
+    frame_info_data.push_back({
+        .x = static_cast<int16_t>(131),
+        .y = static_cast<int16_t>(8),
+        .sprite_id = static_cast<uint32_t>(background_index),
+        .is_tile = 0
+    });
+    background_index = lookup_table_map["wolfman_walk"]; 
     frame_info_data.push_back({
         .x = static_cast<int16_t>(131),
         .y = static_cast<int16_t>(8),

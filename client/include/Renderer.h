@@ -13,7 +13,7 @@
 #include "object.h"
 #include "graphics/Camera.h"
 
-constexpr int NUM_PIPELINES = 1;
+constexpr int NUM_PIPELINES = 4;
 constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
 constexpr size_t FRAME_INFO_SIZE = 0x2000;    // Pas aan indien nodig
 
