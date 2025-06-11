@@ -1,63 +1,88 @@
-#pragma once
-#include <vector>
+#ifndef RENDERER_H
+#define RENDERER_H
+
 #include <thread>
-#include <poll.h>
-#include <memory>
+#include <cstdint>
+#include <unordered_map>
+#include <string>
+#include <map>
+#include <filesystem>
+#include <mutex>
+
+#include "game.h"
 #include "object.h"
-#include "fpga/dma.h"
-#include "fpga/spriteloader.h"
+#include "graphics/Camera.h"
 
+constexpr int NUM_PIPELINES = 4;
+constexpr size_t LOOKUP_TABLE_SIZE = 0x2000;  // Pas aan indien nodig
+constexpr size_t FRAME_INFO_SIZE = 0x2000;    // Pas aan indien nodig
 
-#define BRAM_BASE_ADDR 0x40000000  // Fysiek adres van BRAM
-#define BRAM_SIZE      0x1FFF     // Grootte van de BRAM (pas aan indien nodig)
+constexpr uint16_t SPRITE_WIDTH = 400; // Voorbeeld, pas aan naar jouw situatie
+constexpr uint16_t SPRITE_HEIGHT = 400;
+constexpr uint32_t SPRITE_DATA_BASE = 0x30000000; // Voorbeeld, pas aan naar jouw situatie
 
-struct BRAMDATA
-{
-    int y;
-    int id;
+constexpr size_t MAX_FRAME_INFO_SIZE = 4096;
+
+struct FrameInfo {
+    int16_t x;
+    int16_t y;
+    uint32_t sprite_id;
+    bool is_tile; // true if this is a tile sprite, false if it's an actor sprite
 };
 
-
-class Renderer
-{
+class Renderer {
 public:
-    Renderer(const std::string& img_path);
+    Renderer(const std::filesystem::path& basePath, Camera* cam, bool devMode = false);
     ~Renderer();
 
-    void init();
-    void render(std::vector<std::shared_ptr<Object>>& objects);
-private:
+    void initUIO();
+    
+    private:
+    void drawScreen();
+    void renderObjects(Game& game);
+    void renderActors(Game& game);
     void handleIRQ();
+    int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, uint32_t* phys_addr_out);
+    void loadAllSprites(const std::filesystem::path& basePath);
+    void init_lookup_tables();
+    void init_frame_infos();
+    void distribute_sprites_over_pipelines();
     void irqHandlerThread();
-    bool stop_thread;
-    std::thread irq_thread;
+    void fakeIRQHandlerThread();
 
-    void dmaTransfer();
-    BRAMDATA readBRAM();
+    void* lookup_table_ptrs[NUM_PIPELINES] = {nullptr};
+    void* frame_info_ptrs[NUM_PIPELINES] = {nullptr};
+    volatile uint64_t* lookup_tables[NUM_PIPELINES] = {nullptr};
+    volatile uint64_t* frame_infos[NUM_PIPELINES] = {nullptr};
+    std::unordered_map<std::string, std::map<int, uint32_t>> spriteSheetMap;
+    std::map<std::string, int> lookup_table_map;
+
+    std::vector<FrameInfo> frame_info_data;
+    std::mutex frame_info_mutex;
+
+    Camera* camera_;
+
+    bool devMode_ = false; // For development mode, where we just load an image and quit
 
     int uio_fd;
-    uint32_t irq_count;
-    uint32_t clear_value = 1; // Value to acknowledge/clear the interrupt
-    
-    int ddr_memory;
-    unsigned int *dma_virtual_addr;
-    unsigned int *virtual_src_addr;
-    std::vector<unsigned char> sprite;
-    const size_t CHUNK_SIZE = 32;
-    size_t total_size;
-    size_t num_chunks;
 
-    // Sprite properties
-    size_t sprite_width;
-    size_t sprite_height;     // Height in pixels
-    uint32_t sprite_base_addr; // Physical base address in memory
-    size_t sprite_lines;      // Number of lines in sprite (equal to height)
-    
-    size_t sprite_offset;
-    size_t bytes_to_transfer;
-    size_t offset;
-    size_t bytes_per_pixel;
-    size_t line_offset;
+    std::thread irq_thread;
+    volatile bool stop_thread = false;
 
-    void* bram_ptr;
+    static constexpr uint32_t LOOKUP_TABLE_ADDRS[4] = {
+        0x82000000, 0x86000000, 0x8A000000, 0x8E000000
+    };
+
+    static constexpr uint32_t FRAME_INFO_ADDRS[4] = {
+        0x80000000, 0x84000000, 0x88000000, 0x8C000000
+    };
+
+
+    // Helpers die je zelf moet implementeren:
+    void write_lookup_table_entry(volatile uint64_t* table, int index,
+                                 uint32_t phys_addr, uint16_t width, uint16_t height);
+
+    void write_sprite_to_frame_info(volatile uint64_t *frame_info_arr, int index, int16_t x, int16_t y, uint32_t sprite_id);
 };
+
+#endif // RENDERER_H

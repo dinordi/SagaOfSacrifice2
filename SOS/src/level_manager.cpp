@@ -91,22 +91,10 @@ bool LevelManager::loadLevel(const std::string& levelId) {
     std::cout << "[LevelManager] Loading level: " << levelId << std::endl;  
     if (it != levels_.end()) {
         currentLevel_ = it->second;
-        
-        // Load the JSON level data file
-        std::string levelFilePath = levelFilePaths_[levelId];  // Use the path we already stored during initialization
-        std::ifstream levelFile(levelFilePath);
-        
-        if (!levelFile.is_open()) {
-            std::cerr << "Failed to open level file: " << levelFilePath << std::endl;
-            loaded = false;
-        }
-        std::cout << "[LevelManager] Loading level from file: " << levelFilePath << std::endl;
-        try {
-            json levelData;
-            levelFile >> levelData;
-            
+                try {
+
             // First load the level data
-            bool loadSuccess = currentLevel_->load(levelData);
+            bool loadSuccess = currentLevel_->load();
             if (!loadSuccess) {
                 std::cerr << "[LevelManager] Failed to load level data from JSON" << std::endl;
                 loaded = false;
@@ -245,6 +233,10 @@ bool LevelManager::addPlayerToCurrentLevel(uint16_t playerId) {
                   << " to level start position: " << playerPos->x << "," << playerPos->y << std::endl;
     }
     
+    std::shared_ptr<Object> objectExists = currentLevel_->getObject(playerId); // Ensure the player is created in the level
+    if(objectExists) {
+        return true; // Player already exists in the level
+    }
     // Add the player to the current level
     currentLevel_->addObject(player);
     currentLevel_->setAllEnemiesToTargetPlayer(player);
@@ -279,6 +271,10 @@ bool LevelManager::removeAllPlayersFromCurrentLevel() {
         const auto& players = playerManager.getAllPlayers();
         
         for (const auto& playerPair : players) {
+            if(playerPair.second == nullptr) {
+                std::cerr << "[LevelManager] Player " << playerPair.first << " is null, skipping removal" << std::endl;
+                continue;
+            }
             currentLevel_->removeObject(playerPair.second);
             std::cout << "[LevelManager] Removed player " << playerPair.first << " from current level" << std::endl;
         }

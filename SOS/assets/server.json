@@ -1,10 +1,10 @@
 {
   "servers": [
     {
-      "name": "Local Server",
-      "address": "localhost",
-      "port": 8282,
-      "description": "Local development server",
+      "name": "Joey's Macbook",
+      "address": "145.49.102.127",
+      "port": 8080,
+      "description": "Joey's development server",
       "default": true
     },
     {

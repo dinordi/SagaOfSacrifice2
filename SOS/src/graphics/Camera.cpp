@@ -9,7 +9,7 @@ Camera::~Camera()
 {
 }
 
-void Camera::update(const Object* target)
+void Camera::update(std::shared_ptr<Object> target)
 {
     if (target)
     {

@@ -1,14 +1,23 @@
-# Set the minimum required version of CMake
 cmake_minimum_required(VERSION 3.10)
 
-# Set the project name
 project(SOS)
 
-# Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
+# Zet standaard build type op Debug als er nog geen build type is gekozen
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
+
+# Voeg debug flags toe voor Debug build (geen optimalisatie, debug symbols)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
 
 # Find Boost libraries
 find_package(Boost REQUIRED COMPONENTS system thread chrono)

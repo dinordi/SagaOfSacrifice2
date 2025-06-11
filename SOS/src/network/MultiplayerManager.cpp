@@ -128,7 +128,7 @@ void MultiplayerManager::update(float deltaTime) {
     }
 }
 
-void MultiplayerManager::setLocalPlayer(Player* player) {
+void MultiplayerManager::setLocalPlayer(std::shared_ptr<Player> player) {
     localPlayer_ = player;
 }
 
@@ -148,7 +148,7 @@ void MultiplayerManager::sendPlayerState() {
     NetworkMessage posMsg;
     posMsg.type = MessageType::PLAYER_POSITION;
     posMsg.senderId = playerId_;
-    posMsg.data = serializePlayerState(localPlayer_);
+    posMsg.data = serializePlayerState(localPlayer_.get());
 
     network_->sendMessage(posMsg);
 }
@@ -234,19 +234,22 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     // Read isDead flag (1 byte)
     bool isDead = message.data[pos++] != 0;
 
+    
+    // Find the enemy object by ID in gameObjects
     // Read health (2 bytes)
     int16_t health;
     std::memcpy(&health, message.data.data() + pos, sizeof(int16_t));
     pos += sizeof(int16_t);
-
+    
+    // Find the remote player or enemy object
+    Game& game = Game::getInstance();
+    
+    // Lock the game objects for thread safety
+    std::cout << "[Client] Acquiring game objects mutex to handle enemy state update" << std::endl;
+    std::lock_guard<std::mutex> lock(game.getObjectsMutex());
     // Find the enemy object by ID in gameObjects
-    Game* game = Game::getInstance();
-    if (!game) {
-        std::cerr << "[Client] Game instance not found" << std::endl;
-        return;
-    }
     std::shared_ptr<Enemy> enemyObject = nullptr;
-    auto& objects = game->getObjects();
+    auto& objects = game.getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == enemyId) {
             switch(obj->type) {
@@ -270,6 +273,9 @@ void MultiplayerManager::handleEnemyStateMessage(const NetworkMessage& message) 
     } else {
         enemyObject->setHealth(health);
     }
+    std::cout << "[Client] Enemy state updated: ID=" << enemyId 
+              << ", isDead=" << (isDead ? "true" : "false") 
+              << ", health=" << health << std::endl;
 }
 
 bool MultiplayerManager::isConnected() const {
@@ -359,9 +365,8 @@ void MultiplayerManager::handlePlayerJoinMessage(const NetworkMessage& message) 
     }
 
     // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        game->addObject(obj);
-    }
+    Game& game = Game::getInstance();
+    game.addObject(obj);
 
 }
 
@@ -462,6 +467,8 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
     std::map<uint16_t, bool> objectsSeen;
     std::vector<std::shared_ptr<Object>> newObjects;
     
+    std::cout << "Processing game state with " << objectCount << " objects" << std::endl;
+
     // Process each object
     for (uint16_t i = 0; i < objectCount && pos < gameStateData.size(); i++) {
         // std::cout << "[Client] Processing object " << i + 1 << " of " << objectCount << ". Pos: " << pos << std::endl;
@@ -472,11 +479,12 @@ void MultiplayerManager::processGameState(const std::vector<uint8_t>& gameStateD
         newObjects.push_back(newobj);
         objectsSeen[newobj->getObjID()] = true;  // Mark this object as seen
     }
+    std::cout << "[Client] Processed " << newObjects.size() << " objects from game state data" << std::endl;
     // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        for (auto& obj : newObjects) {
-            game->addObject(obj);
-        }
+    Game& game = Game::getInstance();
+    // Lock is handled inside addObject method
+    for (auto& obj : newObjects) {
+        game.addObject(obj);
     }
 }
 
@@ -519,10 +527,10 @@ void MultiplayerManager::processGameStateDelta(const std::vector<uint8_t>& gameS
     }
     
     // Add any new objects to the game
-    if (Game* game = Game::getInstance()) {
-        for (auto& obj : newObjects) {
-            game->addObject(obj);
-        }
+    Game& game = Game::getInstance();
+    // Lock is handled inside addObject method
+    for (auto& obj : newObjects) {
+        game.addObject(obj);
     }
 }
 
@@ -708,12 +716,10 @@ std::vector<uint8_t> MultiplayerManager::serializePlayerState(const Player* play
 
 std::shared_ptr<Object> MultiplayerManager::updateEntityPosition(const uint16_t objectId, const Vec2& position, const Vec2& velocity) {
     // Update the position of a specific entity
-    Game* game = Game::getInstance();
-    if (!game) {
-        std::cerr << "[Client] Game instance not found" << std::endl;
-        return nullptr;
-    }
-    auto& objects = game->getObjects();
+    Game& game = Game::getInstance();
+    
+    std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+    auto& objects = game.getObjects();
     for (auto& obj : objects) {
         if (obj->getObjID() == objectId) {
             // Update the object's position and velocity
@@ -807,6 +813,11 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
                 it = remotePlayers_.emplace(objectId, std::move(newPlayer)).first;
                 it->second->setposition(Vec2(posX, posY));
             }
+            if(it->second->getObjID() == playerId_) {
+                pos += 4; // Skip position and velocity for our own player
+                // If this is our own player, skip processing
+                return nullptr;
+            }
             Player* player = it->second.get();
             AnimationState state = static_cast<AnimationState>(data[pos++]);
             FacingDirection dir = static_cast<FacingDirection>(data[pos++]);
@@ -823,12 +834,10 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
         }
         case ObjectType::TILE: {
             // Find or create a platform object
-            Game* game = Game::getInstance();
-            if (!game) {
-                std::cerr << "[Client] Game instance not found" << std::endl;
-                return nullptr;
-            }
-            auto& objects = game->getObjects();
+            Game& game = Game::getInstance();
+            
+            std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+            auto& objects = game.getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
                     // Update existing platform
@@ -876,12 +885,10 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             pos += 2; // Move past health
             
             // Find or create a minotaur object
-            Game* game = Game::getInstance();
-            if (!game) {
-                std::cerr << "[Client] Game instance not found" << std::endl;
-                return nullptr;
-            }
-            auto& objects = game->getObjects();
+            Game& game = Game::getInstance();
+            
+            std::lock_guard<std::mutex> lock(game.getObjectsMutex());
+            auto& objects = game.getObjects();
             for (auto& obj : objects) {
                 if (obj->getObjID() == objectId) {
                     obj->setAnimationState(state);
@@ -906,10 +913,9 @@ std::shared_ptr<Object> MultiplayerManager::deserializeObject(const std::vector<
             return newMinotaur;
         }
         default:
-            // std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
+            std::cerr << "[Client] Unknown object type: " << static_cast<int>(objectType) << std::endl;
             return nullptr;
     }
-    
 }
 
 void MultiplayerManager::handlePlayerConnectMessage(const NetworkMessage& message) {
@@ -978,6 +984,7 @@ void MultiplayerManager::handlePlayerAssignMessage(const NetworkMessage& message
     std::cout << "[Client] Assigned player with ID: " << assignedId << " at position (" << posX << ", " << posY << ")" << std::endl;
     
     // Create our player
-    auto* game = Game::getInstance();
-    game->updatePlayer(assignedId, Vec2(posX, posY));
+    auto& game = Game::getInstance();
+    game.updatePlayer(assignedId, Vec2(posX, posY));
+    remotePlayers_[playerId_] = game.getPlayer();
 }

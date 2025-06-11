@@ -9,9 +9,7 @@
 #include <iostream>
 #include <set> // Add missing header for std::set
 #include <filesystem> // For std::filesystem::path
-
-// Initialize static instance pointer
-Game* Game::instance_ = nullptr;
+#include <mutex> // Add mutex header
 
 // External function declaration
 extern uint32_t get_ticks(); // Declare the get_ticks function
@@ -19,9 +17,7 @@ extern uint32_t get_ticks(); // Declare the get_ticks function
 // Default port for local server in single-player mode
 const int LOCAL_SERVER_PORT = 8080;
 
-Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
-    // Set this as the active instance
-    instance_ = this;
+Game::Game() : running(true), multiplayerActive(false), usingSinglePlayerServer(false), menuInputCooldown(0), menuOptionChanged(true), selectedOption(MenuOption::SINGLEPLAYER) {
     
     // Initialize the local server manager
     localServerManager = std::make_unique<LocalServerManager>();    //Only used for single-player mode with embedded server
@@ -45,17 +41,22 @@ Game::Game(PlayerInput* input) : running(true), input(input), multiplayerActive(
     // Store player ID but don't create a player yet - server will create and send it
     mapCharacters();    //Map characters to their indices
     state = GameState::MENU;
+    //load menu music
+    basePath_ = "SOS/assets/music/";
+    
+    audio.loadMusic(basePath_ / "menu/001.wav");
+    //audio.loadSound(basePath_ / "menu/menu_select.wav");
+    audio.loadSound(basePath_ / "menu/menu_nav.wav");
+    audio.setSfxVolume(1, "menu_nav");
+
 }
 
 Game::~Game() {
-    // If we are the current instance, clear the static pointer
-    if (instance_ == this) {
-        instance_ = nullptr;
-    }
-    
     // Clean up game objects
-    // No need to manually delete objects as they are managed by shared_ptr
-    objects.clear();
+    {
+        std::lock_guard<std::mutex> lock(objectsMutex);
+        objects.clear();
+    }
     
     delete collisionManager;
     
@@ -96,84 +97,135 @@ void Game::mapCharacters()
     for (const auto& pair : characterMap) {
         std::cout << pair.first << " -> " << pair.second << std::endl;
     }
-    this->letters = new SpriteData(basePath_ / "letters.tpsheet");
-    this->letters_small = new SpriteData(basePath_ / "letters_small.tpsheet");
 
     characterMap['>'] = 36;
+}
+
+void Game::initializeSpriteSheets()
+{
+    // For all tpsheets in basePath_, load them
+    std::cout << "[Game] Initializing sprite sheets from: " << basePath_ << std::endl;
+    for (const auto& entry : std::filesystem::directory_iterator(basePath_)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".tpsheet") {
+            std::string tpsheetPath = entry.path().string();
+            std::cout << "[Game] Loading sprite sheet: " << tpsheetPath << std::endl;
+            SpriteData::getSharedInstance(tpsheetPath);
+        }
+    }
 }
 
 void Game::update(float deltaTime) {
     // Process local input
     input->readInput();
-    
+
+    // if the case has changed, stop the music
+    if (state != lastState) {
+        audio.stopMusic(); // Play menu music if not already playing
+        // std::cout << "Game state changed from " << static_cast<int>(lastState) 
+        //           << " to " << static_cast<int>(state) << std::endl;
+    }
+    lastState = state;
+
     switch(state)
     {
         case GameState::RUNNING:
-            // Check for and remove dead enemies
-            objects.erase(
-                std::remove_if(objects.begin(), objects.end(), 
-                    [this](const std::shared_ptr<Object>& obj) {
-                        if (obj && obj->type == ObjectType::MINOTAUR) {
-                            Enemy* enemy = static_cast<Enemy*>(obj.get());
-                            
-                            // If the enemy is dead, notify the server before removing it
-                            if (enemy && enemy->isDead()) {
-                                // Only notify if multiplayer is active
-                                if (multiplayerActive && multiplayerManager) {
-                                    multiplayerManager->sendEnemyStateUpdate(
-                                        enemy->getObjID(), 
-                                        true,  // isDead = true
-                                        0      // Health = 0
-                                    );
-                                }
-                                clearActors();
-                                return true; // Remove this enemy
-                            }
-                        }
-                        return false;
-                    }
-                ), 
-                objects.end()
-            );
-            
-            if(!player)
             {
-                break;
-            }
-            // Update all objects
-            for(auto& obj : objects) {
-                if (obj) {
-                    // Update healthbar if it exists
-                    if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
-                        Entity* entity = static_cast<Entity*>(obj.get());
-                        if (entity) {
-                            if(obj->getObjID() != player->getObjID())
-                            {
-                                entity->Entity::update(deltaTime);
+                std::lock_guard<std::mutex> lock(objectsMutex);
+                // Check for and remove dead enemies
+                objects.erase(
+                    std::remove_if(objects.begin(), objects.end(), 
+                        [this](const std::shared_ptr<Object>& obj) {
+                            if (obj && obj->type == ObjectType::MINOTAUR) {
+                                Enemy* enemy = static_cast<Enemy*>(obj.get());
+                                
+                                // If the enemy is dead, notify the server before removing it
+                                if (enemy && enemy->isDead()) {
+                                    // Only notify if multiplayer is active
+                                    if (multiplayerActive && multiplayerManager) {
+                                        multiplayerManager->sendEnemyStateUpdate(
+                                            enemy->getObjID(), 
+                                            true,  // isDead = true
+                                            0      // Health = 0
+                                        );
+                                    }
+                                    clearActors();
+                                    return true; // Remove this enemy
+                                }
                             }
-                            
-                            entity->updateHealthbar();
-                            Healthbar* healthbar = entity->getHealthbar();
-                            if(healthbar) {
-                                //Check if healthbar is already in actors
-                                auto it = std::find_if(actors.begin(), actors.end(),
-                                    [&healthbar](Actor* actor) {
-                                        return actor->getObjID() == healthbar->getObjID();
-                                    });
-                                if (it == actors.end()) {
-                                    actors.push_back(healthbar); // Add healthbar to actors for rendering
+                            return false;
+                        }
+                    ), 
+                    objects.end()
+                );
+
+                if(!player)
+                {
+                    break;
+                }
+                
+                // Update all objects
+                for(auto& obj : objects) {
+                    if (obj) {
+                        if(obj->getObjID() == player->getObjID()) {
+                            continue; // Skip updating the local player
+                        }
+                        // Update the object's animation
+                        obj->updateAnimation(deltaTime * 1000);
+                        // Update healthbar if it exists
+                        if (obj->type == ObjectType::PLAYER || obj->type == ObjectType::MINOTAUR) {
+                            Entity* entity = static_cast<Entity*>(obj.get());
+                            if (entity) {
+                                if(obj->getObjID() != player->getObjID())
+                                {
+                                    entity->Entity::update(deltaTime); // Update entity state
+                                }
+                                entity->updateHealthbar();
+                                Healthbar* healthbar = entity->getHealthbar();
+                                if(healthbar) {
+                                    //Check if healthbar is already in actors
+                                    auto it = std::find_if(actors.begin(), actors.end(),
+                                        [&healthbar](Actor* actor) {
+                                            return actor->getObjID() == healthbar->getObjID();
+                                        });
+                                    if (it == actors.end()) {
+                                        actors.push_back(healthbar); // Add healthbar to actors for rendering
+                                    }
                                 }
                             }
                         }
                     }
 
                 }
+                // Ensure objects are sorted before rendering
+                if(objects.size() > 1) {
+                    sortObjects();
+                }
             }
-            // Ensure objects are sorted before rendering
-            sortObjects();
             break;
         case GameState::MENU:
+            // If nothing pressed for a while, reset menu option
+            static float menuIdleTime = 0.0f;
+            menuIdleTime += deltaTime;
+            // if (menuIdleTime > 5.0f) { // Reset after 5 seconds of inactivity
+            //     // Initialize single player mode with embedded server
+            //     if (!initializeSinglePlayerEmbeddedServer()) {
+            //         std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+            //         // Could show error message in menu or fallback
+            //         break;
+            //     } else {
+            //         std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
+            //     }
+            //     // Start single player game
+            //     state = GameState::RUNNING;
+            //     clearActors(); // Clear the menu
+            // }
             // Handle menu state
+            
+            if(!audio.isMusicPlaying()) {
+                audio.playMusic(); // Play menu music if not already playing
+                std::cout << " play audio once " << std::endl;
+            }
+            
             drawMenu(deltaTime);
             handleMenuInput(deltaTime);
             return;
@@ -215,6 +267,8 @@ bool Game::isRunning() const {
 }
 
 std::vector<std::shared_ptr<Object>>& Game::getObjects() {
+    // Note: This returns a reference, caller should use their own locking if needed
+    // or consider returning a copy for thread safety
     return objects;
 }
 
@@ -273,7 +327,7 @@ void Game::movePlayerToEnd() {
     // Find the player in the objects vector
     auto playerIt = std::find_if(objects.begin(), objects.end(),
         [this](const std::shared_ptr<Object>& obj) {
-            return obj.get() == player;
+            return obj.get() == player.get();
         });
     
     // If found and not already at the end, move it
@@ -338,6 +392,7 @@ std::vector<Actor*>& Game::getActors() {
 }
 
 void Game::clearActors() {
+    std::lock_guard<std::mutex> lock(actorsMutex);
     for(auto& actor : actors) {
         if(actor->gettype() == ActorType::HEALTHBAR)
             continue;   // Healthbar is managed by unique_ptr in Entity, so skip it
@@ -359,6 +414,7 @@ void Game::setChatMessageHandler(std::function<void(const uint16_t sender, const
 }
 
 void Game::updateRemotePlayers(const std::map<uint16_t, std::shared_ptr<Player>>& remotePlayers) {
+    std::lock_guard<std::mutex> lock(objectsMutex);
     // loop through all remote players
     for (const auto& pair : remotePlayers) {
         //Find the remote player in the gameobjects
@@ -401,8 +457,6 @@ void Game::updateRemotePlayers(const std::map<uint16_t, std::shared_ptr<Player>>
     }
 }
 
-// New methods for server-authoritative gameplay
-
 void Game::predictLocalPlayerMovement(float deltaTime) {
     if( !player || !input) {
         return; // No player or input to process
@@ -424,6 +478,7 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     }
     
     if (player->isAttacking()) {
+        std::lock_guard<std::mutex> lock(objectsMutex);
         // Check for enemies that may have been hit
         for (auto& obj : objects) {
             // Skip non-enemy objects
@@ -444,13 +499,14 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
                 // Deal damage to the enemy
                 int damageAmount = player->getAttackDamage();
                 enemy->takeDamage(damageAmount);
-                
-                // If the enemy died from this hit, notify the server immediately
+                int health = enemy->getHealth();
+                health = health < 0 ? 0 : health; // Ensure health doesn't go negative
+                // If the enemy is attacked from this hit, notify the server immediately
                 if (multiplayerActive && multiplayerManager) {
                     multiplayerManager->sendEnemyStateUpdate(
                         enemy->getObjID(), 
-                        true,  // isDead = true
-                        0      // Health = 0
+                        health <= 0 ? true : false,  // isDead = true
+                        static_cast<uint16_t>(health)      // Health = 0
                     );
                 }
                 // Only hit each enemy once per attack frame
@@ -463,7 +519,10 @@ void Game::predictLocalPlayerMovement(float deltaTime) {
     wasAttacking = player->isAttacking();
     
     // Check for regular collisions (like with platforms)
-    collisionManager->detectPlayerCollisions(objects, player);
+    {
+        std::lock_guard<std::mutex> lock(objectsMutex);
+        collisionManager->detectPlayerCollisions(objects, player.get());
+    }
 }
 
 void Game::reconcileWithServerState(float deltaTime) {
@@ -536,7 +595,7 @@ void Game::reconcileWithServerState(float deltaTime) {
 void Game::sortObjects() {
     std::sort(objects.begin(), objects.end(),
         [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
-
+            if (!a || !b) return false; // Handle null pointers gracefully
             if (a->getLayer() != b->getLayer())
                 return a->getLayer() < b->getLayer();
             if (a->getposition().y != b->getposition().y)
@@ -549,6 +608,7 @@ void Game::sortObjects() {
 // New method to add objects to the game
 void Game::addObject(std::shared_ptr<Object> object) {
     if (object) {
+        std::lock_guard<std::mutex> lock(objectsMutex);
         // Check if object with this ID already exists
         auto it = std::find_if(objects.begin(), objects.end(), 
                               [&](const std::shared_ptr<Object>& obj) {
@@ -584,7 +644,7 @@ void Game::drawMenu(float deltaTime) {
         }
         print = true;
     }
-    
+
     if(actors.size() != 0 && !menuOptionChanged && lastPrint == print)
         return;
     
@@ -632,7 +692,10 @@ void Game::drawWord(const std::string& word, int x, int y, int letterSize) {
             {
                 character = new Actor(Vec2(x,y), basePath_ / "SOS/assets/spriteatlas/letters_small.tpsheet", index);
             }
-            actors.push_back(character);
+            {
+                std::lock_guard<std::mutex> lock(actorsMutex);
+                actors.push_back(character);
+            }
             x += letterWidth; // Move to the right for the next character
             if(x > 1600)
             {
@@ -652,7 +715,10 @@ void Game::drawWordWithHighlight(const std::string& word, int x, int y, bool isS
     if (isSelected) {
         // Add a simple visual indicator for the selected item
         Actor* selector = new Actor(Vec2(x - 80, y), basePath_ / "SOS/assets/spriteatlas/letters.tpsheet", characterMap['>']);
-        actors.push_back(selector);
+        {
+            std::lock_guard<std::mutex> lock(actorsMutex);
+            actors.push_back(selector);
+        }
     }
     
     // Draw the actual word
@@ -668,7 +734,7 @@ void Game::handleMenuInput(float deltaTime) {
     
     // Check for up/down input
     bool inputDetected = false;
-    
+    bool attacked = input->get_attack();
     // Using virtual key codes for UP and DOWN
     if (input->get_up()) {
         // Move selection up
@@ -686,7 +752,7 @@ void Game::handleMenuInput(float deltaTime) {
         }
         selectedOption = static_cast<MenuOption>(newOption);
         inputDetected = true;
-    } else if (input->get_attack()) {
+    } else if (attacked) {
         // Select current option
         switch(selectedOption) {
             case MenuOption::SINGLEPLAYER:
@@ -700,7 +766,6 @@ void Game::handleMenuInput(float deltaTime) {
                 }
                 // Start single player game
                 state = GameState::RUNNING;
-                // objects.push_back(std::shared_ptr<Player>(player)); // Add player to objects
                 clearActors(); // Clear the menu
                 break;
             case MenuOption::MULTIPLAYER:
@@ -726,6 +791,9 @@ void Game::handleMenuInput(float deltaTime) {
     if (inputDetected) {
         menuInputCooldown = MENU_INPUT_DELAY;
         menuOptionChanged = true;
+        if(!attacked)
+            audio.playSound("menu_nav"); // Play sound on selection change (without extension)
+
     }
 }
 
@@ -865,7 +933,7 @@ void Game::updatePlayer(uint16_t playerId, const Vec2& position) {
     else
     {
         // If player is not initialized, create a new one
-        player = new Player(position.x, position.y, playerId);
+        player = std::make_shared<Player>(position.x, position.y, playerId);
         player->setInput(input); // Set input handler for the player
         multiplayerManager->setLocalPlayer(player); // Set the local player in the multiplayer manager
         multiplayerManager->setPlayerInput(input); // Set input for multiplayer manager

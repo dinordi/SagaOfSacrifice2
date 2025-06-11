@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Remote Debug Zybo",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/client/build-arm/SOS",  // Jouw ARM ELF executable met debug info
+      "miDebuggerServerAddress": "192.168.1.10:1234",      // IP en poort van gdbserver op Zybo
+      "miDebuggerPath": "C:/Program Files (x86)/Arm GNU Toolchain arm-none-linux-gnueabihf/14.2 rel1/bin/arm-none-linux-gnueabihf-gdb.exe",
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

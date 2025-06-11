@@ -16,10 +16,15 @@ SDL3AudioManager::SDL3AudioManager() : mMusic(nullptr), mInitialized(false) {
 
 SDL3AudioManager::~SDL3AudioManager() {
     if (mInitialized) {
+        Mix_HaltMusic(); // Stop all channels and music
+
+        SDL_Delay(50);
+
         // Free all sound effects
         for (auto& pair : mSoundEffects) {
             if (pair.second) {
                 Mix_FreeChunk(pair.second);
+                pair.second = nullptr; // Set to nullptr after freeing
             }
         }
         mSoundEffects.clear();
@@ -30,8 +35,10 @@ SDL3AudioManager::~SDL3AudioManager() {
             mMusic = nullptr;
         }
 
-        Mix_CloseAudio();
+
         Mix_Quit(); // Quit SDL_mixer subsystems
+        SDL_Quit(); // Quit SDL subsystems
+        mInitialized = false;
     }
 }
 
@@ -252,4 +259,46 @@ bool SDL3AudioManager::setMusicVolume(float volume) {
     if (sdlVolume > MIX_MAX_VOLUME) sdlVolume = MIX_MAX_VOLUME;
     Mix_VolumeMusic(sdlVolume);
     return true; // Mix_VolumeMusic doesn't return status. Assume success.
+}
+
+bool SDL3AudioManager::isMusicPlaying() const {
+    if (!mInitialized) {
+        std::cerr << "[AudioManager] (SDL3 - wrapper_client) not initialized. Cannot check if music is playing." << std::endl;
+        return false;
+    }
+    return Mix_PlayingMusic() == 1; // Returns true if music is currently playing
+}
+
+bool SDL3AudioManager::isSfxPlaying(const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "[AudioManager] (SDL3 - wrapper_client) not initialized. Cannot check if sound is playing." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        for (int i = 0; i < Mix_AllocateChannels(-1); ++i) {
+            if (Mix_Playing(i) && Mix_GetChunk(i) == it->second) {
+                return true; // Sound is playing on this channel
+            }
+        }
+    }
+    return false; // Sound not found or not playing
+}
+
+bool SDL3AudioManager::setSfxVolume(float volume, const std::string& soundName) {
+    if (!mInitialized) {
+        std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot set sound effect volume." << std::endl;
+        return false;
+    }
+    auto it = mSoundEffects.find(soundName);
+    if (it != mSoundEffects.end() && it->second) {
+        int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);
+        if (sdlVolume < 0) sdlVolume = 0;
+        if (sdlVolume > MIX_MAX_VOLUME) sdlVolume = MIX_MAX_VOLUME;
+        Mix_VolumeChunk(it->second, sdlVolume);
+        return true; // Volume set successfully
+    } else {
+        std::cerr << "Sound not found (SDL3 - wrapper_client): " << soundName << std::endl;
+        return false; // Sound not found
+    }
 }

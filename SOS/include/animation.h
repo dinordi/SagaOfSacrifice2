@@ -15,11 +15,7 @@ enum class FacingDirection {
     WEST,
     EAST,
     NORTH,
-    SOUTH,
-    NORTH_WEST,
-    NORTH_EAST,
-    SOUTH_WEST,
-    SOUTH_EAST
+    SOUTH
 };
 
 // << overload for FacingDirection
@@ -29,10 +25,6 @@ inline std::ostream& operator<<(std::ostream& os, FacingDirection dir) {
         case FacingDirection::EAST: os << "EAST"; break;
         case FacingDirection::NORTH: os << "NORTH"; break;
         case FacingDirection::SOUTH: os << "SOUTH"; break;
-        case FacingDirection::NORTH_WEST: os << "NORTH_WEST"; break;
-        case FacingDirection::NORTH_EAST: os << "NORTH_EAST"; break;
-        case FacingDirection::SOUTH_WEST: os << "SOUTH_WEST"; break;
-        case FacingDirection::SOUTH_EAST: os << "SOUTH_EAST"; break;
     }
     return os;
 }

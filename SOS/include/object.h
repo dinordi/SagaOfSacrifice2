@@ -100,7 +100,7 @@ private:
     DEFINE_CONST_GETTER_SETTER(int, Layer); // ID of the object, for multiplayer to indicate between players and objects
 private:
     int layer;
-};
+}; 
 
 class Actor {
 public:
