@@ -206,19 +206,19 @@ void Game::update(float deltaTime) {
             // If nothing pressed for a while, reset menu option
             static float menuIdleTime = 0.0f;
             menuIdleTime += deltaTime;
-            if (menuIdleTime > 5.0f) { // Reset after 5 seconds of inactivity
-                // Initialize single player mode with embedded server
-                if (!initializeSinglePlayerEmbeddedServer()) {
-                    std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
-                    // Could show error message in menu or fallback
-                    break;
-                } else {
-                    std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
-                }
-                // Start single player game
-                state = GameState::RUNNING;
-                clearActors(); // Clear the menu
-            }
+            // if (menuIdleTime > 5.0f) { // Reset after 5 seconds of inactivity
+            //     // Initialize single player mode with embedded server
+            //     if (!initializeSinglePlayerEmbeddedServer()) {
+            //         std::cerr << "[Game] Failed to initialize single player mode." << std::endl;
+            //         // Could show error message in menu or fallback
+            //         break;
+            //     } else {
+            //         std::cout << "[Game] Single player mode initialized successfully!" << std::endl;
+            //     }
+            //     // Start single player game
+            //     state = GameState::RUNNING;
+            //     clearActors(); // Clear the menu
+            // }
             // Handle menu state
             
             if(!audio.isMusicPlaying()) {
