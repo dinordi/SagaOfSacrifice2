@@ -167,7 +167,7 @@ int SpriteLoader::map_sprite_to_memory(const char *filename, volatile uint32_t *
 
 int SpriteLoader::load_png_spritesheet(const char *filename, uint32_t *sprite_data_out,
                                        int sprite_width, int sprite_height,
-                                       int x, int y)
+                                       int x, int y, png_bytep* row_pointers)
 {
     FILE *fp = fopen(filename, "rb");
     if (!fp) {
@@ -235,19 +235,14 @@ int SpriteLoader::load_png_spritesheet(const char *filename, uint32_t *sprite_da
         return 1;
     }
 
-    // Volledige afbeelding inlezen
-    png_bytep *rows = (png_bytep *)malloc(sizeof(png_bytep) * img_height);
-    for (unsigned int i = 0; i < img_height; i++) {
-        rows[i] = (png_bytep)malloc(img_width * 4); // RGBA
-    }
-
-    png_read_image(png, rows);
+    // Use pre-allocated row pointers instead of malloc/free
+    png_read_image(png, row_pointers);
     fclose(fp);
     png_destroy_read_struct(&png, &info, NULL);
 
     // Sprite uitsnijden vanaf pixel (x, y)
     for (int row = 0; row < sprite_height; row++) {
-        png_bytep src_row = rows[y + row];
+        png_bytep src_row = row_pointers[y + row];
         for (int col = 0; col < sprite_width; col++) {
             png_bytep px = &src_row[(x + col) * 4];
 
@@ -260,9 +255,6 @@ int SpriteLoader::load_png_spritesheet(const char *filename, uint32_t *sprite_da
             sprite_data_out[row * sprite_width + col] = rgba;
         }
     }
-
-    for (unsigned int i = 0; i < img_height; i++) free(rows[i]);
-    free(rows);
 
     static int sprite_count = 0;
     sprite_count++;

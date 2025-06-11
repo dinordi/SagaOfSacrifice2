@@ -43,7 +43,7 @@ public:
     void renderObjects(Game& game);
     void renderActors(Game& game);
     void handleIRQ();
-    int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap,volatile uint32_t* phys_addr_out);
+    int loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap,volatile uint32_t* phys_addr_out, png_bytep* row_pointers);
     void loadAllSprites(const std::filesystem::path& basePath);
     void init_lookup_tables();
     void init_frame_infos();
