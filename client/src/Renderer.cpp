@@ -450,7 +450,7 @@ void Renderer::drawScreen()
     // Voeg Aegis sprite toe aan frame info
     frame_info_data.push_back({
         .x = static_cast<int16_t>(1250),  // Midden van scherm
-        .y = static_cast<int16_t>(650),  // Midden van scherm
+        .y = static_cast<int16_t>(300),  // Midden van scherm
         .sprite_id = static_cast<uint32_t>(agis_index + aegis_sprite_index),
         .is_tile = 0
     });
