@@ -431,7 +431,30 @@ void Renderer::drawScreen()
             y += 270;
         }
     }
-
+    
+    int agis_index = lookup_table_map["Aegis_The_Destoryer_Of_Worlds"]; 
+    
+    // Counter voor Aegis sprite animatie
+    static int aegis_counter = 0;
+    static int aegis_sprite_index = 0;
+    
+    aegis_counter++;
+    if (aegis_counter >= 5) {
+        aegis_counter = 0;
+        aegis_sprite_index++;
+        if (aegis_sprite_index > 14) {
+            aegis_sprite_index = 0;
+        }
+    }
+    
+    // Voeg Aegis sprite toe aan frame info
+    frame_info_data.push_back({
+        .x = static_cast<int16_t>(1250),  // Midden van scherm
+        .y = static_cast<int16_t>(650),  // Midden van scherm
+        .sprite_id = static_cast<uint32_t>(agis_index + aegis_sprite_index),
+        .is_tile = 0
+    });
+    
     //renderObjects(game);
     //renderActors(game);
 }
