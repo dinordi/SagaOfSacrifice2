@@ -198,7 +198,7 @@ void Game::update(float deltaTime) {
             // If nothing pressed for a while, reset menu option
             static float menuIdleTime = 0.0f;
             menuIdleTime += deltaTime;
-            // if (menuIdleTime > 2.0f)  // Reset after 5 seconds of inactivity
+            if (menuIdleTime > 2.0f)  // Reset after 5 seconds of inactivity
                 // {
                 //     // Initialize single player mode with embedded server
                 //     if (!initializeSinglePlayerEmbeddedServer()) {
@@ -212,33 +212,33 @@ void Game::update(float deltaTime) {
                 //     state = GameState::RUNNING;
                 //     clearActors(); // Clear the menu
                 // }
-            //     {
-            //         const ServerInfo* selectedServer = serverConfig.getServer(0);
-            //         if (selectedServer) {
-            //             std::cout << "[Game] Connecting to server: " << selectedServer->name 
-            //                     << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
-            //             uint16_t playID;
-            //             if (player) {
-            //                 playID = player->getObjID(); // Use existing player ID
-            //             } else {
-            //                 // Generate a new random player ID if not already set
-            //                 playID = 65000;
-            //             }
-            //             if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
-            //                 std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
-            //                 // Could show error message and stay in server selection
-            //                 // For now, go back to main menu
-            //                 state = GameState::MENU;
-            //                 menuOptionChanged = true;
-            //             } else {
-            //                 std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
-            //                 // Start multiplayer game
-            //                 state = GameState::RUNNING;
-            //                 clearActors(); // Clear the menu
-            //             }
-            //         }
-            //         // inputDetected = true;
-            //    }
+                {
+                    const ServerInfo* selectedServer = serverConfig.getServer(0);
+                    if (selectedServer) {
+                        std::cout << "[Game] Connecting to server: " << selectedServer->name 
+                                << " (" << selectedServer->address << ":" << selectedServer->port << ")" << std::endl;
+                        uint16_t playID;
+                        if (player) {
+                            playID = player->getObjID(); // Use existing player ID
+                        } else {
+                            // Generate a new random player ID if not already set
+                            playID = 65000;
+                        }
+                        if (!initializeServerConnection(selectedServer->address, selectedServer->port, playID)) {
+                            std::cerr << "[Game] Failed to connect to server: " << selectedServer->name << std::endl;
+                            // Could show error message and stay in server selection
+                            // For now, go back to main menu
+                            state = GameState::MENU;
+                            menuOptionChanged = true;
+                        } else {
+                            std::cout << "[Game] Successfully connected to server: " << selectedServer->name << std::endl;
+                            // Start multiplayer game
+                            state = GameState::RUNNING;
+                            clearActors(); // Clear the menu
+                        }
+                    }
+                    // inputDetected = true;
+               }
            // }
             // Handle menu state
             drawMenu(deltaTime);
