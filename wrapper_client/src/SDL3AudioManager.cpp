@@ -2,6 +2,7 @@
 #include <SDL3_mixer/SDL_mixer.h> 
 #include <iostream> // For std::cerr
 #include <filesystem> // For path manipulation if needed for getSoundName
+#include <mutex> // For std::mutex
 
 // Helper function to extract sound name from file path
 static std::string getSoundName(const std::string& filePath) {
@@ -20,21 +21,24 @@ SDL3AudioManager::~SDL3AudioManager() {
 
         SDL_Delay(50);
 
-        // Free all sound effects
-        for (auto& pair : mSoundEffects) {
-            if (pair.second) {
-                Mix_FreeChunk(pair.second);
-                pair.second = nullptr; // Set to nullptr after freeing
+        {
+            std::lock_guard<std::mutex> lock(mAudioMutex);
+            
+            // Free all sound effects
+            for (auto& pair : mSoundEffects) {
+                if (pair.second) {
+                    Mix_FreeChunk(pair.second);
+                    pair.second = nullptr; // Set to nullptr after freeing
+                }
+            }
+            mSoundEffects.clear();
+
+            // Free music
+            if (mMusic) {
+                Mix_FreeMusic(mMusic);
+                mMusic = nullptr;
             }
         }
-        mSoundEffects.clear();
-
-        // Free music
-        if (mMusic) {
-            Mix_FreeMusic(mMusic);
-            mMusic = nullptr;
-        }
-
 
         Mix_Quit(); // Quit SDL_mixer subsystems
         SDL_Quit(); // Quit SDL subsystems
@@ -97,6 +101,9 @@ bool SDL3AudioManager::loadSound(const std::string& filePath) {
     }
     std::string soundName = getSoundName(filePath); // Derive soundName from filePath
     
+    // Lock mutex before modifying shared resources
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     // Free existing sound if any, before replacing
     auto it = mSoundEffects.find(soundName);
     if (it != mSoundEffects.end() && it->second) {
@@ -111,6 +118,9 @@ bool SDL3AudioManager::unloadSound(const std::string& soundName) {
         std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot unload sound." << std::endl;
         return false;
     }
+    
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     auto it = mSoundEffects.find(soundName);
     if (it != mSoundEffects.end() && it->second) {
         Mix_FreeChunk(it->second);
@@ -130,6 +140,9 @@ bool SDL3AudioManager::playSound(const std::string& soundName) {
     
     // Debug logging for diagnostic purposes
     SDL_Log("DEBUG: Attempting to play sound: '%s'", soundName.c_str());
+    
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     SDL_Log("DEBUG: Sound map contains %d entries", static_cast<int>(mSoundEffects.size()));
     
     // Print all available sound keys in the map
@@ -192,6 +205,9 @@ bool SDL3AudioManager::loadMusic(const std::string& filePath) {
         return false;
     }
     std::string fullPath = mBasePath + "/" + filePath;
+    
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     if (mMusic) {
         Mix_HaltMusic();
         Mix_FreeMusic(mMusic);
@@ -274,6 +290,9 @@ bool SDL3AudioManager::isSfxPlaying(const std::string& soundName) {
         std::cerr << "[AudioManager] (SDL3 - wrapper_client) not initialized. Cannot check if sound is playing." << std::endl;
         return false;
     }
+    
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     auto it = mSoundEffects.find(soundName);
     if (it != mSoundEffects.end() && it->second) {
         for (int i = 0; i < Mix_AllocateChannels(-1); ++i) {
@@ -290,6 +309,9 @@ bool SDL3AudioManager::setSfxVolume(float volume, const std::string& soundName) 
         std::cerr << "AudioManager (SDL3 - wrapper_client) not initialized. Cannot set sound effect volume." << std::endl;
         return false;
     }
+    
+    std::lock_guard<std::mutex> lock(mAudioMutex);
+    
     auto it = mSoundEffects.find(soundName);
     if (it != mSoundEffects.end() && it->second) {
         int sdlVolume = static_cast<int>(volume * MIX_MAX_VOLUME);

@@ -5,6 +5,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <string>
 #include <map>
+#include <mutex>  // Add this include for std::mutex
 
 class SDL3AudioManager : public AudioManager {
 public:
@@ -43,6 +44,7 @@ private:
     std::map<std::string, Mix_Chunk*> mSoundEffects;
     Mix_Music* mMusic;
     bool mInitialized;
+    std::mutex mAudioMutex;  // Mutex for thread safety
 };
 
 #endif // SDL3_AUDIO_MANAGER_H
