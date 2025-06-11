@@ -301,7 +301,7 @@ bool Renderer::try_write_sprite_to_pipeline(int pipeline, int y, int x, int spri
                                   volatile uint64_t* frame_infos[], // hier volatile toegevoegd
                                   int sprites_in_pipeline[NUM_PIPELINES])
 {
-    if (sprites_per_y_in_pipeline[pipeline][y] < 15)
+    if (sprites_per_y_in_pipeline[pipeline][y] < 22)
     {
         pipeline_index = sprites_in_pipeline[pipeline];
 
@@ -352,7 +352,7 @@ void Renderer::distribute_sprites_over_pipelines() {
    
     std::vector<int> pipeline_order = {};
     int index = 0;
-    for (auto frame = frame_info_data.rbegin(); frame != frame_info_data.rend(); ++frame) 
+    for (auto frame = frame_info_data.begin(); frame != frame_info_data.end(); frame++) 
     {
         if (index == 0)
         {
@@ -378,7 +378,7 @@ void Renderer::distribute_sprites_over_pipelines() {
         bool written = false;
         for (int pipeline : pipeline_order)
         {
-            if (sprites_per_y_in_pipeline[pipeline][y] < 10)
+            if (sprites_per_y_in_pipeline[pipeline][y] < 20)
             {
                 written = write_sprite_to_frame_info(frame_infos[pipeline], sprites_in_pipeline[pipeline], x, y, sprite_id);
 
@@ -411,16 +411,62 @@ void Renderer::drawScreen()
     frame_info_data.clear(); // Clear previous frame info data
 
     Game& game = Game::getInstance();
-   
-    int background_index = lookup_table_map["background"]; 
-    frame_info_data.push_back({
-        .x = static_cast<int16_t>(131),
-        .y = static_cast<int16_t>(8),
-        .sprite_id = static_cast<uint32_t>(background_index),
-        .is_tile = 0
-    });
+    int background_index = lookup_table_map["background2"]; 
+    int x = 131;
+    int y = 8;  // start y op 500 zoals in je code
 
-    renderObjects(game);
+    for(int i = 0; i < 16; i++)
+    {
+        frame_info_data.push_back({
+            .x = static_cast<int16_t>(x),
+            .y = static_cast<int16_t>(y),
+            .sprite_id = static_cast<uint32_t>(background_index + i),  // lijkt fout in jouw code, je wil background_index hier
+            .is_tile = 1
+        });
+
+        x += 480;
+
+        if (x >= 1920) {
+            x = 131;
+            y += 270;
+        }
+    }
+
+    // int background_index = lookup_table_map["background"]; 
+    // frame_info_data.push_back({
+    //     .x = static_cast<int16_t>(131),
+    //     .y = static_cast<int16_t>(8),
+    //     .sprite_id = static_cast<uint32_t>(background_index),
+    //     .is_tile = 0
+    // });
+    // int index = lookup_table_map["Tilemap_Flat"]; // Assuming player_idle is the sprite for
+    // for(int i = 0; i < 20; i++)
+    // {
+    //     frame_info_data.push_back({
+    //         .x = static_cast<int16_t>(140 + i * 64),
+    //         .y = static_cast<int16_t>(500),
+    //         .sprite_id = static_cast<uint32_t>(index+6),
+    //         .is_tile = 1
+    //     });
+    // }
+    // for(int i = 0; i < 20; i++)
+    // {
+    //     frame_info_data.push_back({
+    //         .x = static_cast<int16_t>(140 + i * 64),
+    //         .y = static_cast<int16_t>(500),
+    //         .sprite_id = static_cast<uint32_t>(index+3),
+    //         .is_tile = 1
+    //     });
+    // }
+    // index = lookup_table_map["wolfman_idle"]; // Assuming player_idle is the sprite for the player
+    // frame_info_data.push_back({
+    //     .x = static_cast<int16_t>(450),
+    //     .y = static_cast<int16_t>(500),
+    //     .sprite_id = static_cast<uint32_t>(index),
+    //     .is_tile = 0
+    // });
+
+    //renderObjects(game);
     //renderActors(game);
 }
 
@@ -472,7 +518,7 @@ void Renderer::renderObjects(Game& game)
             continue;
         }
 
-        if (!spriteData ) continue; // Basic safety check
+        if (!spriteData) continue; // Basic safety check
         
         // Use the current sprite index from animation system
         int spriteIndex = entity->getCurrentSpriteIndex();
@@ -536,7 +582,7 @@ void Renderer::renderActors(Game& game)
     const std::vector<Actor*>& actors = game.getActors();
 
     for(const auto& actor : game.getActors()) {
-        if (!actor) continue; // Basic safety check
+        if (!actor || actor->gettype() == ActorType::HEALTHBAR) continue; // Basic safety check
 
         const SpriteData* spriteData = actor->getCurrentSpriteData();
         
