@@ -27,7 +27,7 @@ Renderer::Renderer(const std::filesystem::path& basePath, Camera* cam, bool devM
     }
 }
 
-int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap,volatile uint32_t* phys_addr_out) {
+int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std::map<int, uint32_t>* spriteAddressMap, volatile uint32_t* phys_addr_out, png_bytep* row_pointers) {
     SpriteLoader spriteLoader;
 
     int width = 0, height = 0;
@@ -47,27 +47,20 @@ int Renderer::loadSprite(const std::string& img_path, uint32_t* sprite_data, std
 
     const char* png_file = png_path.c_str();
     
-    
-    
     std::cout << "Mapping " << spData->getSpriteRects().size() << " sprites from " << png_file << std::endl;
     for(const auto& pair : spData->getSpriteRects()) {
         const SpriteRect& rect = pair.second;
         sprite_size = rect.w * rect.h * sizeof(uint32_t);
-        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, rect.w, rect.h, rect.x, rect.y) != 0) {
+        if (spriteLoader.load_png_spritesheet(png_file, sprite_data, rect.w, rect.h, rect.x, rect.y, row_pointers) != 0) {
             std::cerr << "Failed to load PNG file: " << png_file << std::endl;
             return -1;
         }
-        // if(spriteLoader.load_png(png_file, sprite_data, &width, &height, &sprite_size) != 0) {
-        //     std::cerr << "Failed to load PNG file: " << png_file << std::endl;
-        //     return -1;
-        // }
         (*spriteAddressMap)[rect.count] = *phys_addr_out;
         if (spriteLoader.map_sprite_to_memory(png_file, phys_addr_out, sprite_data, sprite_size) != 0) {
             std::cerr << "Failed to map sprite to memory: " << png_file << std::endl;
             return -2;
         }
     }
-
 
     std::cout << "Sprite '" << img_path << "' mapped to address: 0x"
               << std::hex << *phys_addr_out << std::dec << std::endl;
@@ -79,12 +72,18 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
     uint32_t* sprite_data = new uint32_t[MAX_WIDTH * MAX_HEIGHT];
     volatile uint32_t phys_addr = SPRITE_DATA_BASE; // Start address for sprite data
     
+    // Pre-allocate row pointers for maximum image size to avoid malloc/free in load_png_spritesheet
+    png_bytep* row_pointers = new png_bytep[MAX_HEIGHT];
+    for (int i = 0; i < MAX_HEIGHT; i++) {
+        row_pointers[i] = new png_byte[MAX_WIDTH * 4]; // RGBA
+    }
+    
     for (const auto& entry : std::filesystem::directory_iterator(basePath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".tpsheet") {
             std::map<int, uint32_t> spriteAddressMap;
             std::filesystem::path fullPath = entry.path();
             std::string fileStem = fullPath.stem().string();  // "player" uit "player.png"
-            int result = loadSprite(fullPath.string(), sprite_data, &spriteAddressMap, &phys_addr);
+            int result = loadSprite(fullPath.string(), sprite_data, &spriteAddressMap, &phys_addr, row_pointers);
                 
             if (result == 0) {
                 spriteSheetMap[fileStem] = spriteAddressMap;
@@ -94,6 +93,12 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
         }
     }
 
+    // Clean up row pointers
+    for (int i = 0; i < MAX_HEIGHT; i++) {
+        delete[] row_pointers[i];
+    }
+    delete[] row_pointers;
+    
     delete[] sprite_data;
 }
 
