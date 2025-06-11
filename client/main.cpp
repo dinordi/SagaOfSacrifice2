@@ -66,13 +66,12 @@ int main(int argc, char *argv[]) {
         audio.loadSound("sfx/jump.wav");
         audio.loadSound("sfx/slash.wav");
         audio.loadSound("sfx/menu_nav.wav");
+        audio.playMusic();
 
-    }
+    }   
     while(1){
         timer = get_ticks();
-        if(audio.isMusicPlaying() == false) {
-            audio.playMusic();
-        }
+
         // play a sound every 5 seconds
         if (get_ticks() - timer > 5000) {
             // Play a random sound every 5 seconds
