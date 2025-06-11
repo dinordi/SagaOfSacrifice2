@@ -11,8 +11,8 @@
 #include <cstdint>
 
 #define PAGE_SIZE 4096  // Page size is meestal 4096 bytes
-#define MAX_WIDTH  2022
-#define MAX_HEIGHT 3610
+#define MAX_WIDTH  4000
+#define MAX_HEIGHT 4000
 
 
 class SpriteLoader 

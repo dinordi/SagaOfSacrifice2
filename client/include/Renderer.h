@@ -8,6 +8,7 @@
 #include <map>
 #include <filesystem>
 #include <mutex>
+#include <png.h>  // Add PNG header
 
 #include "game.h"
 #include "object.h"

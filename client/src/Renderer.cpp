@@ -75,6 +75,11 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
     // Pre-allocate row pointers for maximum image size to avoid malloc/free in load_png_spritesheet
     png_bytep* row_pointers = new png_bytep[MAX_HEIGHT];
     for (int i = 0; i < MAX_HEIGHT; i++) {
+        row_pointers[i] = nullptr; // Initialize to nullptr first
+    }
+    
+    // Allocate memory for row pointers
+    for (int i = 0; i < MAX_HEIGHT; i++) {
         row_pointers[i] = new png_byte[MAX_WIDTH * 4]; // RGBA
     }
     
@@ -93,9 +98,12 @@ void Renderer::loadAllSprites(const std::filesystem::path& basePath) {
         }
     }
 
-    // Clean up row pointers
+    // Clean up row pointers - check for nullptr before deleting
     for (int i = 0; i < MAX_HEIGHT; i++) {
-        delete[] row_pointers[i];
+        if (row_pointers[i] != nullptr) {
+            delete[] row_pointers[i];
+            row_pointers[i] = nullptr;
+        }
     }
     delete[] row_pointers;
     
@@ -415,7 +423,7 @@ void Renderer::drawScreen()
 {
     frame_info_data.clear(); // Clear previous frame info data
 
-    Game& game = Game::getInstance();
+    //Game& game = Game::getInstance();
     int background_index = lookup_table_map["background2"]; 
     int x = 131;
     int y = 8;  // start y op 500 zoals in je code
