@@ -352,7 +352,7 @@ void Renderer::distribute_sprites_over_pipelines() {
    
     std::vector<int> pipeline_order = {};
     int index = 0;
-    for (auto frame = frame_info_data.rbegin(); frame != frame_info_data.rend(); ++frame) 
+    for (auto frame = frame_info_data.begin(); frame != frame_info_data.end(); ++frame) 
     {
         if (index == 0)
         {
@@ -411,16 +411,28 @@ void Renderer::drawScreen()
     frame_info_data.clear(); // Clear previous frame info data
 
     Game& game = Game::getInstance();
-   
     int background_index = lookup_table_map["background"]; 
-    frame_info_data.push_back({
-        .x = static_cast<int16_t>(131),
-        .y = static_cast<int16_t>(8),
-        .sprite_id = static_cast<uint32_t>(background_index),
-        .is_tile = 0
-    });
+    int x = 131;
+    int y = 8;  // start y op 500 zoals in je code
 
-    renderObjects(game);
+    for(int i = 0; i < 16; i++)
+    {
+        frame_info_data.push_back({
+            .x = static_cast<int16_t>(x),
+            .y = static_cast<int16_t>(y),
+            .sprite_id = static_cast<uint32_t>(background_index + i),  // lijkt fout in jouw code, je wil background_index hier
+            .is_tile = 1
+        });
+
+        x += 480;
+
+        if (x >= 1920) {
+            x = 131;
+            y += 270;
+        }
+    }
+
+    //renderObjects(game);
     //renderActors(game);
 }
 
